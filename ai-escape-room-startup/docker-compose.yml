@@ -1,0 +1,32 @@
+services:
+  frontend:
+    container_name: ai-escape-room-frontend
+    build: 
+      context: ${FRONTEND_DOCKER_FILE}
+    ports:
+      - "3000:3000"
+    volumes:
+      - ${FRONTEND_DOCKER_FILE}:/app
+      - /app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    networks:
+      - app-network
+    depends_on:
+      - api
+  api:
+    container_name: ai-escape-room-api
+    build: 
+      context: ${API_DOCKER_FILE}
+    ports:
+      - "5000:5000"
+    volumes:
+      - ${API_DOCKER_FILE}:/app
+    environment:
+      - ENVIRONMENT=development
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
