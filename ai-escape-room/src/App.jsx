@@ -1,27 +1,16 @@
-import { useEffect, useState } from "react"
+import { Navigation } from './components/Navigation'
+import { useContext } from 'react'
+import { AppSettingsContext } from './context/AppSettingsContext'
+import { Stage } from './Stage'
 
-function App() {
-  const [msg, setMsg] = useState('')
-
-  useEffect(() => {
-    fetch('http://localhost:5000/', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then(res => res.json())
-      .then(data => setMsg(data.message))
-      .catch(error => console.log(error))
-  });
+export default function App() {
+  const { appSettings } = useContext(AppSettingsContext)
 
   return (
     <>
-      <div>
-        { msg ? msg : 'Failed To Fetch' }
-      </div>
-    </>
+      <Stage width={appSettings.screen.width} height={appSettings.screen.height} options={{ background: 0x1099bb }}>
+          <Navigation/>
+      </Stage>
+   </>
   )
 }
-
-export default App
