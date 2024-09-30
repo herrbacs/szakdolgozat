@@ -5,17 +5,18 @@ import arrowLeft from '../assets/navigation_left.png'
 import arrowRight from '../assets/navigation_right.png'
 import { AppSettingsContext } from '../context/AppSettingsContext'
 import '@pixi/events'
+import { MoveDirection, SetAppSettingsAction } from '../shared/enums'
 
-export function Navigation() {
+export function Navigation() {  
   const scale = 0.2
-  const { appSettings } = useContext(AppSettingsContext)
+  const { appSettings, setAppSettings } = useContext(AppSettingsContext)
 
   const calculateYPosition = () => {
-    return ((appSettings.screen.height / 2) - (appSettings.movementDimension.height*scale)/2)
+    return ((appSettings.screen.height / 2) - (appSettings.navigationIconDimension.height*scale)/2)
   }
 
   const calculateXPositionOfRightArrow = () => {
-    return ((appSettings.screen.width) - (appSettings.movementDimension.width*scale))
+    return ((appSettings.screen.width) - (appSettings.navigationIconDimension.width*scale))
   }
 
   return (
@@ -26,7 +27,7 @@ export function Navigation() {
         image={arrowLeft}
         x={0}
         y={calculateYPosition()}
-        pointerdown={() => console.log('MOVE Left')}
+        pointerdown={() => setAppSettings({ action: SetAppSettingsAction.MOVE, payload: MoveDirection.RIGHT })}
       />
        <Sprite
         scale={{ x: scale, y: scale }}
@@ -34,7 +35,7 @@ export function Navigation() {
         image={arrowRight}
         x={calculateXPositionOfRightArrow()}
         y={calculateYPosition()}
-        pointerdown={() => console.log('MOVE RIGHT')}
+        pointerdown={() => setAppSettings({ action: SetAppSettingsAction.MOVE, payload: MoveDirection.LEFT })}
       />
     </>
   )

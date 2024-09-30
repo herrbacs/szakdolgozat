@@ -1,23 +1,15 @@
 /* eslint-disable react/prop-types */
-import { createContext, useState } from 'react'
+import { createContext, useReducer } from 'react'
+import { initialState, reducer } from '../reducer/reducer'
 
 export const AppSettingsContext = createContext()
 
 export default function AppContextProvider({ children }) {
-  const [appSettings] = useState({
-    screen: {
-      width: 500,
-      height: 500
-    },
-    movementDimension: {
-      width: 109,
-      height: 104,
-    }
-  })
+  const [appSettings, setAppSettings] = useReducer(reducer, initialState)
 
   return (
     <>
-      <AppSettingsContext.Provider value={{ appSettings }}>
+      <AppSettingsContext.Provider value={{ appSettings, setAppSettings }}>
         { children }
       </AppSettingsContext.Provider>
     </>
