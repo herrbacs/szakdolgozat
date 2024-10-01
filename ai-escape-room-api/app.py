@@ -20,16 +20,35 @@ def generate_level():
     level_information = {
        "walls": [
             {
-                "color": "0x1099bb" 
+                "color": "0x1099bb",
+                "objects": {
+                    "exit": {
+                        "keeyId": "faafcf2d-2bca-4706-86ec-74c2aa98e000",
+                        "sprite": {
+                            "width": "350",
+                            "height": "500"
+                        }
+                    },
+                }
             },
             {
-                "color": "0xffc300" 
+                "color": "0xffc300",
+                "objects": {
+                    "pickable": [
+                        { 
+                            "type": "key",
+                            "id": "faafcf2d-2bca-4706-86ec-74c2aa98e000",
+                        }    
+                    ],
+                }
             },
             {
-                "color": "0xff5733" 
+                "color": "0xff5733",
+                "objects": {}
             },
             {
-                "color": "0x581845" 
+                "color": "0x581845",
+                "objects": {}
             }
         ]
     }

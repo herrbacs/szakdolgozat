@@ -3,7 +3,7 @@ import { Graphics } from '@pixi/react'
 import { useCallback, useReducer } from 'react'
 import { initialState, reducer } from '../reducer/reducer'
 
-export const Wall = ({ color }) => {
+export const Wall = ({ color, children }) => {
     const [appSettings] = useReducer(reducer, initialState)
 
     const draw = useCallback(
@@ -16,6 +16,9 @@ export const Wall = ({ color }) => {
         [appSettings, color],
     )
     return (
-      <Graphics draw={draw} />
+      <>
+        <Graphics draw={draw} />
+        {children}
+      </>
     )
 }
