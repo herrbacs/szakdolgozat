@@ -1,7 +1,7 @@
 import os
 import json
 
-from flask import Flask, request, jsonify, Response
+from flask import Flask, send_from_directory, Response
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -14,6 +14,10 @@ def hello_world():
     return {
         "message": "Hello World"
     }
+
+@app.route('/images/<filename>')
+def serve_image(filename):
+    return send_from_directory('./sprites', filename)
 
 @app.route("/generate-level")
 def generate_level():
