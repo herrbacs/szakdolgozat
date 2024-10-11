@@ -3,6 +3,7 @@ import { Wall } from './Wall'
 import { AppSettingsContext } from '../context/AppSettingsContext'
 import { Text } from '@pixi/react'
 import { Exit } from './Exit'
+import Ceiling from './Ceiling'
 
 const Game = () => {
   const { appSettings } = useContext(AppSettingsContext)
@@ -26,7 +27,13 @@ const Game = () => {
             text={`${Math.abs(appSettings.game.currentWall)} wall`}
             style={{ fontFamily: 'Arial', fontSize: 30 }}
           />
+
           {
+            // Draw Ceiling
+            <Ceiling></Ceiling>
+          }
+          {
+            // Draw Current Wall
             Object.entries(currentWall.objects).map(renderObjects)
           }
         </Wall>

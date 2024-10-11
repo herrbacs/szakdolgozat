@@ -4,7 +4,7 @@ import { handleMove } from "./reducerController"
 export const initialState = {
   screen: {
     width: 1280,
-    height: 1024
+    height: 720
   },
   navigationIconDimension: {
     width: 109,
