@@ -27,24 +27,40 @@ def generate_level():
                 "color": "0x1099bb",
                 "objects": {
                     "exit": {
+                        "position": 5,
                         "keeyId": "faafcf2d-2bca-4706-86ec-74c2aa98e000",
-                        "sprite": {
-                            "width": "350",
-                            "height": "500"
-                        }
+                        "sprites": [
+                            {
+                                "state": "CLOSED",
+                                "name": "exit_closed.png",
+                                "width": "350",
+                                "height": "500"
+                            },
+                            {
+                                "state": "OPEN",
+                                "name": "exit_open.png",
+                                "width": "350",
+                                "height": "500"
+                            }
+                        ]
                     },
+                    "pickables": [
+                        {
+                            "id": "faafcf2d-2bca-4706-86ec-74c2aa98e000",
+                            "position": 8,
+                            "name": "Exit Key",
+                            "sprite": {
+                                "width": "199",
+                                "height": "471",
+                                "name": "exit_key.png"
+                            },
+                        }
+                    ]
                 }
             },
             {
                 "color": "0xffc300",
-                "objects": {
-                    "pickable": [
-                        { 
-                            "type": "key",
-                            "id": "faafcf2d-2bca-4706-86ec-74c2aa98e000",
-                        }    
-                    ],
-                }
+                "objects": {}
             },
             {
                 "color": "0xff5733",
