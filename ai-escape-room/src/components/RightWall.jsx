@@ -2,29 +2,29 @@ import { Graphics } from '@pixi/react'
 import { useCallback, useContext } from 'react'
 import { AppSettingsContext } from '../context/AppSettingsContext'
 
-const Floor = () => {
-    const { appSettings: { screen: { width, height, offset } } } = useContext(AppSettingsContext)
+const RightWall = () => {
+  const { appSettings: { screen: { width, height, offset }, game: { rightWallIndex }, levelInformation: { walls }} } = useContext(AppSettingsContext)
+  const { color } = walls[Math.abs(rightWallIndex)]
     
     const draw = useCallback((g) => {
-        console.log("Render Floor")
+      console.log('Render Right Wall')
         g.clear()
-        g.beginFill(0x784212)
-        g.lineStyle(1, 0x784212, 1)
-    
-        const topLeft = { x: offset, y: height-offset }
-        const topRight = { x: width-offset, y: height-offset }
+        g.beginFill(color)
+        g.lineStyle(1, color, 1)
+
+        const topLeft = { x: width-offset, y: offset }
+        const topRight = { x: width, y: 0 }
         const bottomRight = { x: width, y: height }
-        const bottomLeft = { x: 0, y: height }
-    
+        const bottomLeft = { x: width-offset, y: height-offset }
+
         g.moveTo(topLeft.x, topLeft.y)
         g.lineTo(topRight.x, topRight.y)
         g.lineTo(bottomRight.x, bottomRight.y)
         g.lineTo(bottomLeft.x, bottomLeft.y)
         g.lineTo(topLeft.x, topLeft.y)
-    
+
         g.endFill()
-    }, [height, offset, width])
-    
+    }, [color, height, offset, width])
 
   return (
     <>
@@ -33,4 +33,4 @@ const Floor = () => {
   )
 }
 
-export default Floor
+export default RightWall

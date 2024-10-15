@@ -6,5 +6,5 @@ export const MoveDirection = {
 
 export const SetAppSettingsAction = {
   SET_LEVEL: 'SetLevel',
-  MOVE: 'Move',
+  MOVE: 'Move'
 }

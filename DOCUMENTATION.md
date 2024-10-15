@@ -38,3 +38,4 @@ Properties:
     name: Kép file neve, amit a kliens a kép lekérdezésére használ a "/images/<filename>" route-ot használva
     state: Ha egy objektumhoz több Sprite is tartozik, ez alapján határozzuk meg mikor melyiket kell megjeleníteni. 
 
+https://excalidraw.com/#room=8a07987b74f747d4840c,GJjou97EQhK7gODYV_WJWA

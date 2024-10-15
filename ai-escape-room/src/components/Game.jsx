@@ -1,13 +1,21 @@
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { Wall } from './Wall'
 import { AppSettingsContext } from '../context/AppSettingsContext'
 import { Text } from '@pixi/react'
 import { Exit } from './Exit'
 import Ceiling from './Ceiling'
+import Floor from './Floor'
+import LeftWall from './LeftWall'
+import RightWall from './RightWall'
 
 const Game = () => {
   const { appSettings } = useContext(AppSettingsContext)
-  const currentWall = appSettings.levelInformation.walls[Math.abs(appSettings.game.currentWall)]
+  const [currentWall, setCurrentWall] = useState(null)
+  
+  useEffect(() => {
+    setCurrentWall(appSettings.levelInformation.walls[Math.abs(appSettings.game.currentWallIndex)])
+  }, [appSettings.game, appSettings.levelInformation.walls])
+  
 
   const renderObjects = ([key, value], i) => {
     switch (key) {
@@ -20,24 +28,36 @@ const Game = () => {
 
   return (
     <>
+      {!!currentWall &&
         <Wall color={currentWall.color}>
-          <Text
-            x={appSettings.screen.width / 2}
-            y={50}
-            text={`${Math.abs(appSettings.game.currentWall)} wall`}
-            style={{ fontFamily: 'Arial', fontSize: 30 }}
-          />
-
-          {
-            // Draw Ceiling
-            <Ceiling></Ceiling>
-          }
-          {
-            // Draw Current Wall
-            Object.entries(currentWall.objects).map(renderObjects)
-          }
-        </Wall>
-        
+        {
+          // Draw Ceiling
+          <Ceiling></Ceiling>
+        }
+        {
+          // Draw Left Wall
+          <LeftWall></LeftWall>
+        }
+        {
+          // Draw Current Wall
+          Object.entries(currentWall.objects).map(renderObjects)
+        }
+        <Text
+          x={appSettings.screen.width / 2}
+          y={200}
+          text={`${Math.abs(appSettings.game.currentWallIndex)} wall`}
+          style={{ fontFamily: 'Arial', fontSize: 30 }}
+        />
+        {
+          // Draw Right Wall
+          <RightWall></RightWall>
+        }
+        {
+          // Draw Floor
+          <Floor></Floor>
+        }
+      </Wall>
+      }  
     </>
   )
 }

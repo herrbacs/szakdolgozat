@@ -2,18 +2,19 @@ import { Graphics } from '@pixi/react'
 import { useCallback, useContext } from 'react'
 import { AppSettingsContext } from '../context/AppSettingsContext'
 
-const Floor = () => {
-    const { appSettings: { screen: { width, height, offset } } } = useContext(AppSettingsContext)
+const LeftWall = () => {
+  const { appSettings: { screen: { height, offset }, game: { leftWallIndex }, levelInformation: { walls }} } = useContext(AppSettingsContext)
+  const { color } = walls[Math.abs(leftWallIndex)]
     
     const draw = useCallback((g) => {
-        console.log("Render Floor")
+        console.log("Render Left Wall")
         g.clear()
-        g.beginFill(0x784212)
-        g.lineStyle(1, 0x784212, 1)
+        g.beginFill(color)
+        g.lineStyle(1, color, 1)
     
-        const topLeft = { x: offset, y: height-offset }
-        const topRight = { x: width-offset, y: height-offset }
-        const bottomRight = { x: width, y: height }
+        const topLeft = { x: 0, y: 0 }
+        const topRight = { x: offset, y: offset }
+        const bottomRight = { x: offset, y: height-offset }
         const bottomLeft = { x: 0, y: height }
     
         g.moveTo(topLeft.x, topLeft.y)
@@ -23,7 +24,7 @@ const Floor = () => {
         g.lineTo(topLeft.x, topLeft.y)
     
         g.endFill()
-    }, [height, offset, width])
+    }, [color, height, offset])
     
 
   return (
@@ -33,4 +34,4 @@ const Floor = () => {
   )
 }
 
-export default Floor
+export default LeftWall
