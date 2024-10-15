@@ -22,6 +22,7 @@ export const Exit = ({ exit: { sprites } }) => {
 
   const getExitImages = async () => {
     sprites.forEach(async (sprite) => {
+      // TODO Get images on game start
       let response = await fetch(`http://localhost:5000/images/${sprite.name}`, {
         method: 'GET',
         headers: {
@@ -60,7 +61,6 @@ export const Exit = ({ exit: { sprites } }) => {
 
   return (
    <>
-   {closedExitImg !== null && console.log(closedExitImg)}
    {
     closedExitImg !== null &&
     openedExitImg !== null &&
