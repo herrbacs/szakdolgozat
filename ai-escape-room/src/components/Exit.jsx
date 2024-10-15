@@ -4,37 +4,45 @@ import { useContext, useEffect, useState } from 'react'
 import { AppSettingsContext } from '../context/AppSettingsContext'
 
 // TODO API a végső ajtó méretet ha detektálja, ki lehet számolni hogy mekkora újra méretezésre van szükség
-export const Exit = ({ exit: {sprite} }) => {
+export const Exit = ({ exit: { sprites } }) => {
   const [closedExitImg, setClosedExitImg] = useState(null)
   const [openedExitImg, setOpenedExitImg] = useState(null)
   const [open, setOpen] = useState(false)
  
-  const scale = 1.
+  const scale = 0.7
   const { appSettings } = useContext(AppSettingsContext)
 
   const calculateYPosition = () => {
-    return ((appSettings.screen.height / 3) - (appSettings.navigationIconDimension.height*scale)/2)
+    return ((appSettings.screen.height / 3))
   }
 
   const calculateXPosition = () => {
-    return ((appSettings.screen.width / 2) - (sprite.width*scale) / 2)
+    return ((appSettings.screen.width / 2))
   }
 
   const getExitImages = async () => {
-    let response = await fetch('http://localhost:5000/images/exit_closed.png', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+    sprites.forEach(async (sprite) => {
+      let response = await fetch(`http://localhost:5000/images/${sprite.name}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+
+      if (!response.ok) {
+        console.error(response)
+        return
+      }
+
+      const blob = await response.blob();
+
+      if (sprite.state === "CLOSED") {
+        setClosedExitImg(URL.createObjectURL(blob))
+        return
+      }
+
+      setOpenedExitImg(URL.createObjectURL(blob))
     })
-
-    if (!response.ok) {
-      console.error(response)
-      return;
-    }
-
-    let blob = await response.blob()
-    setClosedExitImg(URL.createObjectURL(blob))
   }
 
   const tryOpen = () => {
@@ -52,8 +60,10 @@ export const Exit = ({ exit: {sprite} }) => {
 
   return (
    <>
+   {closedExitImg !== null && console.log(closedExitImg)}
    {
     closedExitImg !== null &&
+    openedExitImg !== null &&
     <Sprite
         interactive
         onmousedown={tryOpen}

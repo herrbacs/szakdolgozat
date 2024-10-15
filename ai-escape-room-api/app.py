@@ -38,7 +38,7 @@ def generate_level():
                             },
                             {
                                 "state": "OPEN",
-                                "name": "exit_open.png",
+                                "name": "exit_opened.png",
                                 "width": "350",
                                 "height": "500"
                             }
