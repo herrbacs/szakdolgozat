@@ -43,10 +43,10 @@ const Game = () => {
           Object.entries(currentWall.objects).map(renderObjects)
         }
         <Text
-          x={appSettings.screen.width / 2}
-          y={200}
+          x={150}
+          y={150}
           text={`${Math.abs(appSettings.game.currentWallIndex)} wall`}
-          style={{ fontFamily: 'Arial', fontSize: 30 }}
+          style={{ fontFamily: 'Arial', fontSize: 20 }}
         />
         {
           // Draw Right Wall

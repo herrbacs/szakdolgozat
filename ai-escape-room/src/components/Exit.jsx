@@ -10,14 +10,15 @@ export const Exit = ({ exit: { sprites } }) => {
   const [open, setOpen] = useState(false)
  
   const scale = 0.7
-  const { appSettings } = useContext(AppSettingsContext)
+  const { appSettings: { screen: { width, height, offset } } } = useContext(AppSettingsContext)
 
   const calculateYPosition = () => {
-    return ((appSettings.screen.height / 3))
+    const wallHeight = (height - 2 * offset)
+    return offset + wallHeight - (sprites[0].height * scale)
   }
 
   const calculateXPosition = () => {
-    return ((appSettings.screen.width / 2))
+    return offset + ((width - (offset * 2)) / 2) - ((sprites[0].width * scale) / 2)
   }
 
   const getExitImages = async () => {

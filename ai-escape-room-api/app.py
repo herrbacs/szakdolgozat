@@ -27,7 +27,6 @@ def generate_level():
                 "color": "0x1099bb",
                 "objects": {
                     "exit": {
-                        "position": 5,
                         "keeyId": "faafcf2d-2bca-4706-86ec-74c2aa98e000",
                         "sprites": [
                             {
