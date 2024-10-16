@@ -5,7 +5,8 @@ export const initialState = {
   screen: {
     width: 1280,
     height: 720,
-    offset: 150
+    offset: 150,
+    offsetFloor: 30
   },
   navigationIconDimension: {
     width: 109,

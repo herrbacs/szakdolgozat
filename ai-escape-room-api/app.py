@@ -46,7 +46,7 @@ def generate_level():
                     "pickables": [
                         {
                             "id": "faafcf2d-2bca-4706-86ec-74c2aa98e000",
-                            "position": 8,
+                            "position": "FT2",
                             "name": "Exit Key",
                             "sprite": {
                                 "width": "199",

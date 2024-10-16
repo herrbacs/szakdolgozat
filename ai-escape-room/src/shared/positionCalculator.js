@@ -2,11 +2,15 @@ import { GameDisplayAreas } from "./enums";
 
 export function getCornerCoordinatesOf(zone) {
     switch (zone) {
-        case GameDisplayAreas.C1:
-            break;
+        case GameDisplayAreas.FT2:
+            return getCornerCoordinatesOfFT2();
     
         default:
             break;
     }
+
+}
+
+const getCornerCoordinatesOfFT2 = () => {
 
 }

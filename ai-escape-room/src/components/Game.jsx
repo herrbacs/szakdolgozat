@@ -7,6 +7,7 @@ import Ceiling from './Ceiling'
 import Floor from './Floor'
 import LeftWall from './LeftWall'
 import RightWall from './RightWall'
+import Pickable from './Pickable'
 
 const Game = () => {
   const { appSettings } = useContext(AppSettingsContext)
@@ -17,10 +18,12 @@ const Game = () => {
   }, [appSettings.game, appSettings.levelInformation.walls])
   
 
-  const renderObjects = ([key, value], i) => {
+  const renderObjects = ([key, value], x) => {
     switch (key) {
       case 'exit': 
-        return <Exit key={i} exit={value}/>    
+        return <Exit key={x} exit={value}/>    
+      case 'pickables': 
+        return value.map((pickable, i) => <Pickable key={i} pickable={pickable}/>)    
       default:
         break
     }
@@ -30,32 +33,20 @@ const Game = () => {
     <>
       {!!currentWall &&
         <Wall color={currentWall.color}>
-        {
-          // Draw Ceiling
-          <Ceiling></Ceiling>
-        }
-        {
-          // Draw Left Wall
-          <LeftWall></LeftWall>
-        }
-        {
-          // Draw Current Wall
-          Object.entries(currentWall.objects).map(renderObjects)
-        }
+          <Ceiling/>
+          <LeftWall/>
         <Text
           x={150}
           y={150}
           text={`${Math.abs(appSettings.game.currentWallIndex)} wall`}
           style={{ fontFamily: 'Arial', fontSize: 20 }}
-        />
-        {
-          // Draw Right Wall
-          <RightWall></RightWall>
-        }
-        {
-          // Draw Floor
-          <Floor></Floor>
-        }
+          />
+          <RightWall/>
+          <Floor/>
+          {
+            // Draw Current Wall
+            Object.entries(currentWall.objects).map(renderObjects)
+          }
       </Wall>
       }  
     </>

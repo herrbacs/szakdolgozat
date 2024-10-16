@@ -23,7 +23,7 @@ Properties:
 Description: Olyan interaktálható elemek halmaza amit a játékos fel tud venni, az inventoryban ki tud választani és használni tudja. 
 
 ** Pickable
-Description: Felvehető elem, amit a játékos kiválasztva interakciókat csinálhat más fali objektumokkal egyszer vagy többször, valamint kombinálhat más már felvett felvehető elemmel hogy új elemet állíthasson elő.
+Description: Felvehető elem, amit a játékos kiválasztva interakciókat csinálhat más fali objektumokkal egyszer vagy többször, valamint kombinálhat más már felvett felvehető elemmel hogy új elemet állíthasson elő. Mérete mindig csak kicsi lehet.
 Properties:
     position: Adott falon való elhelyezkedése. Lásd "Elemek pozícionálása". 
     name: Az elem neve, amit a játékus felvétel után el tud olvasni
