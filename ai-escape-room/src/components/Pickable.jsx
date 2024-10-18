@@ -2,6 +2,8 @@
 import { Sprite } from '@pixi/react'
 import { useContext, useEffect, useState } from 'react'
 import { AppSettingsContext } from '../context/AppSettingsContext'
+import { getCornerCoordinatesOf } from '../shared/positionCalculator'
+import { GameDisplayAreas } from '../shared/enums'
 
 const Pickable = ({ pickable: {id, position, name, sprite} }) => {
 	const scale = 0.1
@@ -14,6 +16,14 @@ const Pickable = ({ pickable: {id, position, name, sprite} }) => {
   }
 
   const calculateYPosition = () => {
+    getCornerCoordinatesOf({
+      area: GameDisplayAreas.FT2,
+      screenSettings: {
+        width,
+        height,
+        perspective: offset
+      }
+    });
     return height - offset + offsetFloor
   }
 
