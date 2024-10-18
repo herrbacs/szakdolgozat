@@ -4,9 +4,11 @@ import { AppSettingsContext } from './context/AppSettingsContext'
 import { Stage } from './Stage'
 import Game from './components/Game'
 import { SetAppSettingsAction } from './shared/enums'
+import { AppStoreState } from './shared/types'
+import React from 'react'
 
 export default function App() {
-  const { appSettings, setAppSettings } = useContext(AppSettingsContext)
+  const { appSettings, setAppSettings } : { appSettings: AppStoreState, setAppSettings: any } = useContext(AppSettingsContext)
   const [levelLoaded, setLevelLoaded] = useState(false)
 
   useEffect(() => {
@@ -28,7 +30,7 @@ export default function App() {
   return (
     <>
     {levelLoaded &&
-      <Stage width={appSettings.screen.width} height={appSettings.screen.height} options={{ background: 0xeef1f5 }}>
+      <Stage width={appSettings.screenSettings.width} height={appSettings.screenSettings.height} options={{ background: 0xeef1f5 }}>
         <Game/>
         <Navigation/>
       </Stage>

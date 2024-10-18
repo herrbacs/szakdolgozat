@@ -2,37 +2,23 @@
 import { Sprite } from '@pixi/react'
 import { useContext, useEffect, useState } from 'react'
 import { AppSettingsContext } from '../context/AppSettingsContext'
-import { getCornerCoordinatesOf } from '../shared/positionCalculator'
+import { setPositionOn } from '../shared/positionCalculator'
 import { GameDisplayAreas } from '../shared/enums'
+import { AppSettingsContextType, Coordinate, PickableObject } from '../shared/types'
+import React from 'react'
 
-const Pickable = ({ pickable: {id, position, name, sprite} }) => {
+const Pickable = ({ pickable: {id, position, name, sprite} }: { pickable: PickableObject }) => {
 	const scale = 0.1
-	const { appSettings: { screen: { width, height, offset, offsetFloor } } } = useContext(AppSettingsContext)
-	const [pickedUp, setPickedUp] = useState(false)
-  const [pickableSpirte, setPickableSpirte] = useState(null)
+	const { appSettings: { screenSettings } } : AppSettingsContextType = useContext(AppSettingsContext)
+	const [pickedUp, setPickedUp] = useState<Boolean>(false)
+  const [pickableSpirte, setPickableSpirte] = useState<string>('')
+	const [spriteCoordinate, setSpriteCoordinate] = useState<Coordinate>({} as Coordinate)
   
   const handlePickUp = () => {
 		setPickedUp(true)
   }
 
-  const calculateYPosition = () => {
-    getCornerCoordinatesOf({
-      area: GameDisplayAreas.FT2,
-      screenSettings: {
-        width,
-        height,
-        perspective: offset
-      }
-    });
-    return height - offset + offsetFloor
-  }
-
-  const calculateXPosition = () => {
-    return offset + ((width - (offset * 2)) / 2) - ((sprite.width * scale) / 2)
-  }
-
   useEffect(() => {
-		console.log( id, position, name, sprite)
     async function fetchMyAPI() {
       let response = await fetch(`http://localhost:5000/images/${sprite.name}`, {
         method: 'GET',
@@ -51,19 +37,21 @@ const Pickable = ({ pickable: {id, position, name, sprite} }) => {
     }
 
     fetchMyAPI()
+    setSpriteCoordinate(setPositionOn({ area: GameDisplayAreas.FT2, screenSettings, sprite, scale }))
   }, [])
 
   return (
 		<>
 			{
-				!!pickableSpirte && !pickedUp &&
+				!!pickableSpirte &&
+        !pickedUp &&
 				<Sprite
 					interactive
 					onmousedown={handlePickUp}
 					image={pickableSpirte}
 					scale={{ x: scale, y: scale }}
-					x={calculateXPosition()}
-					y={calculateYPosition()}
+					x={spriteCoordinate.X}
+					y={spriteCoordinate.Y}
 					anchor={[0.5, 0.5]}
 					rotation={Math.floor(Math.random() * 10)}
 				/>

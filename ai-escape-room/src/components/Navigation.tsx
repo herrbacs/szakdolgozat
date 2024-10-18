@@ -11,16 +11,16 @@ import { AppSettingsContextType } from '../shared/types'
 
 export function Navigation() {  
   const scale = 0.2
-  const { appSettings: { screen, navigation }, setAppSettings }: AppSettingsContextType = useContext(AppSettingsContext)
+  const { appSettings: { screenSettings: { width, height }, navigation }, setAppSettings }: AppSettingsContextType = useContext(AppSettingsContext)
 
   const calculateYPosition = useMemo(
-    () => ((screen.height / 2) - (navigation.height*scale)/2),
-    [screen.height]
+    () => height / 2 - (navigation.height*scale)/2,
+    [height]
   )
 
   const calculateXPositionOfRightArrow = useMemo(
-    () => ((screen.width) - (navigation.width*scale)),
-    [screen.width]
+    () => (width - navigation.width*scale),
+    [width]
   )
 
   const moveRight = useCallback(

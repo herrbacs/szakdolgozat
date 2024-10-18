@@ -7,12 +7,16 @@ export type AppSettingsContextType = {
 }
 
 export type AppStoreState = {
-	screen: ScreenSettings,
+	screenSettings: ScreenSettings,
 	navigation: Sprite,
-	gameMeta: GameMetaInformation
+	gameMeta: GameMetaInformation,
 	game: {
-
-	}
+		currentWallIndex: 0,
+		leftWallIndex: 0,
+		rightWallIndex: 0,
+		amountOfWalls: 0,
+	},
+	levelInformation: levelInformation
 }
 
 export type ReducerAction = {
@@ -20,7 +24,6 @@ export type ReducerAction = {
 	payload: any
 }
 
-// Game Object Types
 export type ExitObject = {
 	keeyId: UUID,
 	sprites: Sprite[]
@@ -33,14 +36,10 @@ export type PickableObject = {
 	sprite: Sprite
 }
 
-export type GameObject = {
-	exit: ExitObject
-	pickables: PickableObject[]
-}
-
 export type Wall = {
 	color: string,
-	objects: GameObject[]
+	exit?: ExitObject
+	pickables: PickableObject[]
 }
 
 // Ez amit az api inputként add
@@ -60,7 +59,7 @@ export type GameMetaInformation = {
 }
 
 export type Sprite = {
-	state: undefined | ExitStates
+	state?: ExitStates
 	name: string
 	width: number,
 	height: number,
@@ -75,5 +74,12 @@ export type ScreenSettings = {
 // Other Types
 export type PositionCalculatorInput = {
   area: GameDisplayAreas;
-  screenSetting: ScreenSettings
+  screenSettings: ScreenSettings,
+  sprite: Sprite,
+  scale: number
 };
+
+export type Coordinate = {
+	X: number,
+	Y: number 
+}

@@ -1,24 +1,27 @@
 /* eslint-disable react/prop-types */
 import { Sprite } from '@pixi/react'
-import { useContext, useEffect, useState } from 'react'
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { AppSettingsContext } from '../context/AppSettingsContext'
+import { AppSettingsContextType, ExitObject } from '../shared/types'
+import { ExitStates } from '../shared/enums'
+import React from 'react'
 
 // TODO API a végső ajtó méretet ha detektálja, ki lehet számolni hogy mekkora újra méretezésre van szükség
-export const Exit = ({ exit: { sprites } }) => {
-  const [closedExitImg, setClosedExitImg] = useState(null)
-  const [openedExitImg, setOpenedExitImg] = useState(null)
+const Exit = ({ exit: { sprites } }: { exit: ExitObject }) => {
+  const [closedExitImg, setClosedExitImg] = useState<string | null>(null)
+  const [openedExitImg, setOpenedExitImg] = useState<string | null>(null)
   const [open, setOpen] = useState(false)
- 
+
   const scale = 0.7
-  const { appSettings: { screen: { width, height, offset } } } = useContext(AppSettingsContext)
+  const { appSettings: { screenSettings: { width, height, perspective } } } : AppSettingsContextType = useContext(AppSettingsContext)
 
   const calculateYPosition = () => {
-    const wallHeight = (height - 2 * offset)
-    return offset + wallHeight - (sprites[0].height * scale)
+    const wallHeight = (height - 2 * perspective)
+    return perspective + wallHeight - (sprites[0].height * scale)
   }
 
   const calculateXPosition = () => {
-    return offset + ((width - (offset * 2)) / 2) - ((sprites[0].width * scale) / 2)
+    return perspective + ((width - (perspective * 2)) / 2) - ((sprites[0].width * scale) / 2)
   }
 
   const getExitImages = async () => {
@@ -30,27 +33,30 @@ export const Exit = ({ exit: { sprites } }) => {
           'Content-Type': 'application/json',
         },
       })
-
+      
       if (!response.ok) {
         console.error(response)
         return
       }
-
+      
       const blob = await response.blob();
 
-      if (sprite.state === "CLOSED") {
+      if (sprite.state === ExitStates.CLOSED) {
         setClosedExitImg(URL.createObjectURL(blob))
         return
       }
-
+      
       setOpenedExitImg(URL.createObjectURL(blob))
     })
   }
 
-  const tryOpen = () => {
-    console.log('YOU HAVE ESCAPED')
-    setOpen(true)
-  }
+  const tryOpen = useCallback(
+    () => {
+      console.log('YOU HAVE ESCAPED')
+      setOpen(true)
+    },
+    [],
+  )
 
   useEffect(() => {
     async function fetchMyAPI() {
@@ -77,3 +83,5 @@ export const Exit = ({ exit: { sprites } }) => {
    </>
   )
 }
+
+export default Exit;

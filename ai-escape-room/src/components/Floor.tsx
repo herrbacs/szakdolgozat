@@ -1,18 +1,19 @@
 import { Graphics } from '@pixi/react'
 import { useCallback, useContext } from 'react'
 import { AppSettingsContext } from '../context/AppSettingsContext'
+import { AppSettingsContextType, AppStoreState } from '../shared/types'
+import React from 'react'
 
 const Floor = () => {
-    const { appSettings: { screen: { width, height, offset } } } = useContext(AppSettingsContext)
+    const { appSettings: { screenSettings: { width, height, perspective } }} : AppSettingsContextType = useContext(AppSettingsContext)
     
-    const draw = useCallback((g) => {
-        console.log("Render Floor")
+    const draw = useCallback((g: any) => {
         g.clear()
         g.beginFill(0x784212)
         g.lineStyle(1, 0x784212, 1)
     
-        const topLeft = { x: offset, y: height-offset }
-        const topRight = { x: width-offset, y: height-offset }
+        const topLeft = { x: perspective, y: height-perspective }
+        const topRight = { x: width-perspective, y: height-perspective }
         const bottomRight = { x: width, y: height }
         const bottomLeft = { x: 0, y: height }
     
@@ -23,7 +24,7 @@ const Floor = () => {
         g.lineTo(topLeft.x, topLeft.y)
     
         g.endFill()
-    }, [height, offset, width])
+    }, [height, perspective, width])
     
 
   return (

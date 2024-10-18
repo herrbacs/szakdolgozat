@@ -29,6 +29,6 @@ export enum GameDisplayAreas {
 }
 
 export enum ExitStates {
-  OPEN,
-  CLOSED
+  OPEN = 'OPEN',
+  CLOSED = 'CLOSED'
 }

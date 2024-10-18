@@ -2,16 +2,17 @@ import { SetAppSettingsAction } from "../shared/enums"
 import { AppStoreState, ReducerAction } from "../shared/types"
 import { handleMove } from "./reducerController"
 
-
+// export const initialState : AppStoreState = {
 export const initialState = {
-  screen: {
+  screenSettings: {
     width: 1280,
     height: 720,
-    offset: 150,
+    perspective: 150,
   },
   navigation: {
+    name: "Navigation",
     width: 109,
-    height: 104,
+    height: 104
   },
   game: {
     currentWallIndex: 0,
@@ -23,7 +24,6 @@ export const initialState = {
     walls: []
   }
 }
-
 
 export const reducer = (state: AppStoreState, { action, payload }: ReducerAction) => {
   switch (action) {

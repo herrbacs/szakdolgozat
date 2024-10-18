@@ -1,9 +1,10 @@
 import { Graphics } from '@pixi/react'
-import { useCallback, useContext } from 'react'
+import React, { useCallback, useContext } from 'react'
 import { AppSettingsContext } from '../context/AppSettingsContext'
+import { AppSettingsContextType } from '../shared/types'
 
 const Ceiling = () => {
-    const { appSettings: { screen: { width, offset } } } = useContext(AppSettingsContext)
+    const { appSettings: { screenSettings: { width, perspective } } } : AppSettingsContextType = useContext(AppSettingsContext)
     
     const draw = useCallback((g) => {
         g.clear()
@@ -12,8 +13,8 @@ const Ceiling = () => {
     
         const topLeft = { x: 0, y: 0 }
         const topRight = { x: width, y: 0 }
-        const bottomRight = { x: width - offset, y: offset }
-        const bottomLeft = { x: offset, y: offset }
+        const bottomRight = { x: width - perspective, y: perspective }
+        const bottomLeft = { x: perspective, y: perspective }
     
         g.moveTo(topLeft.x, topLeft.y)
         g.lineTo(topRight.x, topRight.y)
@@ -22,7 +23,7 @@ const Ceiling = () => {
         g.lineTo(topLeft.x, topLeft.y)
     
         g.endFill()
-    }, [width, offset])
+    }, [width, perspective])
     
 
   return (
