@@ -1,14 +1,15 @@
 import { SetAppSettingsAction } from "../shared/enums"
+import { AppStoreState, ReducerAction } from "../shared/types"
 import { handleMove } from "./reducerController"
+
 
 export const initialState = {
   screen: {
     width: 1280,
     height: 720,
     offset: 150,
-    offsetFloor: 30
   },
-  navigationIconDimension: {
+  navigation: {
     width: 109,
     height: 104,
   },
@@ -22,8 +23,9 @@ export const initialState = {
     walls: []
   }
 }
-  
-export const reducer = (state, { action, payload }) => {
+
+
+export const reducer = (state: AppStoreState, { action, payload }: ReducerAction) => {
   switch (action) {
     case SetAppSettingsAction.SET_LEVEL:
       return { ...state, game: { ...state.game, amountOfWalls: payload.walls.length, leftWallIndex: payload.walls.length - 1, rightWallIndex: 1 }, levelInformation: payload }

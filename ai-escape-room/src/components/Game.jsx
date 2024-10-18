@@ -12,8 +12,9 @@ import Pickable from './Pickable'
 const Game = () => {
   const { appSettings } = useContext(AppSettingsContext)
   const [currentWall, setCurrentWall] = useState(null)
-  
+
   useEffect(() => {
+    console.log("Render Game component")
     setCurrentWall(appSettings.levelInformation.walls[Math.abs(appSettings.game.currentWallIndex)])
   }, [appSettings.game, appSettings.levelInformation.walls])
   
@@ -45,7 +46,7 @@ const Game = () => {
           <Floor/>
           {
             // Draw Current Wall
-            Object.entries(currentWall.objects).map(renderObjects)
+            // Object.entries(currentWall.objects).map(renderObjects)
           }
       </Wall>
       }  

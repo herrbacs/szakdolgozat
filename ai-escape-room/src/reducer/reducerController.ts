@@ -1,6 +1,6 @@
 import { MoveDirection } from '../shared/enums'
 
-export function handleMove(state, payload) {
+export function handleMove(state: any, payload: any) {
     let { amountOfWalls, currentWallIndex } = state.game;
 
     if (payload === MoveDirection.RIGHT) {

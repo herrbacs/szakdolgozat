@@ -27,3 +27,8 @@ export enum GameDisplayAreas {
   F2,
   F3
 }
+
+export enum ExitStates {
+  OPEN,
+  CLOSED
+}
