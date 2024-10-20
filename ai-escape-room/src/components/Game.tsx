@@ -7,26 +7,26 @@ import Ceiling from './Ceiling'
 import Floor from './Floor'
 import LeftWall from './LeftWall'
 import RightWall from './RightWall'
-import Pickable from './Pickable'
 import React from 'react'
 import { AppSettingsContextType, Wall as WallType } from '../shared/types'
+import Pickable from './Pickable'
 
 const Game = () => {
-  const { appSettings: { levelInformation: { walls }, game : { currentWallIndex } } } : AppSettingsContextType = useContext(AppSettingsContext)
+  const { appSettings: { gameInformation: { walls, indexes } } } : AppSettingsContextType = useContext(AppSettingsContext)
   const [currentWall, setCurrentWall] = useState<WallType | null>(null)
 
   useEffect(() => {
     console.log("Render Game component")
-    setCurrentWall(walls[Math.abs(currentWallIndex)])
-  }, [walls, currentWallIndex])
+    setCurrentWall(walls[Math.abs(indexes.currentWall)])
+  }, [walls, indexes.currentWall])
 
   return (
     <>
-      {!!currentWall &&
+      {currentWall &&
         <Wall color={currentWall.color}>
           <Ceiling/>
           <LeftWall/>
-          <Text x={150} y={150} text={`${Math.abs(currentWallIndex)} wall`} style={{ fontFamily: 'Arial', fontSize: 20 }}/>
+          <Text x={150} y={150} text={`${Math.abs(indexes.currentWall)} wall`} style={{ fontFamily: 'Arial', fontSize: 20 }}/>
           <RightWall/>
           <Floor/>
           {

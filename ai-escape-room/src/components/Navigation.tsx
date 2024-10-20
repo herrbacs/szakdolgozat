@@ -11,7 +11,7 @@ import { AppSettingsContextType } from '../shared/types'
 
 export function Navigation() {  
   const scale = 0.2
-  const { appSettings: { screenSettings: { width, height }, navigation }, setAppSettings }: AppSettingsContextType = useContext(AppSettingsContext)
+  const { appSettings: { screenSettings: { dimension: { width, height } }, navigation }, setAppSettings }: AppSettingsContextType = useContext(AppSettingsContext)
 
   const calculateYPosition = useMemo(
     () => height / 2 - (navigation.height*scale)/2,

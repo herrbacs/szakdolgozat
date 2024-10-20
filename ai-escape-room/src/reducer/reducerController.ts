@@ -1,18 +1,47 @@
-import { MoveDirection } from '../shared/enums'
+import { ExitStates, MoveDirection } from '../shared/enums'
+import { AppStoreState, GameInformation, levelInformation, Sprite } from '../shared/types'
 
-export function handleMove(state: any, payload: any) {
-    let { amountOfWalls, currentWallIndex } = state.game;
+export function loadLevel(state: AppStoreState, { walls }: levelInformation) : AppStoreState {
+  return {
+    ...state,
+    gameInformation: { 
+      ...state.gameInformation,
+      indexes: {
+        ...state.gameInformation.indexes,
+        leftWall: walls.length - 1,
+      },
+      amountOfWalls: walls.length,
+      walls,
+    },
+  }
+}
 
-    if (payload === MoveDirection.RIGHT) {
-        currentWallIndex = (currentWallIndex - 1 + amountOfWalls) % amountOfWalls;
-    }
+export function handleMove(state: AppStoreState, payload: MoveDirection) : AppStoreState {
+  let { amountOfWalls } = state.gameInformation
+  let { currentWall } = state.gameInformation.indexes
+
+  if (payload === MoveDirection.RIGHT) {
+      currentWall = (currentWall - 1 + amountOfWalls) % amountOfWalls;
+  }
     
-    if (payload === MoveDirection.LEFT) {
-        currentWallIndex = (currentWallIndex + 1) % amountOfWalls;
-    }
-    
-    const rightWallIndex = (currentWallIndex + 1) % amountOfWalls;
-    const leftWallIndex = (currentWallIndex - 1 + amountOfWalls) % amountOfWalls;
+  if (payload === MoveDirection.LEFT) {
+      currentWall = (currentWall + 1) % amountOfWalls;
+  }
 
-    return { ...state, game: { ...state.game, currentWallIndex, leftWallIndex, rightWallIndex } }
+  const rightWallIndex = (currentWall + 1) % amountOfWalls;
+  const leftWallIndex = (currentWall - 1 + amountOfWalls) % amountOfWalls;
+
+  const result = { 
+    ...state,
+    gameInformation: {
+      ...state.gameInformation,
+      indexes: {
+        currentWall,
+        leftWall: leftWallIndex,
+        rightWall: rightWallIndex
+      },
+    }
+  }
+
+  return result
 }

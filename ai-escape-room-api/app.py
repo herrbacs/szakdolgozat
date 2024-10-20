@@ -1,6 +1,6 @@
-import os
-import json
+import os, json, io, base64
 
+from PIL import Image
 from flask import Flask, send_from_directory, Response
 from flask_cors import CORS
 
@@ -31,14 +31,18 @@ def generate_level():
                         {
                             "state": "CLOSED",
                             "name": "exit_closed.png",
-                            "width": "350",
-                            "height": "500"
+                            "dimension": {
+                                "width": "350",
+                                "height": "500"
+                            }
                         },
                         {
                             "state": "OPEN",
                             "name": "exit_opened.png",
-                            "width": "350",
-                            "height": "500"
+                            "dimension": {
+                                "width": "350",
+                                "height": "500"
+                            }
                         }
                     ]
                 },
@@ -48,8 +52,10 @@ def generate_level():
                         "position": "FT2",
                         "name": "Exit Key",
                         "sprite": {
-                            "width": "199",
-                            "height": "471",
+                            "dimension": {
+                                "width": "199",
+                                "height": "471",
+                            },
                             "name": "exit_key.png"
                         },
                     }
@@ -70,7 +76,25 @@ def generate_level():
         ]
     }
 
+    for wall in level_information["walls"]:    
+        if "exit" in wall:
+            for sprite in wall['exit']['sprites']:
+                sprite['blob'] = convert_images_into_blob(sprite['name'])
+        if wall['pickables']:
+            for pickable in wall['pickables']:
+                    pickable['sprite']['blob'] = convert_images_into_blob(pickable['sprite']['name'])
+
     return Response(json.dumps(level_information), content_type="application/json")
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+def convert_images_into_blob(img_name):
+    root_folder = './sprites/'
+    with open(root_folder+img_name, 'rb') as image_file:
+        image = Image.open(image_file)
+        img_byte_arr = io.BytesIO()
+        image.save(img_byte_arr, format='PNG')
+        img_blob = img_byte_arr.getvalue()
+        img_base64 = base64.b64encode(img_blob).decode('utf-8')
+    return img_base64

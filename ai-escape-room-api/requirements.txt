@@ -13,3 +13,4 @@ opencv-python==4.9.0.80
 platformdirs==4.3.6
 virtualenv==20.26.5
 Werkzeug==3.0.4
+Pillow==11.0.0

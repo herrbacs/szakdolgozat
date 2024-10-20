@@ -5,7 +5,7 @@ import { AppSettingsContextType, AppStoreState } from '../shared/types'
 import React from 'react'
 
 const Floor = () => {
-    const { appSettings: { screenSettings: { width, height, perspective } }} : AppSettingsContextType = useContext(AppSettingsContext)
+    const { appSettings: { screenSettings: { dimension : { width, height }, perspective } }} : AppSettingsContextType = useContext(AppSettingsContext)
     
     const draw = useCallback((g: any) => {
         g.clear()

@@ -4,9 +4,9 @@ import { AppSettingsContext } from '../context/AppSettingsContext'
 import { AppSettingsContextType } from '../shared/types'
 
 const Ceiling = () => {
-    const { appSettings: { screenSettings: { width, perspective } } } : AppSettingsContextType = useContext(AppSettingsContext)
+    const { appSettings: { screenSettings: { dimension: { width }, perspective } } } : AppSettingsContextType = useContext(AppSettingsContext)
     
-    const draw = useCallback((g) => {
+    const draw = useCallback((g: any) => {
         g.clear()
         g.beginFill(0x808080)
         g.lineStyle(1, 0x808080, 1)

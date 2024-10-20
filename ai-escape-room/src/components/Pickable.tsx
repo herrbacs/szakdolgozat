@@ -6,6 +6,7 @@ import { setPositionOn } from '../shared/positionCalculator'
 import { GameDisplayAreas } from '../shared/enums'
 import { AppSettingsContextType, Coordinate, PickableObject } from '../shared/types'
 import React from 'react'
+import { base64ToBlob } from '../shared/helper'
 
 const Pickable = ({ pickable: {id, position, name, sprite} }: { pickable: PickableObject }) => {
 	const scale = 0.1
@@ -19,31 +20,14 @@ const Pickable = ({ pickable: {id, position, name, sprite} }: { pickable: Pickab
   }
 
   useEffect(() => {
-    async function fetchMyAPI() {
-      let response = await fetch(`http://localhost:5000/images/${sprite.name}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-
-      if (!response.ok) {
-        console.error(response)
-        return
-      }
-
-      const blob = await response.blob();
-      setPickableSpirte(URL.createObjectURL(blob))
-    }
-
-    fetchMyAPI()
+    setPickableSpirte(URL.createObjectURL(base64ToBlob(sprite.blob, 'image/png')))
     setSpriteCoordinate(setPositionOn({ area: GameDisplayAreas.FT2, screenSettings, sprite, scale }))
   }, [])
 
   return (
 		<>
 			{
-				!!pickableSpirte &&
+				pickableSpirte &&
         !pickedUp &&
 				<Sprite
 					interactive

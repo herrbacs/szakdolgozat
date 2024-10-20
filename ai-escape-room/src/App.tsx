@@ -8,34 +8,41 @@ import { AppStoreState } from './shared/types'
 import React from 'react'
 
 export default function App() {
-  const { appSettings, setAppSettings } : { appSettings: AppStoreState, setAppSettings: any } = useContext(AppSettingsContext)
+  const { appSettings: { screenSettings: { dimension: { width, height } } }, setAppSettings } : { appSettings: AppStoreState, setAppSettings: any } = useContext(AppSettingsContext)
   const [levelLoaded, setLevelLoaded] = useState(false)
 
   useEffect(() => {
-    fetch('http://localhost:5000/generate-level', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then(res => res.json())
-      .then(data => {
-        console.log("Render Level")
-        setAppSettings({ action: SetAppSettingsAction.SET_LEVEL , payload: data });
-        setLevelLoaded(true)
+    async function generateLevel() {
+      const response = await fetch('http://localhost:5000/generate-level', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
       })
-      .catch(error => console.log(error))
+
+      if(!response.ok) {
+        console.error(response)
+        return
+      }
+
+      const payload = await response.json()
+
+      setAppSettings({ action: SetAppSettingsAction.SET_LEVEL , payload });
+      setLevelLoaded(true)
+    }
+
+    generateLevel()
+    console.log('Level Generated')
   }, []);
 
   return (
     <>
     {levelLoaded &&
-      <Stage width={appSettings.screenSettings.width} height={appSettings.screenSettings.height} options={{ background: 0xeef1f5 }}>
+      <Stage width={width} height={height} options={{ background: 0xeef1f5 }}>
         <Game/>
         <Navigation/>
       </Stage>
     }
-      
    </>
   )
 }

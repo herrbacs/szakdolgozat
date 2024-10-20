@@ -5,8 +5,8 @@ import { AppSettingsContextType, AppStoreState } from '../shared/types'
 import React from 'react'
 
 const LeftWall = () => {
-  const { appSettings: { screenSettings: { height, perspective }, game: { leftWallIndex }, levelInformation: { walls } }}: AppSettingsContextType = useContext(AppSettingsContext)
-  const { color } = walls[Math.abs(leftWallIndex)]
+  const { appSettings: { screenSettings: { dimension: { height }, perspective }, gameInformation: { walls, indexes : { leftWall } }, }}: AppSettingsContextType = useContext(AppSettingsContext)
+  const { color } = walls[Math.abs(leftWall)]
     
     const draw = useCallback((g: any) => {
         g.clear()

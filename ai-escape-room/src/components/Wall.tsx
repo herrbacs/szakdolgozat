@@ -6,7 +6,7 @@ import React from 'react'
 import { AppSettingsContextType } from '../shared/types'
 
 export const Wall = ({ color, children } : { color: string, children: React.ReactNode  }) => {
-  const { appSettings: { screenSettings: { width, height } } } : AppSettingsContextType = useContext(AppSettingsContext)
+  const { appSettings: { screenSettings: { dimension: { width, height } } } } : AppSettingsContextType = useContext(AppSettingsContext)
 
   const draw = useCallback((g: any) => {
       g.clear()

@@ -8,15 +8,8 @@ export type AppSettingsContextType = {
 
 export type AppStoreState = {
 	screenSettings: ScreenSettings,
-	navigation: Sprite,
-	gameMeta: GameMetaInformation,
-	game: {
-		currentWallIndex: 0,
-		leftWallIndex: 0,
-		rightWallIndex: 0,
-		amountOfWalls: 0,
-	},
-	levelInformation: levelInformation
+	navigation: Dimension,
+	gameInformation: GameInformation
 }
 
 export type ReducerAction = {
@@ -48,26 +41,29 @@ export type levelInformation = {
 }
 
 export type GameInformation = {
-	// Ez kb mappolva a levelInformation, csak itt már bekerülnek a  meta adatok és a képek is
+	indexes: {
+		currentWall: number,
+		leftWall: number,
+		rightWall: number,
+	}
+	amountOfWalls: number
+	walls : Wall[]
 }
 
-export type GameMetaInformation = {
-	currentWallIndex: number,
-	leftWallIndex: number,
-	rightWallIndex: number,
-	amountOfWalls: number,
+export type Dimension = {
+	width: number,
+	height: number,
 }
 
 export type Sprite = {
-	state?: ExitStates
 	name: string
-	width: number,
-	height: number,
+	dimension: Dimension
+	state: ExitStates
+	blob: string
 }
 
 export type ScreenSettings = {
-	width: number,
-	height: number,
+	dimension: Dimension,
 	perspective: number,
 }
 
