@@ -1,5 +1,5 @@
 import { ExitStates, MoveDirection } from '../shared/enums'
-import { AppStoreState, GameInformation, levelInformation, Sprite } from '../shared/types'
+import { AppStoreState, GameInformation, levelInformation, PickableObject, Sprite } from '../shared/types'
 
 export function loadLevel(state: AppStoreState, { walls }: levelInformation) : AppStoreState {
   return {
@@ -21,11 +21,11 @@ export function handleMove(state: AppStoreState, payload: MoveDirection) : AppSt
   let { currentWall } = state.gameInformation.indexes
 
   if (payload === MoveDirection.RIGHT) {
-      currentWall = (currentWall - 1 + amountOfWalls) % amountOfWalls;
+    currentWall = (currentWall - 1 + amountOfWalls) % amountOfWalls;
   }
-    
+
   if (payload === MoveDirection.LEFT) {
-      currentWall = (currentWall + 1) % amountOfWalls;
+    currentWall = (currentWall + 1) % amountOfWalls;
   }
 
   const rightWallIndex = (currentWall + 1) % amountOfWalls;
@@ -44,4 +44,17 @@ export function handleMove(state: AppStoreState, payload: MoveDirection) : AppSt
   }
 
   return result
+}
+
+export function addItemToInventory(state: AppStoreState, payload: PickableObject) : AppStoreState {
+	return {
+		...state,
+		gameInformation: {
+			...state.gameInformation,
+			inventory: [
+				...state.gameInformation.inventory,
+				payload
+			]
+		}
+	}
 }

@@ -12,7 +12,7 @@ import { AppSettingsContextType, Wall as WallType } from '../shared/types'
 import Pickable from './Pickable'
 
 const Game = () => {
-  const { appSettings: { gameInformation: { walls, indexes } } } : AppSettingsContextType = useContext(AppSettingsContext)
+  const { appSettings: { gameInformation: { walls, indexes, inventory } } } : AppSettingsContextType = useContext(AppSettingsContext)
   const [currentWall, setCurrentWall] = useState<WallType | null>(null)
 
   useEffect(() => {
@@ -27,6 +27,7 @@ const Game = () => {
           <Ceiling/>
           <LeftWall/>
           <Text x={150} y={150} text={`${Math.abs(indexes.currentWall)} wall`} style={{ fontFamily: 'Arial', fontSize: 20 }}/>
+          <Text x={150} y={200} text={inventory.map(i=>i.name).join(', ')} style={{ fontFamily: 'Arial', fontSize: 20 }}/>
           <RightWall/>
           <Floor/>
           {

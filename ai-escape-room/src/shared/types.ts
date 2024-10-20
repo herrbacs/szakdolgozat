@@ -48,6 +48,7 @@ export type GameInformation = {
 	}
 	amountOfWalls: number
 	walls : Wall[]
+	inventory: PickableObject[]
 }
 
 export type Dimension = {

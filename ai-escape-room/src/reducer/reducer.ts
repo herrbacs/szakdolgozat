@@ -1,6 +1,6 @@
 import { SetAppSettingsAction } from "../shared/enums"
 import { AppStoreState, ReducerAction } from "../shared/types"
-import { handleMove, loadLevel } from "./reducerController"
+import { addItemToInventory, handleMove, loadLevel } from "./reducerController"
 
 export const initialState : AppStoreState = {
   screenSettings: {
@@ -21,7 +21,8 @@ export const initialState : AppStoreState = {
       rightWall: 1,
     },
     amountOfWalls: 0,
-    walls: []
+    walls: [],
+    inventory: []
   }
 }
 
@@ -31,6 +32,8 @@ export const reducer = (state: AppStoreState, { action, payload }: ReducerAction
       return loadLevel(state, payload)
     case SetAppSettingsAction.MOVE:
       return handleMove(state, payload)
+    case SetAppSettingsAction.PICK_UP_ITEM:
+      return addItemToInventory(state, payload)
     default:
       return state
   }

@@ -7,6 +7,7 @@ export enum MoveDirection {
 export enum SetAppSettingsAction {
   SET_LEVEL,
   MOVE,
+  PICK_UP_ITEM,
 }
 
 export enum GameDisplayAreas {
