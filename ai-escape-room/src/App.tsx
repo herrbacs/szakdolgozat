@@ -6,6 +6,8 @@ import Game from './components/Game'
 import { SetAppSettingsAction } from './shared/enums'
 import { AppStoreState } from './shared/types'
 import React from 'react'
+import Inventory from './components/Inventory'
+import { relative } from 'path'
 
 export default function App() {
   const { appSettings: { screenSettings: { dimension: { width, height } } }, setAppSettings } : { appSettings: AppStoreState, setAppSettings: any } = useContext(AppSettingsContext)
@@ -25,9 +27,7 @@ export default function App() {
         return
       }
 
-      const payload = await response.json()
-
-      setAppSettings({ action: SetAppSettingsAction.SET_LEVEL , payload });
+      setAppSettings({ action: SetAppSettingsAction.SET_LEVEL , payload: await response.json() });
       setLevelLoaded(true)
     }
 
@@ -38,10 +38,15 @@ export default function App() {
   return (
     <>
     {levelLoaded &&
+      <>
+      <div style={{position: 'relative', width: `${width}px`}}>
       <Stage width={width} height={height} options={{ background: 0xeef1f5 }}>
         <Game/>
         <Navigation/>
       </Stage>
+        <Inventory/>
+      </div>
+      </>
     }
    </>
   )

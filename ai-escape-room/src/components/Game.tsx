@@ -26,8 +26,6 @@ const Game = () => {
         <Wall color={currentWall.color}>
           <Ceiling/>
           <LeftWall/>
-          <Text x={150} y={150} text={`${Math.abs(indexes.currentWall)} wall`} style={{ fontFamily: 'Arial', fontSize: 20 }}/>
-          <Text x={150} y={200} text={inventory.map(i=>i.name).join(', ')} style={{ fontFamily: 'Arial', fontSize: 20 }}/>
           <RightWall/>
           <Floor/>
           {

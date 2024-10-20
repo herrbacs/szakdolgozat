@@ -48,7 +48,8 @@ export type GameInformation = {
 	}
 	amountOfWalls: number
 	walls : Wall[]
-	inventory: PickableObject[]
+	inventory: PickableObject[],
+	selectedItem: null | PickableObject
 }
 
 export type Dimension = {
@@ -79,4 +80,12 @@ export type PositionCalculatorInput = {
 export type Coordinate = {
 	X: number,
 	Y: number 
+}
+
+export type Square = {
+	topLeft: Coordinate,
+	topRight: Coordinate,
+	bottomRight: Coordinate,
+	bottomLeft: Coordinate,
+	pivot: Coordinate
 }

@@ -58,3 +58,23 @@ export function addItemToInventory(state: AppStoreState, payload: PickableObject
 		}
 	}
 }
+
+export function selectItemFromInventory(state: AppStoreState, payload: PickableObject) : AppStoreState {
+	return {
+		...state,
+		gameInformation: {
+			...state.gameInformation,
+			selectedItem: payload
+		}
+	}
+}
+
+export function unselectItemFromInventory(state: AppStoreState) : AppStoreState {
+	return {
+		...state,
+		gameInformation: {
+			...state.gameInformation,
+			selectedItem: null
+		}
+	}
+}
