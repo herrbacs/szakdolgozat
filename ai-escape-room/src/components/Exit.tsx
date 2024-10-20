@@ -8,13 +8,13 @@ import React from 'react'
 import { base64ToBlob } from '../shared/helper'
 
 // TODO API a végső ajtó méretet ha detektálja, ki lehet számolni hogy mekkora újra méretezésre van szükség
-const Exit = ({ exit: { sprites } }: { exit: ExitObject }) => {
+const Exit = ({ exit: { sprites, keeyId } }: { exit: ExitObject }) => {
   const [closedExitImg, setClosedExitImg] = useState<string | undefined>(undefined)
   const [openedExitImg, setOpenedExitImg] = useState<string | undefined>(undefined)
   const [open, setOpen] = useState(false)
 
   const scale = 0.7
-  const { appSettings: { screenSettings: { dimension: { width, height }, perspective } } } : AppSettingsContextType = useContext(AppSettingsContext)
+  const { appSettings: { screenSettings: { dimension: { width, height }, perspective }, gameInformation: { selectedItem } } } : AppSettingsContextType = useContext(AppSettingsContext)
 
   const calculateYPosition = () => {
     const wallHeight = (height - 2 * perspective)
@@ -25,12 +25,13 @@ const Exit = ({ exit: { sprites } }: { exit: ExitObject }) => {
     return perspective + ((width - (perspective * 2)) / 2) - ((sprites[0].dimension.width * scale) / 2)
   }
 
-  const tryOpen = useCallback(
-    () => {
+  const tryOpen = useCallback(() => {
+      if(selectedItem?.id !== keeyId) {
+        return
+      }
       console.log('YOU HAVE ESCAPED')
       setOpen(true)
-    },
-    [],
+    }, [selectedItem]
   )
 
   useEffect(() => {
