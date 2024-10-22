@@ -5,12 +5,13 @@ export enum MoveDirection {
 }
 
 export enum SetAppSettingsAction {
-  SET_LEVEL,
+  LOAD_LEVEL,
   MOVE,
   PICK_UP_ITEM,
   SELECT_ITEM,
   UNSELECT_ITEM,
   DESTROY_INVENTORY_ITEM,
+  EXIT,
 }
 
 export enum GameDisplayAreas {

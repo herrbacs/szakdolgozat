@@ -3,28 +3,29 @@ import { ExitStates, GameDisplayAreas, SetAppSettingsAction } from './enums';
 
 export type AppSettingsContextType = {
 	appSettings: AppStoreState,
-	setAppSettings : any
+	setAppSettings : any,
 }
 
 export type AppStoreState = {
 	screenSettings: ScreenSettings,
 	navigation: Dimension,
-	gameInformation: GameInformation
+	gameInformation: GameInformation,
 }
 
 export type ReducerAction = {
 	action: SetAppSettingsAction,
-	payload: any
+	payload: any,
 }
 
 export type ExitObject = {
 	keeyId: UUID,
-	sprites: Sprite[]
+	state: ExitStates.CLOSED | ExitStates.OPEN,
+	sprites: Sprite[],
 }
 
 export type PickableObject = {
 	id: UUID,
-	position: GameDisplayAreas
+	position: GameDisplayAreas,
 	name: string,
 	sprite: Sprite,
 	reusable: boolean,
@@ -33,13 +34,12 @@ export type PickableObject = {
 export type Wall = {
 	id: UUID,
 	color: string,
-	exit?: ExitObject
-	pickables: PickableObject[]
+	exit?: ExitObject,
+	pickables: PickableObject[],
 }
 
-// Ez amit az api inputként add
 export type levelInformation = {
-	walls : Wall[]
+	walls : Wall[],
 }
 
 export type GameInformation = {
@@ -49,7 +49,8 @@ export type GameInformation = {
 		rightWall: number,
 	}
 	amountOfWalls: number
-	walls : Wall[]
+	currentWall: Wall,
+	walls : Wall[],
 	inventory: PickableObject[],
 	selectedItem: null | PickableObject
 }
@@ -60,10 +61,10 @@ export type Dimension = {
 }
 
 export type Sprite = {
-	name: string
-	dimension: Dimension
-	state: ExitStates
-	blob: string
+	name: string,
+	dimension: Dimension,
+	state: ExitStates,
+	blob: string,
 }
 
 export type ScreenSettings = {
@@ -71,17 +72,16 @@ export type ScreenSettings = {
 	perspective: number,
 }
 
-// Other Types
 export type PositionCalculatorInput = {
-  area: GameDisplayAreas;
+  area: GameDisplayAreas,
   screenSettings: ScreenSettings,
   sprite: Sprite,
-  scale: number
+  scale: number,
 };
 
 export type Coordinate = {
 	X: number,
-	Y: number 
+	Y: number,
 }
 
 export type Square = {
@@ -89,5 +89,5 @@ export type Square = {
 	topRight: Coordinate,
 	bottomRight: Coordinate,
 	bottomLeft: Coordinate,
-	pivot: Coordinate
+	pivot: Coordinate,
 }

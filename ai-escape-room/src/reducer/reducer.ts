@@ -1,6 +1,6 @@
 import { SetAppSettingsAction } from "../shared/enums"
-import { AppStoreState, ReducerAction } from "../shared/types"
-import { addItemToInventory, destroyItemFromInventory, handleMove, loadLevel, selectItemFromInventory, unselectItemFromInventory } from "./reducerController"
+import { AppStoreState, ReducerAction, Wall } from "../shared/types"
+import { exit, addItemToInventory, destroyItemFromInventory, handleMove, loadLevel, selectItemFromInventory, unselectItemFromInventory } from "./reducerController"
 
 export const initialState : AppStoreState = {
   screenSettings: {
@@ -22,6 +22,7 @@ export const initialState : AppStoreState = {
     },
     amountOfWalls: 0,
     walls: [],
+    currentWall: {} as Wall,
     inventory: [],
     selectedItem: null
   }
@@ -29,7 +30,7 @@ export const initialState : AppStoreState = {
 
 export const reducer = (state: AppStoreState, { action, payload }: ReducerAction) => {
   switch (action) {
-    case SetAppSettingsAction.SET_LEVEL:
+    case SetAppSettingsAction.LOAD_LEVEL:
       return loadLevel(state, payload)
     case SetAppSettingsAction.MOVE:
       return handleMove(state, payload)
@@ -41,6 +42,8 @@ export const reducer = (state: AppStoreState, { action, payload }: ReducerAction
       return unselectItemFromInventory(state)
     case SetAppSettingsAction.DESTROY_INVENTORY_ITEM:
       return destroyItemFromInventory(state, payload)
+    case SetAppSettingsAction.EXIT:
+      return exit(state)
     default:
       return state
   }

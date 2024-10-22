@@ -8,10 +8,9 @@ import React from 'react'
 import { base64ToBlob } from '../shared/helper'
 
 // TODO API a végső ajtó méretet ha detektálja, ki lehet számolni hogy mekkora újra méretezésre van szükség
-const Exit = ({ exit: { sprites, keeyId } }: { exit: ExitObject }) => {
+const Exit = ({ exit: { sprites, keeyId, state } }: { exit: ExitObject }) => {
   const [closedExitImg, setClosedExitImg] = useState<string | undefined>(undefined)
   const [openedExitImg, setOpenedExitImg] = useState<string | undefined>(undefined)
-  const [open, setOpen] = useState(false)
 
   const scale = 0.7
   const { appSettings: { screenSettings: { dimension: { width, height }, perspective }, gameInformation: { selectedItem } }, setAppSettings} : AppSettingsContextType = useContext(AppSettingsContext)
@@ -31,9 +30,9 @@ const Exit = ({ exit: { sprites, keeyId } }: { exit: ExitObject }) => {
       }
 
       setAppSettings({ action: SetAppSettingsAction.DESTROY_INVENTORY_ITEM, payload: selectedItem })
+      setAppSettings({ action: SetAppSettingsAction.EXIT })
 
       console.log('YOU HAVE ESCAPED')
-      setOpen(true)
     }, [selectedItem]
   )
 
@@ -55,7 +54,7 @@ const Exit = ({ exit: { sprites, keeyId } }: { exit: ExitObject }) => {
     <Sprite
         interactive
         onmousedown={tryOpen}
-        image={open ? openedExitImg : closedExitImg}
+        image={state == ExitStates.OPEN ? openedExitImg : closedExitImg}
         scale={{ x: scale, y: scale }}
         x={calculateXPosition()}
         y={calculateYPosition()}

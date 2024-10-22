@@ -7,10 +7,9 @@ import { SetAppSettingsAction } from './shared/enums'
 import { AppStoreState } from './shared/types'
 import React from 'react'
 import Inventory from './components/Inventory'
-import { relative } from 'path'
 
 export default function App() {
-  const { appSettings: { screenSettings: { dimension: { width, height } } }, setAppSettings } : { appSettings: AppStoreState, setAppSettings: any } = useContext(AppSettingsContext)
+  const { appSettings: { screenSettings: { dimension: { width, height } }, gameInformation: { currentWall } }, setAppSettings } : { appSettings: AppStoreState, setAppSettings: any } = useContext(AppSettingsContext)
   const [levelLoaded, setLevelLoaded] = useState(false)
 
   useEffect(() => {
@@ -27,7 +26,7 @@ export default function App() {
         return
       }
 
-      setAppSettings({ action: SetAppSettingsAction.SET_LEVEL , payload: await response.json() });
+      setAppSettings({ action: SetAppSettingsAction.LOAD_LEVEL , payload: await response.json() });
       setLevelLoaded(true)
     }
 

@@ -27,6 +27,7 @@ def generate_level():
                 "id": "bc654ebc-1c6b-4355-8aec-01f12ab39fad",
                 "color": "0x1099bb",
                 "exit": {
+                    "state": "CLOSED",
                     "keeyId": "faafcf2d-2bca-4706-86ec-74c2aa98e000",
                     "sprites": [
                         {

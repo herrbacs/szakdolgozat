@@ -1,11 +1,12 @@
 import { ExitStates, MoveDirection } from '../shared/enums'
-import { AppStoreState, GameInformation, levelInformation, PickableObject, Sprite } from '../shared/types'
+import { AppStoreState, levelInformation, PickableObject } from '../shared/types'
 
 export function loadLevel(state: AppStoreState, { walls }: levelInformation) : AppStoreState {
   return {
     ...state,
     gameInformation: { 
       ...state.gameInformation,
+      currentWall: walls[0],
       indexes: {
         ...state.gameInformation.indexes,
         leftWall: walls.length - 1,
@@ -17,7 +18,7 @@ export function loadLevel(state: AppStoreState, { walls }: levelInformation) : A
 }
 
 export function handleMove(state: AppStoreState, payload: MoveDirection) : AppStoreState {
-  let { amountOfWalls } = state.gameInformation
+  let { amountOfWalls, walls } = state.gameInformation
   let { currentWall } = state.gameInformation.indexes
 
   if (payload === MoveDirection.RIGHT) {
@@ -31,10 +32,13 @@ export function handleMove(state: AppStoreState, payload: MoveDirection) : AppSt
   const rightWallIndex = (currentWall + 1) % amountOfWalls;
   const leftWallIndex = (currentWall - 1 + amountOfWalls) % amountOfWalls;
 
+  const currentWallObject = walls[Math.abs(currentWall)]
+
   const result = { 
     ...state,
     gameInformation: {
       ...state.gameInformation,
+      currentWall: currentWallObject,
       indexes: {
         currentWall,
         leftWall: leftWallIndex,
@@ -47,15 +51,13 @@ export function handleMove(state: AppStoreState, payload: MoveDirection) : AppSt
 }
 
 export function addItemToInventory(state: AppStoreState, payload: PickableObject) : AppStoreState {
-  const walls = state.gameInformation.walls.map(wall => {
-    if (wall.id === state.gameInformation.walls[state.gameInformation.indexes.currentWall].id) {
-      return {
-        ...wall,
-        pickables: wall.pickables.filter(pickable => pickable.id !== payload.id)
-      }
-    }
+  let { gameInformation: { walls, currentWall } } = state
 
-    return wall
+  walls.forEach(wall => {
+    if (wall.id !== currentWall.id) {
+      return
+    }
+    wall.pickables = wall.pickables.filter(pickable => pickable.id !== payload.id)
   })
 
   return {
@@ -70,10 +72,6 @@ export function addItemToInventory(state: AppStoreState, payload: PickableObject
 		}
 	}
 }
-
-
-
-
 
 export function selectItemFromInventory(state: AppStoreState, payload: PickableObject) : AppStoreState {
 	return {
@@ -102,5 +100,24 @@ export function destroyItemFromInventory(state: AppStoreState, payload: Pickable
 			...state.gameInformation,
       inventory: state.gameInformation.inventory.filter(item => item.id !== payload.id)
 		}
+	}
+}
+
+export function exit(state: AppStoreState) : AppStoreState {
+  let { gameInformation: { walls, currentWall } } = state
+  
+  walls.forEach(wall => {
+    if (wall.exit === undefined) {
+      return
+    }
+    wall.exit.state = ExitStates.OPEN
+  })
+  
+  return {
+		...state,
+    gameInformation: {
+      ...state.gameInformation,
+      walls
+    }
 	}
 }
