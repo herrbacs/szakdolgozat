@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
 import { Sprite } from '@pixi/react'
-import { useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import { useCallback, useContext, useEffect, useState } from 'react'
 import { AppSettingsContext } from '../context/AppSettingsContext'
 import { AppSettingsContextType, ExitObject } from '../shared/types'
-import { ExitStates } from '../shared/enums'
+import { ExitStates, SetAppSettingsAction } from '../shared/enums'
 import React from 'react'
 import { base64ToBlob } from '../shared/helper'
 
@@ -14,7 +14,7 @@ const Exit = ({ exit: { sprites, keeyId } }: { exit: ExitObject }) => {
   const [open, setOpen] = useState(false)
 
   const scale = 0.7
-  const { appSettings: { screenSettings: { dimension: { width, height }, perspective }, gameInformation: { selectedItem } } } : AppSettingsContextType = useContext(AppSettingsContext)
+  const { appSettings: { screenSettings: { dimension: { width, height }, perspective }, gameInformation: { selectedItem } }, setAppSettings} : AppSettingsContextType = useContext(AppSettingsContext)
 
   const calculateYPosition = () => {
     const wallHeight = (height - 2 * perspective)
@@ -29,6 +29,9 @@ const Exit = ({ exit: { sprites, keeyId } }: { exit: ExitObject }) => {
       if(selectedItem?.id !== keeyId) {
         return
       }
+
+      setAppSettings({ action: SetAppSettingsAction.DESTROY_INVENTORY_ITEM, payload: selectedItem })
+
       console.log('YOU HAVE ESCAPED')
       setOpen(true)
     }, [selectedItem]

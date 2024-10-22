@@ -12,7 +12,7 @@ const Pickable = ({ pickable }: { pickable: PickableObject }) => {
 	const scale = 0.1
 	const { appSettings: { screenSettings }, setAppSettings } : AppSettingsContextType = useContext(AppSettingsContext)
 	const [pickedUp, setPickedUp] = useState<Boolean>(false)
-  const [pickableSpirte, setPickableSpirte] = useState<string>('')
+  	const [pickableSpirte, setPickableSpirte] = useState<string>('')
 	const [spriteCoordinate, setSpriteCoordinate] = useState<Coordinate>({} as Coordinate)
   
   const handlePickUp = useCallback(() => {

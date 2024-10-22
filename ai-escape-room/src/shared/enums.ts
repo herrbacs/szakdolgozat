@@ -10,6 +10,7 @@ export enum SetAppSettingsAction {
   PICK_UP_ITEM,
   SELECT_ITEM,
   UNSELECT_ITEM,
+  DESTROY_INVENTORY_ITEM,
 }
 
 export enum GameDisplayAreas {

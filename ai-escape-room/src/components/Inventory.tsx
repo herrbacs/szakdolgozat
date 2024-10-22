@@ -1,6 +1,5 @@
-import { Graphics } from '@pixi/react'
-import React, { useCallback, useContext, useState } from 'react'
-import { AppSettingsContextType, Coordinate, PickableObject } from '../shared/types'
+import React, { useContext } from 'react'
+import { AppSettingsContextType, PickableObject } from '../shared/types'
 import { AppSettingsContext } from '../context/AppSettingsContext'
 import { base64ToBlob } from '../shared/helper'
 import { SetAppSettingsAction } from '../shared/enums'

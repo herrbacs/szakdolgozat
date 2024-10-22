@@ -26,10 +26,12 @@ export type PickableObject = {
 	id: UUID,
 	position: GameDisplayAreas
 	name: string,
-	sprite: Sprite
+	sprite: Sprite,
+	reusable: boolean,
 }
 
 export type Wall = {
+	id: UUID,
 	color: string,
 	exit?: ExitObject
 	pickables: PickableObject[]

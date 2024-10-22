@@ -1,6 +1,6 @@
 import { SetAppSettingsAction } from "../shared/enums"
 import { AppStoreState, ReducerAction } from "../shared/types"
-import { addItemToInventory, handleMove, loadLevel, selectItemFromInventory, unselectItemFromInventory } from "./reducerController"
+import { addItemToInventory, destroyItemFromInventory, handleMove, loadLevel, selectItemFromInventory, unselectItemFromInventory } from "./reducerController"
 
 export const initialState : AppStoreState = {
   screenSettings: {
@@ -39,6 +39,8 @@ export const reducer = (state: AppStoreState, { action, payload }: ReducerAction
       return selectItemFromInventory(state, payload)
     case SetAppSettingsAction.UNSELECT_ITEM:
       return unselectItemFromInventory(state)
+    case SetAppSettingsAction.DESTROY_INVENTORY_ITEM:
+      return destroyItemFromInventory(state, payload)
     default:
       return state
   }

@@ -12,7 +12,7 @@ import { AppSettingsContextType, Wall as WallType } from '../shared/types'
 import Pickable from './Pickable'
 
 const Game = () => {
-  const { appSettings: { gameInformation: { walls, indexes, inventory } } } : AppSettingsContextType = useContext(AppSettingsContext)
+  const { appSettings: { gameInformation: { walls, indexes } } } : AppSettingsContextType = useContext(AppSettingsContext)
   const [currentWall, setCurrentWall] = useState<WallType | null>(null)
 
   useEffect(() => {

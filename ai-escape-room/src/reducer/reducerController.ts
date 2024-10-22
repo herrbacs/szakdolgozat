@@ -47,17 +47,33 @@ export function handleMove(state: AppStoreState, payload: MoveDirection) : AppSt
 }
 
 export function addItemToInventory(state: AppStoreState, payload: PickableObject) : AppStoreState {
-	return {
+  const walls = state.gameInformation.walls.map(wall => {
+    if (wall.id === state.gameInformation.walls[state.gameInformation.indexes.currentWall].id) {
+      return {
+        ...wall,
+        pickables: wall.pickables.filter(pickable => pickable.id !== payload.id)
+      }
+    }
+
+    return wall
+  })
+
+  return {
 		...state,
 		gameInformation: {
-			...state.gameInformation,
+      ...state.gameInformation,
+      walls,
 			inventory: [
-				...state.gameInformation.inventory,
+        ...state.gameInformation.inventory,
 				payload
-			]
+			],
 		}
 	}
 }
+
+
+
+
 
 export function selectItemFromInventory(state: AppStoreState, payload: PickableObject) : AppStoreState {
 	return {
@@ -75,6 +91,16 @@ export function unselectItemFromInventory(state: AppStoreState) : AppStoreState 
 		gameInformation: {
 			...state.gameInformation,
 			selectedItem: null
+		}
+	}
+}
+
+export function destroyItemFromInventory(state: AppStoreState, payload: PickableObject) : AppStoreState {
+	return {
+		...state,
+		gameInformation: {
+			...state.gameInformation,
+      inventory: state.gameInformation.inventory.filter(item => item.id !== payload.id)
 		}
 	}
 }

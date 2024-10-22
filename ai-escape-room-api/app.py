@@ -24,6 +24,7 @@ def generate_level():
     level_information = {
        "walls": [
             {
+                "id": "bc654ebc-1c6b-4355-8aec-01f12ab39fad",
                 "color": "0x1099bb",
                 "exit": {
                     "keeyId": "faafcf2d-2bca-4706-86ec-74c2aa98e000",
@@ -58,18 +59,22 @@ def generate_level():
                             },
                             "name": "exit_key.png"
                         },
+                        "reusable": "false",
                     }
                 ]
             },
             {
+                "id": "e4843042-0ca9-4e03-b45e-c860b56b390a",
                 "color": "0xffc300",
                 "pickables": [],
             },
             {
+                "id": "3f3c2958-bbe7-448a-b58c-98385540f5b1",
                 "color": "0xff5733",
                 "pickables": [],
             },
             {
+                "id": "85d55920-9bd1-45f8-ac9d-bc413db42f8e",
                 "color": "0x581845",
                 "pickables": [],
             }
