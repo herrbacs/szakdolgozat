@@ -62,22 +62,43 @@ def generate_level():
                         },
                         "reusable": "false",
                     }
-                ]
+                ],
+                "inspectables": [],
             },
             {
                 "id": "e4843042-0ca9-4e03-b45e-c860b56b390a",
                 "color": "0xffc300",
                 "pickables": [],
+                "inspectables": [
+                    {
+                        "id": "4558d2bb-8af1-4d38-9b64-cdefe6031cf9",
+                        "position": "WT1",
+                        "text": 'The time is 14:30',
+                        "type": "CLOCK",
+                        "sprites": [
+                            {
+                                "state": "DEFAULT",
+                                "name": "clock.png",
+                                "dimension": {
+                                    "width": "360",
+                                    "height": "360"
+                                }
+                            }
+                        ]
+                    }
+                ],
             },
             {
                 "id": "3f3c2958-bbe7-448a-b58c-98385540f5b1",
                 "color": "0xff5733",
                 "pickables": [],
+                "inspectables": [],
             },
             {
                 "id": "85d55920-9bd1-45f8-ac9d-bc413db42f8e",
                 "color": "0x581845",
                 "pickables": [],
+                "inspectables": [],
             }
         ]
     }
@@ -89,6 +110,10 @@ def generate_level():
         if wall['pickables']:
             for pickable in wall['pickables']:
                     pickable['sprite']['blob'] = convert_images_into_blob(pickable['sprite']['name'])
+        if wall['inspectables']:
+            for inspectable in wall['inspectables']:
+                for sprite in inspectable['sprites']:
+                    sprite['blob'] = convert_images_into_blob(sprite['name'])
 
     return Response(json.dumps(level_information), content_type="application/json")
 

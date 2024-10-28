@@ -1,5 +1,5 @@
 import { UUID } from 'crypto';
-import { ExitStates, GameDisplayAreas, SetAppSettingsAction } from './enums';
+import { ExitStates, GameDisplayAreas, InspectableObjectSpriteStates, InspectableObjectTypes, SetAppSettingsAction } from './enums';
 
 export type AppSettingsContextType = {
 	appSettings: AppStoreState,
@@ -31,11 +31,20 @@ export type PickableObject = {
 	reusable: boolean,
 }
 
+export type InspectableObject = {
+	id: UUID,
+	position: GameDisplayAreas,
+	text: string,
+	sprites: Sprite[],
+	type: InspectableObjectTypes
+}
+
 export type Wall = {
 	id: UUID,
 	color: string,
 	exit?: ExitObject,
 	pickables: PickableObject[],
+	inspectables: InspectableObject[],
 }
 
 export type levelInformation = {
@@ -64,7 +73,7 @@ export type Dimension = {
 export type Sprite = {
 	name: string,
 	dimension: Dimension,
-	state: ExitStates,
+	state: ExitStates | InspectableObjectSpriteStates,
 	blob: string,
 }
 

@@ -8,7 +8,8 @@ import LeftWall from './LeftWall'
 import RightWall from './RightWall'
 import React from 'react'
 import { AppSettingsContextType } from '../shared/types'
-import Pickable from './Pickable'
+import Pickable from './GameObjects/Pickable'
+import Inspectable from './GameObjects/Inspectable'
 
 const Game = () => {
   const { appSettings: { gameInformation: { currentWall } } } : AppSettingsContextType = useContext(AppSettingsContext)
@@ -26,6 +27,9 @@ const Game = () => {
           }
           {
             currentWall.pickables.map((pickable) => <Pickable key={pickable.id} pickable={pickable}/>) 
+          }
+          {
+            currentWall.inspectables.map((inspectable) => <Inspectable key={inspectable.id} inspectable={inspectable}/>) 
           }
         </Wall>
       }  
