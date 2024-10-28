@@ -52,7 +52,8 @@ export type GameInformation = {
 	currentWall: Wall,
 	walls : Wall[],
 	inventory: PickableObject[],
-	selectedItem: null | PickableObject
+	showInventory: boolean,
+	selectedItem: null | PickableObject,
 }
 
 export type Dimension = {

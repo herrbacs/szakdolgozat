@@ -6,7 +6,7 @@ import { SetAppSettingsAction } from '../shared/enums'
 
 
 const Inventory = () => {
-	const { appSettings: { screenSettings: { dimension: { width } }, gameInformation: { inventory, selectedItem } }, setAppSettings} : AppSettingsContextType = useContext(AppSettingsContext)
+	const { appSettings: { screenSettings: { dimension: { width } }, gameInformation: { inventory, showInventory, selectedItem } }, setAppSettings} : AppSettingsContextType = useContext(AppSettingsContext)
 
 	const swipeStyle: React.CSSProperties = {
 		height: '4.5rem',
@@ -43,7 +43,7 @@ const Inventory = () => {
 	}
 
   return (
-		<div style={{ display: 'flex', position: 'absolute', bottom: 0, width: `${width}px`, backgroundColor: '#8f8f8f', padding: '.5rem 0' }}>
+		<div style={{transition: 'transform 1s ease-out', display: 'flex', position: 'absolute', bottom: '0', transform: showInventory ? 'none' : 'translateY(100%)', width: `${width}px`, backgroundColor: '#8f8f8f', padding: '.5rem 0' }}>
 			<div style={swipeStyle}>
 				<div style={{ margin: '0 auto', width: '2rem', height: '4.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
 					<svg style={{display: 'block', maxHeight: '100%', maxWidth: '100%'}} viewBox="3.433 4.327 101.769 99.833" width="101.769" height="99.833" xmlns="http://www.w3.org/2000/svg">

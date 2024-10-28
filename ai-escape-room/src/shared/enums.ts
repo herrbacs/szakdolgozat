@@ -12,6 +12,7 @@ export enum SetAppSettingsAction {
   UNSELECT_ITEM,
   DESTROY_INVENTORY_ITEM,
   EXIT,
+  TOGGLE_INVENTORY,
 }
 
 export enum GameDisplayAreas {

@@ -21,6 +21,7 @@ const Pickable = ({ pickable }: { pickable: PickableObject }) => {
 	}, [])
 
   useEffect(() => {
+	console.log('rerender pickable')
 		setPickableSpirte(URL.createObjectURL(base64ToBlob(pickable.sprite.blob, 'image/png')))
 		setSpriteCoordinate(setPositionOn({ area: GameDisplayAreas.FT2, screenSettings, sprite: pickable.sprite, scale }))
 	}, [])

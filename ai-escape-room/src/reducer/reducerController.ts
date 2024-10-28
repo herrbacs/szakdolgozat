@@ -121,3 +121,13 @@ export function exit(state: AppStoreState) : AppStoreState {
     }
 	}
 }
+
+export function toggleInventory(state: AppStoreState) : AppStoreState {
+  return {
+		...state,
+    gameInformation: {
+      ...state.gameInformation,
+      showInventory: !state.gameInformation.showInventory
+    }
+	}
+}
