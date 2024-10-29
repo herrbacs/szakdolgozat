@@ -80,8 +80,8 @@ def generate_level():
                                 "state": "DEFAULT",
                                 "name": "clock.png",
                                 "dimension": {
-                                    "width": "360",
-                                    "height": "360"
+                                    "width": "327",
+                                    "height": "326"
                                 }
                             }
                         ]

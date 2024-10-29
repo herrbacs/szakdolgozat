@@ -1,3 +1,6 @@
+import { InspectableObjectTypes } from "./enums";
+import { InspectableObject, PickableObject } from "./types";
+
 export function base64ToBlob(base64: string, contentType: string) {
     const byteCharacters = atob(base64);
    	const byteNumbers = new Array(byteCharacters.length);
@@ -6,4 +9,14 @@ export function base64ToBlob(base64: string, contentType: string) {
    	}
    	const byteArray = new Uint8Array(byteNumbers);
    	return new Blob([byteArray], { type: contentType });
+}
+
+export function calculateScaleFactorOfInspectableObject(gameObject: InspectableObject) {
+	switch (gameObject.type) {
+		case InspectableObjectTypes.CLOCK:
+			return 85 / gameObject.sprites[0].dimension.width;
+	
+		default:
+			return 1;
+	}
 }

@@ -9,7 +9,7 @@ import RightWall from './RightWall'
 import React from 'react'
 import { AppSettingsContextType } from '../shared/types'
 import Pickable from './GameObjects/Pickable'
-import Inspectable from './GameObjects/Inspectable'
+import Inspectable from './GameObjects/Inspectable/Inspectable'
 
 const Game = () => {
   const { appSettings: { gameInformation: { currentWall } } } : AppSettingsContextType = useContext(AppSettingsContext)
