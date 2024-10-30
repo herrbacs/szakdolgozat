@@ -11,6 +11,7 @@ export function base64ToBlob(base64: string, contentType: string) {
    	return new Blob([byteArray], { type: contentType });
 }
 
+// Ha nem szobában van hanem valami megtekintendő helyen, akkor lehetne egy plusz type kapcsolót megadni a parent objectből, és az alapján állítjuk be a cél méretet
 export function calculateScaleFactorOfInspectableObject(gameObject: InspectableObject) {
 	switch (gameObject.type) {
 		case InspectableObjectTypes.CLOCK:

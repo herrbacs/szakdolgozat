@@ -73,7 +73,7 @@ def generate_level():
                     {
                         "id": "4558d2bb-8af1-4d38-9b64-cdefe6031cf9",
                         "position": "WT1",
-                        "text": 'The time is 14:30',
+                        "text": "The time is 14:30",
                         "type": "CLOCK",
                         "sprites": [
                             {

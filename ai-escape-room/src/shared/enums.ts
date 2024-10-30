@@ -13,6 +13,7 @@ export enum SetAppSettingsAction {
   DESTROY_INVENTORY_ITEM,
   EXIT,
   TOGGLE_INVENTORY,
+  TOGGLE_OBJECT_INSPECTING,
 }
 
 export enum GameDisplayAreas {

@@ -63,6 +63,7 @@ export type GameInformation = {
 	inventory: PickableObject[],
 	showInventory: boolean,
 	selectedItem: null | PickableObject,
+	inspectingItem: null | InspectableObject
 }
 
 export type Dimension = {

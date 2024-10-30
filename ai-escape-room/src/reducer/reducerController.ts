@@ -1,5 +1,5 @@
 import { ExitStates, MoveDirection } from '../shared/enums'
-import { AppStoreState, levelInformation, PickableObject } from '../shared/types'
+import { AppStoreState, InspectableObject, levelInformation, PickableObject } from '../shared/types'
 
 export function loadLevel(state: AppStoreState, { walls }: levelInformation) : AppStoreState {
   return {
@@ -104,7 +104,7 @@ export function destroyItemFromInventory(state: AppStoreState, payload: Pickable
 }
 
 export function exit(state: AppStoreState) : AppStoreState {
-  let { gameInformation: { walls, currentWall } } = state
+  let { gameInformation: { walls } } = state
   
   walls.forEach(wall => {
     if (wall.exit === undefined) {
@@ -128,6 +128,16 @@ export function toggleInventory(state: AppStoreState) : AppStoreState {
     gameInformation: {
       ...state.gameInformation,
       showInventory: !state.gameInformation.showInventory
+    }
+	}
+}
+
+export function toggleObjetInspecting(state: AppStoreState, payload: InspectableObject | null) : AppStoreState {
+  return {
+		...state,
+    gameInformation: {
+      ...state.gameInformation,
+      inspectingItem: payload
     }
 	}
 }

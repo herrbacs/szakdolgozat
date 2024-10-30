@@ -1,18 +1,19 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { AppSettingsContextType, Coordinate, InspectableObject } from '../../../shared/types'
 import { AppSettingsContext } from '../../../context/AppSettingsContext'
 import { base64ToBlob, calculateScaleFactorOfInspectableObject } from '../../../shared/helper'
-import { InspectableObjectSpriteStates } from '../../../shared/enums'
+import { InspectableObjectSpriteStates, SetAppSettingsAction } from '../../../shared/enums'
 import { setPositionOn } from '../../../shared/positionCalculator'
 import { Sprite } from '@pixi/react'
 
 const Inspectable = ({ inspectable }: { inspectable: InspectableObject }) => {
-	const { appSettings: { screenSettings } } : AppSettingsContextType = useContext(AppSettingsContext)
+	const { appSettings: { screenSettings }, setAppSettings} : AppSettingsContextType = useContext(AppSettingsContext)
 	const [spriteCoordinate, setSpriteCoordinate] = useState<Coordinate>({} as Coordinate)
 	const [inspectableSpirte, setInspectableSpirte] = useState<string>('')
 	const scale = calculateScaleFactorOfInspectableObject(inspectable)
 
   useEffect(() => {
+	console.log("Render inspectable")
     const sprite = inspectable.sprites.find(sprite => sprite.state === InspectableObjectSpriteStates.DEFAULT)
 
     if (sprite === undefined) {
@@ -28,6 +29,7 @@ const Inspectable = ({ inspectable }: { inspectable: InspectableObject }) => {
 			{
 				inspectableSpirte &&
 				<Sprite
+					onclick={() => setAppSettings({ action: SetAppSettingsAction.TOGGLE_OBJECT_INSPECTING , payload: inspectable })}
 					interactive
 					image={inspectableSpirte}
 					scale={{ x: scale, y: scale }}
