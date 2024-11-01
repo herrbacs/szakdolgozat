@@ -1,12 +1,13 @@
-import { GameDisplayAreas } from "./enums";
+import { GameDisplayAreas, SpritePerspective } from "./enums";
 import { Coordinate, PositionCalculatorInput, ScreenSettings, Sprite } from "./types";
 
-export function setPositionOn({area, screenSettings, sprite, scale }: PositionCalculatorInput) : Coordinate {
+export function setPositionOn({area, screenSettings, sprite, scale, perspective }: PositionCalculatorInput) : Coordinate {
+  
   switch (area) {
     case GameDisplayAreas.FT2:
       return coordinatesOfFT2(screenSettings, sprite, scale);
     case GameDisplayAreas.WT1:
-      return coordinatesOfWT1(screenSettings, sprite, scale);
+      return coordinatesOfWT1(screenSettings, sprite, scale, perspective);
     default:
       return { X: 0, Y: 0 }
   }
@@ -25,10 +26,18 @@ function coordinatesOfFT2(
 }
 
 function coordinatesOfWT1(
-  { perspective, dimension: { width, height }} : ScreenSettings,
+  { perspective, dimension: { width }} : ScreenSettings,
   sprite : Sprite,
-  scale: number
+  scale: number,
+  isPerspective: boolean,
 ) : Coordinate {
+
+  if (isPerspective) {
+    return {
+      X: (width - (perspective)) + (perspective  / 2),
+      Y: perspective,
+    }
+  }
 
   return {
     X: perspective + ((width - (perspective * 2)) / 6),
@@ -37,7 +46,7 @@ function coordinatesOfWT1(
 }
 
 function coordinatesOfWT2(
-  { perspective, dimension: { width, height }} : ScreenSettings,
+  { perspective, dimension: { width }} : ScreenSettings,
   sprite : Sprite,
   scale: number
 ) : Coordinate {
@@ -49,9 +58,10 @@ function coordinatesOfWT2(
 }
 
 function coordinatesOfWT3(
-  { perspective, dimension: { width, height }} : ScreenSettings,
+  { perspective, dimension: { width }} : ScreenSettings,
   sprite : Sprite,
-  scale: number
+  scale: number,
+  isPerspective: boolean,
 ) : Coordinate {
 
   return {

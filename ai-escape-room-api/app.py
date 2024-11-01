@@ -3,6 +3,9 @@ import os, json, io, base64
 from PIL import Image
 from flask import Flask, send_from_directory, Response
 from flask_cors import CORS
+import cv2 as cv
+import numpy as np
+import matplotlib.pyplot as plt
 
 app = Flask(__name__)
 
@@ -82,7 +85,25 @@ def generate_level():
                                 "dimension": {
                                     "width": "327",
                                     "height": "326"
-                                }
+                                },
+                                "perspective": {
+                                    "right": {
+                                        "state": "DEFAULT",
+                                        "name": "clock_right_perspective.png",
+                                        "dimension": {
+                                            "width": "327",
+                                            "height": "326"
+                                        },
+                                    },
+                                    "left": {
+                                        "state": "DEFAULT",
+                                        "name": "clock_left_perspective.png",
+                                        "dimension": {
+                                            "width": "327",
+                                            "height": "326"
+                                        },
+                                    },
+                                },
                             }
                         ]
                     }
@@ -104,6 +125,12 @@ def generate_level():
     }
 
     for wall in level_information["walls"]:    
+        if wall['inspectables']:
+            for inspectable in wall['inspectables']:
+                for sprite in inspectable['sprites']:
+                    generatePerspectiveTransformationsOfImage(sprite['name'])
+
+    for wall in level_information["walls"]:    
         if "exit" in wall:
             for sprite in wall['exit']['sprites']:
                 sprite['blob'] = convert_images_into_blob(sprite['name'])
@@ -114,6 +141,9 @@ def generate_level():
             for inspectable in wall['inspectables']:
                 for sprite in inspectable['sprites']:
                     sprite['blob'] = convert_images_into_blob(sprite['name'])
+                    if sprite['perspective']:
+                        sprite['perspective']['left']['blob'] = convert_images_into_blob(sprite['perspective']['left']['name'])
+                        sprite['perspective']['right']['blob'] = convert_images_into_blob(sprite['perspective']['right']['name'])
 
     return Response(json.dumps(level_information), content_type="application/json")
 
@@ -129,3 +159,42 @@ def convert_images_into_blob(img_name):
         img_blob = img_byte_arr.getvalue()
         img_base64 = base64.b64encode(img_blob).decode('utf-8')
     return img_base64
+
+def generatePerspectiveTransformationsOfImage(imgName):
+    root = os.getcwd()
+    imgPath = os.path.join(root, 'sprites/', imgName)
+    img = cv.imread(imgPath, cv.IMREAD_UNCHANGED)
+
+    height, width = img.shape[:2]
+
+    # The Original Image 4 corners
+    p1 = np.array([[0, 0],
+                   [width, 0],
+                   [0, height],
+                   [width, height]], dtype=np.float32)
+
+    perspective = 80
+
+    r_topLeft = [perspective, perspective]
+    r_topRight = [width - perspective, 0]
+    r_bottomLeft = [perspective, height - perspective]
+    r_bottomRight = [width - perspective, height]
+    desiredRightTransformation = np.array([r_topLeft, r_topRight, r_bottomLeft, r_bottomRight], dtype=np.float32)
+
+    l_topLeft = [perspective, 0]
+    l_topRight = [width - perspective, perspective]
+    l_bottomLeft = [perspective, height]
+    l_bottomRight = [width - perspective, height-perspective]
+    desiredLeftTransformation = np.array([l_topLeft, l_topRight, l_bottomLeft, l_bottomRight], dtype=np.float32)
+
+    # Compute the perspective transformation matrix
+    RT = cv.getPerspectiveTransform(p1, desiredRightTransformation)
+    LT = cv.getPerspectiveTransform(p1, desiredLeftTransformation)
+
+    # Apply the transformation
+    rightImgTrans = cv.warpPerspective(img, RT, (width, height))
+    leftImgTrans = cv.warpPerspective(img, LT, (width, height))
+
+    filename = imgName.replace('.png', '')
+    cv.imwrite(os.path.join(root, 'sprites/', f'{filename}_right_perspective.png'), rightImgTrans)
+    cv.imwrite(os.path.join(root, 'sprites/', f'{filename}_left_perspective.png'), leftImgTrans)

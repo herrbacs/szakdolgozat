@@ -1,5 +1,5 @@
 import { UUID } from 'crypto';
-import { ExitStates, GameDisplayAreas, InspectableObjectSpriteStates, InspectableObjectTypes, SetAppSettingsAction } from './enums';
+import { ExitStates, GameDisplayAreas, InspectableObjectSpriteStates, InspectableObjectTypes, SetAppSettingsAction, SpritePerspective } from './enums';
 
 export type AppSettingsContextType = {
 	appSettings: AppStoreState,
@@ -75,6 +75,10 @@ export type Sprite = {
 	name: string,
 	dimension: Dimension,
 	state: ExitStates | InspectableObjectSpriteStates,
+	perspective: undefined | {
+		right: Sprite,
+		left: Sprite,
+	},
 	blob: string,
 }
 
@@ -88,6 +92,7 @@ export type PositionCalculatorInput = {
   screenSettings: ScreenSettings,
   sprite: Sprite,
   scale: number,
+  perspective: boolean
 };
 
 export type Coordinate = {

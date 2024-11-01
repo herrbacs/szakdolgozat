@@ -6,7 +6,7 @@ import { InspectableObjectSpriteStates, SetAppSettingsAction } from '../../../sh
 import { setPositionOn } from '../../../shared/positionCalculator'
 import { Sprite } from '@pixi/react'
 
-const Inspectable = ({ inspectable }: { inspectable: InspectableObject }) => {
+const Inspectable = ({ inspectable, rightPerspective = false, leftPerspective = false }: { inspectable: InspectableObject, rightPerspective: boolean, leftPerspective: boolean }) => {
 	const { appSettings: { screenSettings }, setAppSettings} : AppSettingsContextType = useContext(AppSettingsContext)
 	const [spriteCoordinate, setSpriteCoordinate] = useState<Coordinate>({} as Coordinate)
 	const [inspectableSpirte, setInspectableSpirte] = useState<string>('')
@@ -14,14 +14,27 @@ const Inspectable = ({ inspectable }: { inspectable: InspectableObject }) => {
 
   useEffect(() => {
 	console.log("Render inspectable")
-    const sprite = inspectable.sprites.find(sprite => sprite.state === InspectableObjectSpriteStates.DEFAULT)
+    let sprite = inspectable.sprites.find(sprite => sprite.state === InspectableObjectSpriteStates.DEFAULT)
 
     if (sprite === undefined) {
       throw Error(`Failed to load the DEFAULT sprite of an inspectable object #${inspectable.id}`)
     }
 
+	if (rightPerspective) {
+		sprite = sprite.perspective!.right
+	}
+	if (leftPerspective) {
+		sprite = sprite.perspective!.left
+	}
+
     setInspectableSpirte(URL.createObjectURL(base64ToBlob(sprite.blob, 'image/png')))
-    setSpriteCoordinate(setPositionOn({ area: inspectable.position, screenSettings, sprite, scale }))
+    setSpriteCoordinate(setPositionOn({ 
+		area: inspectable.position,
+		screenSettings,
+		sprite,
+		scale,
+		perspective: rightPerspective || leftPerspective 
+	}))
   }, [])
 
   return (

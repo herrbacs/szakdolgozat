@@ -47,3 +47,8 @@ export enum InspectableObjectTypes {
 export enum InspectableObjectSpriteStates {
   DEFAULT = 'DEFAULT',
 }
+
+export enum SpritePerspective {
+  RIGHT = 'RIGHT',
+  LEFT = 'LEFT',
+}
