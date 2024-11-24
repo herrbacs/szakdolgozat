@@ -10,6 +10,7 @@ import React from 'react'
 import { AppSettingsContextType } from '../shared/types'
 import Pickable from './GameObjects/Pickable'
 import Inspectable from './GameObjects/Inspectable/Inspectable'
+import Interactable from './GameObjects/Interactable/Interactable'
 
 const Game = () => {
   const { appSettings: { gameInformation: { currentWall } } } : AppSettingsContextType = useContext(AppSettingsContext)
@@ -30,6 +31,9 @@ const Game = () => {
           }
           {
             currentWall.inspectables.map((inspectable) => <Inspectable key={inspectable.id} inspectable={inspectable}/>) 
+          }
+          {
+            currentWall.interactables.map((interactable) => <Interactable key={interactable.id} interactable={interactable}/>) 
           }
         </Wall>
       }  

@@ -4,10 +4,11 @@ import { AppSettingsContext } from '../context/AppSettingsContext'
 import React from 'react'
 import { AppSettingsContextType, Wall } from '../shared/types'
 import Inspectable from './GameObjects/Inspectable/Inspectable'
+import Interactable from './GameObjects/Interactable/Interactable'
 
 const RightWall = () => {
   const { appSettings: { screenSettings: { dimension: { width, height }, perspective }, gameInformation: { walls, indexes }}} : AppSettingsContextType = useContext(AppSettingsContext)
-  const { color, inspectables } = walls[Math.abs(indexes.rightWall)]
+  const { color, inspectables, interactables } = walls[Math.abs(indexes.rightWall)]
 
   const draw = useCallback((g: any) => {
     g.clear()
@@ -35,6 +36,9 @@ const RightWall = () => {
         <Graphics draw={draw} />
         {
           inspectables.map((inspectable) => <Inspectable key={inspectable.id} inspectable={inspectable} rightPerspective/>) 
+        }
+        {
+          interactables.map((interactable) => <Interactable key={interactable.id} interactable={interactable} rightPerspective/>) 
         }
     </>
   )

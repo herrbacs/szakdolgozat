@@ -67,6 +67,7 @@ def generate_level():
                     }
                 ],
                 "inspectables": [],
+                "interactables": [],
             },
             {
                 "id": "e4843042-0ca9-4e03-b45e-c860b56b390a",
@@ -108,28 +109,71 @@ def generate_level():
                         ]
                     }
                 ],
+                "interactables": [],
             },
             {
                 "id": "3f3c2958-bbe7-448a-b58c-98385540f5b1",
                 "color": "0xff5733",
                 "pickables": [],
                 "inspectables": [],
+                "interactables": [
+                    {
+                        "id": "f39e0a22-6742-46dc-8623-b782cb6729ee",
+                        "position": "W3",
+                        "type": "PAINTING",
+                        "sprites": [
+                            {
+                                "state": "DEFAULT",
+                                "name": "painting.png",
+                                "dimension": {
+                                    "width": "1024",
+                                    "height": "1792"
+                                },
+                                "perspective": {
+                                    "right": {
+                                        "state": "DEFAULT",
+                                        "name": "painting_right_perspective.png",
+                                        "dimension": {
+                                            "width": "1024",
+                                            "height": "1792"
+                                        },
+                                    },
+                                    "left": {
+                                        "state": "DEFAULT",
+                                        "name": "painting_left_perspective.png",
+                                        "dimension": {
+                                            "width": "1024",
+                                            "height": "1792"
+                                        },
+                                    },
+                                },
+                            }
+                        ]
+                    },
+                ],
             },
             {
                 "id": "85d55920-9bd1-45f8-ac9d-bc413db42f8e",
                 "color": "0x581845",
                 "pickables": [],
                 "inspectables": [],
+                "interactables": [],
             }
         ]
     }
 
+    # Generate Perspectives
     for wall in level_information["walls"]:    
         if wall['inspectables']:
-            for inspectable in wall['inspectables']:
-                for sprite in inspectable['sprites']:
-                    generatePerspectiveTransformationsOfImage(sprite['name'])
+           for inspectable in wall['inspectables']:
+               for sprite in inspectable['sprites']:
+                   generatePerspectiveTransformationsOfImage(sprite['name'])
+        if wall['interactables']:
+           for interactable in wall['interactables']:
+               for sprite in interactable['sprites']:
+                   generatePerspectiveTransformationsOfImage(sprite['name'])
 
+    # Convert Images Into Blob
     for wall in level_information["walls"]:    
         if "exit" in wall:
             for sprite in wall['exit']['sprites']:
@@ -140,6 +184,13 @@ def generate_level():
         if wall['inspectables']:
             for inspectable in wall['inspectables']:
                 for sprite in inspectable['sprites']:
+                    sprite['blob'] = convert_images_into_blob(sprite['name'])
+                    if sprite['perspective']:
+                        sprite['perspective']['left']['blob'] = convert_images_into_blob(sprite['perspective']['left']['name'])
+                        sprite['perspective']['right']['blob'] = convert_images_into_blob(sprite['perspective']['right']['name'])
+        if wall['interactables']:
+            for interactable in wall['interactables']:
+                for sprite in interactable['sprites']:
                     sprite['blob'] = convert_images_into_blob(sprite['name'])
                     if sprite['perspective']:
                         sprite['perspective']['left']['blob'] = convert_images_into_blob(sprite['perspective']['left']['name'])
@@ -161,6 +212,7 @@ def convert_images_into_blob(img_name):
     return img_base64
 
 def generatePerspectiveTransformationsOfImage(imgName):
+    print(f'Transforming: {imgName}')
     root = os.getcwd()
     imgPath = os.path.join(root, 'sprites/', imgName)
     img = cv.imread(imgPath, cv.IMREAD_UNCHANGED)
@@ -173,7 +225,7 @@ def generatePerspectiveTransformationsOfImage(imgName):
                    [0, height],
                    [width, height]], dtype=np.float32)
 
-    perspective = 80
+    perspective = height/6.75
 
     r_topLeft = [perspective, perspective]
     r_topRight = [width - perspective, 0]

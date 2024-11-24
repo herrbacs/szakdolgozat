@@ -14,6 +14,7 @@ export enum SetAppSettingsAction {
   EXIT,
   TOGGLE_INVENTORY,
   TOGGLE_OBJECT_INSPECTING,
+  DESTROY_PAINTING,
 }
 
 export enum GameDisplayAreas {
@@ -23,6 +24,7 @@ export enum GameDisplayAreas {
   WT3 = 'WT3',
   W1 = 'W1',
   W2 = 'W2',
+  W3 = 'W3',
   WT = 'WT',
   WB1 = 'WB1',
   WB2 = 'WB2',
@@ -44,7 +46,14 @@ export enum InspectableObjectTypes {
   CLOCK = 'CLOCK',
 }
 
+export enum InteractableObjectTypes {
+  PAINTING = 'PAINTING',
+}
+
 export enum InspectableObjectSpriteStates {
+  DEFAULT = 'DEFAULT',
+}
+export enum InteractableObjectSpriteStates {
   DEFAULT = 'DEFAULT',
 }
 

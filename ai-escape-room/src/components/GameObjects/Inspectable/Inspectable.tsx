@@ -6,7 +6,7 @@ import { InspectableObjectSpriteStates, SetAppSettingsAction } from '../../../sh
 import { setPositionOn } from '../../../shared/positionCalculator'
 import { Sprite } from '@pixi/react'
 
-const Inspectable = ({ inspectable, rightPerspective = false, leftPerspective = false }: { inspectable: InspectableObject, rightPerspective: boolean, leftPerspective: boolean }) => {
+const Inspectable = ({ inspectable, rightPerspective = false, leftPerspective = false }: { inspectable: InspectableObject, rightPerspective?: boolean, leftPerspective?: boolean }) => {
 	const { appSettings: { screenSettings }, setAppSettings} : AppSettingsContextType = useContext(AppSettingsContext)
 	const [spriteCoordinate, setSpriteCoordinate] = useState<Coordinate>({} as Coordinate)
 	const [inspectableSpirte, setInspectableSpirte] = useState<string>('')

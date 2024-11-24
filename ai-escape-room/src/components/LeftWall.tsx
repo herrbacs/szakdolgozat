@@ -1,12 +1,14 @@
 import { Graphics } from '@pixi/react'
 import { useCallback, useContext } from 'react'
 import { AppSettingsContext } from '../context/AppSettingsContext'
-import { AppSettingsContextType, AppStoreState } from '../shared/types'
+import { AppSettingsContextType } from '../shared/types'
 import React from 'react'
+import Inspectable from './GameObjects/Inspectable/Inspectable'
+import Interactable from './GameObjects/Interactable/Interactable'
 
 const LeftWall = () => {
   const { appSettings: { screenSettings: { dimension: { height }, perspective }, gameInformation: { walls, indexes : { leftWall } }, }}: AppSettingsContextType = useContext(AppSettingsContext)
-  const { color } = walls[Math.abs(leftWall)]
+  const { color, inspectables, interactables } = walls[Math.abs(leftWall)]
     
     const draw = useCallback((g: any) => {
         g.clear()
@@ -31,6 +33,12 @@ const LeftWall = () => {
   return (
     <>
         <Graphics draw={draw} />
+        {
+          inspectables.map((inspectable) => <Inspectable key={inspectable.id} inspectable={inspectable} leftPerspective/>) 
+        }
+        {
+          interactables.map((interactable) => <Interactable key={interactable.id} interactable={interactable} leftPerspective/>) 
+        }
     </>
   )
 }

@@ -4,27 +4,29 @@ import { Coordinate, PositionCalculatorInput, ScreenSettings, Sprite } from "./t
 export function setPositionOn({area, screenSettings, sprite, scale, perspective }: PositionCalculatorInput) : Coordinate {
   
   switch (area) {
-    case GameDisplayAreas.FT2:
-      return coordinatesOfFT2(screenSettings, sprite, scale);
+    // WT
     case GameDisplayAreas.WT1:
       return coordinatesOfWT1(screenSettings, sprite, scale, perspective);
+    case GameDisplayAreas.WT2:
+      return coordinatesOfWT2(screenSettings, sprite, scale);
+    case GameDisplayAreas.WT3:
+      return coordinatesOfWT3(screenSettings, sprite, scale, perspective);
+    // W
+    case GameDisplayAreas.W1:
+      return coordinatesOfW1(screenSettings, sprite, scale, perspective);
+    case GameDisplayAreas.W2:
+      return coordinatesOfW2(screenSettings, sprite, scale);
+    case GameDisplayAreas.W3:
+      return coordinatesOfW3(screenSettings, sprite, scale, perspective);
+    // FT
+    case GameDisplayAreas.FT2:
+      return coordinatesOfFT2(screenSettings, sprite, scale);
     default:
       return { X: 0, Y: 0 }
   }
 }
 
-function coordinatesOfFT2(
-  { perspective, dimension: { width, height }} : ScreenSettings,
-  sprite : Sprite,
-  scale: number
-) : Coordinate {
-  const offset = 35
-  return {
-    X: perspective + ((width - (perspective * 2)) / 2) - ((sprite.dimension.width * scale) / 2),
-    Y: height - perspective + offset,
-  }
-}
-
+// WT -----------------------------------------------------------
 function coordinatesOfWT1(
   { perspective, dimension: { width }} : ScreenSettings,
   sprite : Sprite,
@@ -67,5 +69,67 @@ function coordinatesOfWT3(
   return {
     X: perspective + (((width - (perspective * 2)) / 6) * 5),
     Y: perspective + (sprite.dimension.height * scale) / 2,
+  }
+}
+
+// W -----------------------------------------------------------
+function coordinatesOfW1(
+  { perspective, dimension: { width, height }} : ScreenSettings,
+  sprite : Sprite,
+  scale: number,
+  isPerspective: boolean,
+) : Coordinate {
+  const wallHeight = (height - 2*perspective)
+
+  if (isPerspective) {
+    return {
+      X: (width - perspective) + (perspective  / 2),
+      Y: perspective + (wallHeight / 2),
+    }
+  }
+
+  return {
+    X: perspective + ((width - (perspective * 2)) / 6),
+    Y: perspective + (wallHeight / 2),
+  }
+}
+
+function coordinatesOfW2(
+  { perspective, dimension: { width, height }} : ScreenSettings,
+  sprite : Sprite,
+  scale: number,
+) : Coordinate {
+  const wallHeight = (height - 2*perspective)
+
+  return {
+    X: perspective + ((width - (perspective * 2)) / 2),
+    Y: perspective + (wallHeight / 2),
+  }
+}
+
+function coordinatesOfW3(
+  { perspective, dimension: { width, height }} : ScreenSettings,
+  sprite : Sprite,
+  scale: number,
+  isPerspective: boolean,
+) : Coordinate {
+  const wallHeight = (height - 2*perspective)
+
+  return {
+    X: perspective + (((width - (perspective * 2)) / 6) * 5),
+    Y: perspective + (wallHeight / 2),
+  }
+}
+
+// FT -----------------------------------------------------------
+function coordinatesOfFT2(
+  { perspective, dimension: { width, height }} : ScreenSettings,
+  sprite : Sprite,
+  scale: number
+) : Coordinate {
+  const offset = 35
+  return {
+    X: perspective + ((width - (perspective * 2)) / 2) - ((sprite.dimension.width * scale) / 2),
+    Y: height - perspective + offset,
   }
 }

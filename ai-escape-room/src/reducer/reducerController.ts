@@ -1,5 +1,6 @@
+import Interactable from '../components/GameObjects/Interactable/Interactable'
 import { ExitStates, MoveDirection } from '../shared/enums'
-import { AppStoreState, InspectableObject, levelInformation, PickableObject } from '../shared/types'
+import { AppStoreState, InspectableObject, InteractableObject, levelInformation, PickableObject, Wall } from '../shared/types'
 
 export function loadLevel(state: AppStoreState, { walls }: levelInformation) : AppStoreState {
   return {
@@ -138,6 +139,20 @@ export function toggleObjetInspecting(state: AppStoreState, payload: Inspectable
     gameInformation: {
       ...state.gameInformation,
       inspectingItem: payload
+    }
+	}
+}
+
+export function destroyPainting(state: AppStoreState, payload: InteractableObject) : AppStoreState {
+  return {
+		...state,
+    gameInformation: {
+      ...state.gameInformation,
+      walls: state.gameInformation.walls
+        .map((wall: Wall) => ({
+          ...wall,
+          interactables: wall.interactables.filter((interactable: InteractableObject) => interactable.id !== payload.id)
+        })),
     }
 	}
 }

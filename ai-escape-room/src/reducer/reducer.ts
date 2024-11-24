@@ -1,6 +1,6 @@
 import { SetAppSettingsAction } from "../shared/enums"
 import { AppStoreState, ReducerAction, Wall } from "../shared/types"
-import { exit, addItemToInventory, destroyItemFromInventory, handleMove, loadLevel, selectItemFromInventory, unselectItemFromInventory, toggleInventory, toggleObjetInspecting } from "./reducerController"
+import { exit, addItemToInventory, destroyItemFromInventory, handleMove, loadLevel, selectItemFromInventory, unselectItemFromInventory, toggleInventory, toggleObjetInspecting, destroyPainting } from "./reducerController"
 
 export const initialState : AppStoreState = {
   screenSettings: {
@@ -50,6 +50,8 @@ export const reducer = (state: AppStoreState, { action, payload }: ReducerAction
       return toggleInventory(state)
     case SetAppSettingsAction.TOGGLE_OBJECT_INSPECTING:
       return toggleObjetInspecting(state, payload)
+    case SetAppSettingsAction.DESTROY_PAINTING:
+      return destroyPainting(state, payload)
     default:
       return state
   }
