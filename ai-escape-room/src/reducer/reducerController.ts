@@ -1,4 +1,3 @@
-import Interactable from '../components/GameObjects/Interactable/Interactable'
 import { ExitStates, MoveDirection } from '../shared/enums'
 import { AppStoreState, InspectableObject, InteractableObject, levelInformation, PickableObject, Wall } from '../shared/types'
 

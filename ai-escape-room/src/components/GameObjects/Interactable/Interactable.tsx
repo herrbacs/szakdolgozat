@@ -3,7 +3,7 @@ import { Sprite } from '@pixi/react'
 import { InteractableObjectSpriteStates, SetAppSettingsAction } from '../../../shared/enums'
 import { AppSettingsContextType, Coordinate, InteractableObject } from '../../../shared/types'
 import { AppSettingsContext } from '../../../context/AppSettingsContext'
-import { base64ToBlob } from '../../../shared/helper'
+import { base64ToBlob, calculateScaleFactorOfInteractableObject } from '../../../shared/helper'
 import { setPositionOn } from '../../../shared/positionCalculator'
 
 const Interactable = ({ interactable, rightPerspective = false, leftPerspective = false }: { interactable: InteractableObject, rightPerspective?: boolean, leftPerspective?: boolean }) => {
@@ -11,18 +11,15 @@ const Interactable = ({ interactable, rightPerspective = false, leftPerspective 
 	const [spriteCoordinate, setSpriteCoordinate] = useState<Coordinate>({} as Coordinate)
 	const [interactableSpirte, setInteractableSpirte] = useState<string>('')
 	const [destroyed, setDestroyed] = useState<boolean>(false)
-	// const scale = calculateScaleFactorOfInspectableObject(inspectable)
-	const scale = .15
+	const scale = calculateScaleFactorOfInteractableObject(interactable)
 
-  useEffect(() => {
+  	useEffect(() => {
 		console.log("Render interactable")
 		let sprite = interactable.sprites.find(sprite => sprite.state === InteractableObjectSpriteStates.DEFAULT)
 	
 		if (sprite === undefined) {
 			throw Error(`Failed to load the DEFAULT sprite of an inspectable object #${interactable.id}`)
 		}
-
-		
 		if (rightPerspective) {
 			sprite = sprite.perspective!.right
 		}
@@ -30,8 +27,8 @@ const Interactable = ({ interactable, rightPerspective = false, leftPerspective 
 			sprite = sprite.perspective!.left
 		}
 	
-			setInteractableSpirte(URL.createObjectURL(base64ToBlob(sprite.blob, 'image/png')))
-			setSpriteCoordinate(setPositionOn({ 
+		setInteractableSpirte(URL.createObjectURL(base64ToBlob(sprite.blob, 'image/png')))
+		setSpriteCoordinate(setPositionOn({ 
 			area: interactable.position,
 			screenSettings,
 			sprite,

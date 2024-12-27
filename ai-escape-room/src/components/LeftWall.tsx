@@ -5,6 +5,7 @@ import { AppSettingsContextType } from '../shared/types'
 import React from 'react'
 import Inspectable from './GameObjects/Inspectable/Inspectable'
 import Interactable from './GameObjects/Interactable/Interactable'
+import { GameDisplayAreas } from '../shared/enums'
 
 const LeftWall = () => {
   const { appSettings: { screenSettings: { dimension: { height }, perspective }, gameInformation: { walls, indexes : { leftWall } }, }}: AppSettingsContextType = useContext(AppSettingsContext)
@@ -29,18 +30,29 @@ const LeftWall = () => {
         g.endFill()
     }, [color, height, perspective])
     
-
-  return (
-    <>
-        <Graphics draw={draw} />
-        {
-          inspectables.map((inspectable) => <Inspectable key={inspectable.id} inspectable={inspectable} leftPerspective/>) 
-        }
-        {
-          interactables.map((interactable) => <Interactable key={interactable.id} interactable={interactable} leftPerspective/>) 
-        }
-    </>
-  )
+    const rigthSideGameAreas = [
+      GameDisplayAreas.WT3,
+      GameDisplayAreas.W3,
+      GameDisplayAreas.WB3,
+      GameDisplayAreas.FT3,
+      GameDisplayAreas.F3,
+    ]
+  
+    return (
+      <>
+          <Graphics draw={draw} />
+          {
+            inspectables
+              .filter((inspectable) => rigthSideGameAreas.includes(inspectable.position))
+              .map((inspectable) => <Inspectable key={inspectable.id} inspectable={inspectable} leftPerspective/>) 
+          }
+          {
+            interactables
+              .filter((interactable) => rigthSideGameAreas.includes(interactable.position))
+              .map((interactable) => <Interactable key={interactable.id} interactable={interactable} leftPerspective/>) 
+          }
+      </>
+    )
 }
 
 export default LeftWall

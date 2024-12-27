@@ -28,11 +28,13 @@ export function setPositionOn({area, screenSettings, sprite, scale, perspective 
 
 // WT -----------------------------------------------------------
 function coordinatesOfWT1(
-  { perspective, dimension: { width }} : ScreenSettings,
+  { perspective, dimension: { width, height }} : ScreenSettings,
   sprite : Sprite,
   scale: number,
   isPerspective: boolean,
 ) : Coordinate {
+
+  const wallHeight = (height - 2*perspective)
 
   if (isPerspective) {
     return {
@@ -43,7 +45,7 @@ function coordinatesOfWT1(
 
   return {
     X: perspective + ((width - (perspective * 2)) / 6),
-    Y: perspective + (sprite.dimension.height * scale) / 2,
+    Y: perspective + (wallHeight / 9),
   }
 }
 
@@ -114,6 +116,13 @@ function coordinatesOfW3(
   isPerspective: boolean,
 ) : Coordinate {
   const wallHeight = (height - 2*perspective)
+
+  if (isPerspective) {
+    return {
+      X: perspective  / 2,
+      Y: perspective + (wallHeight / 2),
+    }
+  }
 
   return {
     X: perspective + (((width - (perspective * 2)) / 6) * 5),

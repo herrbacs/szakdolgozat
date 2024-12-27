@@ -9,7 +9,7 @@ import React from 'react'
 import AppOverlay from './components/AppOverlay'
 
 export default function App() {
-  const { appSettings: { screenSettings: { dimension: { width, height } }, gameInformation: { currentWall } }, setAppSettings } : { appSettings: AppStoreState, setAppSettings: any } = useContext(AppSettingsContext)
+  const { appSettings: { screenSettings: { dimension: { width, height } } }, setAppSettings } : { appSettings: AppStoreState, setAppSettings: any } = useContext(AppSettingsContext)
   const [levelLoaded, setLevelLoaded] = useState(false)
 
   useEffect(() => {

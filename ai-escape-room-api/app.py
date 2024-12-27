@@ -119,7 +119,7 @@ def generate_level():
                 "interactables": [
                     {
                         "id": "f39e0a22-6742-46dc-8623-b782cb6729ee",
-                        "position": "W3",
+                        "position": "W1",
                         "type": "PAINTING",
                         "sprites": [
                             {
