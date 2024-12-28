@@ -1,9 +1,9 @@
 import { UUID } from 'crypto';
-import { ExitStates, GameDisplayAreas, InspectableObjectSpriteStates, InspectableObjectTypes, InteractableObjectSpriteStates, InteractableObjectTypes, SetAppSettingsAction, SpritePerspective } from './enums';
+import { ExitStates, GameDisplayAreas, InspectableObjectSpriteStates, InspectableObjectTypes, InteractableObjectSpriteStates, InteractableObjectTypes, SetAppSettingsAction, SpritePerspective, TypeName } from './enums';
 
 export type AppSettingsContextType = {
 	appSettings: AppStoreState,
-	setAppSettings : any,
+	setAppSettings: any,
 }
 
 export type AppStoreState = {
@@ -23,27 +23,30 @@ export type ExitObject = {
 	sprites: Sprite[],
 }
 
-export type PickableObject = {
+type BaseGameObject = {
 	id: UUID,
 	position: GameDisplayAreas,
+}
+
+export type PickableObject = BaseGameObject & {
 	name: string,
 	sprite: Sprite,
 	reusable: boolean,
 }
 
-export type InspectableObject = {
-	id: UUID,
-	position: GameDisplayAreas,
+export type InspectableObject = BaseGameObject & {
 	text: string,
 	sprites: Sprite[],
-	type: InspectableObjectTypes
+	type: InspectableObjectTypes,
 }
 
-export type InteractableObject = {
-	id: UUID,
-	position: GameDisplayAreas,
+export type InteractableObject = BaseGameObject & {
 	type: InteractableObjectTypes,
 	sprites: Sprite[],
+	holds: {
+		pickable: PickableObject | null,
+		inspectable: InspectableObject | null,
+	},
 }
 
 export type Wall = {
@@ -56,7 +59,7 @@ export type Wall = {
 }
 
 export type levelInformation = {
-	walls : Wall[],
+	walls: Wall[],
 }
 
 export type GameInformation = {
@@ -67,11 +70,11 @@ export type GameInformation = {
 	}
 	amountOfWalls: number
 	currentWall: Wall,
-	walls : Wall[],
+	walls: Wall[],
 	inventory: PickableObject[],
 	showInventory: boolean,
 	selectedItem: null | PickableObject,
-	inspectingItem: null | InspectableObject
+	inspectingItem: null | InspectableObject,
 }
 
 export type Dimension = {

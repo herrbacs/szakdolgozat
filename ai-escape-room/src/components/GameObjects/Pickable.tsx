@@ -3,12 +3,16 @@ import { Sprite } from '@pixi/react'
 import { useCallback, useContext, useEffect, useState } from 'react'
 import { AppSettingsContext } from '../../context/AppSettingsContext'
 import { setPositionOn } from '../../shared/positionCalculator'
-import { GameDisplayAreas, SetAppSettingsAction } from '../../shared/enums'
+import { GameDisplayAreas, InteractableObjectTypes, SetAppSettingsAction } from '../../shared/enums'
 import { AppSettingsContextType, Coordinate, PickableObject } from '../../shared/types'
 import React from 'react'
 import { base64ToBlob } from '../../shared/helper'
 
-const Pickable = ({ pickable }: { pickable: PickableObject }) => {
+type PickableComponentType = {
+	pickable: PickableObject,
+}
+
+const Pickable = ({ pickable }: PickableComponentType) => {
 	const scale = 0.1
 	const { appSettings: { screenSettings }, setAppSettings } : AppSettingsContextType = useContext(AppSettingsContext)
 	const [pickedUp, setPickedUp] = useState<Boolean>(false)
@@ -22,7 +26,7 @@ const Pickable = ({ pickable }: { pickable: PickableObject }) => {
 
   useEffect(() => {
 		setPickableSpirte(URL.createObjectURL(base64ToBlob(pickable.sprite.blob, 'image/png')))
-		setSpriteCoordinate(setPositionOn({ area: GameDisplayAreas.FT2, screenSettings, sprite: pickable.sprite, scale }))
+		setSpriteCoordinate(setPositionOn({ area: GameDisplayAreas.FT2, screenSettings, sprite: pickable.sprite, scale, perspective: false}))
 	}, [])
 
   return (

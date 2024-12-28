@@ -21,7 +21,7 @@ export function calculateScaleFactorOfInspectableObject(gameObject: InspectableO
 	}
 }
 
-export function calculateScaleFactorOfInteractableObject(gameObject: InteractableObject) {
+export function calculateScaleFactorOfInteractableObject(gameObject: InteractableObject): number {
 	switch (gameObject.type) {
 		case InteractableObjectTypes.PAINTING:
 			return 150 / gameObject.sprites[0].dimension.width;

@@ -61,3 +61,9 @@ export enum SpritePerspective {
   RIGHT = 'RIGHT',
   LEFT = 'LEFT',
 }
+
+export enum TypeName {
+  PICKABLE = 'PickableObject',
+  INSPECTABLE = 'InspectableObject',
+  INTERACTABLE = 'InteractableObject',
+}

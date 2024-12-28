@@ -1,46 +1,53 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react'
+import React, { ReactNode, useContext, useEffect, useState } from 'react'
 import { AppSettingsContextType, Coordinate, InspectableObject } from '../../../shared/types'
 import { AppSettingsContext } from '../../../context/AppSettingsContext'
 import { base64ToBlob, calculateScaleFactorOfInspectableObject } from '../../../shared/helper'
-import { InspectableObjectSpriteStates, SetAppSettingsAction } from '../../../shared/enums'
+import { InspectableObjectSpriteStates, InteractableObjectTypes, SetAppSettingsAction } from '../../../shared/enums'
 import { setPositionOn } from '../../../shared/positionCalculator'
 import { Sprite } from '@pixi/react'
 
-const Inspectable = ({ inspectable, rightPerspective = false, leftPerspective = false }: { inspectable: InspectableObject, rightPerspective?: boolean, leftPerspective?: boolean }) => {
-	const { appSettings: { screenSettings }, setAppSettings} : AppSettingsContextType = useContext(AppSettingsContext)
+type InspectableComponentType = {
+	children?: ReactNode,
+	inspectable: InspectableObject,
+	rightPerspective?: boolean,
+	leftPerspective?: boolean,
+	interactableParentType?: InteractableObjectTypes,
+  parentInfo?: {},
+}
+
+const Inspectable = ({ inspectable, rightPerspective = false, leftPerspective = false }: InspectableComponentType) => {
+	const { appSettings: { screenSettings }, setAppSettings }: AppSettingsContextType = useContext(AppSettingsContext)
 	const [spriteCoordinate, setSpriteCoordinate] = useState<Coordinate>({} as Coordinate)
 	const [inspectableSpirte, setInspectableSpirte] = useState<string>('')
 	const scale = calculateScaleFactorOfInspectableObject(inspectable)
 
   useEffect(() => {
-	console.log("Render inspectable")
+		console.log("Render inspectable")
     let sprite = inspectable.sprites.find(sprite => sprite.state === InspectableObjectSpriteStates.DEFAULT)
 
     if (sprite === undefined) {
       throw Error(`Failed to load the DEFAULT sprite of an inspectable object #${inspectable.id}`)
     }
-
-	if (rightPerspective) {
-		sprite = sprite.perspective!.right
-	}
-	if (leftPerspective) {
-		sprite = sprite.perspective!.left
-	}
+		if (rightPerspective) {
+			sprite = sprite.perspective!.right
+		}
+		if (leftPerspective) {
+			sprite = sprite.perspective!.left
+		}
 
     setInspectableSpirte(URL.createObjectURL(base64ToBlob(sprite.blob, 'image/png')))
     setSpriteCoordinate(setPositionOn({ 
-		area: inspectable.position,
-		screenSettings,
-		sprite,
-		scale,
-		perspective: rightPerspective || leftPerspective 
-	}))
+			area: inspectable.position,
+			screenSettings,
+			sprite,
+			scale,
+			perspective: rightPerspective || leftPerspective 
+		}))
   }, [])
 
   return (
 		<>
-			{
-				inspectableSpirte &&
+			{ inspectableSpirte &&
 				<Sprite
 					onclick={() => setAppSettings({ action: SetAppSettingsAction.TOGGLE_OBJECT_INSPECTING , payload: inspectable })}
 					interactive

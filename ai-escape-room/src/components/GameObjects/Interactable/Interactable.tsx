@@ -1,19 +1,26 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { ReactNode, useContext, useEffect, useState } from 'react'
 import { Sprite } from '@pixi/react'
-import { InteractableObjectSpriteStates, SetAppSettingsAction } from '../../../shared/enums'
+import { InteractableObjectSpriteStates, InteractableObjectTypes, SetAppSettingsAction } from '../../../shared/enums'
 import { AppSettingsContextType, Coordinate, InteractableObject } from '../../../shared/types'
 import { AppSettingsContext } from '../../../context/AppSettingsContext'
 import { base64ToBlob, calculateScaleFactorOfInteractableObject } from '../../../shared/helper'
 import { setPositionOn } from '../../../shared/positionCalculator'
+import Painting from './Painting'
 
-const Interactable = ({ interactable, rightPerspective = false, leftPerspective = false }: { interactable: InteractableObject, rightPerspective?: boolean, leftPerspective?: boolean }) => {
-	const { appSettings: { screenSettings }, setAppSettings} : AppSettingsContextType = useContext(AppSettingsContext)
+type InteractableComponentType = {
+	children?: ReactNode,
+	interactable: InteractableObject,
+	rightPerspective?: boolean,
+	leftPerspective?: boolean
+}
+
+const Interactable = ({ interactable, rightPerspective = false, leftPerspective = false }: InteractableComponentType) => {
+	const { appSettings: { screenSettings } } : AppSettingsContextType = useContext(AppSettingsContext)
 	const [spriteCoordinate, setSpriteCoordinate] = useState<Coordinate>({} as Coordinate)
 	const [interactableSpirte, setInteractableSpirte] = useState<string>('')
-	const [destroyed, setDestroyed] = useState<boolean>(false)
-	const scale = calculateScaleFactorOfInteractableObject(interactable)
+	const scale: number = calculateScaleFactorOfInteractableObject(interactable)
 
-  	useEffect(() => {
+  useEffect(() => {
 		console.log("Render interactable")
 		let sprite = interactable.sprites.find(sprite => sprite.state === InteractableObjectSpriteStates.DEFAULT)
 	
@@ -37,24 +44,18 @@ const Interactable = ({ interactable, rightPerspective = false, leftPerspective 
 		}))
 	}, [interactable])
 
-	const handleInteraction = () => {
-		setAppSettings({ action: SetAppSettingsAction.DESTROY_PAINTING , payload: interactable })
-		setDestroyed(true)
+	const getInteractableComponentByType = () => {
+		switch (interactable.type) {
+			case InteractableObjectTypes.PAINTING:
+				return <Painting interactable={interactable} image={interactableSpirte} scale={scale} coordinate={spriteCoordinate}/>
+			default: return;
+		}
 	}
 
   return (
 		<>
 			{
-				interactableSpirte && !destroyed && 
-				<Sprite
-					onclick={handleInteraction}
-					interactive
-					image={interactableSpirte}
-					scale={{ x: scale, y: scale }}
-					x={spriteCoordinate.X}
-					y={spriteCoordinate.Y}
-					anchor={[0.5, 0.5]}
-				/>
+				interactableSpirte && getInteractableComponentByType()
 			}
 		</>
   )
