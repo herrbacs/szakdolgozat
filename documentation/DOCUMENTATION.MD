@@ -1,26 +1,88 @@
-
-## Walls
-#### Description:
-Ez egy collection Wall objektumokkal. Ahány elem van a collection-ben, annyi fala van a szobának. /generate-level endpoint visszatérési értékének egyik legfontosabb eleme
-
+# ---------------GAME OBJECTS---------------
 ## Wall
-#### Description:
-Falat leíró struktúra
+- **Id:** `Guid`
+- **Color:** `string`
+- **Exit:** `null` | [Exit](#exit)
+- **Pickables:** array\<[Pickable](#pickable)>
+- **Inspectables:** array\<[Inspectable](#inspectable)>
+- **Interactables:** array\<[Interactable](#interactable)>
 
 ## Exit
-#### Description:
-Olyan interaktálható elem ami a játák végét jelenti.
+- **Lock:** [LockTypeEnum](#locktypeenum)
+- **Activator:** `Guid` | `string`
+- **Sprite:** [SpriteSet](#spriteset)
 
-## Pickables
-#### Description:
-Olyan interaktálható elemek halmaza amit a játékos fel tud venni, az inventoryban ki tud választani és használni tudja. 
+#### Activator
+- Ha egy inventory-ban tárolt elem nyitja akkon annak az elemnek az Id-je
+- Ha egy jelszó/kód akkor annak a szöveges értéke
 
 ## Pickable
-#### Description:
-Felvehető elem, amit a játékos kiválasztva interakciókat csinálhat más fali objektumokkal egyszer vagy többször, valamint kombinálhat más már felvett felvehető elemmel hogy új elemet állíthasson elő. Mérete mindig csak kicsi lehet.
+- **Id:** `Guid`
+- **Position:** [PositionEnum](#positionenum)
+- **Sprite:** [Sprite](#sprite)
+- **Reusable:** `bool`
 
-## Sptrite
-#### Description:
-A játékban megjelenítendő objektumokhoz tartozó képeknek metaadata.
+## Inspectable
+- Id: `Guid`
+- Position: [PositionEnum](#positionenum)
+- Data:
+    - Appellation: `string`
+    - Information: `string`
+- Sprite: [Sprite](#sprite)
 
+## Interactable
+- **Id:** `Guid`
+- **Lock:** `null` | [LockTypeEnum](#locktypeenum)
+- **Activator:** `null` | `string` | `Guid`
+- **Content:** `Guid`
+
+# --------------HELPER OBJECTS--------------
+## SpriteSet:
+- **Idle:** [Sprite](#sprite)
+- **Active:** [Sprite](#sprite)
+
+## Sprite:
+- **Default:** [SpriteData](#spritedata)
+- **Perspective:** `null` | [SpriteData](#spritedata)
+
+## SpriteData:
+- **FileName:** `string`
+- **Dimension:** [Dimension](#dimension)
+
+## Dimension:
+- **Width:** `int`
+- **Height:** `int`
+
+# ------------------ENUMS-------------------
+## LockTypeEnum
+- **KEY**
+- **PASSWORD**
+
+## PositionEnum:
+- Ceiling
+    - **C1**
+- Wall
+    - Top Areas:
+        - **WT1** 
+        - **WT2**
+        - **WT3**
+    - Middle Areas:
+        - **W1** 
+        - **W2** 
+        - **W3**
+    - Bottom Areas:
+        - **WB1**
+        - **WB2**
+        - **WB3**
+- Floor
+    - Top Areas:
+        - **FT1**
+        - **FT2**
+        - **FT3**
+    - Middle Areas:
+        - **F1**
+        - **F2**
+        - **F3**
+
+# ----------------EXCALIDRAW----------------
 https://excalidraw.com/#room=8a07987b74f747d4840c,GJjou97EQhK7gODYV_WJWA
