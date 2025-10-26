@@ -19,7 +19,15 @@ Pickables:
     - Keycard
     - Medal
 
-Interactables:
+Container:
+    Container:
+        - Cabinet
+        - Shelf
+        - Jewellery Box
+        - Cardboard Box
+        - Backpack
+        - Fridge
+        - Desktop
     LockedContainer:
         Key:
             - Locker Safe
@@ -29,13 +37,8 @@ Interactables:
             - Phone
             - Laptop
             - Tablet
-    Container:
-        - Cabinet
-        - Shelf
-        - Jewellery Box
-        - Cardboard Box
-        - Backpack
-        - Fridge
-    MovableCover:
-        - Painting
-        - Band/Movie Poster
+
+MovableCover:
+    - Painting
+    - Band/Movie Poster
+    - Rag
