@@ -1,0 +1,44 @@
+Inspectables:
+    Szám kombináció:
+        - Invoice
+        - Postcard
+        - Newspaper Article
+        - Calendar
+        - Clock:
+            - Digital/Analog Alarm Clock
+            - Digital/Analog Wrist Watch
+            - Wall Clock
+
+Pickables:
+    - Scissor
+    - Kitchen Knife
+    - Envelope Knife
+    - Coin
+    - Screwdriver
+    - Key
+    - Keycard
+    - Medal
+
+Container:
+    Container:
+        - Cabinet
+        - Shelf
+        - Jewellery Box
+        - Cardboard Box
+        - Backpack
+        - Fridge
+        - Desktop
+    LockedContainer:
+        Key:
+            - Locker Safe
+            - Jewellery Box
+        Password:
+            - Locker Safe
+            - Phone
+            - Laptop
+            - Tablet
+
+MovableCover:
+    - Painting
+    - Band/Movie Poster
+    - Rag
