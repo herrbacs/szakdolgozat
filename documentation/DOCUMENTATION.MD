@@ -29,6 +29,11 @@ Pályán csak egyetlen egy ilyen elem található
 **_Sprite_:**  
 - Fix méret
 - Fix Pozíció 2-es fal szakaszon. Amelyik falon elhelyezkedik, ott a 2-es fal szakaszokra (WT2 | W2 | WB2 | F2) nem lehet mást kirenderelni
+- 2 Sprite tartozik hozzá:
+    - Zárt
+    - Nyitott
+
+![alt text](draw_object_exit.png)
 
 ## Pickable
 A **Pickable** objektum olyan tárgyat jelöl, amit a játékos felvehet a környezetből, majd inventory-ban kiválaszhatja interaktáláshoz.
@@ -53,7 +58,7 @@ A **Pickable** objektum olyan tárgyat jelöl, amit a játékos felvehet a körn
 - Nem Rajzolhat más játékelemmel azonos területre
 - Csak [ F1 | F2 | F3 ] szakaszokra rajzolható. Kivéve ha [Movable Cover](#movablecover) objektum része
 
-![alt text](draw_pickable_element.png)
+![alt text](draw_object_pickable_element.png)
 
 ## Inspectable
 Az **Inspectable** objektum olyan elemet jelöl, amit a játékos megvizsgálhat és valamilyen kódot tartalmaz egy egy következő logikai feladathoz.
@@ -77,7 +82,7 @@ Az **Inspectable** objektum olyan elemet jelöl, amit a játékos megvizsgálhat
 - [ WB1 | WB2 | WB3 ] területekre nem rajzolható ha [ F1 | F2 | F3 ] helyén konténer elem van
 - [ W1 | W2 | W3 ] területekre nem rajzolható ha [ F1 | F2 | F3 ] helyén L méretű konténer elem van
 
-![alt text](draw_inspectable_element.png)
+![alt text](draw_object_inspectable_element.png)
 ## Container
 A **Container** egy olyan objektum, ami [Inspectable](#inspectable) elemeket **és/vagy** [Pickable](#pickable) elemeket tartalmaz.
 
@@ -97,7 +102,8 @@ A **Container** egy olyan objektum, ami [Inspectable](#inspectable) elemeket **�
 - [ WB1 | WB2 | WB3 ] területek csak M méret rajzolható
 - L méret és [ F1 | F2 | F3 ] területek esetén, nem rajzolható játék elem [ WB1 | WB2 | WB3 ] és [ W1 | W2 | W3 ] területekre
 - Nem rajzolható [ WB1 | WB2 | WB3 ] és [ WT1 | WT2 | WT3 ]
-![alt text](draw_container_element.png)
+![alt text](draw_object_container_element.png)
+
 ## MovableCover
 A **MovableCover** egy mozgatható elem, ami mögött valami el van rejtve [Inspectable](#inspectable) **vagy** [Pickable](#pickable) elem.\
 Ez a játék elem annyiban különbözik a [Container](#container) elemtől, hogy elmozgatásuk után kirajzolódik a rejtett játékelem
@@ -114,7 +120,7 @@ Ez a játék elem annyiban különbözik a [Container](#container) elemtől, hog
 - L méret és [ F1 | F2 | F3 ] területek esetén, nem rajzolható játék elem [ WB1 | WB2 | WB3 ] és [ W1 | W2 | W3 ] területekre
 - Nem rajzolható [ WB1 | WB2 | WB3 ] és [ WT1 | WT2 | WT3 ]
 
-![alt text](draw_movable_cover.png)
+![alt text](draw_object_movable_cover.png)
 #  --------------Helper Objektumok--------------
 
 ### SpriteSet
