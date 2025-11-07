@@ -9,7 +9,7 @@ NOTE_ID = uuid.UUID("1c17a287-07a6-4476-bdfd-a9e30fead56d")
 SAFE_ID = uuid.UUID("9a9d8c1f-0845-4e00-af6a-3564e01ab082")
 PAINTING_ID = uuid.UUID("a1a4df66-b3f9-4e47-9829-2f2ec46d8313")
 ENVELOPE_KNIFE_ID = uuid.UUID("085bc822-8c13-4e45-83e6-81fc7eb928a8")
-CONTAINER_ID = uuid.UUID("6a204901-2934-4923-b1a7-3a3aa732080b")
+DESKTOP_ID = uuid.UUID("6a204901-2934-4923-b1a7-3a3aa732080b")
 
 def level_0():
     return Level(Walls=[
@@ -82,15 +82,15 @@ def wall_2():
 
 def wall_3():
     desktop=Container(
-        CONTAINER_ID,
+        DESKTOP_ID,
         PositionEnum.F2,
-        Sprite(SpriteData(f"{CONTAINER_ID}.png", Dimension(256, 128), SizeEnum.L)),
+        Sprite(SpriteData(f"{DESKTOP_ID}.png", Dimension(256, 128), SizeEnum.L)),
         Lock=Lock(LockTypeEnum.PASSWORD, "4863"),
         Content=[
             GameObject(GameObjectType.PICKABLE, Pickable(
                 EXIT_KEY_ID,
                 PositionEnum.F2,
-                Sprite(SpriteData(f"{CONTAINER_ID}.png", Dimension(100, 100))),
+                Sprite(SpriteData(f"{DESKTOP_ID}.png", Dimension(100, 100))),
                 False,
                 Data("Big Rusty Key", "This might opens the door")
             ))
