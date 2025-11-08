@@ -1,9 +1,9 @@
 import { Graphics } from '@pixi/react'
 import { useCallback, useContext } from 'react'
-import { AppSettingsContext } from '../context/AppSettingsContext'
+import { AppSettingsContext } from '../../context/AppSettingsContext'
 import React from 'react'
-import { AppSettingsContextType } from '../shared/types/frameworkTypes'
-import { PositionEnum } from '../shared/enums'
+import { AppSettingsContextType } from '../../shared/types/frameworkTypes'
+import { PositionEnum } from '../../shared/enums'
 
 const RightWall = () => {
   const { appSettings: { screenSettings: { dimension: { width, height }, perspective }, gameInformation: { walls, indexes }}} : AppSettingsContextType = useContext(AppSettingsContext)

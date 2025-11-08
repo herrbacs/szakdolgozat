@@ -1,7 +1,7 @@
 import React from 'react'
 import Inventory from './Inventory'
 import ToggleInventory from './ToggleInventory'
-import InspectModal from './GameObjects/Inspectable/InspectModal'
+import InspectModal from '../GameObjects/Inspectable/InspectModal'
 
 const AppOverlay = () => {
   return (

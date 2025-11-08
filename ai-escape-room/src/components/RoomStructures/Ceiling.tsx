@@ -1,7 +1,7 @@
 import { Graphics } from '@pixi/react'
 import React, { useCallback, useContext } from 'react'
-import { AppSettingsContext } from '../context/AppSettingsContext'
-import { AppSettingsContextType } from '../shared/types/frameworkTypes'
+import { AppSettingsContext } from '../../context/AppSettingsContext'
+import { AppSettingsContextType } from '../../shared/types/frameworkTypes'
 
 const Ceiling = () => {
     const { appSettings: { screenSettings: { dimension: { width }, perspective } } } : AppSettingsContextType = useContext(AppSettingsContext)

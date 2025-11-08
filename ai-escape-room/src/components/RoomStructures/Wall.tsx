@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
 import { Graphics, ReactPixiRoot } from '@pixi/react'
 import { useCallback, useContext, useReducer } from 'react'
-import { AppSettingsContext } from '../context/AppSettingsContext'
+import { AppSettingsContext } from '../../context/AppSettingsContext'
 import React from 'react'
-import { AppSettingsContextType } from '../shared/types/frameworkTypes'
+import { AppSettingsContextType } from '../../shared/types/frameworkTypes'
 
 export const Wall = ({ color, children } : { color: string, children: React.ReactNode  }) => {
   const { appSettings: { screenSettings: { dimension: { width, height } } } } : AppSettingsContextType = useContext(AppSettingsContext)

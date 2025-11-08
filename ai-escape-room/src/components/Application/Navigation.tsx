@@ -1,13 +1,13 @@
-/* eslint-disable no-unused-vars */
-import { useCallback, useContext, useEffect, useMemo } from 'react'
+import { useContext, useMemo } from 'react'
 import { Sprite } from '@pixi/react'
-import arrowLeft from '../assets/navigation_left.png'
-import arrowRight from '../assets/navigation_right.png'
-import { AppSettingsContext } from '../context/AppSettingsContext'
-import '@pixi/events'
+import arrowLeft from '../../assets/navigation_left.png'
+import arrowRight from '../../assets/navigation_right.png'
+import { AppSettingsContext } from '../../context/AppSettingsContext'
 import React from 'react'
-import { AppSettingsContextType } from '../shared/types/frameworkTypes'
-import { MoveDirectionEnum, SetAppSettingsActionEnum } from '../shared/enums'
+import { AppSettingsContextType } from '../../shared/types/frameworkTypes'
+import { MoveDirectionEnum, SetAppSettingsActionEnum } from '../../shared/enums'
+// @ts-expect-error: missing type declarations, but works at runtime
+import '@pixi/events'
 
 export function Navigation() {  
   const scale = 0.2
@@ -23,16 +23,6 @@ export function Navigation() {
     [width]
   )
 
-  const moveRight = useCallback(
-    () => setAppSettings({ action: SetAppSettingsActionEnum.MOVE, payload: MoveDirectionEnum.RIGHT }),
-    [],
-  )
-
-  const moveLeft = useCallback(
-    () => setAppSettings({ action: SetAppSettingsActionEnum.MOVE, payload: MoveDirectionEnum.LEFT }),
-    [],
-  )
-
   return (
     <>
       <Sprite
@@ -41,7 +31,7 @@ export function Navigation() {
         image={arrowLeft}
         x={0}
         y={calculateYPosition}
-        pointerdown={moveRight}
+        onclick={() => setAppSettings({ action: SetAppSettingsActionEnum.MOVE, payload: MoveDirectionEnum.LEFT })}
       />
        <Sprite
         scale={{ x: scale, y: scale }}
@@ -49,7 +39,7 @@ export function Navigation() {
         image={arrowRight}
         x={calculateXPositionOfRightArrow}
         y={calculateYPosition}
-        pointerdown={moveLeft}
+        onclick={() => setAppSettings({ action: SetAppSettingsActionEnum.MOVE, payload: MoveDirectionEnum.RIGHT })}
       />
     </>
   )

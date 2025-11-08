@@ -1,9 +1,9 @@
 import React, { useContext } from 'react'
-import { AppSettingsContext } from '../context/AppSettingsContext'
-import { base64ToBlob } from '../shared/helper'
-import { SetAppSettingsActionEnum } from '../shared/enums'
-import { AppSettingsContextType } from '../shared/types/frameworkTypes'
-import { PickableObject } from '../shared/types/gameObjectTypes'
+import { AppSettingsContext } from '../../context/AppSettingsContext'
+import { base64ToBlob } from '../../shared/helper'
+import { SetAppSettingsActionEnum } from '../../shared/enums'
+import { AppSettingsContextType } from '../../shared/types/frameworkTypes'
+import { PickableObject } from '../../shared/types/gameObjectTypes'
 
 
 const Inventory = () => {

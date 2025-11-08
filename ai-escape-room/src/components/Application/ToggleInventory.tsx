@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
-import { AppSettingsContext } from '../context/AppSettingsContext'
-import { AppSettingsContextType } from '../shared/types/frameworkTypes'
-import { SetAppSettingsActionEnum } from '../shared/enums'
+import { AppSettingsContext } from '../../context/AppSettingsContext'
+import { AppSettingsContextType } from '../../shared/types/frameworkTypes'
+import { SetAppSettingsActionEnum } from '../../shared/enums'
 
 const ToggleInventory = () => {
   const { appSettings: { gameInformation: { currentWall } }, setAppSettings } : AppSettingsContextType = useContext(AppSettingsContext)

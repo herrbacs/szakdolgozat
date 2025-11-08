@@ -1,11 +1,12 @@
 /* eslint-disable react/prop-types */
 import { Sprite } from '@pixi/react'
 import { useCallback, useContext, useEffect, useState } from 'react'
-import { AppSettingsContext } from '../context/AppSettingsContext'
-import { AppSettingsContextType, ExitObject } from '../shared/types'
-import { ExitStates, SetAppSettingsAction } from '../shared/enums'
+import { AppSettingsContext } from '../../context/AppSettingsContext'
 import React from 'react'
-import { base64ToBlob } from '../shared/helper'
+import { base64ToBlob } from '../../shared/helper'
+import { SetAppSettingsActionEnum } from '../../shared/enums'
+import { AppSettingsContextType } from '../../shared/types/frameworkTypes'
+import { ExitObject } from '../../shared/types/gameObjectTypes'
 
 // TODO API a végső ajtó méretet ha detektálja, ki lehet számolni hogy mekkora újra méretezésre van szükség
 const Exit = ({ exit: { sprites, keeyId, state } }: { exit: ExitObject }) => {
@@ -29,8 +30,8 @@ const Exit = ({ exit: { sprites, keeyId, state } }: { exit: ExitObject }) => {
         return
       }
 
-      setAppSettings({ action: SetAppSettingsAction.DESTROY_INVENTORY_ITEM, payload: selectedItem })
-      setAppSettings({ action: SetAppSettingsAction.EXIT })
+      setAppSettings({ action: SetAppSettingsActionEnum.DESTROY_INVENTORY_ITEM, payload: selectedItem })
+      setAppSettings({ action: SetAppSettingsActionEnum.EXIT })
 
       console.log('YOU HAVE ESCAPED')
     }, [selectedItem]

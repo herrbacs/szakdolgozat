@@ -1,11 +1,11 @@
 import { Graphics } from '@pixi/react'
 import { useCallback, useContext } from 'react'
-import { AppSettingsContext } from '../context/AppSettingsContext'
+import { AppSettingsContext } from '../../context/AppSettingsContext'
 import React from 'react'
-import Inspectable from './GameObjects/Inspectable/Inspectable'
-import Interactable from './GameObjects/Interactable/Interactable'
-import { AppSettingsContextType } from '../shared/types/frameworkTypes'
-import { PositionEnum } from '../shared/enums'
+import Inspectable from '../GameObjects/Inspectable/Inspectable'
+import Interactable from '../GameObjects/Interactable/Interactable'
+import { AppSettingsContextType } from '../../shared/types/frameworkTypes'
+import { PositionEnum } from '../../shared/enums'
 
 const LeftWall = () => {
   const { appSettings: { screenSettings: { dimension: { height }, perspective }, gameInformation: { walls, indexes : { leftWall } }, }}: AppSettingsContextType = useContext(AppSettingsContext)

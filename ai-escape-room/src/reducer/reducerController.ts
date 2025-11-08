@@ -1,3 +1,4 @@
+import { MoveDirectionEnum } from "../shared/enums";
 import { LevelInformation } from "../shared/types/appTypes";
 import { AppSettings } from "../shared/types/frameworkTypes";
 
@@ -17,38 +18,39 @@ export function loadLevel(state: AppSettings, { walls }: LevelInformation) : App
   }
 }
 
-// export function handleMove(state: AppSettings, payload: MoveDirection) : AppSettings {
-//   let { amountOfWalls, walls } = state.gameInformation
-//   let { currentWall } = state.gameInformation.indexes
+export function handleMove(state: AppSettings, payload: MoveDirectionEnum) : AppSettings {
+  console.log("move")
+  let { amountOfWalls, walls } = state.gameInformation
+  let { currentWall } = state.gameInformation.indexes
 
-//   if (payload === MoveDirection.RIGHT) {
-//     currentWall = (currentWall - 1 + amountOfWalls) % amountOfWalls;
-//   }
+  if (payload === MoveDirectionEnum.LEFT) {
+    currentWall = (currentWall - 1 + amountOfWalls) % amountOfWalls;
+  }
 
-//   if (payload === MoveDirection.LEFT) {
-//     currentWall = (currentWall + 1) % amountOfWalls;
-//   }
+  if (payload === MoveDirectionEnum.RIGHT) {
+    currentWall = (currentWall + 1) % amountOfWalls;
+  }
 
-//   const rightWallIndex = (currentWall + 1) % amountOfWalls;
-//   const leftWallIndex = (currentWall - 1 + amountOfWalls) % amountOfWalls;
+  const rightWallIndex = (currentWall + 1) % amountOfWalls;
+  const leftWallIndex = (currentWall - 1 + amountOfWalls) % amountOfWalls;
 
-//   const currentWallObject = walls[Math.abs(currentWall)]
+  const currentWallObject = walls[Math.abs(currentWall)]
 
-//   const result = { 
-//     ...state,
-//     gameInformation: {
-//       ...state.gameInformation,
-//       currentWall: currentWallObject,
-//       indexes: {
-//         currentWall,
-//         leftWall: leftWallIndex,
-//         rightWall: rightWallIndex
-//       },
-//     }
-//   }
+  const result = { 
+    ...state,
+    gameInformation: {
+      ...state.gameInformation,
+      currentWall: currentWallObject,
+      indexes: {
+        currentWall,
+        leftWall: leftWallIndex,
+        rightWall: rightWallIndex
+      },
+    }
+  }
 
-//   return result
-// }
+  return result
+}
 
 // export function addItemToInventory(state: AppSettings, payload: PickableObject) : AppSettings {
 //   let { gameInformation: { walls, currentWall } } = state

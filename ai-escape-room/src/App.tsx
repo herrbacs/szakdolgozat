@@ -1,11 +1,11 @@
-import { Navigation } from './components/Navigation'
+import { Navigation } from './components/Application/Navigation'
 import { useContext, useEffect, useState } from 'react'
 import { AppSettingsContext } from './context/AppSettingsContext'
 import { Stage } from './Stage'
 import Game from './components/Game'
 import { SetAppSettingsActionEnum } from './shared/enums'
 import React from 'react'
-import AppOverlay from './components/AppOverlay'
+import AppOverlay from './components/Application/AppOverlay'
 import { AppSettingsContextType } from './shared/types/frameworkTypes'
 
 export default function App() {
