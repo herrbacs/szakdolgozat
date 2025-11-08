@@ -1,8 +1,9 @@
-import { SetAppSettingsAction } from "../shared/enums"
-import { AppStoreState, ReducerAction, Wall } from "../shared/types"
-import { exit, addItemToInventory, destroyItemFromInventory, handleMove, loadLevel, selectItemFromInventory, unselectItemFromInventory, toggleInventory, toggleObjetInspecting, destroyPainting } from "./reducerController"
+import { SetAppSettingsActionEnum } from "../shared/enums"
+import { AppSettings, ReducerAction } from "../shared/types/frameworkTypes"
+import { Wall } from "../shared/types/gameObjectTypes"
+import {loadLevel } from "./reducerController"
 
-export const initialState : AppStoreState = {
+export const initialState : AppSettings = {
   screenSettings: {
     dimension: {
       width: 1280,
@@ -30,28 +31,28 @@ export const initialState : AppStoreState = {
   }
 }
 
-export const reducer = (state: AppStoreState, { action, payload }: ReducerAction) => {
+export const reducer = (state: AppSettings, { action, payload }: ReducerAction) => {
   switch (action) {
-    case SetAppSettingsAction.LOAD_LEVEL:
+    case SetAppSettingsActionEnum.LOAD_LEVEL:
       return loadLevel(state, payload)
-    case SetAppSettingsAction.MOVE:
-      return handleMove(state, payload)
-    case SetAppSettingsAction.PICK_UP_ITEM:
-      return addItemToInventory(state, payload)
-    case SetAppSettingsAction.SELECT_ITEM:
-      return selectItemFromInventory(state, payload)
-    case SetAppSettingsAction.UNSELECT_ITEM:
-      return unselectItemFromInventory(state)
-    case SetAppSettingsAction.DESTROY_INVENTORY_ITEM:
-      return destroyItemFromInventory(state, payload)
-    case SetAppSettingsAction.EXIT:
-      return exit(state)
-    case SetAppSettingsAction.TOGGLE_INVENTORY:
-      return toggleInventory(state)
-    case SetAppSettingsAction.TOGGLE_OBJECT_INSPECTING:
-      return toggleObjetInspecting(state, payload)
-    case SetAppSettingsAction.DESTROY_PAINTING:
-      return destroyPainting(state, payload)
+    // case SetAppSettingsActionEnum.MOVE:
+    //   return handleMove(state, payload)
+    // case SetAppSettingsActionEnum.PICK_UP_ITEM:
+    //   return addItemToInventory(state, payload)
+    // case SetAppSettingsActionEnum.SELECT_ITEM:
+    //   return selectItemFromInventory(state, payload)
+    // case SetAppSettingsActionEnum.UNSELECT_ITEM:
+    //   return unselectItemFromInventory(state)
+    // case SetAppSettingsActionEnum.DESTROY_INVENTORY_ITEM:
+    //   return destroyItemFromInventory(state, payload)
+    // case SetAppSettingsActionEnum.EXIT:
+    //   return exit(state)
+    // case SetAppSettingsActionEnum.TOGGLE_INVENTORY:
+    //   return toggleInventory(state)
+    // case SetAppSettingsActionEnum.TOGGLE_OBJECT_INSPECTING:
+    //   return toggleObjetInspecting(state, payload)
+    // case SetAppSettingsActionEnum.DESTROY_PAINTING:
+    //   return destroyPainting(state, payload)
     default:
       return state
   }

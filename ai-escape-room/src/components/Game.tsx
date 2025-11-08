@@ -7,10 +7,10 @@ import Floor from './Floor'
 import LeftWall from './LeftWall'
 import RightWall from './RightWall'
 import React from 'react'
-import { AppSettingsContextType } from '../shared/types'
 import Pickable from './GameObjects/Pickable'
 import Inspectable from './GameObjects/Inspectable/Inspectable'
 import Interactable from './GameObjects/Interactable/Interactable'
+import { AppSettingsContextType } from '../shared/types/frameworkTypes'
 
 const Game = () => {
   const { appSettings: { gameInformation: { currentWall } } } : AppSettingsContextType = useContext(AppSettingsContext)
@@ -23,7 +23,7 @@ const Game = () => {
           <LeftWall/>
           <RightWall/>
           <Floor/>
-          {
+          {/* {
             currentWall.exit && <Exit exit={currentWall?.exit} />
           }
           {
@@ -34,7 +34,7 @@ const Game = () => {
           }
           {
             currentWall.interactables.map((interactable) => <Interactable key={interactable.id} interactable={interactable}/>) 
-          }
+          } */}
         </Wall>
       }  
     </>

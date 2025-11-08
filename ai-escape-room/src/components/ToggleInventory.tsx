@@ -1,10 +1,10 @@
 import React, { useContext } from 'react'
-import { AppStoreState } from '../shared/types'
 import { AppSettingsContext } from '../context/AppSettingsContext'
-import { SetAppSettingsAction } from '../shared/enums'
+import { AppSettingsContextType } from '../shared/types/frameworkTypes'
+import { SetAppSettingsActionEnum } from '../shared/enums'
 
 const ToggleInventory = () => {
-  const { appSettings: { gameInformation: { currentWall } }, setAppSettings } : { appSettings: AppStoreState, setAppSettings: any } = useContext(AppSettingsContext)
+  const { appSettings: { gameInformation: { currentWall } }, setAppSettings } : AppSettingsContextType = useContext(AppSettingsContext)
 
 	const containerStyle: React.CSSProperties  = {position: 'absolute',
 		top: 0,
@@ -23,7 +23,7 @@ const ToggleInventory = () => {
 	}
 
   return (
-    <div style={containerStyle} onClick={() => { setAppSettings({ action: SetAppSettingsAction.TOGGLE_INVENTORY }) }}>
+    <div style={containerStyle} onClick={() => { setAppSettings({ action: SetAppSettingsActionEnum.TOGGLE_INVENTORY }) }}>
 			<span style={{fontWeight: 'bold', fontSize: '2rem', color: '#ffec99'}}>I</span>
 		</div>
   )

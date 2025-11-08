@@ -2,14 +2,12 @@ import { Graphics } from '@pixi/react'
 import { useCallback, useContext } from 'react'
 import { AppSettingsContext } from '../context/AppSettingsContext'
 import React from 'react'
-import { AppSettingsContextType } from '../shared/types'
-import Inspectable from './GameObjects/Inspectable/Inspectable'
-import Interactable from './GameObjects/Interactable/Interactable'
-import { GameDisplayAreas } from '../shared/enums'
+import { AppSettingsContextType } from '../shared/types/frameworkTypes'
+import { PositionEnum } from '../shared/enums'
 
 const RightWall = () => {
   const { appSettings: { screenSettings: { dimension: { width, height }, perspective }, gameInformation: { walls, indexes }}} : AppSettingsContextType = useContext(AppSettingsContext)
-  const { color, inspectables, interactables } = walls[Math.abs(indexes.rightWall)]
+  const { color } = walls[Math.abs(indexes.rightWall)]
 
   const draw = useCallback((g: any) => {
     g.clear()
@@ -31,17 +29,16 @@ const RightWall = () => {
   }, [color, height, perspective, width])
 
   const leftSideGameAreas = [
-    GameDisplayAreas.WT1,
-    GameDisplayAreas.W1,
-    GameDisplayAreas.WB1,
-    GameDisplayAreas.FT1,
-    GameDisplayAreas.F1,
+    PositionEnum.WT1,
+    PositionEnum.W1,
+    PositionEnum.WB1,
+    PositionEnum.F1,
   ]
 
   return (
     <>
         <Graphics draw={draw} />
-        {
+        {/* {
           inspectables
             .filter((inspectable) => leftSideGameAreas.includes(inspectable.position))
             .map((inspectable) => <Inspectable key={inspectable.id} inspectable={inspectable} rightPerspective/>) 
@@ -50,7 +47,7 @@ const RightWall = () => {
           interactables
             .filter((interactable) => leftSideGameAreas.includes(interactable.position))
             .map((interactable) => <Interactable key={interactable.id} interactable={interactable} rightPerspective/>) 
-        }
+        } */}
     </>
   )
 }

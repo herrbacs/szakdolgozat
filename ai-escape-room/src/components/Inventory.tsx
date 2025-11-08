@@ -1,8 +1,9 @@
 import React, { useContext } from 'react'
-import { AppSettingsContextType, PickableObject } from '../shared/types'
 import { AppSettingsContext } from '../context/AppSettingsContext'
 import { base64ToBlob } from '../shared/helper'
-import { SetAppSettingsAction } from '../shared/enums'
+import { SetAppSettingsActionEnum } from '../shared/enums'
+import { AppSettingsContextType } from '../shared/types/frameworkTypes'
+import { PickableObject } from '../shared/types/gameObjectTypes'
 
 
 const Inventory = () => {
@@ -16,10 +17,10 @@ const Inventory = () => {
 
 	const selectItem = (item: PickableObject) => {
 		if (selectedItem?.id == item.id) {
-			setAppSettings({ action: SetAppSettingsAction.UNSELECT_ITEM })
+			setAppSettings({ action: SetAppSettingsActionEnum.UNSELECT_ITEM })
 			return
 		}
-		setAppSettings({ action: SetAppSettingsAction.SELECT_ITEM, payload: item })
+		setAppSettings({ action: SetAppSettingsActionEnum.SELECT_ITEM, payload: item })
 	}
 
 	const items = []
@@ -37,7 +38,7 @@ const Inventory = () => {
 				style={{ backgroundColor: (selectedItem?.id === inventory[i].id ? '#ffec99' : '#ffffff'), width: '4.5rem', height: '4.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center'}}
 				onClick={() => selectItem(inventory[i])}
 			>
-				<img style={{display: 'block', maxHeight: '90%', maxWidth: '90%'}} src={URL.createObjectURL(base64ToBlob(inventory[i].sprite.blob, 'image/png'))} alt={inventory[i].sprite.name}></img>
+				{/* <img style={{display: 'block', maxHeight: '90%', maxWidth: '90%'}} src={URL.createObjectURL(base64ToBlob(inventory[i].sprite.blob, 'image/png'))} alt={inventory[i].sprite.name}></img> */}
 			</div>
 		))
 	}

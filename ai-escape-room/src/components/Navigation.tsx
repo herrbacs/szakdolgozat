@@ -5,9 +5,9 @@ import arrowLeft from '../assets/navigation_left.png'
 import arrowRight from '../assets/navigation_right.png'
 import { AppSettingsContext } from '../context/AppSettingsContext'
 import '@pixi/events'
-import { MoveDirection, SetAppSettingsAction } from '../shared/enums'
 import React from 'react'
-import { AppSettingsContextType } from '../shared/types'
+import { AppSettingsContextType } from '../shared/types/frameworkTypes'
+import { MoveDirectionEnum, SetAppSettingsActionEnum } from '../shared/enums'
 
 export function Navigation() {  
   const scale = 0.2
@@ -24,12 +24,12 @@ export function Navigation() {
   )
 
   const moveRight = useCallback(
-    () => setAppSettings({ action: SetAppSettingsAction.MOVE, payload: MoveDirection.RIGHT }),
+    () => setAppSettings({ action: SetAppSettingsActionEnum.MOVE, payload: MoveDirectionEnum.RIGHT }),
     [],
   )
 
   const moveLeft = useCallback(
-    () => setAppSettings({ action: SetAppSettingsAction.MOVE, payload: MoveDirection.LEFT }),
+    () => setAppSettings({ action: SetAppSettingsActionEnum.MOVE, payload: MoveDirectionEnum.LEFT }),
     [],
   )
 

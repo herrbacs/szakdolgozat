@@ -1,8 +1,8 @@
 import { Graphics } from '@pixi/react'
 import { useCallback, useContext } from 'react'
 import { AppSettingsContext } from '../context/AppSettingsContext'
-import { AppSettingsContextType, AppStoreState } from '../shared/types'
 import React from 'react'
+import { AppSettingsContextType } from '../shared/types/frameworkTypes'
 
 const Floor = () => {
     const { appSettings: { screenSettings: { dimension : { width, height }, perspective } }} : AppSettingsContextType = useContext(AppSettingsContext)
