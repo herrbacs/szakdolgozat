@@ -1,0 +1,75 @@
+import React, { useCallback, useMemo } from 'react'
+import { Graphics } from '@pixi/react'
+
+export enum TriangleDirection {
+  UP = 'UP',
+  DOWN = 'DOWN',
+  LEFT = 'LEFT',
+  RIGHT = 'RIGHT',
+  UP_LEFT = 'UP_LEFT',
+  UP_RIGHT = 'UP_RIGHT',
+  DOWN_LEFT = 'DOWN_LEFT',
+  DOWN_RIGHT = 'DOWN_RIGHT'
+}
+
+type TriangleProps = {
+  x?: number
+  y?: number
+  size?: number
+  color?: number
+  direction?: TriangleDirection
+  onClick?: () => void
+}
+
+export function Triangle({
+  x = 0,
+  y = 0,
+  size = 25,
+  color = 0xffffff,
+  direction = TriangleDirection.UP,
+  onClick = () => {}
+}: TriangleProps) {
+
+  const rotation = useMemo(() => {
+    switch (direction) {
+      case TriangleDirection.UP: return 0
+      case TriangleDirection.RIGHT: return Math.PI / 2
+      case TriangleDirection.DOWN: return Math.PI
+      case TriangleDirection.LEFT: return -Math.PI / 2
+      case TriangleDirection.UP_RIGHT: return Math.PI / 4
+      case TriangleDirection.UP_LEFT: return -Math.PI / 4
+      case TriangleDirection.DOWN_RIGHT: return (3 * Math.PI) / 4
+      case TriangleDirection.DOWN_LEFT: return (-3 * Math.PI) / 4
+      default: return 0
+    }
+  }, [direction])
+
+  const drawTriangle = useCallback((g: any) => {
+    g.clear()
+    g.beginFill(color)
+    g.lineStyle(1, color, 1)
+
+    const halfBase = size / 2
+    const height = (Math.sqrt(3) / 2) * size
+
+    // Háromszög középre rajzolva (pivot a középpontban)
+    g.moveTo(0, -height / 2)            // felső csúcs
+    g.lineTo(-halfBase, height / 2)     // bal alsó csúcs
+    g.lineTo(halfBase, height / 2)      // jobb alsó csúcs
+    g.closePath()
+
+    g.endFill()
+  }, [size, color])
+
+  return (
+    <Graphics
+      draw={drawTriangle}
+      x={x}
+      y={y}
+      rotation={rotation}
+      pivot={{ x: 0, y: 0 }}
+      interactive
+      pointertap={onClick} 
+    />
+  )
+}

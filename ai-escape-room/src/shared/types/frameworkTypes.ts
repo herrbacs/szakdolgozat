@@ -9,7 +9,6 @@ export type AppSettingsContextType = {
 
 export type AppSettings = {
   screenSettings: ScreenSettings,
-  navigation: Dimension,
   gameInformation: GameInformation,
 }
 
