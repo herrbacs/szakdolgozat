@@ -1,9 +1,10 @@
 from enum import Enum
 
-class GameObjectType(str, Enum):
+class GameObjectTypeEnum(str, Enum):
     PICKABLE = "PICKABLE"
     INSPECTABLE = "INSPECTABLE"
     CONTAINER = "CONTAINER"
+    MOVALBE_COVER = "MOVALBE_COVER"
 
 class LockTypeEnum(str, Enum):
     KEY = "KEY"

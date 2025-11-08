@@ -4,12 +4,12 @@ from typing import Union
 import uuid
 
 from .enums import *
-from .helpers import *
+from .base_models import *
 
 @dataclass
-class GameObject:
-    Type: GameObjectType
-    Object: Union["Inspectable", "Pickable", "Container"]
+class DynamicGameObject:
+    Type: GameObjectTypeEnum
+    Object: Union["Inspectable", "Pickable", "Container", "MovableCover"]
 
 @dataclass
 class Pickable:
@@ -17,28 +17,31 @@ class Pickable:
     Position: PositionEnum
     Sprite: Sprite
     Reusable: bool
-    Data: Data
+    InspectionData: InspectionData
 
 @dataclass
 class Inspectable:
     Id: uuid.UUID
     Position: PositionEnum
     Sprite: Sprite
-    Data: Data
+    InspectionData: InspectionData
 
 @dataclass
 class Container:
     Id: uuid.UUID
     Position: PositionEnum
     Sprite: Sprite
-    Content: List[GameObject]
+    Content: List[DynamicGameObject]
+    InspectionData: InspectionData
     Lock: Optional[Lock] = None
 
 @dataclass
 class MovableCover:
     Id: uuid.UUID
+    Position: PositionEnum
     Sprite: Sprite
-    Content: GameObject
+    Content: DynamicGameObject
+    InspectionData: InspectionData
 
 @dataclass
 class Exit:

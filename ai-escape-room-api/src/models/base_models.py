@@ -26,7 +26,7 @@ class SpriteSet:
     Active: Sprite
 
 @dataclass
-class Data:
+class InspectionData:
     Appellation: str
     Information: str
 
