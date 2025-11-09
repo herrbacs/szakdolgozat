@@ -1,5 +1,7 @@
-import React, { useCallback, useMemo } from 'react'
+// @ts-expect-error: missing type declarations, but works at runtime
 import { Graphics } from '@pixi/react'
+import React, { useCallback, useMemo } from 'react'
+import * as PIXI from 'pixi.js'
 
 export enum TriangleDirection {
   UP = 'UP',
@@ -44,7 +46,7 @@ export function Triangle({
     }
   }, [direction])
 
-  const drawTriangle = useCallback((g: any) => {
+  const drawTriangle = useCallback((g: PIXI.Graphics) => {
     g.clear()
     g.beginFill(color)
     g.lineStyle(1, color, 1)
@@ -52,10 +54,9 @@ export function Triangle({
     const halfBase = size / 2
     const height = (Math.sqrt(3) / 2) * size
 
-    // Háromszög középre rajzolva (pivot a középpontban)
-    g.moveTo(0, -height / 2)            // felső csúcs
-    g.lineTo(-halfBase, height / 2)     // bal alsó csúcs
-    g.lineTo(halfBase, height / 2)      // jobb alsó csúcs
+    g.moveTo(0, -height / 2)
+    g.lineTo(-halfBase, height / 2)
+    g.lineTo(halfBase, height / 2)
     g.closePath()
 
     g.endFill()

@@ -1,3 +1,4 @@
+// @ts-expect-error: missing type declarations, but works at runtime
 import { Graphics } from '@pixi/react'
 import React, { useCallback, useContext } from 'react'
 import { AppSettingsContext } from '../../context/AppSettingsContext'
