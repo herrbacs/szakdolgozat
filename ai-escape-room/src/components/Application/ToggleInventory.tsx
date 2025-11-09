@@ -1,31 +1,48 @@
-import React, { useContext } from 'react'
+// @ts-expect-error: missing type declarations, but works at runtime
+import { Graphics, Text } from '@pixi/react'
+import React, { useContext, useCallback, useMemo } from 'react'
 import { AppSettingsContext } from '../../context/AppSettingsContext'
 import { AppSettingsContextType } from '../../shared/types/frameworkTypes'
 import { SetAppSettingsActionEnum } from '../../shared/enums'
 
 const ToggleInventory = () => {
-  const { appSettings: { gameInformation: { currentWall } }, setAppSettings } : AppSettingsContextType = useContext(AppSettingsContext)
+  const padding = 40
+  const { appSettings: { screenSettings: { dimension: { width } } }, setAppSettings }: AppSettingsContextType = useContext(AppSettingsContext)
 
-	const containerStyle: React.CSSProperties  = {position: 'absolute',
-		top: 0,
-		right: 0,
-		backgroundColor: '#c2c2c2',
-		padding: '1rem',
-		margin: '1rem',
-		display: 'flex',
-		alignItems: 'center',
-		justifyContent: 'center',
-		width: '2rem',
-		height: '2rem',
-		 borderRadius: '50%',
-		cursor: 'pointer',
-		border: '2px solid #FFFF'
-	}
+  const drawCircle = useCallback((g: any) => {
+    g.clear()
+    g.beginFill(0xc2c2c2)
+    g.lineStyle(3, 0xFFFFFF)
+    g.drawCircle(0, 0, 32)
+    g.endFill()
+  }, [])
+
+  const calculateX = useMemo(
+    () => (width - padding),
+    [width]
+  )
 
   return (
-    <div style={containerStyle} onClick={() => { setAppSettings({ action: SetAppSettingsActionEnum.TOGGLE_INVENTORY }) }}>
-			<span style={{fontWeight: 'bold', fontSize: '2rem', color: '#ffec99'}}>I</span>
-		</div>
+    <Graphics
+      x={calculateX}
+      y={padding}
+      interactive={true}
+      buttonMode={true}
+      pointertap={() => setAppSettings({ action: SetAppSettingsActionEnum.TOGGLE_INVENTORY })}
+      draw={drawCircle}
+    >
+      <Text
+        text="I"
+        anchor={0.5}
+        x={0}
+        y={0}
+        style={{
+          fill: 0xffec99,
+          fontSize: 32,
+          fontWeight: 'bold'
+        }}
+      />
+    </Graphics>
   )
 }
 

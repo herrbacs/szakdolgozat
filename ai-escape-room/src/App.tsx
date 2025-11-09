@@ -7,6 +7,7 @@ import { SetAppSettingsActionEnum } from './shared/enums'
 import React from 'react'
 import AppOverlay from './components/Application/AppOverlay'
 import { AppSettingsContextType } from './shared/types/frameworkTypes'
+import ToggleInventory from './components/Application/ToggleInventory'
 
 export default function App() {
   const { appSettings: { screenSettings: { dimension: { width, height } } }, setAppSettings } : AppSettingsContextType = useContext(AppSettingsContext)
@@ -42,7 +43,9 @@ export default function App() {
         <Stage width={width} height={height} options={{ background: 0xeef1f5 }}>
           <Game/>
           <Navigation/>
+          <ToggleInventory />
         </Stage>
+        
         <AppOverlay/>
       </div>
       </>

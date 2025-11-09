@@ -19,7 +19,6 @@ export function loadLevel(state: AppSettings, { walls }: LevelInformation) : App
 }
 
 export function handleMove(state: AppSettings, payload: MoveDirectionEnum) : AppSettings {
-  console.log("move")
   let { amountOfWalls, walls } = state.gameInformation
   let { currentWall } = state.gameInformation.indexes
 
@@ -50,6 +49,16 @@ export function handleMove(state: AppSettings, payload: MoveDirectionEnum) : App
   }
 
   return result
+}
+
+export function toggleInventory(state: AppSettings) : AppSettings {
+  return {
+		...state,
+    gameInformation: {
+      ...state.gameInformation,
+      showInventory: !state.gameInformation.showInventory
+    }
+	}
 }
 
 // export function addItemToInventory(state: AppSettings, payload: PickableObject) : AppSettings {
@@ -120,16 +129,6 @@ export function handleMove(state: AppSettings, payload: MoveDirectionEnum) : App
 //     gameInformation: {
 //       ...state.gameInformation,
 //       walls
-//     }
-// 	}
-// }
-
-// export function toggleInventory(state: AppSettings) : AppSettings {
-//   return {
-// 		...state,
-//     gameInformation: {
-//       ...state.gameInformation,
-//       showInventory: !state.gameInformation.showInventory
 //     }
 // 	}
 // }
