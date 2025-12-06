@@ -1,13 +1,12 @@
-from src.levels.level_0 import level_0
-from ..services.helpers import dataclass_to_dict
+import os
+import json
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 def generate_level_information():
-    level_information = level_0()
-
-    # generate_perspective_of_images(level_information)
-    # generate_blob_to_images(level_information)
-
-    return dataclass_to_dict(level_information)
+    file_path = os.path.join(BASE_DIR, "level.json")
+    with open(file_path, "r", encoding="utf-8") as f:
+        return json.load(f)
 
 # def generate_perspective_of_images(level_information):
 #     for wall in level_information["walls"]:    

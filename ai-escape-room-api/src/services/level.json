@@ -1,0 +1,83 @@
+{
+    "story": "You awaken in a storm-battered lighthouse keeper's study, the wind rattling the shutters and salt air seeping through. The lantern-room door is sealed with a brass key lock, and the room's maps, logs, and a flickering lamp hint that a hidden key lies somewhere among them. Your goal is to recover the key and escape before the sea floods the stairs, as the house creaks with memory and time.",
+    "walls": [
+        {
+            "id": "3a72b5f6-1d2c-4c3b-a9f2-e1d8c3b6f1a9",
+            "color": "#1E3A56",
+            "exit": {
+                "lock": {
+                    "type": "KEY",
+                    "activator": "a1b2c3d4-e5f6-7081-9202-3a4b5c6d7e8f"
+                }
+            },
+            "pickables": [
+                {
+                    "Id": "a1b2c3d4-e5f6-7081-9202-3a4b5c6d7e8f",
+                    "Position": "F2",
+                    "Reusable": true,
+                    "Data": {
+                        "Appellation": "Brass Key",
+                        "Information": "A small brass key with a nautical motif; the inscription '42' is barely legible."
+                    }
+                }
+            ],
+            "inspectables": [],
+            "containers": [],
+            "movablecovers": []
+        },
+        {
+            "id": "7b9e4a2c-2d5f-4a63-8b3a-c9f0a4b1d2e3",
+            "color": "#2E5A8A",
+            "exit": null,
+            "pickables": [],
+            "inspectables": [
+                {
+                    "Id": "c9a8b7d6-5e4f-3a2b-1c0d-2e3f4a5b6c7d",
+                    "Position": "WT2",
+                    "Data": {
+                        "Appellation": "Storm Log Page",
+                        "Information": "A notation in a logbook hints: 'When the beacon glows, search beneath the map near the lamp.'"
+                    }
+                }
+            ],
+            "containers": [],
+            "movablecovers": []
+        },
+        {
+            "id": "1f6a9c3b-4a2f-5b7d-9e8a-0b1c2d3e4f50",
+            "color": "#3A2D1F",
+            "exit": null,
+            "pickables": [],
+            "inspectables": [
+                {
+                    "Id": "f2e4d6c8-0a1b-2c3d-4e5f-6a7b8c9d0e1f",
+                    "Position": "W2",
+                    "Data": {
+                        "Appellation": "Rope Knot Note",
+                        "Information": "A faded note tied to a rope knot reads: 'The path lies where the sea and script meet.'"
+                    }
+                }
+            ],
+            "containers": [],
+            "movablecovers": []
+        },
+        {
+            "id": "e2d9c3b4-5a6f-7e8d-9b0f-123456789abc",
+            "color": "#5A5A5A",
+            "exit": null,
+            "pickables": [],
+            "inspectables": [
+                {
+                    "Id": "d1c2b3a4-5e6f-7a8b-9c0d-1e2f3a4b5c6d",
+                    "Position": "WB1",
+                    "Data": {
+                        "Appellation": "Compass Rose Diagram",
+                        "Information": "A weathered compass rose shows faint scratch marks aligning with the lamp."
+                    }
+                }
+            ],
+            "containers": [],
+            "movablecovers": []
+        }
+    ]
+}

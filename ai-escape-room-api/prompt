@@ -1,0 +1,88 @@
+Generate ONLY valid JSON.
+Do not explain anything.
+Output must be a single JSON object.
+
+Additional Rules for Story and Escape Room Logic:
+- Generate a short story (~2-4 sentences) that defines the setting, goal and atmosphere of the escape room.
+- All item "Information" must relate to the story logically.
+- The exit lock must be solvable using at least one Pickable item.
+- If lock type = PASSWORD, ensure that the password can be logically discovered from one or more item descriptions.
+- If lock type = KEY, generate exactly one Pickable object of type "key" whose Id matches the exit activator.
+- The room must contain meaningful interactions: items provide hints, lore or puzzle-relevant information.
+- The environment should feel coherent and thematic (e.g. abandoned lab, medieval dungeon, detective office).
+- Use creative but consistent narrative details. No contradictions.
+- Items should not be random; each must have a reason to exist in the story.
+- A level has exactly 4 walls
+
+Item placement logic:
+- Only place Pickable objects on a wall or floor if they serve a purpose in the story or puzzle.
+- An item MUST NOT be placed unless:
+    1) it provides narrative information, OR
+    2) it is required for solving the room.
+- If an object has no clear use or story relevance, do not include it.
+- Collections on walls may remain empty if no meaningful item belongs there.
+- Avoid decorative or meaningless objects.
+
+Final output format:
+{
+  "story": string,
+  "walls": [{...}]
+}
+
+Wall object:
+  Properties
+    - id: GUID,
+    - color: "#RRGGBB",
+    - exit: null | Exit,
+    - pickables: array<Pickable>,
+    - inspectables: array<Inspectable>,
+    - containers: empty array,
+    - movablecovers: empty array
+
+Exit object:
+  Properties
+    - lock: Lock
+
+Lock object:
+  Properties
+    - type: "PASSWORD" | "KEY",
+    - activator: "string"
+    - when type is key, the activator is the id of key
+
+Pickable object:
+  Properties
+    - Id: GUID
+    - Position: POSITION
+    - Reusable: true | false
+    - Data: Data
+  Usage guidelines:
+    - Pickables must have a gameplay purpose.
+    - Use for keys, clues, tools or story-related items.
+    - Avoid placing Pickables without a reason.
+
+Inspectable object:
+  Properties
+    - Id: GUID
+    - Position: POSITION
+    - Data: Data
+  Usage guidelines:
+    - Inspectables are stationary clue objects.
+    - They provide story lore, hints or puzzle parts.
+    - Should not be collectible.
+
+Data object:
+  Properties
+    - Appellation: string
+    - Information: string
+
+POSITION enum:
+  - WT1, WT2, WT3   // wall top
+  - W1,  W2,  W3    // wall middle
+  - WB1, WB2, WB3   // wall bottom
+  - F1, F2, F3      // floor
+
+Placement rules:
+ - Index meaning: 1 = left side, 2 = center, 3 = right side.
+ - Floor positions (F1-F3) are recommended for small items like keys, tools, handheld objects.
+ - Wall positions are mainly used for notes, codes, drawings, decorations or attached objects.
+ - Choose realistic placement based on item usage and story context.
