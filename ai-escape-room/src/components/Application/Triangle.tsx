@@ -1,7 +1,5 @@
-// @ts-expect-error: missing type declarations, but works at runtime
-import { Graphics } from '@pixi/react'
+import { Graphics, GraphicsContext } from 'pixi.js'
 import React, { useCallback, useMemo } from 'react'
-import * as PIXI from 'pixi.js'
 
 export enum TriangleDirection {
   UP = 'UP',
@@ -46,31 +44,30 @@ export function Triangle({
     }
   }, [direction])
 
-  const drawTriangle = useCallback((g: PIXI.Graphics) => {
-    g.clear()
-    g.beginFill(color)
-    g.lineStyle(1, color, 1)
+  const drawTriangle = useCallback((g: Graphics) => {
+  const ctx = g.context as GraphicsContext
 
-    const halfBase = size / 2
-    const height = (Math.sqrt(3) / 2) * size
+  const halfBase = size / 2
+  const height = (Math.sqrt(3) / 2) * size
 
-    g.moveTo(0, -height / 2)
-    g.lineTo(-halfBase, height / 2)
-    g.lineTo(halfBase, height / 2)
-    g.closePath()
-
-    g.endFill()
+  ctx.clear()
+     .moveTo(0, -height / 2)
+     .lineTo(-halfBase, height / 2)
+     .lineTo(halfBase, height / 2)
+     .closePath()
+     .fill({ color })
+     .stroke({ color, width: 1 })
   }, [size, color])
 
   return (
-    <Graphics
+    <pixiGraphics
       draw={drawTriangle}
       x={x}
       y={y}
       rotation={rotation}
-      pivot={{ x: 0, y: 0 }}
-      interactive
-      pointertap={onClick} 
+      eventMode="static"
+      cursor="pointer"
+      onPointerDown={onClick}
     />
   )
 }

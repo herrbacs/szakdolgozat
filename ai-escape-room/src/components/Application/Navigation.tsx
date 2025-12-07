@@ -3,8 +3,6 @@ import { AppSettingsContext } from '../../context/AppSettingsContext'
 import React from 'react'
 import { AppSettingsContextType } from '../../shared/types/frameworkTypes'
 import { MoveDirectionEnum, SetAppSettingsActionEnum } from '../../shared/enums'
-// @ts-expect-error: missing type declarations, but works at runtime
-import '@pixi/events'
 import { Triangle, TriangleDirection } from './Triangle'
 
 export function Navigation() {  

@@ -15,6 +15,7 @@ import {
     Text,
 } from 'pixi.js';
 import { SetAppSettingsActionEnum } from './shared/enums';
+import { Navigation } from './components/Application/Navigation';
 
 extend({
     Container,
@@ -51,17 +52,18 @@ export default function App() {
   }, []);
 
   return levelLoaded
-  ? (
-     <div 
-        ref={parentRef} 
-        style={{position: 'relative', width: `${width}px`, overflow: 'hidden'}}
-      >
-      <Application resizeTo={parentRef}>
-          <BunnySprite/>
-          <ToggleInventory/>
-      </Application>
-      <AppOverlay/>
-    </div>
-  ) 
-  : <h1>Loading Level</h1>
+    ? (
+      <div 
+          ref={parentRef} 
+          style={{position: 'relative', width: `${width}px`, height: `${height}px`, overflow: 'hidden'}}
+        >
+        <Application resizeTo={parentRef}>
+            <BunnySprite/>
+            <Navigation/>
+            <ToggleInventory/>
+        </Application>
+        <AppOverlay/>
+      </div>
+    ) 
+    : <h1>Loading Level</h1>
 }
