@@ -1,8 +1,8 @@
 
+import React from 'react'
 import { Assets, PointData, Texture } from 'pixi.js'
 import { useCallback, useContext, useEffect, useState } from 'react'
 import { AppSettingsContext } from '../../context/AppSettingsContext'
-import React from 'react'
 import { LockTypeEnum, SetAppSettingsActionEnum } from '../../shared/enums'
 import { AppSettingsContextType } from '../../shared/types/frameworkTypes'
 import { ExitObject } from '../../shared/types/gameObjectTypes'

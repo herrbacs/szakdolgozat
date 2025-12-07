@@ -24,9 +24,7 @@ const GameScene = () => {
           <RightWall />
           <Floor />
           {currentWall.exit && <Exit exit={currentWall?.exit} />}
-          {/* {
-            currentWall.pickables.map((pickable) => <Pickable key={pickable.id} pickable={pickable}/>) 
-          } */}
+          {currentWall.pickables.map((pickable) => <Pickable key={pickable.id} pickable={pickable}/>)}
           {/* {
             currentWall.inspectables.map((inspectable) => <Inspectable key={inspectable.id} inspectable={inspectable}/>) 
           } */}

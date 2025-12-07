@@ -51,10 +51,10 @@ Lock object:
 
 Pickable object:
   Properties
-    - Id: GUID
-    - Position: POSITION
-    - Reusable: true | false
-    - Data: Data
+    - id: GUID
+    - position: POSITION
+    - reusable: true | false
+    - inspectionData: InspectionData
   Usage guidelines:
     - Pickables must have a gameplay purpose.
     - Use for keys, clues, tools or story-related items.
@@ -62,18 +62,18 @@ Pickable object:
 
 Inspectable object:
   Properties
-    - Id: GUID
-    - Position: POSITION
-    - Data: Data
+    - id: GUID
+    - position: POSITION
+    - inspectionData: InspectionData
   Usage guidelines:
     - Inspectables are stationary clue objects.
     - They provide story lore, hints or puzzle parts.
     - Should not be collectible.
 
-Data object:
+InspectionData object:
   Properties
-    - Appellation: string
-    - Information: string
+    - appellation: string
+    - information: string
 
 POSITION enum:
   - WT1, WT2, WT3   // wall top

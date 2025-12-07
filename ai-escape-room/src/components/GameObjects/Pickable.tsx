@@ -1,51 +1,66 @@
-/* eslint-disable react/prop-types */
-import { Sprite } from '@pixi/react'
-import { useCallback, useContext, useEffect, useState } from 'react'
-import { AppSettingsContext } from '../../context/AppSettingsContext'
-import { setPositionOn } from '../../shared/positionCalculator'
-import { GameDisplayAreas, InteractableObjectTypes, SetAppSettingsAction } from '../../shared/enums'
-import { AppSettingsContextType, Coordinate, PickableObject } from '../../shared/types'
-import React from 'react'
-import { base64ToBlob } from '../../shared/helper'
+import React, { useCallback, useContext, useEffect, useState } from "react"
+import { AppSettingsContextType, Coordinate } from "../../shared/types/frameworkTypes"
+import { PickableObject } from "../../shared/types/gameObjectTypes"
+import { SetAppSettingsActionEnum } from "../../shared/enums"
+import { setPositionOn } from "../../shared/positionCalculator"
+import { AppSettingsContext } from "../../context/AppSettingsContext"
+import { Graphics, GraphicsContext, PointData, Texture } from "pixi.js"
 
-type PickableComponentType = {
+type PickableComponentTypeProperties = {
 	pickable: PickableObject,
 }
 
-const Pickable = ({ pickable }: PickableComponentType) => {
+const Pickable = ({ pickable: { inspectionData: { appellation }, position } }: PickableComponentTypeProperties) => {
 	const scale = 0.1
 	const { appSettings: { screenSettings }, setAppSettings } : AppSettingsContextType = useContext(AppSettingsContext)
 	const [pickedUp, setPickedUp] = useState<Boolean>(false)
-	const [pickableSpirte, setPickableSpirte] = useState<string>('')
-	const [spriteCoordinate, setSpriteCoordinate] = useState<Coordinate>({} as Coordinate)
+	const [spriteCoordinate, setSpriteCoordinate] = useState<PointData>({ x: 0, y: 0 })
   
   const handlePickUp = useCallback(() => {
-		setAppSettings({ action: SetAppSettingsAction.PICK_UP_ITEM , payload: pickable });
-		setPickedUp(true)
+		// setAppSettings({ action: SetAppSettingsActionEnum.PICK_UP_ITEM , payload: pickable });
+		// setPickedUp(true)
 	}, [])
+
+  const drawCircle = useCallback((g: GraphicsContext) => {
+    g.circle(0, 0, 32)
+      .fill({ color: 0xc2c2c2 })
+      .stroke({ width: 3, color: 0xFFFFFF })
+  }, [])
 
   useEffect(() => {
-		setPickableSpirte(URL.createObjectURL(base64ToBlob(pickable.sprite.blob, 'image/png')))
-		setSpriteCoordinate(setPositionOn({ area: GameDisplayAreas.FT2, screenSettings, sprite: pickable.sprite, scale, perspective: false}))
+    console.log(position)
+		setSpriteCoordinate(
+      setPositionOn({ 
+        area: position,
+        screenSettings,
+        scale,
+        perspective: false
+      })
+    )
 	}, [])
 
-  return (
-		<>
-			{
-				pickableSpirte && !pickedUp &&
-				<Sprite
-					interactive
-					onmousedown={handlePickUp}
-					image={pickableSpirte}
-					scale={{ x: scale, y: scale }}
-					x={spriteCoordinate.X}
-					y={spriteCoordinate.Y}
-					anchor={[0.5, 0.5]}
-					rotation={Math.floor(Math.random() * 10)}
-				/>
-			}
-		</>
-  )
+  return !pickedUp
+    ? <pixiGraphics
+          x={spriteCoordinate.x}
+          y={spriteCoordinate.y}
+          draw={(g: Graphics) => drawCircle(g.context)}
+          eventMode="static"
+          cursor="pointer"
+          onPointerTap={handlePickUp}
+        >
+          <pixiText
+            text={appellation}
+            anchor={0.5}
+            x={0}
+            y={0}
+            style={{
+              fill: 0xffec99,
+              fontSize: 32,
+              fontWeight: 'bold'
+            }}
+          />
+        </pixiGraphics>
+    : null
 }
 
 export default Pickable

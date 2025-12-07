@@ -22,7 +22,7 @@ export type GameInformation = {
 export type PositionCalculatorInput = {
   area: PositionEnum,
   screenSettings: ScreenSettings,
-  sprite: Sprite,
+  // sprite: Sprite,
   scale: number,
   perspective: boolean
 };

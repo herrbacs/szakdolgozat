@@ -1,35 +1,48 @@
-import { Sprite } from "pixi.js";
+import { PointData, Sprite } from "pixi.js";
 import { PositionEnum } from "./enums";
 import { PositionCalculatorInput, ScreenSettings } from "./types/appTypes";
-import { Coordinate } from "./types/frameworkTypes";
 
-export function setPositionOn({area, screenSettings, sprite, scale, perspective }: PositionCalculatorInput) : Coordinate {
-  
+export function setPositionOn({area, screenSettings, scale, perspective }: PositionCalculatorInput) : PointData {
   switch (area) {
     // WT
-    // case PositionEnum.WT1:
-    //   return coordinatesOfWT1(screenSettings, sprite, scale, perspective);
-    // case PositionEnum.WT2:
-    //   return coordinatesOfWT2(screenSettings, sprite, scale);
-    // case PositionEnum.WT3:
-    //   return coordinatesOfWT3(screenSettings, sprite, scale, perspective);
+    case PositionEnum.WT1:
+      return getWT1(screenSettings, scale, perspective);
+    case PositionEnum.WT2:
+      return getWT2(screenSettings, scale);
+    case PositionEnum.WT3:
+      return getWT3(screenSettings, scale, perspective);
+
     // // W
-    // case PositionEnum.W1:
-    //   return coordinatesOfW1(screenSettings, sprite, scale, perspective);
-    // case PositionEnum.W2:
-    //   return coordinatesOfW2(screenSettings, sprite, scale);
-    // case PositionEnum.W3:
-    //   return coordinatesOfW3(screenSettings, sprite, scale, perspective);
-    // // FT
-    // case PositionEnum.FT2:
-    //   return coordinatesOfFT2(screenSettings, sprite, scale);
+    case PositionEnum.W1:
+      return getW1(screenSettings, scale, perspective);
+    case PositionEnum.W2:
+      return getW2(screenSettings, scale);
+    case PositionEnum.W3:
+      return getW3(screenSettings, scale, perspective);
+
+    // WB
+    case PositionEnum.WB1:
+      return getWB1(screenSettings, scale, perspective);
+    case PositionEnum.WB2:
+      return getWB2(screenSettings, scale);
+    case PositionEnum.WB3:
+      return getWB3(screenSettings, scale, perspective);
+
+    // WB
+    case PositionEnum.F1:
+      return getF1(screenSettings, scale, perspective);
+    case PositionEnum.F2:
+      return getF2(screenSettings, scale);
+    case PositionEnum.F3:
+      return getF3(screenSettings, scale, perspective);
+
     default:
-      return { X: 0, Y: 0 }
+      return { x: 0, y: 0 }
   }
 }
 
 // WT -----------------------------------------------------------
-// function coordinatesOfWT1(
+// function getWT1(
 //   { perspective, dimension: { width, height }} : ScreenSettings,
 //   sprite : Sprite,
 //   scale: number,
@@ -51,7 +64,7 @@ export function setPositionOn({area, screenSettings, sprite, scale, perspective 
 //   }
 // }
 
-// function coordinatesOfWT2(
+// function getWT2(
 //   { perspective, dimension: { width }} : ScreenSettings,
 //   sprite : Sprite,
 //   scale: number
@@ -63,7 +76,7 @@ export function setPositionOn({area, screenSettings, sprite, scale, perspective 
 //   }
 // }
 
-// function coordinatesOfWT3(
+// function getWT3(
 //   { perspective, dimension: { width }} : ScreenSettings,
 //   sprite : Sprite,
 //   scale: number,
@@ -77,7 +90,7 @@ export function setPositionOn({area, screenSettings, sprite, scale, perspective 
 // }
 
 // // W -----------------------------------------------------------
-// function coordinatesOfW1(
+// function getW1(
 //   { perspective, dimension: { width, height }} : ScreenSettings,
 //   sprite : Sprite,
 //   scale: number,
@@ -98,7 +111,7 @@ export function setPositionOn({area, screenSettings, sprite, scale, perspective 
 //   }
 // }
 
-// function coordinatesOfW2(
+// function getW2(
 //   { perspective, dimension: { width, height }} : ScreenSettings,
 //   sprite : Sprite,
 //   scale: number,
@@ -111,7 +124,7 @@ export function setPositionOn({area, screenSettings, sprite, scale, perspective 
 //   }
 // }
 
-// function coordinatesOfW3(
+// function getW3(
 //   { perspective, dimension: { width, height }} : ScreenSettings,
 //   sprite : Sprite,
 //   scale: number,
@@ -133,7 +146,7 @@ export function setPositionOn({area, screenSettings, sprite, scale, perspective 
 // }
 
 // // FT -----------------------------------------------------------
-// function coordinatesOfFT2(
+// function getFT2(
 //   { perspective, dimension: { width, height }} : ScreenSettings,
 //   sprite : Sprite,
 //   scale: number

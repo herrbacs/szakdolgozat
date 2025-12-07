@@ -1,23 +1,59 @@
 {
-    "story": "You awaken in a storm-battered lighthouse keeper's study, the wind rattling the shutters and salt air seeping through. The lantern-room door is sealed with a brass key lock, and the room's maps, logs, and a flickering lamp hint that a hidden key lies somewhere among them. Your goal is to recover the key and escape before the sea floods the stairs, as the house creaks with memory and time.",
+    "story": "You awaken inside a forgotten clockmaker's workshop, four bare walls lined with dust, where every tick of a clock echoes the room's secret. The goal is to locate the Brass Clock Key hidden in the center floor tile and use it to unlock the exit before the hour strikes doom. The air hums with clockwork, and ledger pages and diagrams guide you toward the hidden center of the room.",
     "walls": [
         {
-            "id": "3a72b5f6-1d2c-4c3b-a9f2-e1d8c3b6f1a9",
-            "color": "#1E3A56",
+            "id": "1a2b3c4d-5e6f-7081-92a3-b4c5d6e7f809",
+            "color": "#7a5a3a",
+            "exit": null,
+            "pickables": [],
+            "inspectables": [
+                {
+                    "id": "e7a1b2c3-4d5e-6f70-8192-3a4b5c6d7e8f",
+                    "position": "WT1",
+                    "inspectionData": {
+                        "appellation": "Ledger Page",
+                        "information": "The ledger records an hour-based riddle that hints at the center floor tile as the key's hiding place."
+                    }
+                }
+            ],
+            "containers": [],
+            "movablecovers": []
+        },
+        {
+            "id": "0f8e7d6c-5b4a-2c1d-3e4f-5a6b7c8d9e0f",
+            "color": "#5a7a7a",
+            "exit": null,
+            "pickables": [],
+            "inspectables": [
+                {
+                    "id": "f0e1d2c3-4b5a-6978-8a9b-0c1d2e3f4a56",
+                    "position": "WT2",
+                    "inspectionData": {
+                        "appellation": "Clock Diagram",
+                        "information": "A diagram of three interlocking gears. A note reads: 'When three gears align, check the middle of the room.'"
+                    }
+                }
+            ],
+            "containers": [],
+            "movablecovers": []
+        },
+        {
+            "id": "9a8b7c6d-5e4f-3a2b-1c0d-9e8f7a6b5c4d",
+            "color": "#6b3f2f",
             "exit": {
                 "lock": {
                     "type": "KEY",
-                    "activator": "a1b2c3d4-e5f6-7081-9202-3a4b5c6d7e8f"
+                    "activator": "c9f2a1d3-4b56-7c89-de01-23456789abcd"
                 }
             },
             "pickables": [
                 {
-                    "Id": "a1b2c3d4-e5f6-7081-9202-3a4b5c6d7e8f",
-                    "Position": "F2",
+                    "id": "c9f2a1d3-4b56-7c89-de01-23456789abcd",
+                    "position": "F2",
                     "Reusable": true,
-                    "Data": {
-                        "Appellation": "Brass Key",
-                        "Information": "A small brass key with a nautical motif; the inscription '42' is barely legible."
+                    "inspectionData": {
+                        "appellation": "Brass Clock Key",
+                        "information": "A worn brass key etched with clockwork motifs. It seems designed to fit an old clockwork lock."
                     }
                 }
             ],
@@ -26,56 +62,11 @@
             "movablecovers": []
         },
         {
-            "id": "7b9e4a2c-2d5f-4a63-8b3a-c9f0a4b1d2e3",
-            "color": "#2E5A8A",
+            "id": "3d2c1b0a-9f8e-7d6c-5b4a-3e2f1d0c9b8a",
+            "color": "#2b2b2b",
             "exit": null,
             "pickables": [],
-            "inspectables": [
-                {
-                    "Id": "c9a8b7d6-5e4f-3a2b-1c0d-2e3f4a5b6c7d",
-                    "Position": "WT2",
-                    "Data": {
-                        "Appellation": "Storm Log Page",
-                        "Information": "A notation in a logbook hints: 'When the beacon glows, search beneath the map near the lamp.'"
-                    }
-                }
-            ],
-            "containers": [],
-            "movablecovers": []
-        },
-        {
-            "id": "1f6a9c3b-4a2f-5b7d-9e8a-0b1c2d3e4f50",
-            "color": "#3A2D1F",
-            "exit": null,
-            "pickables": [],
-            "inspectables": [
-                {
-                    "Id": "f2e4d6c8-0a1b-2c3d-4e5f-6a7b8c9d0e1f",
-                    "Position": "W2",
-                    "Data": {
-                        "Appellation": "Rope Knot Note",
-                        "Information": "A faded note tied to a rope knot reads: 'The path lies where the sea and script meet.'"
-                    }
-                }
-            ],
-            "containers": [],
-            "movablecovers": []
-        },
-        {
-            "id": "e2d9c3b4-5a6f-7e8d-9b0f-123456789abc",
-            "color": "#5A5A5A",
-            "exit": null,
-            "pickables": [],
-            "inspectables": [
-                {
-                    "Id": "d1c2b3a4-5e6f-7a8b-9c0d-1e2f3a4b5c6d",
-                    "Position": "WB1",
-                    "Data": {
-                        "Appellation": "Compass Rose Diagram",
-                        "Information": "A weathered compass rose shows faint scratch marks aligning with the lamp."
-                    }
-                }
-            ],
+            "inspectables": [],
             "containers": [],
             "movablecovers": []
         }

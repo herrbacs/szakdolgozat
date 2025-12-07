@@ -98,13 +98,13 @@ Pályán csak egyetlen egy ilyen elem található
 A **Pickable** objektum olyan tárgyat jelöl, amit a játékos felvehet a környezetből, majd inventory-ban kiválaszhatja interaktáláshoz.
 **Például:** kulcs, gyűrű, kés, csavarhúzó
 
-| Property      | Típus                                     | Leírás
-|---------------|-------------------------------------------|---------------------------------------------------------------------------
-| **Id**        | `Guid`                                    | Egyedi azonosító a tárgyhoz.                                      
-| **Position**  | [PositionEnum](#positionenum)             | A tárgy helyzete a pályán.
-| **Sprite**    | [Sprite](#sprite)                         | A tárgy textúrája.
-| **Reusable**  | `bool`                                    | A tárgy többször is használható-e.
-| **Data**      | [Data](#data)                             | A tárgy szöveges leírása.
+| Property              | Típus                                     | Leírás
+|-----------------------|-------------------------------------------|---------------------------------------------------------------------------
+| **Id**                | `Guid`                                    | Egyedi azonosító a tárgyhoz.                                      
+| **Position**          | [PositionEnum](#positionenum)             | A tárgy helyzete a pályán.
+| **Sprite**            | [Sprite](#sprite)                         | A tárgy textúrája.
+| **Reusable**          | `bool`                                    | A tárgy többször is használható-e.
+| **InspectionData**    | [InspectionData](#inspectiondata)                             | A tárgy szöveges leírása.
 
 **_Position_**  
 - [Movable Cover](#movablecover) szűlő esetén, megörökli a szülő pozícióját
@@ -130,7 +130,7 @@ Az **Inspectable** objektum olyan elemet jelöl, amit a játékos megvizsgálhat
 | **Id**                | `Guid`                                | Egyedi azonosító.
 | **Position**          | [PositionEnum](#positionenum)         | Az elem pozíciója a falon.
 | **Sprite**            | [Sprite](#sprite)                     | Az elem vizuális megjelenése.
-| **Data**              | [Data](#data)                         | A tárgy szöveges leírása.
+| **InspectionData**    | [InspectionData](#inspectiondata)     | A tárgy szöveges leírása.
 
 **_Position_**  
 - [Movable Cover](#movablecover) szűlő esetén, megörökli a szülő pozícióját
@@ -237,8 +237,8 @@ A **Dimension** az objektum méretét írja le.
 | **Height** | `int` | Magasság pixelben. |
 
 
-### Data
-A **Data** az adott objektum leírására szolgál. Az itt szereplő adatokat használja fel a [Megvizsgál](#cursor-mechanismus) kurzor akció
+### InspectionData
+A **InspectionData** az adott objektum leírására szolgál. Az itt szereplő adatokat használja fel a [Megvizsgál](#cursor-mechanismus) kurzor akció
 
 | Property          | Típus     | Leírás 
 |-------------------|-----------|----------------------------------------------------------------------

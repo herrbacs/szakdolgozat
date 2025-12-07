@@ -16,8 +16,3 @@ export type ReducerAction = {
   action: SetAppSettingsActionEnum,
   payload: any,
 }
-
-export type Coordinate = {
-	X: number,
-	Y: number,
-}
