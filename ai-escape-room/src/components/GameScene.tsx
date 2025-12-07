@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { Wall } from './RoomStructures/Wall'
+import FrontWall from './RoomStructures/FrontWall'
 import { AppSettingsContext } from '../context/AppSettingsContext'
 import Exit from './GameObjects/Exit'
 import Ceiling from './RoomStructures/Ceiling'
@@ -12,17 +12,17 @@ import Inspectable from './GameObjects/Inspectable/Inspectable'
 import Interactable from './GameObjects/Interactable/Interactable'
 import { AppSettingsContextType } from '../shared/types/frameworkTypes'
 
-const Game = () => {
+const GameScene = () => {
   const { appSettings: { gameInformation: { currentWall } } } : AppSettingsContextType = useContext(AppSettingsContext)
 
   return (
     <>
       {currentWall &&
-        <Wall color={currentWall.color}>
-          <Ceiling/>
+        <FrontWall color={currentWall.color}>
+          {/* <Ceiling/> */}
           <LeftWall/>
           <RightWall/>
-          <Floor/>
+          {/* <Floor/> */}
           {/* {
             currentWall.exit && <Exit exit={currentWall?.exit} />
           }
@@ -35,10 +35,10 @@ const Game = () => {
           {
             currentWall.interactables.map((interactable) => <Interactable key={interactable.id} interactable={interactable}/>) 
           } */}
-        </Wall>
+        </FrontWall>
       }  
     </>
   )
 }
 
-export default Game
+export default GameScene

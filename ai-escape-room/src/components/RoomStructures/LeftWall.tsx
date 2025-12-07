@@ -1,5 +1,4 @@
-// @ts-expect-error: missing type declarations, but works at runtime
-import { Graphics } from '@pixi/react'
+import { Graphics, GraphicsContext } from 'pixi.js'
 import { useCallback, useContext } from 'react'
 import { AppSettingsContext } from '../../context/AppSettingsContext'
 import React from 'react'
@@ -12,23 +11,20 @@ const LeftWall = () => {
   const { appSettings: { screenSettings: { dimension: { height }, perspective }, gameInformation: { walls, indexes : { leftWall } }, }}: AppSettingsContextType = useContext(AppSettingsContext)
   const { color } = walls[Math.abs(leftWall)]
     
-    const draw = useCallback((g: any) => {
-        g.clear()
-        g.beginFill(color)
-        g.lineStyle(1, color, 1)
-    
-        const topLeft = { x: 0, y: 0 }
-        const topRight = { x: perspective, y: perspective }
-        const bottomRight = { x: perspective, y: height-perspective }
-        const bottomLeft = { x: 0, y: height }
-    
-        g.moveTo(topLeft.x, topLeft.y)
-        g.lineTo(topRight.x, topRight.y)
-        g.lineTo(bottomRight.x, bottomRight.y)
-        g.lineTo(bottomLeft.x, bottomLeft.y)
-        g.lineTo(topLeft.x, topLeft.y)
-    
-        g.endFill()
+  const draw = useCallback((g: GraphicsContext) => {
+      const topLeft = { x: 0, y: 0 }
+      const topRight = { x: perspective, y: perspective }
+      const bottomRight = { x: perspective, y: height - perspective }
+      const bottomLeft = { x: 0, y: height }
+
+      g.clear()
+        .moveTo(topLeft.x, topLeft.y)
+        .lineTo(topRight.x, topRight.y)
+        .lineTo(bottomRight.x, bottomRight.y)
+        .lineTo(bottomLeft.x, bottomLeft.y)
+        .closePath()
+        .fill({ color })
+        .stroke({ color, width: 1 }) 
     }, [color, height, perspective])
     
     const rigthSideGameAreas = [
@@ -40,7 +36,7 @@ const LeftWall = () => {
   
     return (
       <>
-          <Graphics draw={draw} />
+        <pixiGraphics draw={(g: Graphics) => draw(g.context)} />
           {/* {
             inspectables
               .filter((inspectable) => rigthSideGameAreas.includes(inspectable.position))

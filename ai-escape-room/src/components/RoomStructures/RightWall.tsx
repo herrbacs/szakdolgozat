@@ -1,5 +1,4 @@
-// @ts-expect-error: missing type declarations, but works at runtime
-import { Graphics } from '@pixi/react'
+import { Graphics, GraphicsContext } from 'pixi.js'
 import { useCallback, useContext } from 'react'
 import { AppSettingsContext } from '../../context/AppSettingsContext'
 import React from 'react'
@@ -10,23 +9,20 @@ const RightWall = () => {
   const { appSettings: { screenSettings: { dimension: { width, height }, perspective }, gameInformation: { walls, indexes }}} : AppSettingsContextType = useContext(AppSettingsContext)
   const { color } = walls[Math.abs(indexes.rightWall)]
 
-  const draw = useCallback((g: any) => {
-    g.clear()
-    g.beginFill(color)
-    g.lineStyle(1, color, 1)
-
-    const topLeft = { x: width-perspective, y: perspective }
+  const draw = useCallback((g: GraphicsContext) => {
+    const topLeft = { x: width - perspective, y: perspective }
     const topRight = { x: width, y: 0 }
     const bottomRight = { x: width, y: height }
-    const bottomLeft = { x: width-perspective, y: height-perspective }
+    const bottomLeft = { x: width - perspective, y: height - perspective }
 
-    g.moveTo(topLeft.x, topLeft.y)
-    g.lineTo(topRight.x, topRight.y)
-    g.lineTo(bottomRight.x, bottomRight.y)
-    g.lineTo(bottomLeft.x, bottomLeft.y)
-    g.lineTo(topLeft.x, topLeft.y)
-
-    g.endFill()
+    g.clear()
+      .moveTo(topLeft.x, topLeft.y)
+      .lineTo(topRight.x, topRight.y)
+      .lineTo(bottomRight.x, bottomRight.y)
+      .lineTo(bottomLeft.x, bottomLeft.y)
+      .closePath()
+      .fill({ color })
+      .stroke({ color, width: 1 })
   }, [color, height, perspective, width])
 
   const leftSideGameAreas = [
@@ -38,7 +34,7 @@ const RightWall = () => {
 
   return (
     <>
-        <Graphics draw={draw} />
+      <pixiGraphics draw={(g: Graphics) => draw(g.context)} />
         {/* {
           inspectables
             .filter((inspectable) => leftSideGameAreas.includes(inspectable.position))
