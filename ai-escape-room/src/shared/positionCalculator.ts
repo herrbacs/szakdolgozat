@@ -2,39 +2,39 @@ import { PointData, Sprite } from "pixi.js";
 import { PositionEnum } from "./enums";
 import { PositionCalculatorInput, ScreenSettings } from "./types/appTypes";
 
-export function setPositionOn({area, screenSettings, scale, perspective }: PositionCalculatorInput) : PointData {
+export function setPositionOn({area, screenSettings }: PositionCalculatorInput) : PointData {
   switch (area) {
-    // WT
-    case PositionEnum.WT1:
-      return getWT1(screenSettings, scale, perspective);
-    case PositionEnum.WT2:
-      return getWT2(screenSettings, scale);
-    case PositionEnum.WT3:
-      return getWT3(screenSettings, scale, perspective);
+    // Wall Top
+    // case PositionEnum.WT1:
+    //   return getWT1(screenSettings);
+    // case PositionEnum.WT2:
+    //   return getWT2(screenSettings);
+    // case PositionEnum.WT3:
+    //   return getWT3(screenSettings);
 
-    // // W
-    case PositionEnum.W1:
-      return getW1(screenSettings, scale, perspective);
-    case PositionEnum.W2:
-      return getW2(screenSettings, scale);
-    case PositionEnum.W3:
-      return getW3(screenSettings, scale, perspective);
+    // Wall
+    // case PositionEnum.W1:
+    //   return getW1(screenSettings);
+    // case PositionEnum.W2:
+    //   return getW2(screenSettings);
+    // case PositionEnum.W3:
+    //   return getW3(screenSettings);
 
-    // WB
-    case PositionEnum.WB1:
-      return getWB1(screenSettings, scale, perspective);
-    case PositionEnum.WB2:
-      return getWB2(screenSettings, scale);
-    case PositionEnum.WB3:
-      return getWB3(screenSettings, scale, perspective);
+    // Wall Bottom
+    // case PositionEnum.WB1:
+    //   return getWB1(screenSettings);
+    // case PositionEnum.WB2:
+    //   return getWB2(screenSettings);
+    // case PositionEnum.WB3:
+    //   return getWB3(screenSettings);
 
-    // WB
+    // Floor
     case PositionEnum.F1:
-      return getF1(screenSettings, scale, perspective);
-    case PositionEnum.F2:
-      return getF2(screenSettings, scale);
-    case PositionEnum.F3:
-      return getF3(screenSettings, scale, perspective);
+      return getF1(screenSettings);
+    // case PositionEnum.F2:
+    //   return getF2(screenSettings);
+    // case PositionEnum.F3:
+    //   return getF3(screenSettings);
 
     default:
       return { x: 0, y: 0 }
@@ -145,15 +145,27 @@ export function setPositionOn({area, screenSettings, scale, perspective }: Posit
 //   }
 // }
 
-// // FT -----------------------------------------------------------
-// function getFT2(
-//   { perspective, dimension: { width, height }} : ScreenSettings,
-//   sprite : Sprite,
-//   scale: number
-// ) : Coordinate {
-//   const offset = 35
-//   return {
-//     X: perspective + ((width - (perspective * 2)) / 2) - ((sprite.dimension.width * scale) / 2),
-//     Y: height - perspective + offset,
-//   }
-// }
+// Floor -----------------------------------------------------------
+function getF1(
+  { perspective, dimension: { width, height }} : ScreenSettings,
+  sprite : Sprite,
+  scale: number
+) : Coordinate {
+  const offset = 35
+  return {
+    X: perspective + ((width - (perspective * 2)) / 2) - ((sprite.dimension.width * scale) / 2),
+    Y: height - perspective + offset,
+  }
+}
+
+// Ezt lehet minden 1-2-3 hoz használni, egyelőre középre rakunk mindent
+function calculateSectorY() {
+    switch (area) {
+
+    case 1:
+      return getF1(screenSettings);
+
+    default:
+      return { x: 0, y: 0 }
+  }
+}
