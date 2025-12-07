@@ -19,10 +19,10 @@ const GameScene = () => {
     <>
       {currentWall &&
         <FrontWall color={currentWall.color}>
-          {/* <Ceiling/> */}
+          <Ceiling/>
           <LeftWall/>
           <RightWall/>
-          {/* <Floor/> */}
+          <Floor/>
           {/* {
             currentWall.exit && <Exit exit={currentWall?.exit} />
           }
