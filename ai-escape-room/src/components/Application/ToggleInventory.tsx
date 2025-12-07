@@ -1,20 +1,18 @@
-// @ts-expect-error: missing type declarations, but works at runtime
-import { Graphics, Text } from '@pixi/react'
-import React, { useContext, useCallback, useMemo } from 'react'
+import React, { useContext, useRef } from 'react';
+import { useCallback, useMemo } from 'react';
 import { AppSettingsContext } from '../../context/AppSettingsContext'
 import { AppSettingsContextType } from '../../shared/types/frameworkTypes'
-import { SetAppSettingsActionEnum } from '../../shared/enums'
+import { Graphics, GraphicsContext } from 'pixi.js';
+import { SetAppSettingsActionEnum } from '../../shared/enums';
 
 const ToggleInventory = () => {
   const padding = 40
   const { appSettings: { screenSettings: { dimension: { width } } }, setAppSettings }: AppSettingsContextType = useContext(AppSettingsContext)
 
-  const drawCircle = useCallback((g: any) => {
-    g.clear()
-    g.beginFill(0xc2c2c2)
-    g.lineStyle(3, 0xFFFFFF)
-    g.drawCircle(0, 0, 32)
-    g.endFill()
+  const drawCircle = useCallback((g: GraphicsContext) => {
+      g.circle(0, 0, 32)
+      .fill({ color: 0xc2c2c2 })
+      .stroke({ width: 3, color: 0xFFFFFF })
   }, [])
 
   const calculateX = useMemo(
@@ -23,15 +21,15 @@ const ToggleInventory = () => {
   )
 
   return (
-    <Graphics
+    <pixiGraphics
       x={calculateX}
       y={padding}
-      interactive={true}
-      buttonMode={true}
-      pointertap={() => setAppSettings({ action: SetAppSettingsActionEnum.TOGGLE_INVENTORY })}
-      draw={drawCircle}
+      draw={(g: Graphics) => drawCircle(g.context)}
+      eventMode="static"
+      cursor="pointer"
+      onPointerTap={() => setAppSettings({ action: SetAppSettingsActionEnum.TOGGLE_INVENTORY })}
     >
-      <Text
+      <pixiText 
         text="I"
         anchor={0.5}
         x={0}
@@ -42,7 +40,7 @@ const ToggleInventory = () => {
           fontWeight: 'bold'
         }}
       />
-    </Graphics>
+    </pixiGraphics>
   )
 }
 
