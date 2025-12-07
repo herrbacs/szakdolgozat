@@ -114,24 +114,15 @@ export function toggleInventory(state: AppSettings) : AppSettings {
 // 	}
 // }
 
-// export function exit(state: AppSettings) : AppSettings {
-//   let { gameInformation: { walls } } = state
-  
-//   walls.forEach(wall => {
-//     if (wall.exit === undefined) {
-//       return
-//     }
-//     wall.exit.state = ExitStates.OPEN
-//   })
-  
-//   return {
-// 		...state,
-//     gameInformation: {
-//       ...state.gameInformation,
-//       walls
-//     }
-// 	}
-// }
+export function exit(state: AppSettings) : AppSettings {
+  let { gameInformation: { walls, indexes: { currentWall } } } = state
+
+  walls[currentWall].exit!.lock.open = true
+
+  return {
+		...state
+	}
+}
 
 // export function toggleObjetInspecting(state: AppSettings, payload: InspectableObject | null) : AppSettings {
 //   return {

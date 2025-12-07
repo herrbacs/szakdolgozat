@@ -4,11 +4,12 @@ import { LockTypeEnum, SizeEnum } from "../enums"
 export type Lock = {
   type: LockTypeEnum
   activator: string | UUID
+  open: boolean
 }
 
 export type Dimension = {
-	width: number,
-	height: number,
+  width: number,
+  height: number,
 }
 
 export type SpriteData = {

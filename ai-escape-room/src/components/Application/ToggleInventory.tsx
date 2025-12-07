@@ -10,7 +10,7 @@ const ToggleInventory = () => {
   const { appSettings: { screenSettings: { dimension: { width } } }, setAppSettings }: AppSettingsContextType = useContext(AppSettingsContext)
 
   const drawCircle = useCallback((g: GraphicsContext) => {
-      g.circle(0, 0, 32)
+    g.circle(0, 0, 32)
       .fill({ color: 0xc2c2c2 })
       .stroke({ width: 3, color: 0xFFFFFF })
   }, [])
@@ -29,7 +29,7 @@ const ToggleInventory = () => {
       cursor="pointer"
       onPointerTap={() => setAppSettings({ action: SetAppSettingsActionEnum.TOGGLE_INVENTORY })}
     >
-      <pixiText 
+      <pixiText
         text="I"
         anchor={0.5}
         x={0}

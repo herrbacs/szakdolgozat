@@ -1,6 +1,6 @@
 import { UUID } from 'crypto';
 import { GameObjectTypeEnum, PositionEnum } from '../enums';
-import { InspectionData, Sprite, SpriteSet } from './gameBaseTypes';
+import { InspectionData, Sprite, SpriteSet, Lock } from './gameBaseTypes';
 
 type HasId = {
   id: UUID,
@@ -26,10 +26,10 @@ export type DynamicGameObject = {
 }
 
 export type Wall = HasId & {
-	color: string,
-	exit: null | ExitObject,
-	pickables: PickableObject[],
-	inspectables: InspectableObject[],
+  color: string,
+  exit: null | ExitObject,
+  pickables: PickableObject[],
+  inspectables: InspectableObject[],
   containers: ContainerObject[],
   movableCovers: MovableCoverObject[],
 }

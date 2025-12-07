@@ -1,7 +1,7 @@
 import { SetAppSettingsActionEnum } from "../shared/enums"
 import { AppSettings, ReducerAction } from "../shared/types/frameworkTypes"
 import { Wall } from "../shared/types/gameObjectTypes"
-import { handleMove, loadLevel, toggleInventory } from "./reducerController"
+import { handleMove, loadLevel, toggleInventory, exit } from "./reducerController"
 
 export const initialState : AppSettings = {
   screenSettings: {
@@ -43,8 +43,8 @@ export const reducer = (state: AppSettings, { action, payload }: ReducerAction) 
     //   return unselectItemFromInventory(state)
     // case SetAppSettingsActionEnum.DESTROY_INVENTORY_ITEM:
     //   return destroyItemFromInventory(state, payload)
-    // case SetAppSettingsActionEnum.EXIT:
-    //   return exit(state)
+    case SetAppSettingsActionEnum.EXIT:
+      return exit(state)
     // case SetAppSettingsActionEnum.TOGGLE_OBJECT_INSPECTING:
     //   return toggleObjetInspecting(state, payload)
     // case SetAppSettingsActionEnum.DESTROY_PAINTING:

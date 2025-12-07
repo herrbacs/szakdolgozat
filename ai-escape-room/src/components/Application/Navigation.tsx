@@ -5,7 +5,7 @@ import { AppSettingsContextType } from '../../shared/types/frameworkTypes'
 import { MoveDirectionEnum, SetAppSettingsActionEnum } from '../../shared/enums'
 import { Triangle, TriangleDirection } from './Triangle'
 
-export function Navigation() {  
+export function Navigation() {
   const padding = 20
   const { appSettings: { screenSettings: { dimension: { width, height } } }, setAppSettings }: AppSettingsContextType = useContext(AppSettingsContext)
 
@@ -21,14 +21,14 @@ export function Navigation() {
 
   return (
     <>
-      <Triangle 
+      <Triangle
         direction={TriangleDirection.LEFT}
         x={padding}
         y={calculateYPosition}
         size={30}
         onClick={() => setAppSettings({ action: SetAppSettingsActionEnum.MOVE, payload: MoveDirectionEnum.LEFT })}
       />
-      <Triangle 
+      <Triangle
         direction={TriangleDirection.RIGHT}
         x={calculateXPositionOfRightArrow}
         y={calculateYPosition}

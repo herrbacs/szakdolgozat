@@ -1,68 +1,82 @@
-/* eslint-disable react/prop-types */
-import { Sprite } from '@pixi/react'
+
+import { Assets, PointData, Texture } from 'pixi.js'
 import { useCallback, useContext, useEffect, useState } from 'react'
 import { AppSettingsContext } from '../../context/AppSettingsContext'
 import React from 'react'
-import { base64ToBlob } from '../../shared/helper'
-import { SetAppSettingsActionEnum } from '../../shared/enums'
+import { LockTypeEnum, SetAppSettingsActionEnum } from '../../shared/enums'
 import { AppSettingsContextType } from '../../shared/types/frameworkTypes'
 import { ExitObject } from '../../shared/types/gameObjectTypes'
 
-// TODO API a végső ajtó méretet ha detektálja, ki lehet számolni hogy mekkora újra méretezésre van szükség
-const Exit = ({ exit: { sprites, keeyId, state } }: { exit: ExitObject }) => {
-  const [closedExitImg, setClosedExitImg] = useState<string | undefined>(undefined)
-  const [openedExitImg, setOpenedExitImg] = useState<string | undefined>(undefined)
-
-  const scale = 0.7
-  const { appSettings: { screenSettings: { dimension: { width, height }, perspective }, gameInformation: { selectedItem } }, setAppSettings} : AppSettingsContextType = useContext(AppSettingsContext)
-
-  const calculateYPosition = () => {
-    const wallHeight = (height - 2 * perspective)
-    return perspective + wallHeight - (sprites[0].dimension.height * scale)
-  }
-  
-  const calculateXPosition = () => {
-    return perspective + ((width - (perspective * 2)) / 2) - ((sprites[0].dimension.width * scale) / 2)
-  }
+const Exit = ({ exit: { lock: { type, activator, open } } }: { exit: ExitObject }) => {
+  const { appSettings: { screenSettings: { dimension: { width, height }, perspective }, gameInformation: { selectedItem } }, setAppSettings }: AppSettingsContextType = useContext(AppSettingsContext)
+  const [openTexture, setOpenTexture] = useState<Texture>(Texture.EMPTY)
+  const [closedTexture, setClosedTexture] = useState<Texture>(Texture.EMPTY)
 
   const tryOpen = useCallback(() => {
-      if(selectedItem?.id !== keeyId) {
-        return
-      }
-
-      setAppSettings({ action: SetAppSettingsActionEnum.DESTROY_INVENTORY_ITEM, payload: selectedItem })
-      setAppSettings({ action: SetAppSettingsActionEnum.EXIT })
-
-      console.log('YOU HAVE ESCAPED')
-    }, [selectedItem]
-  )
-
-  useEffect(() => {
-    const closed = sprites.find(s => s.state === ExitStates.CLOSED)
-    const open = sprites.find(s => s.state === ExitStates.OPEN)
-
-    if (!closed || !open) {
-      throw 'Failed To Load Exit Sprites'
+    if (type === LockTypeEnum.PASSWORD) {
+      throw new Error("Implement password modal to open exit")
     }
 
-    setClosedExitImg(URL.createObjectURL(base64ToBlob(closed.blob, 'image/png')))
-    setOpenedExitImg(URL.createObjectURL(base64ToBlob(open.blob, 'image/png')))
-  }, [sprites])
+    // if (selectedItem?.id !== activator) {
+    //   return
+    // }
 
-  return (
-   <>
-   { closedExitImg && openedExitImg &&
-    <Sprite
-        interactive
-        onmousedown={tryOpen}
-        image={state == ExitStates.OPEN ? openedExitImg : closedExitImg}
-        scale={{ x: scale, y: scale }}
-        x={calculateXPosition()}
-        y={calculateYPosition()}
+    // setAppSettings({ action: SetAppSettingsActionEnum.DESTROY_INVENTORY_ITEM, payload: selectedItem })
+    setAppSettings({ action: SetAppSettingsActionEnum.EXIT })
+  }, [selectedItem])
+
+  const loadTextures = async () => {
+    const open = await Assets.load('http://localhost:5000/images/exit_open.png')
+    const closed = await Assets.load('http://localhost:5000/images/exit_closed.png')
+
+    setOpenTexture(open)
+    setClosedTexture(closed)
+
+    if (!open || !closed) {
+      throw new Error('Failed To Load Exit Sprites')
+    }
+  }
+
+  const setPivotToBottomLeft = (): PointData =>
+    open
+      ? {
+        x: openTexture.width / 2,
+        y: openTexture.height,
+      }
+      : {
+        x: closedTexture.width / 2,
+        y: closedTexture.height,
+      }
+
+  const calculateScale = () => {
+    const targetHeight = (height - 2 * perspective) * 0.75
+    const texture = open ? openTexture : closedTexture
+    if (texture === Texture.EMPTY) {
+      return { x: 1, y: 1 }
+    }
+
+    const scaleY = targetHeight / texture.height
+    const scaleX = scaleY
+
+    return { x: scaleX, y: scaleY }
+  }
+
+  useEffect(() => {
+    loadTextures()
+  }, [])
+
+  return closedTexture && openTexture
+    ? <pixiSprite
+      eventMode="static"
+      cursor="pointer"
+      onPointerTap={tryOpen}
+      texture={open ? openTexture : closedTexture}
+      pivot={setPivotToBottomLeft()}
+      x={width / 2}
+      y={height - perspective}
+      scale={calculateScale()}
     />
-   }
-   </>
-  )
+    : null
 }
 
-export default Exit;
+export default Exit

@@ -27,7 +27,7 @@ export function Triangle({
   size = 25,
   color = 0xffffff,
   direction = TriangleDirection.UP,
-  onClick = () => {}
+  onClick = () => { }
 }: TriangleProps) {
 
   const rotation = useMemo(() => {
@@ -45,18 +45,18 @@ export function Triangle({
   }, [direction])
 
   const drawTriangle = useCallback((g: Graphics) => {
-  const ctx = g.context as GraphicsContext
+    const ctx = g.context as GraphicsContext
 
-  const halfBase = size / 2
-  const height = (Math.sqrt(3) / 2) * size
+    const halfBase = size / 2
+    const height = (Math.sqrt(3) / 2) * size
 
-  ctx.clear()
-     .moveTo(0, -height / 2)
-     .lineTo(-halfBase, height / 2)
-     .lineTo(halfBase, height / 2)
-     .closePath()
-     .fill({ color })
-     .stroke({ color, width: 1 })
+    ctx.clear()
+      .moveTo(0, -height / 2)
+      .lineTo(-halfBase, height / 2)
+      .lineTo(halfBase, height / 2)
+      .closePath()
+      .fill({ color })
+      .stroke({ color, width: 1 })
   }, [size, color])
 
   return (
