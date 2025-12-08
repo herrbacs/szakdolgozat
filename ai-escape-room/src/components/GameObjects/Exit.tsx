@@ -17,11 +17,14 @@ const Exit = ({ exit: { lock: { type, activator, open } } }: { exit: ExitObject 
       throw new Error("Implement password modal to open exit")
     }
 
-    // if (selectedItem?.id !== activator) {
-    //   return
-    // }
+    if (selectedItem?.id !== activator) {
+      return
+    }
 
-    // setAppSettings({ action: SetAppSettingsActionEnum.DESTROY_INVENTORY_ITEM, payload: selectedItem })
+    if (!selectedItem.reusable) {
+      setAppSettings({ action: SetAppSettingsActionEnum.DESTROY_INVENTORY_ITEM, payload: selectedItem })
+    }
+
     setAppSettings({ action: SetAppSettingsActionEnum.EXIT })
   }, [selectedItem])
 

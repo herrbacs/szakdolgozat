@@ -10,7 +10,7 @@ const ToggleInventory = () => {
   const { appSettings: { screenSettings: { dimension: { width } } }, setAppSettings }: AppSettingsContextType = useContext(AppSettingsContext)
 
   const drawCircle = useCallback((g: GraphicsContext) => {
-    g.circle(0, 0, 32)
+    g.circle(0, 0, 25)
       .fill({ color: 0xc2c2c2 })
       .stroke({ width: 3, color: 0xFFFFFF })
   }, [])
@@ -36,7 +36,7 @@ const ToggleInventory = () => {
         y={0}
         style={{
           fill: 0xffec99,
-          fontSize: 32,
+          fontSize: 25,
           fontWeight: 'bold'
         }}
       />

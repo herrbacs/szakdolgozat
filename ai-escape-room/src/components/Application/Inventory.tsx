@@ -1,27 +1,33 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { AppSettingsContext } from '../../context/AppSettingsContext'
-import { base64ToBlob } from '../../shared/helper'
 import { SetAppSettingsActionEnum } from '../../shared/enums'
 import { AppSettingsContextType } from '../../shared/types/frameworkTypes'
 import { PickableObject } from '../../shared/types/gameObjectTypes'
 
-
 const Inventory = () => {
 	const { appSettings: { screenSettings: { dimension: { width } }, gameInformation: { inventory, showInventory, selectedItem } }, setAppSettings} : AppSettingsContextType = useContext(AppSettingsContext)
 
-	const swipeStyle: React.CSSProperties = {
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
+  const swipeStyle: React.CSSProperties = {
 		height: '4.5rem',
 		display: 'block',
 		padding: '0 .6rem'
 	}
 
-	const selectItem = (item: PickableObject) => {
-		if (selectedItem?.id == item.id) {
-			setAppSettings({ action: SetAppSettingsActionEnum.UNSELECT_ITEM })
-			return
-		}
-		setAppSettings({ action: SetAppSettingsActionEnum.SELECT_ITEM, payload: item })
+  const inventorySlotStyle: React.CSSProperties = {
+		width: '4.5rem',
+    height: '4.5rem',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    cursor: 'pointer',
 	}
+
+	const selectItem = (item: PickableObject) => 
+    selectedItem?.id == item.id
+      ? setAppSettings({ action: SetAppSettingsActionEnum.UNSELECT_ITEM })
+      : setAppSettings({ action: SetAppSettingsActionEnum.SELECT_ITEM, payload: item })
 
 	const items = []
 	for (let i = 0; i <= 10; i++) {
@@ -33,13 +39,21 @@ const Inventory = () => {
 		}
 
 		items.push((
-			<div
-				key={i}
-				style={{ backgroundColor: (selectedItem?.id === inventory[i].id ? '#ffec99' : '#ffffff'), width: '4.5rem', height: '4.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center'}}
-				onClick={() => selectItem(inventory[i])}
-			>
-				{/* <img style={{display: 'block', maxHeight: '90%', maxWidth: '90%'}} src={URL.createObjectURL(base64ToBlob(inventory[i].sprite.blob, 'image/png'))} alt={inventory[i].sprite.name}></img> */}
-			</div>
+      <div
+        key={i}
+        style={{
+          ...inventorySlotStyle,
+          backgroundColor:
+            selectedItem?.id === inventory[i].id
+              ? (hoveredIndex === i ? '#ffe066' : '#ffec99')
+              : (hoveredIndex === i ? '#d3d3d3' : '#ffffff')
+        }}
+        onClick={() => selectItem(inventory[i])}
+        onMouseEnter={() => setHoveredIndex(i)}
+        onMouseLeave={() => setHoveredIndex(null)}
+      >
+        <h1 style={{display: 'block', maxHeight: '90%', maxWidth: '90%'}}>⭐</h1>
+      </div>
 		))
 	}
 

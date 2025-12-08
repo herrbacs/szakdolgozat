@@ -1,6 +1,7 @@
 import { MoveDirectionEnum } from "../shared/enums";
 import { LevelInformation } from "../shared/types/appTypes";
 import { AppSettings } from "../shared/types/frameworkTypes";
+import { PickableObject } from "../shared/types/gameObjectTypes";
 
 export function loadLevel(state: AppSettings, { walls }: LevelInformation) : AppSettings {
   return {
@@ -61,58 +62,58 @@ export function toggleInventory(state: AppSettings) : AppSettings {
 	}
 }
 
-// export function addItemToInventory(state: AppSettings, payload: PickableObject) : AppSettings {
-//   let { gameInformation: { walls, currentWall } } = state
+export function addItemToInventory(state: AppSettings, payload: PickableObject) : AppSettings {
+  let { gameInformation: { walls, currentWall } } = state
 
-//   walls.forEach(wall => {
-//     if (wall.id !== currentWall.id) {
-//       return
-//     }
-//     wall.pickables = wall.pickables.filter(pickable => pickable.id !== payload.id)
-//   })
+  walls.forEach(wall => {
+    if (wall.id !== currentWall.id) {
+      return
+    }
+    wall.pickables = wall.pickables.filter(pickable => pickable.id !== payload.id)
+  })
 
-//   return {
-// 		...state,
-// 		gameInformation: {
-//       ...state.gameInformation,
-//       walls,
-// 			inventory: [
-//         ...state.gameInformation.inventory,
-// 				payload
-// 			],
-// 		}
-// 	}
-// }
+  return {
+		...state,
+		gameInformation: {
+      ...state.gameInformation,
+      walls,
+			inventory: [
+        ...state.gameInformation.inventory,
+				payload
+			],
+		}
+	}
+}
 
-// export function selectItemFromInventory(state: AppSettings, payload: PickableObject) : AppSettings {
-// 	return {
-// 		...state,
-// 		gameInformation: {
-// 			...state.gameInformation,
-// 			selectedItem: payload
-// 		}
-// 	}
-// }
+export function selectItemFromInventory(state: AppSettings, payload: PickableObject) : AppSettings {
+	return {
+		...state,
+		gameInformation: {
+			...state.gameInformation,
+			selectedItem: payload
+		}
+	}
+}
 
-// export function unselectItemFromInventory(state: AppSettings) : AppSettings {
-// 	return {
-// 		...state,
-// 		gameInformation: {
-// 			...state.gameInformation,
-// 			selectedItem: null
-// 		}
-// 	}
-// }
+export function unselectItemFromInventory(state: AppSettings) : AppSettings {
+	return {
+		...state,
+		gameInformation: {
+			...state.gameInformation,
+			selectedItem: null
+		}
+	}
+}
 
-// export function destroyItemFromInventory(state: AppSettings, payload: PickableObject) : AppSettings {
-// 	return {
-// 		...state,
-// 		gameInformation: {
-// 			...state.gameInformation,
-//       inventory: state.gameInformation.inventory.filter(item => item.id !== payload.id)
-// 		}
-// 	}
-// }
+export function destroyItemFromInventory(state: AppSettings, payload: PickableObject) : AppSettings {
+	return {
+		...state,
+		gameInformation: {
+			...state.gameInformation,
+      inventory: state.gameInformation.inventory.filter(item => item.id !== payload.id)
+		}
+	}
+}
 
 export function exit(state: AppSettings) : AppSettings {
   let { gameInformation: { walls, indexes: { currentWall } } } = state

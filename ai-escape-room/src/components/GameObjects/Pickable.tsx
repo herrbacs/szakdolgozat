@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from "react"
-import { AppSettingsContextType, Coordinate } from "../../shared/types/frameworkTypes"
+import { AppSettingsContextType } from "../../shared/types/frameworkTypes"
 import { PickableObject } from "../../shared/types/gameObjectTypes"
 import { SetAppSettingsActionEnum } from "../../shared/enums"
 import { setPositionOn } from "../../shared/positionCalculator"
@@ -10,28 +10,27 @@ type PickableComponentTypeProperties = {
 	pickable: PickableObject,
 }
 
-const Pickable = ({ pickable: { inspectionData: { appellation }, position } }: PickableComponentTypeProperties) => {
+const Pickable = ({ pickable }: PickableComponentTypeProperties) => {
 	const scale = 0.1
 	const { appSettings: { screenSettings }, setAppSettings } : AppSettingsContextType = useContext(AppSettingsContext)
 	const [pickedUp, setPickedUp] = useState<Boolean>(false)
 	const [spriteCoordinate, setSpriteCoordinate] = useState<PointData>({ x: 0, y: 0 })
   
   const handlePickUp = useCallback(() => {
-		// setAppSettings({ action: SetAppSettingsActionEnum.PICK_UP_ITEM , payload: pickable });
-		// setPickedUp(true)
+		setAppSettings({ action: SetAppSettingsActionEnum.PICK_UP_ITEM , payload: pickable });
+		setPickedUp(true)
 	}, [])
 
   const drawCircle = useCallback((g: GraphicsContext) => {
-    g.circle(0, 0, 32)
+    g.circle(0, 0, 25)
       .fill({ color: 0xc2c2c2 })
       .stroke({ width: 3, color: 0xFFFFFF })
   }, [])
 
   useEffect(() => {
-    console.log(position)
 		setSpriteCoordinate(
       setPositionOn({ 
-        area: position,
+        area: pickable.position,
         screenSettings,
         scale,
         perspective: false
@@ -49,13 +48,13 @@ const Pickable = ({ pickable: { inspectionData: { appellation }, position } }: P
           onPointerTap={handlePickUp}
         >
           <pixiText
-            text={appellation}
+            text={'⭐'}
             anchor={0.5}
             x={0}
             y={0}
             style={{
               fill: 0xffec99,
-              fontSize: 32,
+              fontSize: 25,
               fontWeight: 'bold'
             }}
           />
