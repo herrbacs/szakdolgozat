@@ -2,170 +2,103 @@ import { PointData, Sprite } from "pixi.js";
 import { PositionEnum } from "./enums";
 import { PositionCalculatorInput, ScreenSettings } from "./types/appTypes";
 
-export function setPositionOn({area, screenSettings }: PositionCalculatorInput) : PointData {
+export function setPositionOn({ area, screenSettings }: PositionCalculatorInput): PointData {
   switch (area) {
     // Wall Top
-    // case PositionEnum.WT1:
-    //   return getWT1(screenSettings);
-    // case PositionEnum.WT2:
-    //   return getWT2(screenSettings);
-    // case PositionEnum.WT3:
-    //   return getWT3(screenSettings);
+    case PositionEnum.WT1:
+      return {
+        x: centerOfSectorX(0, screenSettings),
+        y: centerOfSectorY('WT', screenSettings),
+      }
+    case PositionEnum.WT2:
+      return {
+        x: centerOfSectorX(1, screenSettings),
+        y: centerOfSectorY('WT', screenSettings),
+      }
+    case PositionEnum.WT2:
+      return {
+        x: centerOfSectorX(2, screenSettings),
+        y: centerOfSectorY('WT', screenSettings),
+      }
 
     // Wall
-    // case PositionEnum.W1:
-    //   return getW1(screenSettings);
-    // case PositionEnum.W2:
-    //   return getW2(screenSettings);
-    // case PositionEnum.W3:
-    //   return getW3(screenSettings);
+    case PositionEnum.W1:
+      return {
+        x: centerOfSectorX(0, screenSettings),
+        y: centerOfSectorY('W', screenSettings),
+      }
+    case PositionEnum.W2:
+      return {
+        x: centerOfSectorX(1, screenSettings),
+        y: centerOfSectorY('W', screenSettings),
+      }
+    case PositionEnum.W2:
+      return {
+        x: centerOfSectorX(2, screenSettings),
+        y: centerOfSectorY('W', screenSettings),
+      }
 
     // Wall Bottom
-    // case PositionEnum.WB1:
-    //   return getWB1(screenSettings);
-    // case PositionEnum.WB2:
-    //   return getWB2(screenSettings);
-    // case PositionEnum.WB3:
-    //   return getWB3(screenSettings);
+    case PositionEnum.WB1:
+      return {
+        x: centerOfSectorX(0, screenSettings),
+        y: centerOfSectorY('WB', screenSettings),
+      }
+    case PositionEnum.WB2:
+      return {
+        x: centerOfSectorX(1, screenSettings),
+        y: centerOfSectorY('WB', screenSettings),
+      }
+    case PositionEnum.WB2:
+      return {
+        x: centerOfSectorX(2, screenSettings),
+        y: centerOfSectorY('WB', screenSettings),
+      }
 
     // Floor
     case PositionEnum.F1:
-      return getF1(screenSettings);
-    // case PositionEnum.F2:
-    //   return getF2(screenSettings);
-    // case PositionEnum.F3:
-    //   return getF3(screenSettings);
-
+      return {
+        x: centerOfSectorX(0, screenSettings),
+        y: centerOfSectorY('F', screenSettings),
+      }
+    case PositionEnum.F2:
+      return {
+        x: centerOfSectorX(1, screenSettings),
+        y: centerOfSectorY('F', screenSettings),
+      }
+    case PositionEnum.F2:
+      return {
+        x: centerOfSectorX(2, screenSettings),
+        y: centerOfSectorY('F', screenSettings),
+      }
     default:
       return { x: 0, y: 0 }
   }
 }
 
-// WT -----------------------------------------------------------
-// function getWT1(
-//   { perspective, dimension: { width, height }} : ScreenSettings,
-//   sprite : Sprite,
-//   scale: number,
-//   isPerspective: boolean,
-// ) : Coordinate {
-
-//   const wallHeight = (height - 2*perspective)
-
-//   if (isPerspective) {
-//     return {
-//       X: (width - (perspective)) + (perspective  / 2),
-//       Y: perspective,
-//     }
-//   }
-
-//   return {
-//     X: perspective + ((width - (perspective * 2)) / 6),
-//     Y: perspective + (wallHeight / 9),
-//   }
-// }
-
-// function getWT2(
-//   { perspective, dimension: { width }} : ScreenSettings,
-//   sprite : Sprite,
-//   scale: number
-// ) : Coordinate {
-
-//   return {
-//     X: perspective + ((width - (perspective * 2)) / 2),
-//     Y: perspective + (sprite.dimension.height * scale) / 2,
-//   }
-// }
-
-// function getWT3(
-//   { perspective, dimension: { width }} : ScreenSettings,
-//   sprite : Sprite,
-//   scale: number,
-//   isPerspective: boolean,
-// ) : Coordinate {
-
-//   return {
-//     X: perspective + (((width - (perspective * 2)) / 6) * 5),
-//     Y: perspective + (sprite.dimension.height * scale) / 2,
-//   }
-// }
-
-// // W -----------------------------------------------------------
-// function getW1(
-//   { perspective, dimension: { width, height }} : ScreenSettings,
-//   sprite : Sprite,
-//   scale: number,
-//   isPerspective: boolean,
-// ) : Coordinate {
-//   const wallHeight = (height - 2*perspective)
-
-//   if (isPerspective) {
-//     return {
-//       X: (width - perspective) + (perspective  / 2),
-//       Y: perspective + (wallHeight / 2),
-//     }
-//   }
-
-//   return {
-//     X: perspective + ((width - (perspective * 2)) / 6),
-//     Y: perspective + (wallHeight / 2),
-//   }
-// }
-
-// function getW2(
-//   { perspective, dimension: { width, height }} : ScreenSettings,
-//   sprite : Sprite,
-//   scale: number,
-// ) : Coordinate {
-//   const wallHeight = (height - 2*perspective)
-
-//   return {
-//     X: perspective + ((width - (perspective * 2)) / 2),
-//     Y: perspective + (wallHeight / 2),
-//   }
-// }
-
-// function getW3(
-//   { perspective, dimension: { width, height }} : ScreenSettings,
-//   sprite : Sprite,
-//   scale: number,
-//   isPerspective: boolean,
-// ) : Coordinate {
-//   const wallHeight = (height - 2*perspective)
-
-//   if (isPerspective) {
-//     return {
-//       X: perspective  / 2,
-//       Y: perspective + (wallHeight / 2),
-//     }
-//   }
-
-//   return {
-//     X: perspective + (((width - (perspective * 2)) / 6) * 5),
-//     Y: perspective + (wallHeight / 2),
-//   }
-// }
-
-// Floor -----------------------------------------------------------
-function getF1(
-  { perspective, dimension: { width, height }} : ScreenSettings,
-  sprite : Sprite,
-  scale: number
-) : Coordinate {
-  const offset = 35
-  return {
-    X: perspective + ((width - (perspective * 2)) / 2) - ((sprite.dimension.width * scale) / 2),
-    Y: height - perspective + offset,
-  }
+function centerOfSectorX(sectorIndex: 0 | 1 | 2, { perspective, dimension: { width } }: ScreenSettings): number {
+  const sectorUnitWidth = (width - 2 * perspective) / 3
+  return perspective + (sectorUnitWidth * (sectorIndex + 0.5))
 }
 
-// Ezt lehet minden 1-2-3 hoz használni, egyelőre középre rakunk mindent
-function calculateSectorY() {
-    switch (area) {
+function centerOfSectorY(
+  sector: 'F' | 'WB' | 'W' | 'WT',
+  { perspective, dimension: { height } }: ScreenSettings
+): number {
+  const wallHeight = height - (2 * perspective)
+  const height_WB_and_WT = (height / 6)
+  const height_F = perspective / 3
 
-    case 1:
-      return getF1(screenSettings);
-
+  switch (sector) {
+    case 'WT':
+      return perspective + (height_WB_and_WT * .5)
+    case 'W':
+      return perspective + (height * .5)
+    case 'WB':
+      return perspective + wallHeight - (height_WB_and_WT * .5)
+    case 'F':
+      return perspective + wallHeight + height_F
     default:
-      return { x: 0, y: 0 }
+      return 0
   }
 }
