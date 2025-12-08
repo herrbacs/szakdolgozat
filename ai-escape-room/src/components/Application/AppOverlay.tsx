@@ -6,9 +6,8 @@ import InspectModal from '../GameObjects/Inspectable/InspectModal'
 const AppOverlay = () => {
   return (
     <>
-      {/* <ToggleInventory/> */}
       <Inventory/>
-      {/* <InspectModal/> */}
+      <InspectModal/>
     </>
   )
 }

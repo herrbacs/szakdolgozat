@@ -1,7 +1,7 @@
 import { MoveDirectionEnum } from "../shared/enums";
 import { LevelInformation } from "../shared/types/appTypes";
 import { AppSettings } from "../shared/types/frameworkTypes";
-import { PickableObject } from "../shared/types/gameObjectTypes";
+import { InspectableObject, PickableObject } from "../shared/types/gameObjectTypes";
 
 export function loadLevel(state: AppSettings, { walls }: LevelInformation) : AppSettings {
   return {
@@ -125,26 +125,12 @@ export function exit(state: AppSettings) : AppSettings {
 	}
 }
 
-// export function toggleObjetInspecting(state: AppSettings, payload: InspectableObject | null) : AppSettings {
-//   return {
-// 		...state,
-//     gameInformation: {
-//       ...state.gameInformation,
-//       inspectingItem: payload
-//     }
-// 	}
-// }
-
-// export function destroyPainting(state: AppSettings, payload: InteractableObject) : AppSettings {
-//   return {
-// 		...state,
-//     gameInformation: {
-//       ...state.gameInformation,
-//       walls: state.gameInformation.walls
-//         .map((wall: Wall) => ({
-//           ...wall,
-//           interactables: wall.interactables.filter((interactable: InteractableObject) => interactable.id !== payload.id)
-//         })),
-//     }
-// 	}
-// }
+export function toggleObjetInspecting(state: AppSettings, payload: InspectableObject | null) : AppSettings {
+  return {
+		...state,
+    gameInformation: {
+      ...state.gameInformation,
+      inspectingItem: payload
+    }
+	}
+}

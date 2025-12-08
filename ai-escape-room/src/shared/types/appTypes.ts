@@ -1,8 +1,7 @@
-import { Sprite } from "pixi.js";
+import { PointData, Sprite } from "pixi.js";
 import { PositionEnum } from "../enums";
 import { InspectableObject, PickableObject, Wall } from "./gameObjectTypes";
 import { Dimension } from "./gameBaseTypes";
-import { Coordinate } from "./frameworkTypes";
 
 export type GameInformation = {
 	indexes: {
@@ -23,8 +22,8 @@ export type PositionCalculatorInput = {
   area: PositionEnum,
   screenSettings: ScreenSettings,
   // sprite: Sprite,
-  scale: number,
-  perspective: boolean
+  // scale: number,
+  // perspective: boolean
 };
 
 export type ScreenSettings = {
@@ -37,9 +36,9 @@ export type LevelInformation = {
 }
 
 export type Square = {
-	topLeft: Coordinate,
-	topRight: Coordinate,
-	bottomRight: Coordinate,
-	bottomLeft: Coordinate,
-	pivot: Coordinate,
+	topLeft: PointData,
+	topRight: PointData,
+	bottomRight: PointData,
+	bottomLeft: PointData,
+	pivot: PointData,
 }

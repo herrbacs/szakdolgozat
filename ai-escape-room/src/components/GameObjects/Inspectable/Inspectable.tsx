@@ -1,64 +1,54 @@
-import React, { ReactNode, useContext, useEffect, useState } from 'react'
-import { AppSettingsContextType, Coordinate, InspectableObject } from '../../../shared/types'
-import { AppSettingsContext } from '../../../context/AppSettingsContext'
-import { base64ToBlob, calculateScaleFactorOfInspectableObject } from '../../../shared/helper'
-import { InspectableObjectSpriteStates, InteractableObjectTypes, SetAppSettingsAction } from '../../../shared/enums'
-import { setPositionOn } from '../../../shared/positionCalculator'
-import { Sprite } from '@pixi/react'
+import React, { useCallback, useContext, useEffect, useState } from "react"
+import { InspectableObject } from "../../../shared/types/gameObjectTypes"
+import { AppSettingsContextType } from "../../../shared/types/frameworkTypes"
+import { AppSettingsContext } from "../../../context/AppSettingsContext"
+import { Graphics, GraphicsContext, PointData } from "pixi.js"
+import { setPositionOn } from "../../../shared/positionCalculator"
+import { SetAppSettingsActionEnum } from "../../../shared/enums"
 
 type InspectableComponentType = {
-	children?: ReactNode,
 	inspectable: InspectableObject,
-	rightPerspective?: boolean,
-	leftPerspective?: boolean,
-	interactableParentType?: InteractableObjectTypes,
-  parentInfo?: {},
 }
 
-const Inspectable = ({ inspectable, rightPerspective = false, leftPerspective = false }: InspectableComponentType) => {
+const Inspectable = ({ inspectable }: InspectableComponentType) => {
 	const { appSettings: { screenSettings }, setAppSettings }: AppSettingsContextType = useContext(AppSettingsContext)
-	const [spriteCoordinate, setSpriteCoordinate] = useState<Coordinate>({} as Coordinate)
-	const [inspectableSpirte, setInspectableSpirte] = useState<string>('')
-	const scale = calculateScaleFactorOfInspectableObject(inspectable)
+	const [spriteCoordinate, setSpriteCoordinate] = useState<PointData>({} as PointData)
+
+  const drawCircle = useCallback((g: GraphicsContext) => {
+    g.circle(0, 0, 25)
+      .fill({ color: 0xc2c2c2 })
+      .stroke({ width: 3, color: 0xFFFFFF })
+  }, [])
 
   useEffect(() => {
-		console.log("Render inspectable")
-    let sprite = inspectable.sprites.find(sprite => sprite.state === InspectableObjectSpriteStates.DEFAULT)
-
-    if (sprite === undefined) {
-      throw Error(`Failed to load the DEFAULT sprite of an inspectable object #${inspectable.id}`)
-    }
-		if (rightPerspective) {
-			sprite = sprite.perspective!.right
-		}
-		if (leftPerspective) {
-			sprite = sprite.perspective!.left
-		}
-
-    setInspectableSpirte(URL.createObjectURL(base64ToBlob(sprite.blob, 'image/png')))
-    setSpriteCoordinate(setPositionOn({ 
+    setSpriteCoordinate(
+      setPositionOn({ 
 			area: inspectable.position,
 			screenSettings,
-			sprite,
-			scale,
-			perspective: rightPerspective || leftPerspective 
 		}))
   }, [])
 
   return (
-		<>
-			{ inspectableSpirte &&
-				<Sprite
-					onclick={() => setAppSettings({ action: SetAppSettingsAction.TOGGLE_OBJECT_INSPECTING , payload: inspectable })}
-					interactive
-					image={inspectableSpirte}
-					scale={{ x: scale, y: scale }}
-					x={spriteCoordinate.X}
-					y={spriteCoordinate.Y}
-					anchor={[0.5, 0.5]}
-				/>
-			}
-		</>
+    <pixiGraphics
+      x={spriteCoordinate.x}
+      y={spriteCoordinate.y}
+      draw={(g: Graphics) => drawCircle(g.context)}
+      eventMode="static"
+      cursor="pointer"
+      onPointerTap={() => setAppSettings({ action: SetAppSettingsActionEnum.TOGGLE_OBJECT_INSPECTING, payload: inspectable })}
+    >
+      <pixiText
+        text={'🔍'}
+        anchor={0.5}
+        x={0}
+        y={0}
+        style={{
+          fill: 0xffec99,
+          fontSize: 25,
+          fontWeight: 'bold'
+        }}
+      />
+    </pixiGraphics>
   )
 }
 
