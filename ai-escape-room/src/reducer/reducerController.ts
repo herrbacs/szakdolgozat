@@ -155,6 +155,7 @@ export function removeCover(state: AppSettings, { id }: MovableCoverObject): App
 export function openContainer(state: AppSettings, { id }: MovableCoverObject): AppSettings {
   const { gameInformation: { walls, indexes: { currentWall } } } = state
   const wall = walls[currentWall]
+  // TODO use findPath method
   function findContainerInWall(wall: Wall, containerId: string): null | { type: 'container' | 'movable', index: number } {
 
     const containerIndex = wall.containers?.findIndex(c => c.id === containerId)
@@ -238,6 +239,7 @@ export function searchContainer(state: AppSettings, payload: ContainerObject): A
   return { ...state }
 }
 
+// Lazy way, TODO: catch path to each id
 function findPath(obj: any, id: string, path: (string | number)[] = []): (string | number)[] | null {    
   if (obj === null || typeof obj !== "object") return null
 
