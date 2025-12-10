@@ -49,7 +49,7 @@ export function setPositionOn({ area, screenSettings }: PositionCalculatorInput)
         x: centerOfSectorX(1, screenSettings),
         y: centerOfSectorY('WB', screenSettings),
       }
-    case PositionEnum.WB2:
+    case PositionEnum.WB3:
       return {
         x: centerOfSectorX(2, screenSettings),
         y: centerOfSectorY('WB', screenSettings),
@@ -66,7 +66,7 @@ export function setPositionOn({ area, screenSettings }: PositionCalculatorInput)
         x: centerOfSectorX(1, screenSettings),
         y: centerOfSectorY('F', screenSettings),
       }
-    case PositionEnum.F2:
+    case PositionEnum.F3:
       return {
         x: centerOfSectorX(2, screenSettings),
         y: centerOfSectorY('F', screenSettings),

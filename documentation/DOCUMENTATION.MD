@@ -151,12 +151,14 @@ A **Container** egy olyan objektum, ami [Inspectable](#inspectable) elemeket **�
 - **Zárt:** Például: széf, telefon, szellőző. Olyan elem, aminek van egy zár típúsa és van létezik hozzá egy aktivátor.
 - **Nyitott:** Például: Könyves polc, karton doboz. Olyan elem, ami azonnal átvizsgálható.
 
-| Property          | Típus                                     | Leírás
-|-------------------|-------------------------------------------|---------------------------------------------------------------------------
-| **Id**            | `Guid`                                    | Egyedi azonosító.
-| **Position**      | [PositionEnum](#positionenum)             | Az elem pozíciója a falon.
-| **Lock**          | [Lock](#lock)                             | Kijárat zár leírása  
-| **Content**       | array\<[GameObject](#gameobject)> | Container elem tartalma
+| Property          | Típus                                             | Leírás
+|-------------------|---------------------------------------------------|------------------------------
+| **Id**            | `Guid`                                            | Egyedi azonosító.
+| **Position**      | [PositionEnum](#positionenum)                     | Az elem pozíciója a falon.
+| **Lock**          | `null` \| [Lock](#lock)                                     | Kijárat zár leírása  
+| **Content**       | array\<[DynamicGameObject](#dynamicgameobject)>   | Container elem tartalma
+| **InspectionData**| array\<[InspectionData](#inspectiondata)>                 | A tárgy szöveges leírása.
+| **Sprite**        | [Sprite](#sprite)                                 | Az elem vizuális megjelenése.
 
 **_Sprite_:**  
 - M vagy L méret lehet
@@ -171,14 +173,16 @@ A **Container** egy olyan objektum, ami [Inspectable](#inspectable) elemeket **�
 A **MovableCover** egy mozgatható elem, ami mögött valami el van rejtve [Inspectable](#inspectable) **vagy** [Pickable](#pickable) elem **vagy** [Container](#container) elem.\
 Ez a játék elem annyiban különbözik a [Container](#container) elemtől, hogy elmozgatásuk után kirajzolódik a rejtett játékelem
 
-| Property      | Típus                             | Leírás
-|---------------|-----------------------------------|------------------------------------------------
-| **Id**        | `Guid`                            | Egyedi azonosító.
-| **Sprite**    | [Sprite](#sprite)                 | A fedőelem megjelenése.
-| **Content**   | [GameObjectType](#gameobjecttype) | Container elem tartalma
+| Property              | Típus                                     | Leírás
+|-----------------------|-------------------------------------------|------------------------------------------
+| **Id**                | `Guid`                                    | Egyedi azonosító.
+| **Position**          | [PositionEnum](#positionenum)             | Az elem pozíciója a falon.
+| **Sprite**            | [Sprite](#sprite)                         | A fedőelem megjelenése.
+| **InspectionData**    | [InspectionData](#inspectiondata)         | A tárgy szöveges leírása.
+| **Content**           | [DynamicGameObject](#dynamicgameobject)   | Dinamikus játék elem.
 
 **_Content_:** 
-- Csak [Inspectable](#inspectable) **vagy** [Container](#container) elem lehet
+- Csak [Inspectable](#inspectable) **vagy** [Container](#container) elem lehet **vagy** [Pickable](#pickable) elem lehet
 
 **_Sprite_:**  
 - M vagy L méret lehet
@@ -191,7 +195,7 @@ Ez a játék elem annyiban különbözik a [Container](#container) elemtől, hog
 
 
 #  --------------Helper Objektumok--------------
-### GameObject
+### DynamicGameObject
 Olyan játék elem, ami egy másik játék elemen belül található. Például széfben van egy cetli, akkor egy Container játék elemben van egy Inspectable játék elem.
 
 | Property      | Típus                                                                                 | Leírás

@@ -34,9 +34,9 @@ const InspectModal = () => {
             <div style={{width: '100%', fontSize: '1.5rem', textAlign: 'center'}}>{inspectingItem?.inspectionData.appellation}</div>
             <div 
               onClick={() => setAppSettings({ action: SetAppSettingsActionEnum.TOGGLE_OBJECT_INSPECTING , payload: null })}
-              style={{position: 'absolute', top: '1rem', right: '1rem', fontSize: '1.5rem', textAlign: 'center', cursor: 'pointer'}}
+              style={{position: 'absolute', right: '1rem', textAlign: 'center', cursor: 'pointer'}}
             >
-              X
+              ✕
             </div>
           </div>
           { 

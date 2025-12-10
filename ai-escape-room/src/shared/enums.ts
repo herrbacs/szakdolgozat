@@ -13,6 +13,7 @@ export enum SetAppSettingsActionEnum {
   EXIT,
   TOGGLE_INVENTORY,
   TOGGLE_OBJECT_INSPECTING,
+  REMOVE_COVER
 }
 
 export enum GameObjectTypeEnum {

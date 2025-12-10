@@ -11,6 +11,7 @@ import {
   unselectItemFromInventory,
   destroyItemFromInventory,
   toggleObjetInspecting,
+  removeCover,
 } from "./reducerController"
 
 export const initialState : AppSettings = {
@@ -57,6 +58,8 @@ export const reducer = (state: AppSettings, { action, payload }: ReducerAction) 
       return exit(state)
     case SetAppSettingsActionEnum.TOGGLE_OBJECT_INSPECTING:
       return toggleObjetInspecting(state, payload)
+    case SetAppSettingsActionEnum.REMOVE_COVER:
+      return removeCover(state, payload)
     default:
       return state
   }

@@ -11,7 +11,8 @@ type InspectableComponentType = {
 }
 
 const Inspectable = ({ inspectable }: InspectableComponentType) => {
-	const { appSettings: { screenSettings }, setAppSettings }: AppSettingsContextType = useContext(AppSettingsContext)
+	console.log(inspectable)
+  const { appSettings: { screenSettings }, setAppSettings }: AppSettingsContextType = useContext(AppSettingsContext)
 	const [spriteCoordinate, setSpriteCoordinate] = useState<PointData>({} as PointData)
 
   const drawCircle = useCallback((g: GraphicsContext) => {

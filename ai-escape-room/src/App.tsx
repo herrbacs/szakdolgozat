@@ -61,7 +61,6 @@ export default function App() {
         style={{ position: 'relative', width: `${width}px`, height: `${height}px`, overflow: 'hidden' }}
       >
         <Application resizeTo={parentRef}>
-          <BunnySprite />
           <GameScene />
           <Navigation />
           <ToggleInventory />

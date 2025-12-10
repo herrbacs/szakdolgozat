@@ -1,7 +1,7 @@
 import { MoveDirectionEnum } from "../shared/enums";
 import { LevelInformation } from "../shared/types/appTypes";
 import { AppSettings } from "../shared/types/frameworkTypes";
-import { InspectableObject, PickableObject } from "../shared/types/gameObjectTypes";
+import { InspectableObject, MovableCoverObject, PickableObject } from "../shared/types/gameObjectTypes";
 
 export function loadLevel(state: AppSettings, { walls }: LevelInformation) : AppSettings {
   return {
@@ -132,5 +132,21 @@ export function toggleObjetInspecting(state: AppSettings, payload: InspectableOb
       ...state.gameInformation,
       inspectingItem: payload
     }
+	}
+}
+
+export function removeCover(state: AppSettings, { id }: MovableCoverObject) : AppSettings {
+  let { gameInformation: { walls } } = state
+  let { currentWall } = state.gameInformation.indexes
+
+  walls[currentWall].movableCovers = 
+    walls[currentWall].movableCovers.map(mc => mc.id === id ? { ...mc, used: true } : mc)
+
+  return {
+		...state,
+		gameInformation: {
+      ...state.gameInformation,
+      ...walls
+		}
 	}
 }

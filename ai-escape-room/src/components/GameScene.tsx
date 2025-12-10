@@ -9,8 +9,8 @@ import RightWall from './RoomStructures/RightWall'
 import React from 'react'
 import Pickable from './GameObjects/Pickable'
 import Inspectable from './GameObjects/Inspectable/Inspectable'
-import Interactable from './GameObjects/Interactable/Interactable'
 import { AppSettingsContextType } from '../shared/types/frameworkTypes'
+import MovableCover from './GameObjects/MovableCover/MovableCover'
 
 const GameScene = () => {
   const { appSettings: { gameInformation: { currentWall } } }: AppSettingsContextType = useContext(AppSettingsContext)
@@ -26,9 +26,7 @@ const GameScene = () => {
           {currentWall.exit && <Exit exit={currentWall?.exit} />}
           {currentWall.pickables.map((pickable) => <Pickable key={pickable.id} pickable={pickable}/>)}
           {currentWall.inspectables.map((inspectable) => <Inspectable key={inspectable.id} inspectable={inspectable}/>)}
-          {/* {
-            currentWall.interactables.map((interactable) => <Interactable key={interactable.id} interactable={interactable}/>) 
-          } */}
+          {currentWall.movableCovers.map((movableCover) => <MovableCover key={movableCover.id} movableCover={movableCover}/>)}
         </FrontWall>
       }
     </>
