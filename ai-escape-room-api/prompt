@@ -31,12 +31,12 @@ Final output format:
 
 Wall object:
   Properties
-    - id: GUID,
-    - color: "#RRGGBB",
-    - exit: null | Exit,
-    - pickables: array<Pickable>,
-    - inspectables: array<Inspectable>,
-    - containers: array<Container>,
+    - id: GUID
+    - color: "#RRGGBB"
+    - exit: null | Exit
+    - pickables: array<Pickable>
+    - inspectables: array<Inspectable>
+    - containers: array<Container>
     - movableCovers: array<MovableCover>
 
 Exit object:
@@ -71,18 +71,19 @@ Container object:
     - lock: null | LOCK
     - content: array<DynamicGameObject>
     - inspectionData: InspectionData
-Usage guidelines:
+  Usage guidelines:
     - A Container is an object that can store one or multiple DynamicGameObjects.
     - The content may consist of both Pickable and Inspectable objects.
-    - If `lock != null`, the container is locked and can only be opened or accessed once the LOCK condition is fulfilled.
-    - If `lock == null`, the player may freely open and inspect the container and its content.
-    - The container should encourage interaction: it can be inspected (inspectionData) and opened if requirements are met.
     - Only place content into a Container if it contributes to the story, puzzle progression, or provides meaningful gameplay value.
-      Otherwise, the container may remain empty but must serve a narrative or misdirection purpose.
-    - Examples:
-        • A wall safe with a number lock containing an Inspectable note or a Pickable key.
-        • A backpack without a lock that holds multiple Pickable items.
-        • A ventilation grate that can only be opened if the player owns a Pickable "Screwdriver".
+  Placement guidelines:
+    - Floor-type covers typically F1–F3.
+    - Wall-type covers typically WT, W, WB
+  Usage Examples:
+    - A wall safe with a number lock containing an Inspectable note or a Pickable key.
+    - A backpack without a lock that holds multiple Pickable items.
+    - A ventilation grate with a "KEY" lock wich is a screwdriver or a coin or crowbar.
+    - A book shelf without a lock
+    - Feel free to think about any other container types
 
 MovableCover object:
   Properties
@@ -90,38 +91,35 @@ MovableCover object:
     - position: POSITION
     - inspectionData: InspectionData
     - content: DynamicGameObject
-Usage guidelines:
-  - MovableCover represents an object that hides another interactive object beneath or behind it.
-  - It must always contain exactly one DynamicGameObject as its content.
-  - Within MovableCover, allowed content types are only: Pickable | Inspectable | Container.
-  - The content must always be meaningful and puzzle- or story-relevant (e.g. key, clue note, small box).
-  - Never generate a MovableCover without content.
-  - MovableCover itself is not pickable — it is moved/removed to reveal what is hidden.
-  - Recommended examples: carpet hiding a key, wall poster hiding a note, loose floor tile hiding a container.
-  - Placement must be logical:
-      - Floor-type covers (carpet, tile, mat) → typically F1–F3.
-      - Wall-type covers (poster, picture frame) → typically WT/W/WB zones.
-  - Do not nest MovableCover inside another MovableCover.
-  - Generate MovableCover only if hiding something essential to the puzzle or story progression.
+  Usage guidelines:
+    - MovableCover represents an object that hides another interactive object beneath or behind it.
+    - It must always contain exactly one DynamicGameObject as its content wich type most be only: Pickable | Inspectable | Container.
+    - The content must always be meaningful and puzzle- or story-relevant
+    - Recommended examples: carpet hiding a key, wall poster hiding a note, loose floor tile hiding a container.
+  Placement guidelines:
+    - Floor-type covers typically F1–F3
+    - Wall-type covers typically WT, W, WB
+  Usage Examples:
+    - carpet, tile, mat, loose floorboard
+    - poster, picture frame, flat screen tv
+    - Feel free to think about any other movable cover types
 
 Lock object:
   Properties
-    - type: "PASSWORD" | "KEY",
+    - type: "CODE_ONLY_NUMBER" | CODE_ONLY_LETTER | PASSWORD | "KEY",
     - activator: "string"
-    - when type is key, the activator is the id of key
   Usage guidelines:
+    - When type = CODE_ONLY_NUMBER: The activator is 4-10 characters long string of (0-9)
+    - When type = CODE_ONLY_LETTER: The activator is 4-10 characters long string of (A-Z)
+    - When type = PASSWORD: The activator is 10-20 characters long string of (A-Z, a-z, 0-9, '$', '#', '-', '_')
+    - When type = KEY: The activator is the Id of key item
     - A Lock controls access to an object (container, door, movable cover, etc.).
-    - When type = PASSWORD:
-        • The player must enter the correct code/password to unlock it.
-    - When type = KEY:
-        • The player must possess the object with id matching `activator` to unlock it.
     - Locks should only be used when they contribute to puzzle progression or narrative.
   Usage examples:
-    - A wall safe secured with a PASSWORD code.
-    - A door locked with a KEY such as a brass key or a lockpick set.
-    - A ventilation grate requiring a KEY item, such as a screwdriver.
-    - A floor hatch requiring a KEY item, such as a crowbar.
-    - A jewelry box secured with a KEY item.
+    - KEY: brass key, lockpick, screwdriver, crowbar, scissor, coin
+    - CODE_ONLY_NUMBER: luggage lock, digital lock, dial combination lock
+    - CODE_ONLY_LETTER: cryptex, digital lock, dial combination lock
+    - PASSWORD: digital lock, mobile
 
 DynamicGameObject object:
   Properties
