@@ -28,12 +28,16 @@ const Container = ({ container }: ContainerComponentType) => {
   }, [])
 
   const handleContainer = () => {
-    const action = container.lock === null || container.lock.open
-      ? SetAppSettingsActionEnum.CONTAINER_SEARCH
-      : SetAppSettingsActionEnum.SET_LOCK_MODAL
+    if (container.lock === null || container.lock.open) {
+      setAppSettings({
+        action: SetAppSettingsActionEnum.CONTAINER_SEARCH,
+        payload: container
+      })
+      return
+    }
 
     setAppSettings({
-      action,
+      action: SetAppSettingsActionEnum.SET_LOCK_MODAL,
       payload: {
         lock: container.lock,
         openCallback: () => setAppSettings({ action: SetAppSettingsActionEnum.CONTAINER_OPEN, payload: container })

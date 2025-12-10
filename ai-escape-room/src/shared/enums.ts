@@ -7,6 +7,7 @@ export enum SetAppSettingsActionEnum {
   LOAD_LEVEL,
   MOVE,
   PICK_UP_ITEM,
+  EMPTY_FOUD_ITEMS,
   SELECT_ITEM,
   UNSELECT_ITEM,
   DESTROY_INVENTORY_ITEM,

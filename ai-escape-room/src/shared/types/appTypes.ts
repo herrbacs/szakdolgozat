@@ -1,6 +1,6 @@
 import { PointData, Sprite } from "pixi.js";
 import { PositionEnum } from "../enums";
-import { InspectableObject, PickableObject, Wall } from "./gameObjectTypes";
+import { DynamicGameObject, InspectableObject, PickableObject, Wall } from "./gameObjectTypes";
 import { Dimension, Lock } from "./gameBaseTypes";
 
 export type GameInformation = {
@@ -17,6 +17,7 @@ export type GameInformation = {
 	selectedItem: null | PickableObject,
 	inspectingItem: null | InspectableObject,
 	lockModal: null | LockModal,
+	itemsFoundModal: null | DynamicGameObject[],
 }
 
 export type LockModal = {

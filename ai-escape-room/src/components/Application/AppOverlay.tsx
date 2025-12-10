@@ -2,6 +2,7 @@ import React from 'react'
 import Inventory from './Inventory'
 import InspectModal from '../GameObjects/Inspectable/InspectModal'
 import LockModal from './LockModal'
+import ItemsFoundModal from './ItemsFoundModal'
 
 const AppOverlay = () => {
   return (
@@ -9,6 +10,7 @@ const AppOverlay = () => {
       <Inventory/>
       <InspectModal/>
       <LockModal/>
+      <ItemsFoundModal/>
     </>
   )
 }

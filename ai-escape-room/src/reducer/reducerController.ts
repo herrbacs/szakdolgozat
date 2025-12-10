@@ -1,8 +1,8 @@
 import { Container } from 'pixi.js'
-import { MoveDirectionEnum } from '../shared/enums'
+import { GameObjectTypeEnum, MoveDirectionEnum } from '../shared/enums'
 import { LevelInformation, LockModal } from '../shared/types/appTypes'
 import { AppSettings } from '../shared/types/frameworkTypes'
-import { ContainerObject, InspectableObject, MovableCoverObject, PickableObject, Wall } from '../shared/types/gameObjectTypes'
+import { ContainerObject, DynamicGameObject, InspectableObject, MovableCoverObject, PickableObject, Wall } from '../shared/types/gameObjectTypes'
 
 export function loadLevel(state: AppSettings, { walls }: LevelInformation): AppSettings {
   return {
@@ -209,7 +209,63 @@ export function setLockModal(state: AppSettings, payload: null | LockModal): App
   }
 }
 
-export function searchContainer(state: AppSettings, payload: null | LockModal): AppSettings {
-  console.log('Searching container')
+export function emptyFoundItems(state: AppSettings): AppSettings {
+  state.gameInformation.itemsFoundModal = null
   return { ...state }
 }
+
+export function searchContainer(state: AppSettings, payload: ContainerObject): AppSettings {
+  state.gameInformation.itemsFoundModal = [...payload.content]
+
+  const pickableItems = payload.content
+    .filter(item => item.type === GameObjectTypeEnum.PICKABLE)
+    .map(({ object }: DynamicGameObject) => object as PickableObject)
+  state.gameInformation.inventory.push(...pickableItems)
+
+  const containerLocation = findPath(state.gameInformation, payload.id)
+  if (containerLocation === null) {
+    throw new Error(`Find Path method has not found the element with id: ${payload.id}`)
+  }
+
+  applyOnPath(
+    state.gameInformation,
+    containerLocation,
+    (container: ContainerObject) => {
+      container.content = container.content.filter(content => content.type !== GameObjectTypeEnum.PICKABLE)
+    }
+  )
+
+  return { ...state }
+}
+
+function findPath(obj: any, id: string, path: (string | number)[] = []): (string | number)[] | null {    
+  if (obj === null || typeof obj !== "object") return null
+
+  if (obj.id === id) {
+      return path
+  }
+
+  if (Array.isArray(obj)) {
+    for (let i = 0; i < obj.length; i++) {
+      const res = findPath(obj[i], id, [...path, i])
+      if (res) return res
+    }
+  } else {
+    for (const key in obj) {
+      const res = findPath(obj[key], id, [...path, key])
+      if (res) return res
+    }
+  }
+
+  return null
+}
+
+function applyOnPath(obj: any, path: (string|number)[], callback: (t: any) => void) {
+    let current = obj
+    for (const step of path) {
+        current = current[step]
+        if (current == null) throw new Error("Invalid path!")
+    }
+    callback(current)
+}
+
