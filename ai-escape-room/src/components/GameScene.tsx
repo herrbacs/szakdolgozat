@@ -11,6 +11,7 @@ import Pickable from './GameObjects/Pickable'
 import Inspectable from './GameObjects/Inspectable/Inspectable'
 import { AppSettingsContextType } from '../shared/types/frameworkTypes'
 import MovableCover from './GameObjects/MovableCover/MovableCover'
+import Container from './GameObjects/Container/Container'
 
 const GameScene = () => {
   const { appSettings: { gameInformation: { currentWall } } }: AppSettingsContextType = useContext(AppSettingsContext)
@@ -27,6 +28,7 @@ const GameScene = () => {
           {currentWall.pickables.map((pickable) => <Pickable key={pickable.id} pickable={pickable}/>)}
           {currentWall.inspectables.map((inspectable) => <Inspectable key={inspectable.id} inspectable={inspectable}/>)}
           {currentWall.movableCovers.map((movableCover) => <MovableCover key={movableCover.id} movableCover={movableCover}/>)}
+          {currentWall.containers.map((container) => <Container key={container.id} container={container}/>)}
         </FrontWall>
       }
     </>

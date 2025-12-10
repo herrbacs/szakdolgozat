@@ -13,7 +13,10 @@ export enum SetAppSettingsActionEnum {
   EXIT,
   TOGGLE_INVENTORY,
   TOGGLE_OBJECT_INSPECTING,
-  REMOVE_COVER
+  REMOVE_COVER,
+  SET_LOCK_MODAL,
+  CONTAINER_SEARCH,
+  CONTAINER_OPEN,
 }
 
 export enum GameObjectTypeEnum {

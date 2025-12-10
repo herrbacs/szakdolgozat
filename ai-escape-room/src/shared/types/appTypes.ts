@@ -1,7 +1,7 @@
 import { PointData, Sprite } from "pixi.js";
 import { PositionEnum } from "../enums";
 import { InspectableObject, PickableObject, Wall } from "./gameObjectTypes";
-import { Dimension } from "./gameBaseTypes";
+import { Dimension, Lock } from "./gameBaseTypes";
 
 export type GameInformation = {
 	indexes: {
@@ -16,6 +16,12 @@ export type GameInformation = {
 	showInventory: boolean,
 	selectedItem: null | PickableObject,
 	inspectingItem: null | InspectableObject,
+	lockModal: null | LockModal,
+}
+
+export type LockModal = {
+  lock: Lock,
+  openCallback: () => void
 }
 
 export type PositionCalculatorInput = {

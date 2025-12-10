@@ -1,74 +1,125 @@
 {
-    "story": "You awaken inside a forgotten clockmaker's workshop, four bare walls lined with dust, where every tick of a clock echoes the room's secret. The goal is to locate the Brass Clock Key hidden in the center floor tile and use it to unlock the exit before the hour strikes doom. The air hums with clockwork, and ledger pages and diagrams guide you toward the hidden center of the room.",
+    "story": "You awaken in a dim clockmaker's workshop where gears keep time and a heavy door seals the way out. The exit is guarded by a clockwork lock that only a brass key can bypass, a key hidden behind a movable cover and a hidden drawer. Your goal is to reveal the key, claim it, and use it to unlock the exit before the clock chimes thirteen.",
     "walls": [
         {
-            "id": "1a2b3c4d-5e6f-7081-92a3-b4c5d6e7f809",
-            "color": "#7a5a3a",
+            "id": "a5f2c1d3-4b7e-498f-9a3d-6ca7f1b8c9a2",
+            "color": "#5A5A5A",
             "exit": null,
             "pickables": [],
             "inspectables": [
                 {
-                    "id": "e7a1b2c3-4d5e-6f70-8192-3a4b5c6d7e8f",
-                    "position": "WT1",
-                    "inspectionData": {
-                        "appellation": "Ledger Page",
-                        "information": "The ledger records an hour-based riddle that hints at the center floor tile as the key's hiding place."
-                    }
-                }
-            ],
-            "containers": [],
-            "movablecovers": []
-        },
-        {
-            "id": "0f8e7d6c-5b4a-2c1d-3e4f-5a6b7c8d9e0f",
-            "color": "#5a7a7a",
-            "exit": null,
-            "pickables": [],
-            "inspectables": [
-                {
-                    "id": "f0e1d2c3-4b5a-6978-8a9b-0c1d2e3f4a56",
+                    "id": "inspect-wt1-01",
                     "position": "WT2",
                     "inspectionData": {
-                        "appellation": "Clock Diagram",
-                        "information": "A diagram of three interlocking gears. A note reads: 'When three gears align, check the middle of the room.'"
+                        "appellation": "Dusty Ledger Page",
+                        "information": "A ledger from the clockmaker bears a sun crest and a note: 'When the hands align, the cover reveals its secret.'"
                     }
                 }
             ],
             "containers": [],
-            "movablecovers": []
+            "movableCovers": [
+                {
+                    "id": "cover-wt1-01",
+                    "position": "WT1",
+                    "inspectionData": {
+                        "appellation": "Velvet Wall Cover",
+                        "information": "A heavy velvet cover conceals something behind the wall clock."
+                    },
+                    "content": {
+                        "type": "CONTAINER",
+                        "object": {
+                            "id": "container-wt1-01",
+                            "position": "WT1",
+                            "lock": {
+                                "type": "PASSWORD",
+                                "activator": "1234"
+                            },
+                            "content": [
+                                {
+                                    "type": "PICKABLE",
+                                    "object": {
+                                        "id": "d2e1f9a0-1234-4d8a-8a2e-9b1c2d3e4f50",
+                                        "position": "WT1",
+                                        "reusable": false,
+                                        "inspectionData": {
+                                            "appellation": "Brass Key",
+                                            "information": "A small brass key stamped with a sun crest; it opens the clockmaker's exit lock."
+                                        }
+                                    }
+                                }
+                            ],
+                            "inspectionData": {
+                                "appellation": "Hidden Drawer",
+                                "information": "A tiny wooden drawer concealed within the container."
+                            }
+                        }
+                    }
+                }
+            ]
         },
         {
-            "id": "9a8b7c6d-5e4f-3a2b-1c0d-9e8f7a6b5c4d",
-            "color": "#6b3f2f",
+            "id": "b7d6e5f4-1a2b-3c4d-5e6f-708192a3b4c5",
+            "color": "#6B5A2B",
+            "exit": null,
+            "pickables": [],
+            "inspectables": [
+                {
+                    "id": "inspect-w2-01",
+                    "position": "W2",
+                    "inspectionData": {
+                        "appellation": "Sun Crest Ledger",
+                        "information": "The clockmaker's ledger bears a sun crest and a note: 'When the hour hand aligns, the cover parts.'"
+                    }
+                }
+            ],
+            "containers": [],
+            "movableCovers": []
+        },
+        {
+            "id": "c9d8e7f6-5a4b-3c2d-1e0f-9a8b7c6d5e4f",
+            "color": "#7A7A7A",
+            "exit": null,
+            "pickables": [],
+            "inspectables": [],
+            "containers": [
+                {
+                    "id": "container-w3-01",
+                    "position": "W3",
+                    "lock": null,
+                    "content": [
+                        {
+                            "type": "INSPECTABLE",
+                            "object": {
+                                "id": "inspect-w3-01",
+                                "position": "W3",
+                                "inspectionData": {
+                                    "appellation": "Clock Mechanism Diagram",
+                                    "information": "A faded schematic shows gear ratios and a missing numeral, hinting at the chime rhythm."
+                                }
+                            }
+                        }
+                    ],
+                    "inspectionData": {
+                        "appellation": "Small Wooden Crate",
+                        "information": "A crate carved into the wall; its lid is slightly ajar."
+                    }
+                }
+            ],
+            "movableCovers": []
+        },
+        {
+            "id": "d0e1f2a3-4b5c-6d7e-8f90-1a2b3c4d5e6f",
+            "color": "#3A3A3A",
             "exit": {
                 "lock": {
                     "type": "KEY",
-                    "activator": "c9f2a1d3-4b56-7c89-de01-23456789abcd"
+                    "activator": "d2e1f9a0-1234-4d8a-8a2e-9b1c2d3e4f50"
                 }
             },
-            "pickables": [
-                {
-                    "id": "c9f2a1d3-4b56-7c89-de01-23456789abcd",
-                    "position": "F2",
-                    "Reusable": true,
-                    "inspectionData": {
-                        "appellation": "Brass Clock Key",
-                        "information": "A worn brass key etched with clockwork motifs. It seems designed to fit an old clockwork lock."
-                    }
-                }
-            ],
-            "inspectables": [],
-            "containers": [],
-            "movablecovers": []
-        },
-        {
-            "id": "3d2c1b0a-9f8e-7d6c-5b4a-3e2f1d0c9b8a",
-            "color": "#2b2b2b",
-            "exit": null,
             "pickables": [],
             "inspectables": [],
             "containers": [],
-            "movablecovers": []
+            "movableCovers": []
         }
     ]
 }

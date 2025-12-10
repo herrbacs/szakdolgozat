@@ -51,7 +51,6 @@ export default function App() {
 
   useEffect(() => {
     generateLevel()
-    console.log('Level Generated')
   }, [])
 
   return levelLoaded

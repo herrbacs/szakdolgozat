@@ -12,6 +12,9 @@ import {
   destroyItemFromInventory,
   toggleObjetInspecting,
   removeCover,
+  setLockModal,
+  openContainer,
+  searchContainer,
 } from "./reducerController"
 
 export const initialState : AppSettings = {
@@ -35,6 +38,7 @@ export const initialState : AppSettings = {
     selectedItem: null,
     showInventory: false,
     inspectingItem: null,
+    lockModal: null,
   }
 }
 
@@ -44,8 +48,8 @@ export const reducer = (state: AppSettings, { action, payload }: ReducerAction) 
       return loadLevel(state, payload)
     case SetAppSettingsActionEnum.MOVE:
       return handleMove(state, payload)
-      case SetAppSettingsActionEnum.TOGGLE_INVENTORY:
-        return toggleInventory(state)
+    case SetAppSettingsActionEnum.TOGGLE_INVENTORY:
+      return toggleInventory(state)
     case SetAppSettingsActionEnum.PICK_UP_ITEM:
       return addItemToInventory(state, payload)
     case SetAppSettingsActionEnum.SELECT_ITEM:
@@ -60,6 +64,12 @@ export const reducer = (state: AppSettings, { action, payload }: ReducerAction) 
       return toggleObjetInspecting(state, payload)
     case SetAppSettingsActionEnum.REMOVE_COVER:
       return removeCover(state, payload)
+    case SetAppSettingsActionEnum.SET_LOCK_MODAL:
+      return setLockModal(state, payload)
+    case SetAppSettingsActionEnum.CONTAINER_OPEN:
+      return openContainer(state, payload)
+    case SetAppSettingsActionEnum.CONTAINER_SEARCH:
+      return searchContainer(state, payload)
     default:
       return state
   }

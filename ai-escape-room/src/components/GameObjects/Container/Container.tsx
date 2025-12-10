@@ -1,18 +1,17 @@
 import React, { useCallback, useContext, useEffect, useState } from "react"
-import { InspectableObject } from "../../../shared/types/gameObjectTypes"
+import { ContainerObject, PickableObject } from "../../../shared/types/gameObjectTypes"
 import { AppSettingsContextType } from "../../../shared/types/frameworkTypes"
 import { AppSettingsContext } from "../../../context/AppSettingsContext"
 import { Graphics, GraphicsContext, PointData } from "pixi.js"
 import { setPositionOn } from "../../../shared/positionCalculator"
 import { SetAppSettingsActionEnum } from "../../../shared/enums"
-
-type InspectableComponentType = {
-	inspectable: InspectableObject,
+type ContainerComponentType = {
+  container: ContainerObject,
 }
 
-const Inspectable = ({ inspectable }: InspectableComponentType) => {
+const Container = ({ container }: ContainerComponentType) => {
   const { appSettings: { screenSettings }, setAppSettings }: AppSettingsContextType = useContext(AppSettingsContext)
-	const [spriteCoordinate, setSpriteCoordinate] = useState<PointData>({} as PointData)
+  const [spriteCoordinate, setSpriteCoordinate] = useState<PointData>({} as PointData)
 
   const drawCircle = useCallback((g: GraphicsContext) => {
     g.circle(0, 0, 25)
@@ -22,11 +21,25 @@ const Inspectable = ({ inspectable }: InspectableComponentType) => {
 
   useEffect(() => {
     setSpriteCoordinate(
-      setPositionOn({ 
-			area: inspectable.position,
-			screenSettings,
-		}))
+      setPositionOn({
+        area: container.position,
+        screenSettings,
+      }))
   }, [])
+
+  const handleContainer = () => {
+    const action = container.lock === null || container.lock.open
+      ? SetAppSettingsActionEnum.CONTAINER_SEARCH
+      : SetAppSettingsActionEnum.SET_LOCK_MODAL
+
+    setAppSettings({
+      action,
+      payload: {
+        lock: container.lock,
+        openCallback: () => setAppSettings({ action: SetAppSettingsActionEnum.CONTAINER_OPEN, payload: container })
+      }
+    })
+  }
 
   return (
     <pixiGraphics
@@ -35,10 +48,10 @@ const Inspectable = ({ inspectable }: InspectableComponentType) => {
       draw={(g: Graphics) => drawCircle(g.context)}
       eventMode="static"
       cursor="pointer"
-      onPointerTap={() => setAppSettings({ action: SetAppSettingsActionEnum.TOGGLE_OBJECT_INSPECTING, payload: inspectable })}
+      onPointerTap={handleContainer}
     >
       <pixiText
-        text={'🔍'}
+        text={container.lock === null ? '📦' : container.lock.open ? '🔓' : '🔒'}
         anchor={0.5}
         x={0}
         y={0}
@@ -52,4 +65,4 @@ const Inspectable = ({ inspectable }: InspectableComponentType) => {
   )
 }
 
-export default Inspectable
+export default Container

@@ -268,6 +268,8 @@ Egy játék elem zár leírását tartalmazza.
 ### LockTypeEnum
 - **KEY**
 - **PASSWORD**
+- **CODE_ONLY_NUMBER**
+- **CODE_ONLY_LETTER**
 
 ### SizeEnum
 FrontEnd ezt az értéket arányosításra fogja használni   

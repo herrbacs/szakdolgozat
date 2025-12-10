@@ -47,7 +47,7 @@ export type InspectableObject = BaseGameObject & HasSprite & IsInspectable & {}
 
 export type ContainerObject = BaseGameObject & HasSprite & IsInspectable & {
   content: DynamicGameObject[],
-  Lock: null | Lock
+  lock: null | Lock
 }
 
 export type MovableCoverObject = BaseGameObject & HasSprite & IsInspectable & {

@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from "react"
-import { MovableCoverObject, PickableObject } from "../../../shared/types/gameObjectTypes"
+import { ContainerObject, InspectableObject, MovableCoverObject, PickableObject } from "../../../shared/types/gameObjectTypes"
 import { AppSettingsContextType } from "../../../shared/types/frameworkTypes"
 import { AppSettingsContext } from "../../../context/AppSettingsContext"
 import { Graphics, GraphicsContext, PointData } from "pixi.js"
@@ -7,6 +7,7 @@ import { setPositionOn } from "../../../shared/positionCalculator"
 import { GameObjectTypeEnum, SetAppSettingsActionEnum } from "../../../shared/enums"
 import Pickable from "../Pickable"
 import Inspectable from "../Inspectable/Inspectable"
+import Container from "../Container/Container"
 
 type MovableCoverComponentType = {
 	movableCover: MovableCoverObject,
@@ -59,9 +60,9 @@ const MovableCover = ({ movableCover }: MovableCoverComponentType) => {
     case GameObjectTypeEnum.PICKABLE:
       return <Pickable key={movableCover.content.object.id} pickable={movableCover.content.object as PickableObject}/>
     case GameObjectTypeEnum.INSPECTABLE:
-      return <Inspectable key={movableCover.content.object.id} inspectable={movableCover.content.object}/>
-    // case GameObjectTypeEnum.CONTAINER:
-      // return <Container key={movableCover.id} movableCover={movableCover}/>
+      return <Inspectable key={movableCover.content.object.id} inspectable={movableCover.content.object as InspectableObject}/>
+    case GameObjectTypeEnum.CONTAINER:
+      return <Container key={movableCover.id} container={movableCover.content.object as ContainerObject}/>
   }
   
 }
