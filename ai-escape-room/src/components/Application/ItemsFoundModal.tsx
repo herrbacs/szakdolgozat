@@ -20,6 +20,11 @@ const ItemsFoundModal = () => {
     }
   }
 
+  const closeModal = () => {
+    setAppSettings({ action: SetAppSettingsActionEnum.TAKE_FOUND_ITEMS })
+    setAppSettings({ action: SetAppSettingsActionEnum.EMPTY_FOUD_ITEMS_MODAL , payload: null })
+  }
+
   const isFirstElement = currentItemIndex === 0
   const isLastElement = currentItemIndex === itemsFoundModal?.length! - 1
 
@@ -37,7 +42,7 @@ const ItemsFoundModal = () => {
             </div>
             <div 
               style={{ position: 'absolute', right: '1rem', textAlign: 'center', cursor: 'pointer' }}
-              onClick={() => setAppSettings({ action: SetAppSettingsActionEnum.EMPTY_FOUD_ITEMS , payload: null })}
+              onClick={closeModal}
             >
               ✕
             </div>
@@ -100,7 +105,7 @@ const ItemsFoundModal = () => {
         <div style={{ position: 'relative', padding: '.5rem 0', display: 'flex', flexDirection: 'column', width: '100%', textTransform: 'uppercase', color: '#FFFF', fontWeight: 'bold' }}>
           <div 
             style={{ position: 'absolute', right: '1rem', textAlign: 'center', cursor: 'pointer' }}
-            onClick={() => setAppSettings({ action: SetAppSettingsActionEnum.EMPTY_FOUD_ITEMS , payload: null })}
+            onClick={() => setAppSettings({ action: SetAppSettingsActionEnum.EMPTY_FOUD_ITEMS_MODAL , payload: null })}
           >
             ✕
           </div>

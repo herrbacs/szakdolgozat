@@ -5,6 +5,7 @@ import { AppSettingsContext } from "../../../context/AppSettingsContext"
 import { Graphics, GraphicsContext, PointData } from "pixi.js"
 import { setPositionOn } from "../../../shared/positionCalculator"
 import { SetAppSettingsActionEnum } from "../../../shared/enums"
+
 type ContainerComponentType = {
   container: ContainerObject,
 }

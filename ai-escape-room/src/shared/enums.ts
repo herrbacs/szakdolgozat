@@ -7,7 +7,7 @@ export enum SetAppSettingsActionEnum {
   LOAD_LEVEL,
   MOVE,
   PICK_UP_ITEM,
-  EMPTY_FOUD_ITEMS,
+  EMPTY_FOUD_ITEMS_MODAL,
   SELECT_ITEM,
   UNSELECT_ITEM,
   DESTROY_INVENTORY_ITEM,
@@ -18,6 +18,7 @@ export enum SetAppSettingsActionEnum {
   SET_LOCK_MODAL,
   CONTAINER_SEARCH,
   CONTAINER_OPEN,
+  TAKE_FOUND_ITEMS,
 }
 
 export enum GameObjectTypeEnum {

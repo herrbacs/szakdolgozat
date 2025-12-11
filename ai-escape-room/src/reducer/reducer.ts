@@ -16,6 +16,7 @@ import {
   openContainer,
   searchContainer,
   emptyFoundItems,
+  takeFoundItems,
 } from "./reducerController"
 
 export const initialState : AppSettings = {
@@ -72,8 +73,10 @@ export const reducer = (state: AppSettings, { action, payload }: ReducerAction) 
       return openContainer(state, payload)
     case SetAppSettingsActionEnum.CONTAINER_SEARCH:
       return searchContainer(state, payload)
-    case SetAppSettingsActionEnum.EMPTY_FOUD_ITEMS:
+    case SetAppSettingsActionEnum.EMPTY_FOUD_ITEMS_MODAL:
       return emptyFoundItems(state)
+    case SetAppSettingsActionEnum.TAKE_FOUND_ITEMS:
+      return takeFoundItems(state)
     default:
       return state
   }

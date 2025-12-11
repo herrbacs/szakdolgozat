@@ -41,6 +41,7 @@ export type ExitObject = {
 
 export type PickableObject = BaseGameObject & HasSprite & IsInspectable & {
   reusable: boolean,
+  taken: boolean
 }
 
 export type InspectableObject = BaseGameObject & HasSprite & IsInspectable & {}

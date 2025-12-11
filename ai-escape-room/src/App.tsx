@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
-import { BunnySprite } from './BunnySprite'
 import { AppSettingsContextType } from './shared/types/frameworkTypes'
 import { AppSettingsContext } from './context/AppSettingsContext'
 import AppOverlay from './components/Application/AppOverlay'

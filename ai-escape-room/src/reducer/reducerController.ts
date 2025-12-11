@@ -5,19 +5,12 @@ import { AppSettings } from '../shared/types/frameworkTypes'
 import { ContainerObject, DynamicGameObject, InspectableObject, MovableCoverObject, PickableObject, Wall } from '../shared/types/gameObjectTypes'
 
 export function loadLevel(state: AppSettings, { walls }: LevelInformation): AppSettings {
-  return {
-    ...state,
-    gameInformation: {
-      ...state.gameInformation,
-      currentWall: walls[0],
-      indexes: {
-        ...state.gameInformation.indexes,
-        leftWall: walls.length - 1,
-      },
-      amountOfWalls: walls.length,
-      walls,
-    },
-  }
+  state.gameInformation.walls = walls
+  state.gameInformation.amountOfWalls = walls.length
+  state.gameInformation.currentWall = walls[0]
+  state.gameInformation.indexes.leftWall = walls.length - 1
+
+  return { ...state }
 }
 
 export function handleMove(state: AppSettings, payload: MoveDirectionEnum): AppSettings {
@@ -87,127 +80,43 @@ export function addItemToInventory(state: AppSettings, payload: PickableObject):
 }
 
 export function selectItemFromInventory(state: AppSettings, payload: PickableObject): AppSettings {
-  return {
-    ...state,
-    gameInformation: {
-      ...state.gameInformation,
-      selectedItem: payload
-    }
-  }
+  state.gameInformation.selectedItem = payload
+  return { ...state }
 }
 
 export function unselectItemFromInventory(state: AppSettings): AppSettings {
-  return {
-    ...state,
-    gameInformation: {
-      ...state.gameInformation,
-      selectedItem: null
-    }
-  }
+  state.gameInformation.selectedItem = null
+  return { ...state }
 }
 
 export function destroyItemFromInventory(state: AppSettings, payload: PickableObject): AppSettings {
-  return {
-    ...state,
-    gameInformation: {
-      ...state.gameInformation,
-      inventory: state.gameInformation.inventory.filter(item => item.id !== payload.id)
-    }
-  }
+  state.gameInformation.inventory = state.gameInformation.inventory.filter(item => item.id !== payload.id)
+  return { ...state }
 }
 
 export function exit(state: AppSettings): AppSettings {
-  let { gameInformation: { walls, indexes: { currentWall } } } = state
-
-  walls[currentWall].exit!.lock.open = true
-
-  return {
-    ...state
-  }
+  getCurrentWall(state).exit!.lock.open = true
+  return { ...state}
 }
 
 export function toggleObjetInspecting(state: AppSettings, payload: InspectableObject | null): AppSettings {
-  return {
-    ...state,
-    gameInformation: {
-      ...state.gameInformation,
-      inspectingItem: payload
-    }
-  }
+  state.gameInformation.inspectingItem = payload
+  return { ...state }
 }
 
 export function removeCover(state: AppSettings, { id }: MovableCoverObject): AppSettings {
-  let { gameInformation: { walls } } = state
-  let { currentWall } = state.gameInformation.indexes
-
-  walls[currentWall].movableCovers =
-    walls[currentWall].movableCovers.map(mc => mc.id === id ? { ...mc, used: true } : mc)
-
-  return {
-    ...state,
-    gameInformation: {
-      ...state.gameInformation,
-      ...walls
-    }
-  }
+  findAndApply(getCurrentWall(state).movableCovers, id, (cover: MovableCoverObject) => cover.used = true)
+  return { ...state }
 }
 
 export function openContainer(state: AppSettings, { id }: MovableCoverObject): AppSettings {
-  const { gameInformation: { walls, indexes: { currentWall } } } = state
-  const wall = walls[currentWall]
-  // TODO use findPath method
-  function findContainerInWall(wall: Wall, containerId: string): null | { type: 'container' | 'movable', index: number } {
-
-    const containerIndex = wall.containers?.findIndex(c => c.id === containerId)
-    if (containerIndex !== -1) {
-      return { type: 'container', index: containerIndex }
-    }
-
-    const movableIndex = wall.movableCovers?.findIndex(m => m.content.object.id === containerId)
-
-    if (movableIndex !== -1) {
-      return { type: 'movable', index: movableIndex }
-    }
-
-    return null
-  }
-
-  const result = findContainerInWall(wall, id)
-  if (result === null) {
-    throw new Error(`Container not found with id ${id}`)
-  }
-
-  const updatedWalls = [...walls]
-
-  if (result.type === 'container') {
-    updatedWalls[currentWall].containers[result.index].lock!.open = true
-  }
-  else if (result.type === 'movable') {
-    const containerObj = updatedWalls[currentWall].movableCovers[result.index].content.object
-    if ('lock' in containerObj && containerObj.lock) {
-      containerObj.lock.open = true
-    }
-  }
-
-  return {
-    ...state,
-    gameInformation: {
-      ...state.gameInformation,
-      walls: updatedWalls
-    }
-  }
+  findAndApply(getCurrentWall(state), id, (container: ContainerObject) => container.lock!.open = true)
+  return { ...state }
 }
 
 export function setLockModal(state: AppSettings, payload: null | LockModal): AppSettings {
-  return {
-    ...state,
-    gameInformation: {
-      ...state.gameInformation,
-      lockModal: payload === null
-        ? null
-        : payload
-    }
-  }
+  state.gameInformation.lockModal = payload
+  return { ...state }
 }
 
 export function emptyFoundItems(state: AppSettings): AppSettings {
@@ -217,26 +126,52 @@ export function emptyFoundItems(state: AppSettings): AppSettings {
 
 export function searchContainer(state: AppSettings, payload: ContainerObject): AppSettings {
   state.gameInformation.itemsFoundModal = [...payload.content]
+  return { ...state }
+}
 
-  const pickableItems = payload.content
-    .filter(item => item.type === GameObjectTypeEnum.PICKABLE)
-    .map(({ object }: DynamicGameObject) => object as PickableObject)
-  state.gameInformation.inventory.push(...pickableItems)
-
-  const containerLocation = findPath(state.gameInformation, payload.id)
-  if (containerLocation === null) {
-    throw new Error(`Find Path method has not found the element with id: ${payload.id}`)
+export function takeFoundItems(state: AppSettings): AppSettings {
+  const { gameInformation: { itemsFoundModal } } = state
+  if (itemsFoundModal === null) {
+    return { ...state }
   }
 
-  applyOnPath(
-    state.gameInformation,
-    containerLocation,
-    (container: ContainerObject) => {
-      container.content = container.content.filter(content => content.type !== GameObjectTypeEnum.PICKABLE)
-    }
-  )
+  itemsFoundModal
+    .filter(item => item.type === GameObjectTypeEnum.PICKABLE)
+    .map(({ object }: DynamicGameObject) => object as PickableObject)
+    .forEach((pickableItem: PickableObject) => {
+      state.gameInformation.inventory.push(pickableItem)
+
+      const path = findPath(state.gameInformation, pickableItem.id)
+      if (path === null) {
+        throw new Error(`Find Path method has not found the element with id: ${pickableItem.id}`)
+      }
+
+      applyOnPathRef(state.gameInformation, path.slice(0, -2), (parent, key) => {
+        if (Array.isArray(parent[key])) {
+          parent[key] = parent[key].filter((el: DynamicGameObject) => el.object.id !== pickableItem.id)
+        } else {
+          parent[key] = null
+        }
+      })
+
+      state.gameInformation.itemsFoundModal = itemsFoundModal.filter(foundItem => foundItem.object.id !== pickableItem.id)
+    })
 
   return { ...state }
+}
+
+export function getCurrentWall(state: AppSettings): Wall {
+  const { gameInformation: { walls, indexes: { currentWall } } } = state
+  return walls[currentWall]
+}
+
+function findAndApply<T>(obj: any, id: string, callback: (t: T) => void) {
+  const path = findPath(obj, id)
+  if (path === null) {
+    throw new Error(`Find Path method has not found the element with id: ${id}`)
+  }
+
+  applyOnPath(obj, path, callback)
 }
 
 // Lazy way, TODO: catch path to each id
@@ -271,3 +206,12 @@ function applyOnPath(obj: any, path: (string|number)[], callback: (t: any) => vo
     callback(current)
 }
 
+function applyOnPathRef(obj: any, path: (string|number)[], callback: (parent: any, key: string|number) => void) {
+    let current = obj
+    for (let i = 0; i < path.length - 1; i++) {
+        current = current[path[i]]
+        if (current == null) throw new Error("Invalid path!")
+    }
+    const lastKey = path[path.length - 1]
+    callback(current, lastKey)
+}
