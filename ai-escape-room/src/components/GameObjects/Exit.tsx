@@ -1,18 +1,23 @@
 
 import React from 'react'
-import { Assets, PointData, Texture } from 'pixi.js'
+import { Assets, FederatedPointerEvent, FederatedWheelEvent, PointData, Texture } from 'pixi.js'
 import { useCallback, useContext, useEffect, useState } from 'react'
 import { AppSettingsContext } from '../../context/AppSettingsContext'
 import { LockTypeEnum, SetAppSettingsActionEnum } from '../../shared/enums'
 import { AppSettingsContextType } from '../../shared/types/frameworkTypes'
 import { ExitObject } from '../../shared/types/gameObjectTypes'
+import { CursorActions } from '../../shared/types/appTypes'
 
 const Exit = ({ exit: { lock: { type, activator, open } } }: { exit: ExitObject }) => {
-  const { appSettings: { screenSettings: { dimension: { width, height }, perspective }, gameInformation: { selectedItem } }, setAppSettings }: AppSettingsContextType = useContext(AppSettingsContext)
+  const {
+     appSettings: { screenSettings: { dimension: { width, height }, perspective },
+     gameInformation: { cursorActions, selectedItem } 
+  }, setAppSettings}: AppSettingsContextType = useContext(AppSettingsContext)
   const [openTexture, setOpenTexture] = useState<Texture>(Texture.EMPTY)
   const [closedTexture, setClosedTexture] = useState<Texture>(Texture.EMPTY)
 
   const tryOpen = useCallback(() => {
+    console.log("tryOpen")
     if (type === LockTypeEnum.PASSWORD) {
       throw new Error("Implement password modal to open exit")
     }
@@ -68,11 +73,30 @@ const Exit = ({ exit: { lock: { type, activator, open } } }: { exit: ExitObject 
     loadTextures()
   }, [])
 
+  const openCursorActions = (event: FederatedPointerEvent) => {
+    const position: CursorActions = {
+      position: cursorActions.position === null ? event.screen : null,
+      examine: {
+        action: () => console.log("SZia Exit Ajtó")
+      },
+      use: {
+        action: tryOpen
+      },
+      take: null,
+      search: null,
+    }
+
+    setAppSettings({
+      action: SetAppSettingsActionEnum.SET_CURSOR_ACTIONS,
+      payload: position
+    })
+  }
+
   return closedTexture && openTexture
     ? <pixiSprite
       eventMode="static"
       cursor="pointer"
-      onPointerTap={tryOpen}
+      onRightClick={openCursorActions}
       texture={open ? openTexture : closedTexture}
       pivot={setPivotToBottomLeft()}
       x={width / 2}

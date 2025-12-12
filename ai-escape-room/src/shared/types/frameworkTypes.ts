@@ -1,6 +1,5 @@
 import { SetAppSettingsActionEnum } from "../enums"
 import { GameInformation, ScreenSettings } from "./appTypes"
-import { Dimension } from "./gameBaseTypes"
 
 export type AppSettingsContextType = {
   appSettings: AppSettings,

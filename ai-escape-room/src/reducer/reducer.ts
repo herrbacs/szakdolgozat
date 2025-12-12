@@ -17,6 +17,7 @@ import {
   searchContainer,
   emptyFoundItems,
   takeFoundItems,
+  setCursorActions,
 } from "./reducerController"
 
 export const initialState : AppSettings = {
@@ -41,7 +42,14 @@ export const initialState : AppSettings = {
     showInventory: false,
     inspectingItem: null,
     lockModal: null,
-    itemsFoundModal: null
+    itemsFoundModal: null,
+    cursorActions: {
+      position: null,
+      examine: null,
+      take: null,
+      use: null,
+      search: null,
+    }
   }
 }
 
@@ -51,6 +59,8 @@ export const reducer = (state: AppSettings, { action, payload }: ReducerAction) 
       return loadLevel(state, payload)
     case SetAppSettingsActionEnum.MOVE:
       return handleMove(state, payload)
+    case SetAppSettingsActionEnum.SET_CURSOR_ACTIONS:
+      return setCursorActions(state, payload)
     case SetAppSettingsActionEnum.TOGGLE_INVENTORY:
       return toggleInventory(state)
     case SetAppSettingsActionEnum.PICK_UP_ITEM:

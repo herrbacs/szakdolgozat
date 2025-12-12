@@ -1,7 +1,7 @@
-import { PointData, Sprite } from "pixi.js";
-import { PositionEnum } from "../enums";
-import { DynamicGameObject, InspectableObject, PickableObject, Wall } from "./gameObjectTypes";
-import { Dimension, Lock } from "./gameBaseTypes";
+import { PointData } from "pixi.js"
+import { PositionEnum } from "../enums"
+import { DynamicGameObject, InspectableObject, PickableObject, Wall } from "./gameObjectTypes"
+import { Dimension, Lock } from "./gameBaseTypes"
 
 export type GameInformation = {
 	indexes: {
@@ -18,6 +18,19 @@ export type GameInformation = {
 	inspectingItem: null | InspectableObject,
 	lockModal: null | LockModal,
 	itemsFoundModal: null | DynamicGameObject[],
+	cursorActions: CursorActions,
+}
+
+export type CursorActions = {
+  position: null | PointData
+  examine: null | CursorAction,
+  take: null | CursorAction,
+  use: null | CursorAction,
+  search: null | CursorAction,
+}
+
+export type CursorAction = {
+  action: () => void
 }
 
 export type LockModal = {
@@ -31,7 +44,7 @@ export type PositionCalculatorInput = {
   // sprite: Sprite,
   // scale: number,
   // perspective: boolean
-};
+}
 
 export type ScreenSettings = {
 	dimension: Dimension,

@@ -19,6 +19,7 @@ export enum SetAppSettingsActionEnum {
   CONTAINER_SEARCH,
   CONTAINER_OPEN,
   TAKE_FOUND_ITEMS,
+  SET_CURSOR_ACTIONS,
 }
 
 export enum GameObjectTypeEnum {

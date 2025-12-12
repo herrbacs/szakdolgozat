@@ -4,6 +4,7 @@ import React from 'react'
 import { AppSettingsContextType } from '../../shared/types/frameworkTypes'
 import { MoveDirectionEnum, SetAppSettingsActionEnum } from '../../shared/enums'
 import { Triangle, TriangleDirection } from './Triangle'
+import { emptyCursorActions } from '../../reducer/controllerHelpers'
 
 export function Navigation() {
   const padding = 20
@@ -19,6 +20,11 @@ export function Navigation() {
     [width]
   )
 
+  const handleClick = (payload: MoveDirectionEnum) => {
+    setAppSettings({ action: SetAppSettingsActionEnum.SET_CURSOR_ACTIONS, payload: emptyCursorActions() })
+    setAppSettings({ action: SetAppSettingsActionEnum.MOVE, payload })
+  }
+
   return (
     <>
       <Triangle
@@ -26,14 +32,14 @@ export function Navigation() {
         x={padding}
         y={calculateYPosition}
         size={30}
-        onClick={() => setAppSettings({ action: SetAppSettingsActionEnum.MOVE, payload: MoveDirectionEnum.LEFT })}
+        onClick={() => handleClick(MoveDirectionEnum.LEFT)}
       />
       <Triangle
         direction={TriangleDirection.RIGHT}
         x={calculateXPositionOfRightArrow}
         y={calculateYPosition}
         size={30}
-        onClick={() => setAppSettings({ action: SetAppSettingsActionEnum.MOVE, payload: MoveDirectionEnum.RIGHT })}
+        onClick={() => handleClick(MoveDirectionEnum.LEFT)}
       />
     </>
   )

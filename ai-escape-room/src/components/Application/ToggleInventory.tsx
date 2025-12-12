@@ -4,6 +4,7 @@ import { AppSettingsContext } from '../../context/AppSettingsContext'
 import { AppSettingsContextType } from '../../shared/types/frameworkTypes'
 import { Graphics, GraphicsContext } from 'pixi.js';
 import { SetAppSettingsActionEnum } from '../../shared/enums';
+import { emptyCursorActions } from '../../reducer/controllerHelpers';
 
 const ToggleInventory = () => {
   const padding = 40
@@ -20,6 +21,14 @@ const ToggleInventory = () => {
     [width]
   )
 
+  const handleClick = () => {
+    setAppSettings({
+      action: SetAppSettingsActionEnum.SET_CURSOR_ACTIONS,
+      payload: emptyCursorActions()
+    })
+    setAppSettings({ action: SetAppSettingsActionEnum.TOGGLE_INVENTORY })
+  }
+
   return (
     <pixiGraphics
       x={calculateX}
@@ -27,7 +36,7 @@ const ToggleInventory = () => {
       draw={(g: Graphics) => drawCircle(g.context)}
       eventMode="static"
       cursor="pointer"
-      onPointerTap={() => setAppSettings({ action: SetAppSettingsActionEnum.TOGGLE_INVENTORY })}
+      onPointerTap={handleClick}
     >
       <pixiText
         text="I"

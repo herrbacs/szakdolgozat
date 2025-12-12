@@ -1,6 +1,6 @@
 import { Container } from 'pixi.js'
 import { GameObjectTypeEnum, MoveDirectionEnum } from '../shared/enums'
-import { LevelInformation, LockModal } from '../shared/types/appTypes'
+import { CursorActions, LevelInformation, LockModal } from '../shared/types/appTypes'
 import { AppSettings } from '../shared/types/frameworkTypes'
 import { ContainerObject, DynamicGameObject, InspectableObject, MovableCoverObject, PickableObject, Wall } from '../shared/types/gameObjectTypes'
 
@@ -160,7 +160,17 @@ export function takeFoundItems(state: AppSettings): AppSettings {
   return { ...state }
 }
 
-export function getCurrentWall(state: AppSettings): Wall {
+export function setCursorActions(state: AppSettings, payload: CursorActions): AppSettings {
+  return {
+    ...state,
+    gameInformation: {
+      ...state.gameInformation,
+      cursorActions: payload
+    }
+  };
+}
+
+function getCurrentWall(state: AppSettings): Wall {
   const { gameInformation: { walls, indexes: { currentWall } } } = state
   return walls[currentWall]
 }

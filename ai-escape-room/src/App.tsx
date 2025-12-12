@@ -17,6 +17,7 @@ import {
 import { SetAppSettingsActionEnum } from './shared/enums'
 import { Navigation } from './components/Application/Navigation'
 import GameScene from './components/GameScene'
+import CursorActions from './components/Application/CursorActions'
 
 extend({
   Container,
@@ -29,7 +30,22 @@ extend({
 export default function App() {
   const { appSettings: { screenSettings: { dimension: { width, height } } }, setAppSettings }: AppSettingsContextType = useContext(AppSettingsContext)
   const parentRef = useRef(null)
+  const appRef = useRef<any>(null)
+
   const [levelLoaded, setLevelLoaded] = useState<boolean>(false)
+
+  const disableRightClickDefaultBehavior = () => {
+    const handler = (e: MouseEvent) => {
+      e.preventDefault();
+      return false;
+    };
+
+    document.addEventListener("contextmenu", handler);
+
+    return () => {
+      document.removeEventListener("contextmenu", handler);
+    };
+  }
 
   const generateLevel = async () => {
     const response = await fetch('http://localhost:5000/generate-level', {
@@ -51,15 +67,14 @@ export default function App() {
   useEffect(() => {
     generateLevel()
   }, [])
+  useEffect(disableRightClickDefaultBehavior, []);
 
   return levelLoaded
     ? (
-      <div
-        ref={parentRef}
-        style={{ position: 'relative', width: `${width}px`, height: `${height}px`, overflow: 'hidden' }}
-      >
-        <Application resizeTo={parentRef}>
+      <div ref={parentRef} style={{ position: 'relative', width: `${width}px`, height: `${height}px`, overflow: 'hidden' }}>
+        <Application ref={appRef} resizeTo={parentRef} >
           <GameScene />
+          <CursorActions />
           <Navigation />
           <ToggleInventory />
         </Application>
