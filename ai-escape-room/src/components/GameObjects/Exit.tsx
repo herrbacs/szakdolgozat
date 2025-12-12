@@ -68,10 +68,6 @@ const Exit = ({ exit: { lock: { type, activator, open } } }: { exit: ExitObject 
     return { x: scaleX, y: scaleY }
   }
 
-  useEffect(() => {
-    loadTextures()
-  }, [])
-
   const openCursorActions = (event: FederatedPointerEvent) => {
     const position: CursorActions = {
       position: cursorActions.position === null ? event.screen : null,
@@ -91,6 +87,10 @@ const Exit = ({ exit: { lock: { type, activator, open } } }: { exit: ExitObject 
       payload: position
     })
   }
+
+  useEffect(() => {
+    loadTextures()
+  }, [])
 
   return closedTexture && openTexture
     ? <pixiSprite
