@@ -1,8 +1,9 @@
 import { Container } from 'pixi.js'
 import { GameObjectTypeEnum, MoveDirectionEnum } from '../shared/enums'
-import { CursorActions, LevelInformation, LockModal } from '../shared/types/appTypes'
+import { CursorActions, inspectingModal, LevelInformation, LockModal } from '../shared/types/appTypes'
 import { AppSettings } from '../shared/types/frameworkTypes'
 import { ContainerObject, DynamicGameObject, InspectableObject, MovableCoverObject, PickableObject, Wall } from '../shared/types/gameObjectTypes'
+import { InspectionData } from '../shared/types/gameBaseTypes'
 
 export function loadLevel(state: AppSettings, { walls }: LevelInformation): AppSettings {
   state.gameInformation.walls = walls
@@ -99,8 +100,8 @@ export function exit(state: AppSettings): AppSettings {
   return { ...state}
 }
 
-export function toggleObjetInspecting(state: AppSettings, payload: InspectableObject | null): AppSettings {
-  state.gameInformation.inspectingItem = payload
+export function toggleObjetInspecting(state: AppSettings, payload: InspectionData | null): AppSettings {
+  state.gameInformation.inspectingModal = payload
   return { ...state }
 }
 

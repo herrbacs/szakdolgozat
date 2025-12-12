@@ -4,7 +4,7 @@ import { AppSettingsContextType } from '../../../shared/types/frameworkTypes'
 import { SetAppSettingsActionEnum } from '../../../shared/enums'
 
 const InspectModal = () => {
-	const { appSettings: { gameInformation: { inspectingItem } }, setAppSettings } : AppSettingsContextType = useContext(AppSettingsContext)
+	const { appSettings: { gameInformation: { inspectingModal } }, setAppSettings } : AppSettingsContextType = useContext(AppSettingsContext)
   const [currentPage, setCurrentPage] = useState<number>(0)
   const [longText, setLongText] = useState<boolean>(false)
   const [pages, setPages] = useState<string[]>([])
@@ -19,19 +19,19 @@ const InspectModal = () => {
     return pages;
   }
   useEffect(() => {
-    if (!inspectingItem) {
+    if (!inspectingModal) {
       return;
     }
 
-    setLongText(inspectingItem.inspectionData.information.length >= 120)
-    setPages(splitTextToPages(inspectingItem.inspectionData.information))
-  }, [inspectingItem])
+    setLongText(inspectingModal.information.length >= 120)
+    setPages(splitTextToPages(inspectingModal.information))
+  }, [inspectingModal])
 
-  return inspectingItem && (
+  return inspectingModal && (
     <div style={{ width: '100%', height: '100%', backgroundColor: 'rgba(0, 0, 0, .5)', display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'absolute', top: 0 }}>
       <div style={{ backgroundColor: '#8f8f8f', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', maxWidth: '80%', maxHeight: '80%', borderRadius: '.5rem'}}>
           <div style={{position: 'relative', padding: '.5rem 0', display: 'flex', width: '100%', textTransform: 'uppercase', color: '#FFFF', fontWeight: 'bold'}}>
-            <div style={{width: '100%', fontSize: '1.5rem', textAlign: 'center'}}>{inspectingItem?.inspectionData.appellation}</div>
+            <div style={{width: '100%', fontSize: '1.5rem', textAlign: 'center'}}>{inspectingModal?.appellation}</div>
             <div 
               onClick={() => setAppSettings({ action: SetAppSettingsActionEnum.TOGGLE_OBJECT_INSPECTING , payload: null })}
               style={{position: 'absolute', right: '1rem', textAlign: 'center', cursor: 'pointer'}}
@@ -58,7 +58,7 @@ const InspectModal = () => {
                   <h1 style={{width: '90%'}}>🔍</h1>
                 </div>
                 <div style={{width: '90%', display: 'flex', fontSize: '1.2rem', textTransform: 'uppercase', color: '#ffec99',justifyContent: 'center'}}>
-                  <p style={{wordBreak: 'break-word', textAlign: 'center'}}>{inspectingItem.inspectionData.information}</p>
+                  <p style={{wordBreak: 'break-word', textAlign: 'center'}}>{inspectingModal.information}</p>
                 </div>
               </div>
             )

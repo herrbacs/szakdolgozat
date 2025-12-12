@@ -1,7 +1,7 @@
 import { PointData } from "pixi.js"
 import { PositionEnum } from "../enums"
 import { DynamicGameObject, InspectableObject, PickableObject, Wall } from "./gameObjectTypes"
-import { Dimension, Lock } from "./gameBaseTypes"
+import { Dimension, InspectionData, Lock } from "./gameBaseTypes"
 
 export type GameInformation = {
 	indexes: {
@@ -15,15 +15,17 @@ export type GameInformation = {
 	inventory: PickableObject[],
 	showInventory: boolean,
 	selectedItem: null | PickableObject,
-	inspectingItem: null | InspectableObject,
+	inspectingModal: null | inspectingModal,
 	lockModal: null | LockModal,
 	itemsFoundModal: null | DynamicGameObject[],
 	cursorActions: CursorActions,
 }
 
+export type inspectingModal = InspectionData & {}
+
 export type CursorActions = {
   position: null | PointData
-  examine: null | CursorAction,
+  examine: null | InspectionData,
   take: null | CursorAction,
   use: null | CursorAction,
   search: null | CursorAction,

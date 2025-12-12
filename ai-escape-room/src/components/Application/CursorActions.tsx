@@ -64,10 +64,14 @@ const CursorActions = () => {
     return Math.min(scaleX, scaleY)
   }
 
+  const examineItem = () => {
+    setAppSettings({ action: SetAppSettingsActionEnum.TOGGLE_OBJECT_INSPECTING, payload: examine })
+  }
+
   const getActions = () => {
     const arr = []
     if (examine) {
-      arr.push({ texture: examineTexture, action: examine.action })
+      arr.push({ texture: examineTexture, action: examineItem })
     }
     if (search) {
       arr.push({ texture: searchTexture, action: search.action })

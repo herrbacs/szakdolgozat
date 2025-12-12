@@ -35,7 +35,7 @@ const Inspectable = ({ inspectable }: InspectableComponentType) => {
       draw={(g: Graphics) => drawCircle(g.context)}
       eventMode="static"
       cursor="pointer"
-      onPointerTap={() => setAppSettings({ action: SetAppSettingsActionEnum.TOGGLE_OBJECT_INSPECTING, payload: inspectable })}
+      onPointerTap={() => setAppSettings({ action: SetAppSettingsActionEnum.TOGGLE_OBJECT_INSPECTING, payload: inspectable.inspectionData })}
     >
       <pixiText
         text={'🔍'}

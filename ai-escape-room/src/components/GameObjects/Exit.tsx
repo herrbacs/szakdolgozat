@@ -17,7 +17,6 @@ const Exit = ({ exit: { lock: { type, activator, open } } }: { exit: ExitObject 
   const [closedTexture, setClosedTexture] = useState<Texture>(Texture.EMPTY)
 
   const tryOpen = useCallback(() => {
-    console.log("tryOpen")
     if (type === LockTypeEnum.PASSWORD) {
       throw new Error("Implement password modal to open exit")
     }
@@ -77,7 +76,8 @@ const Exit = ({ exit: { lock: { type, activator, open } } }: { exit: ExitObject 
     const position: CursorActions = {
       position: cursorActions.position === null ? event.screen : null,
       examine: {
-        action: () => console.log("SZia Exit Ajtó")
+        appellation: "Exit Door",
+        information: "I need to find the key te be able to get out"
       },
       use: {
         action: tryOpen
