@@ -1,8 +1,7 @@
-import { Container } from 'pixi.js'
 import { GameObjectTypeEnum, MoveDirectionEnum } from '../shared/enums'
-import { CursorActions, inspectingModal, LevelInformation, LockModal } from '../shared/types/appTypes'
+import { CursorActions, LevelInformation, LockModal } from '../shared/types/appTypes'
 import { AppSettings } from '../shared/types/frameworkTypes'
-import { ContainerObject, DynamicGameObject, InspectableObject, MovableCoverObject, PickableObject, Wall } from '../shared/types/gameObjectTypes'
+import { ContainerObject, DynamicGameObject, MovableCoverObject, PickableObject, Wall } from '../shared/types/gameObjectTypes'
 import { InspectionData } from '../shared/types/gameBaseTypes'
 
 export function loadLevel(state: AppSettings, { walls }: LevelInformation): AppSettings {
@@ -97,7 +96,7 @@ export function destroyItemFromInventory(state: AppSettings, payload: PickableOb
 
 export function exit(state: AppSettings): AppSettings {
   getCurrentWall(state).exit!.lock.open = true
-  return { ...state}
+  return { ...state }
 }
 
 export function toggleObjetInspecting(state: AppSettings, payload: InspectionData | null): AppSettings {
@@ -186,11 +185,11 @@ function findAndApply<T>(obj: any, id: string, callback: (t: T) => void) {
 }
 
 // Lazy way, TODO: catch path to each id
-function findPath(obj: any, id: string, path: (string | number)[] = []): (string | number)[] | null {    
+function findPath(obj: any, id: string, path: (string | number)[] = []): (string | number)[] | null {
   if (obj === null || typeof obj !== "object") return null
 
   if (obj.id === id) {
-      return path
+    return path
   }
 
   if (Array.isArray(obj)) {
@@ -208,21 +207,21 @@ function findPath(obj: any, id: string, path: (string | number)[] = []): (string
   return null
 }
 
-function applyOnPath(obj: any, path: (string|number)[], callback: (t: any) => void) {
-    let current = obj
-    for (const step of path) {
-        current = current[step]
-        if (current == null) throw new Error("Invalid path!")
-    }
-    callback(current)
+function applyOnPath(obj: any, path: (string | number)[], callback: (t: any) => void) {
+  let current = obj
+  for (const step of path) {
+    current = current[step]
+    if (current == null) throw new Error("Invalid path!")
+  }
+  callback(current)
 }
 
-function applyOnPathRef(obj: any, path: (string|number)[], callback: (parent: any, key: string|number) => void) {
-    let current = obj
-    for (let i = 0; i < path.length - 1; i++) {
-        current = current[path[i]]
-        if (current == null) throw new Error("Invalid path!")
-    }
-    const lastKey = path[path.length - 1]
-    callback(current, lastKey)
+function applyOnPathRef(obj: any, path: (string | number)[], callback: (parent: any, key: string | number) => void) {
+  let current = obj
+  for (let i = 0; i < path.length - 1; i++) {
+    current = current[path[i]]
+    if (current == null) throw new Error("Invalid path!")
+  }
+  const lastKey = path[path.length - 1]
+  callback(current, lastKey)
 }

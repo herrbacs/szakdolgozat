@@ -39,7 +39,7 @@ export function Navigation() {
         x={calculateXPositionOfRightArrow}
         y={calculateYPosition}
         size={30}
-        onClick={() => handleClick(MoveDirectionEnum.LEFT)}
+        onClick={() => handleClick(MoveDirectionEnum.RIGHT)}
       />
     </>
   )
