@@ -2,19 +2,22 @@ import React, { useCallback, useContext, useEffect, useState } from "react"
 import { ContainerObject, InspectableObject, MovableCoverObject, PickableObject } from "../../../shared/types/gameObjectTypes"
 import { AppSettingsContextType } from "../../../shared/types/frameworkTypes"
 import { AppSettingsContext } from "../../../context/AppSettingsContext"
-import { Graphics, GraphicsContext, PointData } from "pixi.js"
+import { FederatedPointerEvent, Graphics, GraphicsContext, PointData } from "pixi.js"
 import { setPositionOn } from "../../../shared/positionCalculator"
 import { GameObjectTypeEnum, SetAppSettingsActionEnum } from "../../../shared/enums"
 import Pickable from "../Pickable"
 import Inspectable from "../Inspectable/Inspectable"
 import Container from "../Container/Container"
+import { CursorActions } from "../../../shared/types/appTypes"
 
 type MovableCoverComponentType = {
 	movableCover: MovableCoverObject,
 }
 
 const MovableCover = ({ movableCover }: MovableCoverComponentType) => {
-	const { appSettings: { screenSettings }, setAppSettings }: AppSettingsContextType = useContext(AppSettingsContext)
+	const {
+    appSettings: { screenSettings, gameInformation: { cursorActions }
+  }, setAppSettings }: AppSettingsContextType = useContext(AppSettingsContext)
 	const [spriteCoordinate, setSpriteCoordinate] = useState<PointData>({} as PointData)
 
   const drawCircle = useCallback((g: GraphicsContext) => {
@@ -22,6 +25,23 @@ const MovableCover = ({ movableCover }: MovableCoverComponentType) => {
       .fill({ color: 0xc2c2c2 })
       .stroke({ width: 3, color: 0xFFFFFF })
   }, [])
+
+  const openCursorActions = (event: FederatedPointerEvent) => {
+    const position: CursorActions = {
+      position: cursorActions.position === null ? event.screen : null,
+      examine: movableCover.inspectionData,
+      use: {
+        action: () => setAppSettings({ action: SetAppSettingsActionEnum.REMOVE_COVER, payload: movableCover })
+      },
+      take: null,
+      search: null,
+    }
+
+    setAppSettings({
+      action: SetAppSettingsActionEnum.SET_CURSOR_ACTIONS,
+      payload: position
+    })
+  }
 
   useEffect(() => {
     setSpriteCoordinate(
@@ -39,7 +59,7 @@ const MovableCover = ({ movableCover }: MovableCoverComponentType) => {
         draw={(g: Graphics) => drawCircle(g.context)}
         eventMode="static"
         cursor="pointer"
-        onPointerTap={() => setAppSettings({ action: SetAppSettingsActionEnum.REMOVE_COVER, payload: movableCover })}
+        onRightClick={openCursorActions}
       >
         <pixiText
           text={'🧩'}

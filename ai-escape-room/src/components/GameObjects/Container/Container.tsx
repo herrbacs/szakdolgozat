@@ -2,30 +2,23 @@ import React, { useCallback, useContext, useEffect, useState } from "react"
 import { ContainerObject, PickableObject } from "../../../shared/types/gameObjectTypes"
 import { AppSettingsContextType } from "../../../shared/types/frameworkTypes"
 import { AppSettingsContext } from "../../../context/AppSettingsContext"
-import { Graphics, GraphicsContext, PointData } from "pixi.js"
+import { FederatedPointerEvent, Graphics, GraphicsContext, PointData } from "pixi.js"
 import { setPositionOn } from "../../../shared/positionCalculator"
 import { SetAppSettingsActionEnum } from "../../../shared/enums"
+import { CursorActions } from "../../../shared/types/appTypes"
 
 type ContainerComponentType = {
   container: ContainerObject,
 }
 
 const Container = ({ container }: ContainerComponentType) => {
-  const { appSettings: { screenSettings }, setAppSettings }: AppSettingsContextType = useContext(AppSettingsContext)
+  const { appSettings: { screenSettings, gameInformation: { cursorActions } }, setAppSettings }: AppSettingsContextType = useContext(AppSettingsContext)
   const [spriteCoordinate, setSpriteCoordinate] = useState<PointData>({} as PointData)
 
   const drawCircle = useCallback((g: GraphicsContext) => {
     g.circle(0, 0, 25)
       .fill({ color: 0xc2c2c2 })
       .stroke({ width: 3, color: 0xFFFFFF })
-  }, [])
-
-  useEffect(() => {
-    setSpriteCoordinate(
-      setPositionOn({
-        area: container.position,
-        screenSettings,
-      }))
   }, [])
 
   const handleContainer = () => {
@@ -46,6 +39,37 @@ const Container = ({ container }: ContainerComponentType) => {
     })
   }
 
+  const openCursorActions = (event: FederatedPointerEvent) => {
+    const use = container.lock === null || container.lock.open
+      ? null
+      : { action: handleContainer }
+
+    const search = container.lock === null || container.lock.open
+      ? { action: handleContainer }
+      : null
+
+    const position: CursorActions = {
+      position: cursorActions.position === null ? event.screen : null,
+      examine: container.inspectionData,
+      take: null,
+      use,
+      search,
+    }
+
+    setAppSettings({
+      action: SetAppSettingsActionEnum.SET_CURSOR_ACTIONS,
+      payload: position
+    })
+  }
+
+  useEffect(() => {
+    setSpriteCoordinate(
+      setPositionOn({
+        area: container.position,
+        screenSettings,
+      }))
+  }, [])
+
   return (
     <pixiGraphics
       x={spriteCoordinate.x}
@@ -53,7 +77,7 @@ const Container = ({ container }: ContainerComponentType) => {
       draw={(g: Graphics) => drawCircle(g.context)}
       eventMode="static"
       cursor="pointer"
-      onPointerTap={handleContainer}
+      onRightClick={openCursorActions}
     >
       <pixiText
         text={container.lock === null ? '📦' : container.lock.open ? '🔓' : '🔒'}
