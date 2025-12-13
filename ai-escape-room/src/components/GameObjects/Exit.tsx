@@ -8,7 +8,8 @@ import { AppSettingsContextType } from '../../shared/types/frameworkTypes'
 import { ExitObject } from '../../shared/types/gameObjectTypes'
 import { CursorActions } from '../../shared/types/appTypes'
 
-const Exit = ({ exit: { lock: { type, activator, open } } }: { exit: ExitObject }) => {
+const Exit = ({ exit: { lock } }: { exit: ExitObject }) => {
+  const { type, activator, open } = lock
   const {
      appSettings: { screenSettings: { dimension: { width, height }, perspective },
      gameInformation: { cursorActions, selectedItem } 
@@ -18,7 +19,13 @@ const Exit = ({ exit: { lock: { type, activator, open } } }: { exit: ExitObject 
 
   const tryOpen = useCallback(() => {
     if (type === LockTypeEnum.PASSWORD) {
-      throw new Error("Implement password modal to open exit")
+      setAppSettings({
+        action: SetAppSettingsActionEnum.SET_LOCK_MODAL,
+        payload: {
+          lock,
+          openCallback: () => setAppSettings({ action: SetAppSettingsActionEnum.EXIT })
+        }
+      })
     }
 
     if (selectedItem?.id !== activator) {

@@ -1,82 +1,146 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { AppSettingsContextType } from '../../shared/types/frameworkTypes'
 import { AppSettingsContext } from '../../context/AppSettingsContext'
 import { SetAppSettingsActionEnum } from '../../shared/enums'
 
 const LockModal = () => {
-  const { appSettings: { gameInformation: { lockModal } }, setAppSettings } : AppSettingsContextType = useContext(AppSettingsContext)
+  const {
+    appSettings: { gameInformation: { lockModal } },
+    setAppSettings
+  }: AppSettingsContextType = useContext(AppSettingsContext)
+
   const [values, setValues] = useState<string[]>([])
-  const inputsRef = useRef<HTMLInputElement[]>([])
+  const [activeIndex, setActiveIndex] = useState(0)
 
   useEffect(() => {
     if (lockModal?.lock?.activator) {
-      setValues(Array(lockModal?.lock.activator.length).fill(""))
+      setValues(Array(lockModal.lock.activator.length).fill(''))
+      setActiveIndex(0)
     }
   }, [lockModal])
 
-  const handleInput = (value: string, index: number) => {
-    const newValues = [...values]
-    newValues[index] = value.slice(-1)
-    setValues(newValues)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!lockModal) return
 
-    if (value && inputsRef.current[index + 1]) {
-      inputsRef.current[index + 1].focus()
+      const key = e.key.toUpperCase()
+
+      if (e.key.length === 1) {
+        e.preventDefault()
+
+        setValues(prev => {
+          const next = [...prev]
+          next[activeIndex] = key
+          return next
+        })
+
+        setActiveIndex(i =>
+          Math.min(i + 1, values.length - 1)
+        )
+      }
+
+      // Törlés
+      if (e.key === 'Backspace') {
+        e.preventDefault()
+
+        setValues(prev => {
+          const next = [...prev]
+          next[activeIndex] = ''
+          return next
+        })
+
+        setActiveIndex(i =>
+          Math.max(i - 1, 0)
+        )
+      }
     }
-  }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [activeIndex, lockModal, values.length])
 
   const handleUnlock = () => {
-    const code = values.join("")
-    if (code === lockModal!.lock.activator) {
-      setAppSettings({ action: SetAppSettingsActionEnum.SET_LOCK_MODAL , payload: null })
+    const code = values.join('')
+    if (code.toUpperCase() === lockModal!.lock.activator.toUpperCase()) {
+      setAppSettings({ action: SetAppSettingsActionEnum.SET_LOCK_MODAL, payload: null })
       lockModal?.openCallback()
     }
   }
 
-  const isComplete = values.every(v => v !== "")
+  const isComplete = values.every(v => v !== '')
 
   return lockModal && (
-    <div style={{ width: '100%', height: '100%', backgroundColor: 'rgba(0, 0, 0, .5)', display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'absolute', top: 0 }}>
-      <div style={{ backgroundColor: '#8f8f8f', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', maxWidth: '80%', maxHeight: '80%', borderRadius: '.5rem'}}>
-        <div style={{position: 'relative', display: 'flex', width: '100%', textTransform: 'uppercase', color: '#FFF', fontWeight: 'bold'}}>
-          <div 
-            onClick={() => setAppSettings({ action: SetAppSettingsActionEnum.SET_LOCK_MODAL , payload: null })}
-            style={{marginLeft: 'auto', marginRight: '.5rem', cursor: 'pointer'}}
+    <div
+      style={{
+        width: '100%',
+        height: '100%',
+        backgroundColor: 'rgba(0, 0, 0, .5)',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'absolute',
+        top: 0
+      }}
+    >
+      <div
+        style={{
+          backgroundColor: '#8f8f8f',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          maxWidth: '80%',
+          borderRadius: '.5rem'
+        }}
+      >
+        {/* Close */}
+        <div style={{ width: '100%', textAlign: 'right' }}>
+          <span
+            onClick={() =>
+              setAppSettings({ action: SetAppSettingsActionEnum.SET_LOCK_MODAL, payload: null })
+            }
+            style={{ cursor: 'pointer', marginRight: '.5rem', color: '#fff' }}
           >
             ✕
-          </div>
+          </span>
         </div>
-        <div style={{display: 'flex', gap: '.5rem', margin: '1rem'}}>
+
+        {/* Code boxes */}
+        <div style={{ display: 'flex', gap: '.5rem', margin: '1rem' }}>
           {values.map((val, i) => (
-            <input
+            <div
               key={i}
-              ref={(el) => {if (el) inputsRef.current[i] = el}}
-              maxLength={1}
-              value={val}
-              onChange={(e) => handleInput(e.target.value, i)}
+              onClick={() => setActiveIndex(i)}
               style={{
                 width: '2.5rem',
                 height: '2.5rem',
-                textAlign: 'center',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
                 fontSize: '1.5rem',
+                fontWeight: 'bold',
+                backgroundColor: '#fff',
                 borderRadius: '.3rem',
-                border: '2px solid #555',
+                border: i === activeIndex ? '3px solid #ffec99' : '2px solid #555',
+                cursor: 'pointer',
+                userSelect: 'none'
               }}
-            />
+            >
+              {val}
+            </div>
           ))}
         </div>
-        <button 
+
+        <button
           onClick={handleUnlock}
           disabled={!isComplete}
           style={{
             padding: '.5rem 2rem',
             fontSize: '1.1rem',
-            color: isComplete ? '#333333' : '#FFFFFF',
             backgroundColor: isComplete ? '#ffec99' : '#777',
             border: 'none',
             borderRadius: '.4rem',
             cursor: isComplete ? 'pointer' : 'default',
-            marginTop: '1rem',
-            marginBottom: '1rem',
+            marginBottom: '1rem'
           }}
         >
           Kinyitás
