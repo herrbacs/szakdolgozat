@@ -13,7 +13,7 @@ const LockModal = () => {
   const [singleValue, setSingleValue] = useState('')
   const [activeIndex, setActiveIndex] = useState(0)
 
-  const isLong = lockModal?.lock?.activator.length > 10
+  const isLong = lockModal!.lock?.activator.length > 10
 
   useEffect(() => {
     if (lockModal?.lock?.activator) {
