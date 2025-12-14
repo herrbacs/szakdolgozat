@@ -1,25 +1,16 @@
-import React, { useContext, useRef } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useCallback, useMemo } from 'react';
 import { AppSettingsContext } from '../../context/AppSettingsContext'
 import { AppSettingsContextType } from '../../shared/types/frameworkTypes'
-import { Graphics, GraphicsContext } from 'pixi.js';
+import { Assets, Graphics, GraphicsContext, PointData, Texture } from 'pixi.js';
 import { SetAppSettingsActionEnum } from '../../shared/enums';
 import { emptyCursorActions } from '../../reducer/controllerHelpers';
 
 const ToggleInventory = () => {
-  const padding = 40
-  const { appSettings: { screenSettings: { dimension: { width } } }, setAppSettings }: AppSettingsContextType = useContext(AppSettingsContext)
-
-  const drawCircle = useCallback((g: GraphicsContext) => {
-    g.circle(0, 0, 25)
-      .fill({ color: 0xc2c2c2 })
-      .stroke({ width: 3, color: 0xFFFFFF })
-  }, [])
-
-  const calculateX = useMemo(
-    () => (width - padding),
-    [width]
-  )
+  const { appSettings: { screenSettings: { dimension: { width, height } } }, setAppSettings }: AppSettingsContextType = useContext(AppSettingsContext)
+  const padding = 25
+  const [texture, setTexture] = useState<Texture>(Texture.EMPTY)
+  const [scale, setScale] = useState<number>(1)
 
   const handleClick = () => {
     setAppSettings({
@@ -29,27 +20,30 @@ const ToggleInventory = () => {
     setAppSettings({ action: SetAppSettingsActionEnum.TOGGLE_INVENTORY })
   }
 
+  const loadTextures = async () => {
+    const texture = await Assets.load('http://localhost:5000/images/inventory.jpg')
+    if (!texture) {
+      throw new Error('Failed To Load Inventory Sptrite')
+    }
+
+    setTexture(texture)
+    setScale(75 / texture.width)
+  }
+
+  useEffect(() => {
+    loadTextures()
+  }, [])
+
   return (
-    <pixiGraphics
-      x={calculateX}
-      y={padding}
-      draw={(g: Graphics) => drawCircle(g.context)}
+    <pixiSprite
+      texture={texture}
       eventMode="static"
       cursor="pointer"
       onPointerTap={handleClick}
-    >
-      <pixiText
-        text="I"
-        anchor={0.5}
-        x={0}
-        y={0}
-        style={{
-          fill: 0xffec99,
-          fontSize: 25,
-          fontWeight: 'bold'
-        }}
-      />
-    </pixiGraphics>
+      scale={scale}
+      x={width - padding - texture.width * scale}
+      y={padding}
+    />
   )
 }
 
