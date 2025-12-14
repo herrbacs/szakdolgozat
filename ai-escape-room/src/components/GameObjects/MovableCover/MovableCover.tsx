@@ -15,6 +15,7 @@ type MovableCoverComponentType = {
 }
 
 const MovableCover = ({ movableCover }: MovableCoverComponentType) => {
+  console.log(movableCover.used)
 	const {
     appSettings: { screenSettings, gameInformation: { cursorActions }
   }, setAppSettings }: AppSettingsContextType = useContext(AppSettingsContext)

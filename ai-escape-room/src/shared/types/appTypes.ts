@@ -10,7 +10,6 @@ export type GameInformation = {
 		rightWall: number,
 	}
 	amountOfWalls: number
-	currentWall: Wall,
 	walls: Wall[],
 	inventory: PickableObject[],
 	showInventory: boolean,

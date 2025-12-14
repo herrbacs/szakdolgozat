@@ -14,21 +14,22 @@ import MovableCover from './GameObjects/MovableCover/MovableCover'
 import Container from './GameObjects/Container/Container'
 
 const GameScene = () => {
-  const { appSettings: { gameInformation: { currentWall } } }: AppSettingsContextType = useContext(AppSettingsContext)
+  const { appSettings: { gameInformation: { walls, indexes: { currentWall } } } }: AppSettingsContextType = useContext(AppSettingsContext)
+  const wall = walls[currentWall]
 
   return (
     <>
-      {currentWall &&
-        <FrontWall color={currentWall.color}>
+      {wall &&
+        <FrontWall color={wall.color}>
           <Ceiling />
           <LeftWall />
           <RightWall />
           <Floor />
-          {currentWall.exit && <Exit exit={currentWall?.exit} />}
-          {currentWall.pickables.map((pickable) => <Pickable key={pickable.id} pickable={pickable}/>)}
-          {currentWall.inspectables.map((inspectable) => <Inspectable key={inspectable.id} inspectable={inspectable}/>)}
-          {currentWall.movableCovers.map((movableCover) => <MovableCover key={movableCover.id} movableCover={movableCover}/>)}
-          {currentWall.containers.map((container) => <Container key={container.id} container={container}/>)}
+          {wall.exit && <Exit exit={wall?.exit} />}
+          {wall.pickables.map((pickable) => <Pickable key={pickable.id} pickable={pickable}/>)}
+          {wall.inspectables.map((inspectable) => <Inspectable key={inspectable.id} inspectable={inspectable}/>)}
+          {wall.movableCovers.map((movableCover) => <MovableCover key={movableCover.id} movableCover={movableCover}/>)}
+          {wall.containers.map((container) => <Container key={container.id} container={container}/>)}
         </FrontWall>
       }
     </>

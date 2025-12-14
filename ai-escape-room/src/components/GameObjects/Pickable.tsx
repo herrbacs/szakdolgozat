@@ -13,12 +13,10 @@ type PickableComponentTypeProperties = {
 
 const Pickable = ({ pickable }: PickableComponentTypeProperties) => {
   const { appSettings: { screenSettings, gameInformation: { cursorActions } }, setAppSettings }: AppSettingsContextType = useContext(AppSettingsContext)
-  const [pickedUp, setPickedUp] = useState<Boolean>(false)
   const [spriteCoordinate, setSpriteCoordinate] = useState<PointData>({ x: 0, y: 0 })
 
   const handlePickUp = useCallback(() => {
     setAppSettings({ action: SetAppSettingsActionEnum.PICK_UP_ITEM, payload: pickable });
-    setPickedUp(true)
   }, [])
 
   const drawCircle = useCallback((g: GraphicsContext) => {
@@ -51,7 +49,7 @@ const Pickable = ({ pickable }: PickableComponentTypeProperties) => {
     )
   }, [])
 
-  return !pickedUp
+  return !pickable.taken
     ? <pixiGraphics
       x={spriteCoordinate.x}
       y={spriteCoordinate.y}

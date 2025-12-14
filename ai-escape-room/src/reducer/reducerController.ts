@@ -7,7 +7,6 @@ import { InspectionData } from '../shared/types/gameBaseTypes'
 export function loadLevel(state: AppSettings, { walls }: LevelInformation): AppSettings {
   state.gameInformation.walls = walls
   state.gameInformation.amountOfWalls = walls.length
-  state.gameInformation.currentWall = walls[0]
   state.gameInformation.indexes.leftWall = walls.length - 1
 
   return { ...state }
@@ -57,20 +56,12 @@ export function toggleInventory(state: AppSettings): AppSettings {
 }
 
 export function addItemToInventory(state: AppSettings, payload: PickableObject): AppSettings {
-  let { gameInformation: { walls, currentWall } } = state
-
-  walls.forEach(wall => {
-    if (wall.id !== currentWall.id) {
-      return
-    }
-    wall.pickables = wall.pickables.filter(pickable => pickable.id !== payload.id)
-  })
+  findAndApply(getCurrentWall(state).movableCovers, payload.id, (item: PickableObject) => item.taken = true)
 
   return {
     ...state,
     gameInformation: {
       ...state.gameInformation,
-      walls,
       inventory: [
         ...state.gameInformation.inventory,
         payload
