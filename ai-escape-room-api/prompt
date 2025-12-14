@@ -2,17 +2,13 @@ Generate ONLY valid JSON.
 Do not explain anything.
 Output must be a single JSON object.
 
-Additional Rules for Story and Escape Room Logic:
+Rules for Story and Escape Room Logic:
 - Generate a short story (~2-4 sentences) that defines the setting, goal and atmosphere of the escape room.
-- All item "Information" must relate to the story logically.
 - The exit lock must be solvable using at least one Pickable item.
-- If lock type = PASSWORD, ensure that the password can be logically discovered from one or more item descriptions.
-- If lock type = KEY, generate exactly one Pickable object of type "key" whose Id matches the exit activator.
-- The room must contain meaningful interactions: items provide hints, lore or puzzle-relevant information.
 - The environment should feel coherent and thematic (e.g. abandoned lab, medieval dungeon, detective office).
-- Use creative but consistent narrative details. No contradictions.
 - Items should not be random; each must have a reason to exist in the story.
 - A level has exactly 4 walls
+- Think Complex. A password can not be known from only one information. Make sure the user reads every information, inspect every item to solve a puzzle
 
 Item placement logic:
 - Only place Pickable objects on a wall or floor if they serve a purpose in the story or puzzle.
@@ -22,7 +18,7 @@ Item placement logic:
 - If an object has no clear use or story relevance, do not include it.
 - Collections on walls may remain empty if no meaningful item belongs there.
 - Avoid decorative or meaningless objects.
-
+- If a wall has exit, WB2 | W2 positions cannot have items
 Final output format:
 {
   "story": string,
@@ -78,7 +74,9 @@ Container object:
   Placement guidelines:
     - Floor-type covers typically F1–F3.
     - Wall-type covers typically WT, W, WB
-  Usage Examples:
+  Usage Examples:ű
+    - Book shelf containing notes, pickable items on F1 POSITION
+    - Locked antique desk with pickable items and iinspectable items inside on F2 POSITION
     - A wall safe with a number lock containing an Inspectable note or a Pickable key.
     - A backpack without a lock that holds multiple Pickable items.
     - A ventilation grate with a "KEY" lock wich is a screwdriver or a coin or crowbar.
@@ -130,6 +128,11 @@ InspectionData object:
   Properties
     - appellation: string
     - information: string
+  Usage guidelines:
+    - every information has to be part of a puzzle
+    - information is either a description, what can be seen
+    - informatios is either a text what is written on the item
+    - try to avoid generating short information unless the game story require it
 
 GAME_OBJECT_TYPE enum:
   - PICKABLE
@@ -148,3 +151,16 @@ Placement rules:
  - Floor positions (F1-F3) are recommended for small items like keys, tools, handheld objects.
  - Wall positions are mainly used for notes, codes, drawings, decorations or attached objects.
  - Choose realistic placement based on item usage and story context.
+
+Puzzle examples:
+  Design a logic-based puzzle where the player must discover a password to unlock a sealed safe.
+  Inside the room, the player finds four newspaper articles, each published on a different date.
+  Each article contains at least 100 words (inspectable object where the inspection data is ~100 words long).
+  The player also discovers a notebook. On one of its pages, several dates are listed.
+  One of these dates matches the publication date of one newspaper article.
+  This matching article is the one that contains the hidden code.
+  Within that newspaper article, numbers appear in two different formats:
+    written as words (e.g., “Three”)
+    written as digits (e.g., “3”)
+  To determine which numbers should be extracted, the player must find an additional instruction hidden elsewhere in the room, unlocked by solving further puzzles.
+  Once the correct numbers are identified and read in the correct order, they form the final code that opens the safe.

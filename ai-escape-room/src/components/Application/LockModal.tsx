@@ -39,7 +39,6 @@ const LockModal = () => {
         )
       }
 
-      // Törlés
       if (e.key === 'Backspace') {
         e.preventDefault()
 
@@ -88,11 +87,11 @@ const LockModal = () => {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
+          minWidth: '50%',
           maxWidth: '80%',
           borderRadius: '.5rem'
         }}
       >
-        {/* Close */}
         <div style={{ width: '100%', textAlign: 'right' }}>
           <span
             onClick={() =>
@@ -103,8 +102,6 @@ const LockModal = () => {
             ✕
           </span>
         </div>
-
-        {/* Code boxes */}
         <div style={{ display: 'flex', gap: '.5rem', margin: '1rem' }}>
           {values.map((val, i) => (
             <div

@@ -1,0 +1,11 @@
+.cursor-action-img {
+  max-width: 4rem;
+  height: auto;
+  cursor: pointer;
+  border: 2px solid #ffe066af;
+  transition: opacity 0.15s ease-in-out;
+}
+
+.cursor-action-img:hover {
+  border: 2px solid #8f7200;
+}

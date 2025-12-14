@@ -3,6 +3,7 @@ import Inventory from './Inventory'
 import InspectModal from '../GameObjects/Inspectable/InspectModal'
 import LockModal from './LockModal'
 import ItemsFoundModal from './ItemsFoundModal'
+import CursorActions from './CursorActions'
 
 const AppOverlay = () => {
   return (
@@ -11,6 +12,7 @@ const AppOverlay = () => {
       <InspectModal/>
       <LockModal/>
       <ItemsFoundModal/>
+      <CursorActions />
     </>
   )
 }

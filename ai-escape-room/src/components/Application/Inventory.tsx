@@ -3,9 +3,10 @@ import { AppSettingsContext } from '../../context/AppSettingsContext'
 import { SetAppSettingsActionEnum } from '../../shared/enums'
 import { AppSettingsContextType } from '../../shared/types/frameworkTypes'
 import { PickableObject } from '../../shared/types/gameObjectTypes'
+import { CursorActions } from '../../shared/types/appTypes'
 
 const Inventory = () => {
-	const { appSettings: { screenSettings: { dimension: { width } }, gameInformation: { inventory, showInventory, selectedItem } }, setAppSettings} : AppSettingsContextType = useContext(AppSettingsContext)
+	const { appSettings: { screenSettings: { dimension: { width } }, gameInformation: { inventory, showInventory, selectedItem, cursorActions } }, setAppSettings} : AppSettingsContextType = useContext(AppSettingsContext)
 
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
@@ -23,11 +24,6 @@ const Inventory = () => {
     justifyContent: 'center',
     cursor: 'pointer',
 	}
-
-	const selectItem = (item: PickableObject) => 
-    selectedItem?.id == item.id
-      ? setAppSettings({ action: SetAppSettingsActionEnum.UNSELECT_ITEM })
-      : setAppSettings({ action: SetAppSettingsActionEnum.SELECT_ITEM, payload: item })
 
 	const items = []
 	for (let i = 0; i <= 10; i++) {
@@ -48,7 +44,7 @@ const Inventory = () => {
               ? (hoveredIndex === i ? '#ffe066' : '#ffec99')
               : (hoveredIndex === i ? '#d3d3d3' : '#ffffff')
         }}
-        onClick={() => selectItem(inventory[i])}
+        onContextMenu={(e) => openCursorActions(e, inventory[i])}
         onMouseEnter={() => setHoveredIndex(i)}
         onMouseLeave={() => setHoveredIndex(null)}
       >
@@ -56,6 +52,26 @@ const Inventory = () => {
       </div>
 		))
 	}
+
+  const selectItem = (item: PickableObject) => 
+    selectedItem?.id == item.id
+      ? setAppSettings({ action: SetAppSettingsActionEnum.UNSELECT_ITEM })
+      : setAppSettings({ action: SetAppSettingsActionEnum.SELECT_ITEM, payload: item })
+
+  const openCursorActions = (event: React.MouseEvent<HTMLDivElement>, item: PickableObject) => {
+    const position = cursorActions.position === null
+      ? { x: event.clientX, y: event.clientY }
+      : null
+    const payload: CursorActions = {
+      position,
+      examine: item.inspectionData,
+      use: { action: () => selectItem(item) },
+      take: null,
+      search: null,
+    }
+
+    setAppSettings({ action: SetAppSettingsActionEnum.SET_CURSOR_ACTIONS, payload })
+  }
 
   return (
 		<div style={{transition: 'transform 1s ease-out', display: 'flex', position: 'absolute', bottom: '0', transform: showInventory ? 'none' : 'translateY(100%)', width: `${width}px`, backgroundColor: '#8f8f8f', padding: '.5rem 0' }}>

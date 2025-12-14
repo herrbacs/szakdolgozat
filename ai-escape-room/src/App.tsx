@@ -17,7 +17,6 @@ import {
 import { SetAppSettingsActionEnum } from './shared/enums'
 import { Navigation } from './components/Application/Navigation'
 import GameScene from './components/GameScene'
-import CursorActions from './components/Application/CursorActions'
 
 extend({
   Container,
@@ -74,7 +73,6 @@ export default function App() {
       <div ref={parentRef} style={{ position: 'relative', width: `${width}px`, height: `${height}px`, overflow: 'hidden' }}>
         <Application ref={appRef} resizeTo={parentRef} >
           <GameScene />
-          <CursorActions />
           <Navigation />
           <ToggleInventory />
         </Application>

@@ -76,11 +76,15 @@ const Exit = ({ exit: { lock } }: { exit: ExitObject }) => {
   }
 
   const openCursorActions = (event: FederatedPointerEvent) => {
+    if (lock.open) {
+      return
+    }
+
     const position: CursorActions = {
       position: cursorActions.position === null ? event.screen : null,
       examine: {
         appellation: "Exit Door",
-        information: "I need to find the key te be able to get out"
+        information: lock.open ? "Yaaay, I'm free" : "I need to get out"
       },
       use: {
         action: tryOpen
