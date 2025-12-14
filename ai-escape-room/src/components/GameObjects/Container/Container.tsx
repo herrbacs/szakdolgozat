@@ -4,7 +4,7 @@ import { AppSettingsContextType } from "../../../shared/types/frameworkTypes"
 import { AppSettingsContext } from "../../../context/AppSettingsContext"
 import { FederatedPointerEvent, Graphics, GraphicsContext, PointData } from "pixi.js"
 import { setPositionOn } from "../../../shared/positionCalculator"
-import { SetAppSettingsActionEnum } from "../../../shared/enums"
+import { LockTypeEnum, SetAppSettingsActionEnum } from "../../../shared/enums"
 import { CursorActions } from "../../../shared/types/appTypes"
 
 type ContainerComponentType = {
@@ -12,7 +12,12 @@ type ContainerComponentType = {
 }
 
 const Container = ({ container }: ContainerComponentType) => {
-  const { appSettings: { screenSettings, gameInformation: { cursorActions } }, setAppSettings }: AppSettingsContextType = useContext(AppSettingsContext)
+  const { 
+    appSettings: { 
+      screenSettings,
+      gameInformation: { cursorActions, selectedItem } },
+    setAppSettings
+  }: AppSettingsContextType = useContext(AppSettingsContext)
   const [spriteCoordinate, setSpriteCoordinate] = useState<PointData>({} as PointData)
 
   const drawCircle = useCallback((g: GraphicsContext) => {
@@ -20,6 +25,18 @@ const Container = ({ container }: ContainerComponentType) => {
       .fill({ color: 0xc2c2c2 })
       .stroke({ width: 3, color: 0xFFFFFF })
   }, [])
+
+  const tryKeyOpen = () => {
+    if (selectedItem?.id !== container.lock!.activator) {
+      return
+    }
+
+    if (!selectedItem.reusable) {
+      setAppSettings({ action: SetAppSettingsActionEnum.DESTROY_INVENTORY_ITEM, payload: selectedItem })
+    }
+
+    setAppSettings({ action: SetAppSettingsActionEnum.CONTAINER_OPEN, payload: container })
+  }
 
   const handleContainer = () => {
     if (container.lock === null || container.lock.open) {
@@ -30,13 +47,18 @@ const Container = ({ container }: ContainerComponentType) => {
       return
     }
 
-    setAppSettings({
-      action: SetAppSettingsActionEnum.SET_LOCK_MODAL,
-      payload: {
-        lock: container.lock,
-        openCallback: () => setAppSettings({ action: SetAppSettingsActionEnum.CONTAINER_OPEN, payload: container })
-      }
-    })
+    if (container.lock.type !== LockTypeEnum.KEY) {
+      setAppSettings({
+        action: SetAppSettingsActionEnum.SET_LOCK_MODAL,
+        payload: {
+          lock: container.lock,
+          openCallback: () => setAppSettings({ action: SetAppSettingsActionEnum.CONTAINER_OPEN, payload: container })
+        }
+      })
+      return
+    }
+
+    tryKeyOpen()
   }
 
   const openCursorActions = (event: FederatedPointerEvent) => {

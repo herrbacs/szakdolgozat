@@ -10,63 +10,75 @@ const LockModal = () => {
   }: AppSettingsContextType = useContext(AppSettingsContext)
 
   const [values, setValues] = useState<string[]>([])
+  const [singleValue, setSingleValue] = useState('')
   const [activeIndex, setActiveIndex] = useState(0)
+
+  const isLong = lockModal?.lock?.activator.length > 10
 
   useEffect(() => {
     if (lockModal?.lock?.activator) {
-      setValues(Array(lockModal.lock.activator.length).fill(''))
-      setActiveIndex(0)
+      if (isLong) {
+        setSingleValue('')
+      } else {
+        setValues(Array(lockModal.lock.activator.length).fill(''))
+        setActiveIndex(0)
+      }
     }
   }, [lockModal])
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (!lockModal) return
-
       const key = e.key.toUpperCase()
 
-      if (e.key.length === 1) {
-        e.preventDefault()
-
-        setValues(prev => {
-          const next = [...prev]
-          next[activeIndex] = key
-          return next
-        })
-
-        setActiveIndex(i =>
-          Math.min(i + 1, values.length - 1)
-        )
-      }
-
-      if (e.key === 'Backspace') {
-        e.preventDefault()
-
-        setValues(prev => {
-          const next = [...prev]
-          next[activeIndex] = ''
-          return next
-        })
-
-        setActiveIndex(i =>
-          Math.max(i - 1, 0)
-        )
+      if (isLong) {
+        // Egyszerű szöveges input kezelés
+        if (e.key.length === 1) {
+          e.preventDefault()
+          setSingleValue(prev =>
+            (prev + key).slice(0, lockModal.lock.activator.length)
+          )
+        }
+        if (e.key === 'Backspace') {
+          e.preventDefault()
+          setSingleValue(prev => prev.slice(0, -1))
+        }
+      } else {
+        // Több mezős kezelés
+        if (e.key.length === 1) {
+          e.preventDefault()
+          setValues(prev => {
+            const next = [...prev]
+            next[activeIndex] = key
+            return next
+          })
+          setActiveIndex(i => Math.min(i + 1, values.length - 1))
+        }
+        if (e.key === 'Backspace') {
+          e.preventDefault()
+          setValues(prev => {
+            const next = [...prev]
+            next[activeIndex] = ''
+            return next
+          })
+          setActiveIndex(i => Math.max(i - 1, 0))
+        }
       }
     }
 
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [activeIndex, lockModal, values.length])
+  }, [activeIndex, lockModal, values.length, singleValue])
 
   const handleUnlock = () => {
-    const code = values.join('')
+    const code = isLong ? singleValue : values.join('')
     if (code.toUpperCase() === lockModal!.lock.activator.toUpperCase()) {
       setAppSettings({ action: SetAppSettingsActionEnum.SET_LOCK_MODAL, payload: null })
       lockModal?.openCallback()
     }
   }
 
-  const isComplete = values.every(v => v !== '')
+  const isComplete = isLong ? singleValue.length === lockModal!.lock.activator.length : values.every(v => v !== '')
 
   return lockModal && (
     <div
@@ -102,29 +114,49 @@ const LockModal = () => {
             ✕
           </span>
         </div>
+
         <div style={{ display: 'flex', gap: '.5rem', margin: '1rem' }}>
-          {values.map((val, i) => (
-            <div
-              key={i}
-              onClick={() => setActiveIndex(i)}
+          {isLong ? (
+            <input
+              type="text"
+              value={singleValue}
+              readOnly
               style={{
-                width: '2.5rem',
-                height: '2.5rem',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
+                width: `${lockModal.lock.activator.length}ch`,
                 fontSize: '1.5rem',
-                fontWeight: 'bold',
-                backgroundColor: '#fff',
+                textAlign: 'center',
+                letterSpacing: '0.2rem',
+                padding: '0.5rem',
                 borderRadius: '.3rem',
-                border: i === activeIndex ? '3px solid #ffec99' : '2px solid #555',
-                cursor: 'pointer',
-                userSelect: 'none'
+                border: '2px solid #555',
+                backgroundColor: '#fff'
               }}
-            >
-              {val}
-            </div>
-          ))}
+              placeholder={'x'.repeat(lockModal.lock.activator.length)}
+            />
+          ) : (
+            values.map((val, i) => (
+              <div
+                key={i}
+                onClick={() => setActiveIndex(i)}
+                style={{
+                  width: '2.5rem',
+                  height: '2.5rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '1.5rem',
+                  fontWeight: 'bold',
+                  backgroundColor: '#fff',
+                  borderRadius: '.3rem',
+                  border: i === activeIndex ? '3px solid #ffec99' : '2px solid #555',
+                  cursor: 'pointer',
+                  userSelect: 'none'
+                }}
+              >
+                {val}
+              </div>
+            ))
+          )}
         </div>
 
         <button
