@@ -56,7 +56,7 @@ export function toggleInventory(state: AppSettings): AppSettings {
 }
 
 export function addItemToInventory(state: AppSettings, payload: PickableObject): AppSettings {
-  findAndApply(getCurrentWall(state).movableCovers, payload.id, (item: PickableObject) => item.taken = true)
+  findAndApply(getCurrentWall(state), payload.id, (item: PickableObject) => item.taken = true)
 
   return {
     ...state,

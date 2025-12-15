@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { AppSettingsContextType } from '../../shared/types/frameworkTypes'
 import { AppSettingsContext } from '../../context/AppSettingsContext'
 import { SetAppSettingsActionEnum } from '../../shared/enums'
@@ -13,7 +13,7 @@ const LockModal = () => {
   const [singleValue, setSingleValue] = useState('')
   const [activeIndex, setActiveIndex] = useState(0)
 
-  const isLong = lockModal!.lock?.activator.length > 10
+  const isLong =  lockModal ? lockModal?.lock?.activator.length > 10 : false
 
   useEffect(() => {
     if (lockModal?.lock?.activator) {
@@ -32,7 +32,6 @@ const LockModal = () => {
       const key = e.key.toUpperCase()
 
       if (isLong) {
-        // Egyszerű szöveges input kezelés
         if (e.key.length === 1) {
           e.preventDefault()
           setSingleValue(prev =>
@@ -44,7 +43,6 @@ const LockModal = () => {
           setSingleValue(prev => prev.slice(0, -1))
         }
       } else {
-        // Több mezős kezelés
         if (e.key.length === 1) {
           e.preventDefault()
           setValues(prev => {
@@ -114,7 +112,6 @@ const LockModal = () => {
             ✕
           </span>
         </div>
-
         <div style={{ display: 'flex', gap: '.5rem', margin: '1rem' }}>
           {isLong ? (
             <input
@@ -122,10 +119,10 @@ const LockModal = () => {
               value={singleValue}
               readOnly
               style={{
-                width: `${lockModal.lock.activator.length}ch`,
+                width: `calc(${lockModal.lock.activator.length}ch + ${lockModal.lock.activator.length}*0.3rem)`,
                 fontSize: '1.5rem',
                 textAlign: 'center',
-                letterSpacing: '0.2rem',
+                letterSpacing: '0.3rem',
                 padding: '0.5rem',
                 borderRadius: '.3rem',
                 border: '2px solid #555',
