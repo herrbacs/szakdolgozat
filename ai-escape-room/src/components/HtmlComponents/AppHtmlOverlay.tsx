@@ -3,9 +3,9 @@ import Inventory from './Inventory'
 import InspectModal from '../GameObjects/Inspectable/InspectModal'
 import LockModal from './LockModal'
 import ItemsFoundModal from './ItemsFoundModal'
-import CursorActions from './CursorActions'
+import CursorActions from '../Application/UserInterface/CursorActions'
 
-const AppOverlay = () => {
+const AppHtmlOverlay = () => {
   return (
     <>
       <Inventory/>
@@ -17,4 +17,4 @@ const AppOverlay = () => {
   )
 }
 
-export default AppOverlay
+export default AppHtmlOverlay

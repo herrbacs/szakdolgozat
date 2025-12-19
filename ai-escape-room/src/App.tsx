@@ -1,8 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { AppSettingsContextType } from './shared/types/frameworkTypes'
 import { AppSettingsContext } from './context/AppSettingsContext'
-import AppOverlay from './components/Application/AppOverlay'
-import ToggleInventory from './components/Application/ToggleInventory'
+import AppHtmlOverlay from './components/HtmlComponents/AppHtmlOverlay'
 import {
   Application,
   extend,
@@ -15,8 +14,8 @@ import {
   TilingSprite,
 } from 'pixi.js'
 import { SetAppSettingsActionEnum } from './shared/enums'
-import { Navigation } from './components/Application/Navigation'
 import GameScene from './components/GameScene'
+import UserInterface from './components/Application/UserInterface/UserInterface'
 
 extend({
   Container,
@@ -73,10 +72,9 @@ export default function App() {
       <div ref={parentRef} style={{ position: 'relative', width: `${width}px`, height: `${height}px`, overflow: 'hidden' }}>
         <Application ref={appRef} resizeTo={parentRef} >
           <GameScene />
-          <Navigation />
-          <ToggleInventory />
+          <UserInterface />
         </Application>
-        <AppOverlay />
+        <AppHtmlOverlay />
       </div>
     )
     : <h1>Loading Level</h1>

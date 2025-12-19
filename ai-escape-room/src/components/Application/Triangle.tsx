@@ -1,4 +1,4 @@
-import { Graphics, GraphicsContext } from 'pixi.js'
+import { Graphics, GraphicsContext, PointData } from 'pixi.js'
 import React, { useCallback, useMemo } from 'react'
 
 export enum TriangleDirection {
@@ -12,23 +12,32 @@ export enum TriangleDirection {
   DOWN_RIGHT = 'DOWN_RIGHT'
 }
 
-type TriangleProps = {
+type PositionByXY = {
   x?: number
   y?: number
+  position?: never
+}
+
+type PositionByPoint = {
+  position: PointData
+  x?: never
+  y?: never
+}
+
+type TriangleProps = (PositionByXY | PositionByPoint) & {
   size?: number
   color?: number
   direction?: TriangleDirection
   onClick?: () => void
 }
 
-export function Triangle({
-  x = 0,
-  y = 0,
-  size = 25,
-  color = 0xffffff,
-  direction = TriangleDirection.UP,
-  onClick = () => { }
-}: TriangleProps) {
+export function Triangle(props: TriangleProps) {
+  const {
+    size = 25,
+    color = 0xffffff,
+    direction = TriangleDirection.UP,
+    onClick = () => {}
+  } = props
 
   const rotation = useMemo(() => {
     switch (direction) {
@@ -62,8 +71,13 @@ export function Triangle({
   return (
     <pixiGraphics
       draw={drawTriangle}
-      x={x}
-      y={y}
+      {
+        ...(
+          'position' in props
+          ? { position: props.position }
+          : { x: props.x ?? 0, y: props.y ?? 0 }
+        )
+      }
       rotation={rotation}
       eventMode="static"
       cursor="pointer"

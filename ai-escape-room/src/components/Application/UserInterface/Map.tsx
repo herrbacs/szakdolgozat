@@ -1,0 +1,86 @@
+import React, { useCallback, useContext, useEffect, useMemo, useState } from "react"
+import { AppSettingsContextType } from "../../../shared/types/frameworkTypes"
+import { PickableObject } from "../../../shared/types/gameObjectTypes"
+import { SetAppSettingsActionEnum } from "../../../shared/enums"
+import { setPositionOn } from "../../../shared/positionCalculator"
+import { AppSettingsContext } from "../../../context/AppSettingsContext"
+import { FederatedPointerEvent, Graphics, GraphicsContext, PointData, Texture } from "pixi.js"
+import { CursorActions } from "../../../shared/types/appTypes"
+import { Triangle, TriangleDirection } from "../Triangle"
+import { selectCurrentWallIndex } from "../../../reducer/selectors/derivedSelectors"
+import { selecScreenDimension } from "../../../reducer/selectors/baseSelectors"
+import { emptyCursorActions } from "../../../reducer/controllerHelpers"
+
+const Map = () => {
+  const { appSettings, setAppSettings }: AppSettingsContextType = useContext(AppSettingsContext)
+
+  const wallOrientation = [
+    TriangleDirection.UP,
+    TriangleDirection.RIGHT,
+    TriangleDirection.DOWN,
+    TriangleDirection.LEFT,
+  ]
+
+  const drawCircle = useCallback((g: GraphicsContext) => {
+    g.circle(0, 0, 5)
+      .fill({ color: 0xc2c2c2 })
+  }, [])
+
+  const position = useMemo(() => {
+    const { width, height } = selecScreenDimension(appSettings)
+
+    const ratio = 55
+    const xRatio = ratio / width
+    const yRatio = ratio / height
+
+    const x = width*xRatio
+    const y = height*yRatio
+
+    return { x, y }
+  }, [appSettings.screenSettings.dimension])
+
+  const calculatePosition = useCallback((orientation: TriangleDirection): PointData => {
+    const { x, y } = position
+    const relativePostition = 30
+
+    switch (orientation) {
+      case TriangleDirection.UP:
+        return { x, y: x - relativePostition }
+      case TriangleDirection.RIGHT:
+        return { x: x + relativePostition, y }
+      case TriangleDirection.DOWN:
+        return { x: x, y: y + relativePostition }
+      case TriangleDirection.LEFT:
+        return { x: x - relativePostition, y }
+      default:
+        return position
+    }
+  }, [appSettings.screenSettings.dimension])
+
+  const handleClick = (wallIndex: number) => {
+    setAppSettings({ action: SetAppSettingsActionEnum.SET_CURSOR_ACTIONS, payload: emptyCursorActions() })
+    // TODO implement current wall switch
+  }
+
+  return (
+  <>
+    <pixiGraphics
+      position={position}
+      draw={(g: Graphics) => drawCircle(g.context)}
+    />
+    {
+      wallOrientation.map((orientation, index) => 
+        <Triangle
+          key={index}
+          color={selectCurrentWallIndex(appSettings) === index ? 0xffe066 : 0xffffff}
+          direction={orientation}
+          position={calculatePosition(orientation)}
+          onClick={() => handleClick(index)}
+        />
+      )
+    }
+  </>
+  )
+}
+
+export default Map

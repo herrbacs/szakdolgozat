@@ -10,6 +10,8 @@ Rules for Story and Escape Room Logic:
 - Items should not be random; each must have a reason to exist in the story.
 - A level has exactly 4 walls
 - Think Complex. A password can not be known from only one information. Make sure the user reads every information, inspect every item to solve a puzzle
+- The final password must be uniquely and unambiguously derivable from the provided information.
+- There must be exactly one correct solution; guessing or interpretation should not be required.
 
 Item placement logic:
 - Only place Pickable objects on a wall or floor if they serve a purpose in the story or puzzle.

@@ -1,10 +1,10 @@
 import { useContext, useMemo } from 'react'
-import { AppSettingsContext } from '../../context/AppSettingsContext'
+import { AppSettingsContext } from '../../../context/AppSettingsContext'
 import React from 'react'
-import { AppSettingsContextType } from '../../shared/types/frameworkTypes'
-import { MoveDirectionEnum, SetAppSettingsActionEnum } from '../../shared/enums'
-import { Triangle, TriangleDirection } from './Triangle'
-import { emptyCursorActions } from '../../reducer/controllerHelpers'
+import { AppSettingsContextType } from '../../../shared/types/frameworkTypes'
+import { MoveDirectionEnum, SetAppSettingsActionEnum } from '../../../shared/enums'
+import { Triangle, TriangleDirection } from '../Triangle'
+import { emptyCursorActions } from '../../../reducer/controllerHelpers'
 
 export function Navigation() {
   const padding = 20

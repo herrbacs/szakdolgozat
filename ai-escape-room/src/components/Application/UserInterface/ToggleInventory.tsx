@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useCallback, useMemo } from 'react';
-import { AppSettingsContext } from '../../context/AppSettingsContext'
-import { AppSettingsContextType } from '../../shared/types/frameworkTypes'
+import { AppSettingsContext } from '../../../context/AppSettingsContext'
+import { AppSettingsContextType } from '../../../shared/types/frameworkTypes'
 import { Assets, Graphics, GraphicsContext, PointData, Texture } from 'pixi.js';
-import { SetAppSettingsActionEnum } from '../../shared/enums';
-import { emptyCursorActions } from '../../reducer/controllerHelpers';
+import { SetAppSettingsActionEnum } from '../../../shared/enums';
+import { emptyCursorActions } from '../../../reducer/controllerHelpers';
 
 const ToggleInventory = () => {
   const { appSettings: { screenSettings: { dimension: { width, height } } }, setAppSettings }: AppSettingsContextType = useContext(AppSettingsContext)
