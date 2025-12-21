@@ -5,11 +5,10 @@ import { AppSettingsContext } from '../../context/AppSettingsContext'
 import { AppSettingsContextType } from '../../shared/types/frameworkTypes'
 
 const Floor = () => {
-  const { 
-    appSettings: { gameInformation: { indexes },
-    screenSettings: { dimension : { width, height }, perspective } }
-  } : AppSettingsContextType = useContext(AppSettingsContext)
-  
+  const {
+    appSettings: { screenSettings: { dimension: { width, height }, perspective } }
+  }: AppSettingsContextType = useContext(AppSettingsContext)
+
   const draw = useCallback((g: GraphicsContext) => {
     const topLeft = { x: perspective, y: height - perspective }
     const topRight = { x: width - perspective, y: height - perspective }

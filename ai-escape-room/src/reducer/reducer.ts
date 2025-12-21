@@ -18,6 +18,8 @@ import {
   takeFoundItems,
   setCursorActions,
   moveTo,
+  toggleNotepad,
+  updateNotepad,
 } from "./reducerController"
 
 export const initialState : AppSettings = {
@@ -29,6 +31,10 @@ export const initialState : AppSettings = {
     perspective: 150,
   },
   gameInformation: {
+    notepad: {
+      content: '',
+      visible: false,
+    },
     indexes: {
       currentWall: 0,
       leftWall: 0,
@@ -58,6 +64,10 @@ export const reducer = (state: AppSettings, { action, payload }: ReducerAction) 
       return loadLevel(state, payload)
     case SetAppSettingsActionEnum.MOVE_AROUND:
       return moveAround(state, payload)
+    case SetAppSettingsActionEnum.TOGGLE_NOTEPAD:
+      return toggleNotepad(state)
+    case SetAppSettingsActionEnum.UPDATE_NOTEPAD:
+      return updateNotepad(state, payload)
     case SetAppSettingsActionEnum.MOVE_TO:
       return moveTo(state, payload)
     case SetAppSettingsActionEnum.SET_CURSOR_ACTIONS:

@@ -4,8 +4,8 @@ import { DynamicGameObject, InspectableObject, PickableObject, Wall } from "./ga
 import { Dimension, InspectionData, Lock } from "./gameBaseTypes"
 
 export type GameInformation = {
-	indexes: {
-		currentWall: number,
+  indexes: {
+    currentWall: number,
 		leftWall: number,
 		rightWall: number,
 	}
@@ -14,10 +14,16 @@ export type GameInformation = {
 	inventory: PickableObject[],
 	showInventory: boolean,
 	selectedItem: null | PickableObject,
+  notepad: Notepad,
 	inspectingModal: null | inspectingModal,
 	lockModal: null | LockModal,
 	itemsFoundModal: null | DynamicGameObject[],
 	cursorActions: CursorActions,
+}
+
+export type Notepad = {
+  content: string,
+  visible: boolean,
 }
 
 export type inspectingModal = InspectionData & {}

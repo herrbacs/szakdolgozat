@@ -1,3 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap');
+
+* {
+ font-family: "Google Sans", sans-serif;
+}
+
 .cursor-action-img {
   max-width: 4rem;
   height: auto;
@@ -8,4 +15,61 @@
 
 .cursor-action-img:hover {
   border: 2px solid #8f7200;
+}
+
+.notepad-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.notepad-modal {
+  width: 500px;
+  max-width: 90%;
+  background: #fdf6e3;
+  border-radius: 12px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.notepad-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.notepad-header h2 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.notepad-header button {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.notepad-textarea {
+  flex: 1;
+  resize: none;
+  border: none;
+  outline: none;
+  background: repeating-linear-gradient(
+    #fdf6e3,
+    #fdf6e3 28px,
+    #e6dcc3 29px
+  );
+  padding: 12px;
+  font-size: 1rem;
+  line-height: 28px;
+  font-family: "Courier New", monospace;
+  color: #333;
 }

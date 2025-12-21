@@ -203,7 +203,33 @@ export function setCursorActions(state: AppSettings, payload: CursorActions): Ap
       ...state.gameInformation,
       cursorActions: payload
     }
-  };
+  }
+}
+
+export function toggleNotepad(state: AppSettings): AppSettings {
+  return {
+    ...state,
+    gameInformation: {
+      ...state.gameInformation,
+      notepad: {
+        ...state.gameInformation.notepad,
+        visible: !state.gameInformation.notepad.visible
+      },
+    }
+  }
+}
+
+export function updateNotepad(state: AppSettings, payload: string): AppSettings {
+  return {
+    ...state,
+    gameInformation: {
+      ...state.gameInformation,
+      notepad: {
+        ...state.gameInformation.notepad,
+        content: payload
+      },
+    }
+  }
 }
 
 function getCurrentWall(state: AppSettings): Wall {

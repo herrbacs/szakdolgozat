@@ -1,11 +1,8 @@
-import React, { useCallback, useContext, useEffect, useMemo, useState } from "react"
+import React, { useCallback, useContext, useMemo } from "react"
 import { AppSettingsContextType } from "../../../shared/types/frameworkTypes"
-import { PickableObject } from "../../../shared/types/gameObjectTypes"
 import { SetAppSettingsActionEnum } from "../../../shared/enums"
-import { setPositionOn } from "../../../shared/positionCalculator"
 import { AppSettingsContext } from "../../../context/AppSettingsContext"
-import { FederatedPointerEvent, Graphics, GraphicsContext, PointData, Texture } from "pixi.js"
-import { CursorActions } from "../../../shared/types/appTypes"
+import { Color, Graphics, GraphicsContext, PointData } from "pixi.js"
 import { Triangle, TriangleDirection } from "../Triangle"
 import { selectCurrentWallIndex } from "../../../reducer/selectors/derivedSelectors"
 import { selecScreenDimension } from "../../../reducer/selectors/baseSelectors"
@@ -22,7 +19,8 @@ const Map = () => {
   ]
 
   const drawCircle = useCallback((g: GraphicsContext) => {
-    g.circle(0, 0, 5)
+    g
+      .circle(0, 0, 5)
       .fill({ color: 0xc2c2c2 })
   }, [])
 
@@ -33,8 +31,8 @@ const Map = () => {
     const xRatio = ratio / width
     const yRatio = ratio / height
 
-    const x = width*xRatio
-    const y = height*yRatio
+    const x = width * xRatio
+    const y = height * yRatio
 
     return { x, y }
   }, [appSettings.screenSettings.dimension])
@@ -63,23 +61,24 @@ const Map = () => {
   }
 
   return (
-  <>
-    <pixiGraphics
-      position={position}
-      draw={(g: Graphics) => drawCircle(g.context)}
-    />
-    {
-      wallOrientation.map((orientation, index) => 
-        <Triangle
-          key={index}
-          color={selectCurrentWallIndex(appSettings) === index ? 0xffe066 : 0xffffff}
-          direction={orientation}
-          position={calculatePosition(orientation)}
-          onClick={() => handleClick(index)}
-        />
-      )
-    }
-  </>
+    <>
+      <pixiGraphics
+        position={position}
+        draw={(g: Graphics) => drawCircle(g.context)}
+      />
+      {
+        wallOrientation.map((orientation, index) =>
+          <Triangle
+            key={index}
+            color={selectCurrentWallIndex(appSettings) === index ? new Color('#ffe066') : new Color('#ffffff')}
+            strokeColor={new Color('#999999')}
+            direction={orientation}
+            position={calculatePosition(orientation)}
+            onClick={() => handleClick(index)}
+          />
+        )
+      }
+    </>
   )
 }
 

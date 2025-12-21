@@ -1,28 +1,23 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react'
 import { AppSettingsContext } from '../../../context/AppSettingsContext'
 import { AppSettingsContextType } from '../../../shared/types/frameworkTypes'
-import { Assets, Texture } from 'pixi.js';
-import { SetAppSettingsActionEnum } from '../../../shared/enums';
-import { emptyCursorActions } from '../../../reducer/controllerHelpers';
+import { Assets, Texture } from 'pixi.js'
+import { SetAppSettingsActionEnum } from '../../../shared/enums'
 
-const ToggleInventory = () => {
+const Notepad = () => {
   const { appSettings: { screenSettings: { dimension: { width } } }, setAppSettings }: AppSettingsContextType = useContext(AppSettingsContext)
   const padding = 25
   const [texture, setTexture] = useState<Texture>(Texture.EMPTY)
   const [scale, setScale] = useState<number>(1)
 
   const handleClick = () => {
-    setAppSettings({
-      action: SetAppSettingsActionEnum.SET_CURSOR_ACTIONS,
-      payload: emptyCursorActions()
-    })
-    setAppSettings({ action: SetAppSettingsActionEnum.TOGGLE_INVENTORY })
+    setAppSettings({ action: SetAppSettingsActionEnum.TOGGLE_NOTEPAD })
   }
 
   const loadTextures = async () => {
-    const texture = await Assets.load('http://localhost:5000/images/inventory.jpg')
+    const texture = await Assets.load('http://localhost:5000/images/notepad.jpg')
     if (!texture) {
-      throw new Error('Failed To Load Inventory Sptrite')
+      throw new Error('Failed To Load Notepad Sptrite')
     }
 
     setTexture(texture)
@@ -40,10 +35,10 @@ const ToggleInventory = () => {
       cursor="pointer"
       onPointerTap={handleClick}
       scale={scale}
-      x={width - padding - texture.width * scale}
+      x={width - (padding * 2) - (texture.width * scale) * 2}
       y={padding}
     />
   )
 }
 
-export default ToggleInventory
+export default Notepad

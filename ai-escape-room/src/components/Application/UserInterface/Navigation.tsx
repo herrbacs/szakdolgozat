@@ -5,6 +5,7 @@ import { AppSettingsContextType } from '../../../shared/types/frameworkTypes'
 import { MoveDirectionEnum, SetAppSettingsActionEnum } from '../../../shared/enums'
 import { Triangle, TriangleDirection } from '../Triangle'
 import { emptyCursorActions } from '../../../reducer/controllerHelpers'
+import { Color } from 'pixi.js'
 
 export function Navigation() {
   const padding = 20
@@ -33,13 +34,15 @@ export function Navigation() {
         y={calculateYPosition}
         size={30}
         onClick={() => handleClick(MoveDirectionEnum.LEFT)}
-      />
+        strokeColor={new Color('#999999')}
+        />
       <Triangle
         direction={TriangleDirection.RIGHT}
         x={calculateXPositionOfRightArrow}
         y={calculateYPosition}
         size={30}
         onClick={() => handleClick(MoveDirectionEnum.RIGHT)}
+        strokeColor={new Color('#999999')}
       />
     </>
   )

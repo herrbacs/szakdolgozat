@@ -1,4 +1,4 @@
-import { Graphics, GraphicsContext, PointData } from 'pixi.js'
+import { Color, Graphics, GraphicsContext, PointData } from 'pixi.js'
 import React, { useCallback, useMemo } from 'react'
 
 export enum TriangleDirection {
@@ -26,7 +26,9 @@ type PositionByPoint = {
 
 type TriangleProps = (PositionByXY | PositionByPoint) & {
   size?: number
-  color?: number
+  color?: Color
+  strokeWidth?: number
+  strokeColor?: Color
   direction?: TriangleDirection
   onClick?: () => void
 }
@@ -35,6 +37,8 @@ export function Triangle(props: TriangleProps) {
   const {
     size = 25,
     color = 0xffffff,
+    strokeWidth = 0,
+    strokeColor = 0xffffff,
     direction = TriangleDirection.UP,
     onClick = () => {}
   } = props
@@ -65,7 +69,7 @@ export function Triangle(props: TriangleProps) {
       .lineTo(halfBase, height / 2)
       .closePath()
       .fill({ color })
-      .stroke({ color, width: 1 })
+      .stroke({ color: strokeColor, width: strokeWidth })
   }, [size, color])
 
   return (
