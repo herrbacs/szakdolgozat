@@ -59,7 +59,7 @@ const Map = () => {
 
   const handleClick = (wallIndex: number) => {
     setAppSettings({ action: SetAppSettingsActionEnum.SET_CURSOR_ACTIONS, payload: emptyCursorActions() })
-    // TODO implement current wall switch
+    setAppSettings({ action: SetAppSettingsActionEnum.MOVE_TO, payload: wallIndex })
   }
 
   return (

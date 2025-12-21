@@ -2,7 +2,7 @@ import { SetAppSettingsActionEnum } from "../shared/enums"
 import { AppSettings, ReducerAction } from "../shared/types/frameworkTypes"
 import { Wall } from "../shared/types/gameObjectTypes"
 import {
-  handleMove,
+  moveAround,
   loadLevel,
   toggleInventory,
   exit,
@@ -18,6 +18,7 @@ import {
   emptyFoundItems,
   takeFoundItems,
   setCursorActions,
+  moveTo,
 } from "./reducerController"
 
 export const initialState : AppSettings = {
@@ -56,8 +57,10 @@ export const reducer = (state: AppSettings, { action, payload }: ReducerAction) 
   switch (action) {
     case SetAppSettingsActionEnum.LOAD_LEVEL:
       return loadLevel(state, payload)
-    case SetAppSettingsActionEnum.MOVE:
-      return handleMove(state, payload)
+    case SetAppSettingsActionEnum.MOVE_AROUND:
+      return moveAround(state, payload)
+    case SetAppSettingsActionEnum.MOVE_TO:
+      return moveTo(state, payload)
     case SetAppSettingsActionEnum.SET_CURSOR_ACTIONS:
       return setCursorActions(state, payload)
     case SetAppSettingsActionEnum.TOGGLE_INVENTORY:

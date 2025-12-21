@@ -12,7 +12,7 @@ export function loadLevel(state: AppSettings, { walls }: LevelInformation): AppS
   return { ...state }
 }
 
-export function handleMove(state: AppSettings, payload: MoveDirectionEnum): AppSettings {
+export function moveAround(state: AppSettings, payload: MoveDirectionEnum): AppSettings {
   let { amountOfWalls, walls } = state.gameInformation
   let { currentWall } = state.gameInformation.indexes
 
@@ -43,6 +43,26 @@ export function handleMove(state: AppSettings, payload: MoveDirectionEnum): AppS
   }
 
   return result
+}
+
+export function moveTo(state: AppSettings, payload: number): AppSettings {
+  let { amountOfWalls } = state.gameInformation
+
+  const currentWall = payload
+  const rightWall = (payload + 1) % amountOfWalls
+  const leftWall = (payload - 1 + amountOfWalls) % amountOfWalls
+
+  return {
+    ...state,
+    gameInformation: {
+      ...state.gameInformation,
+      indexes: {
+        currentWall,
+        leftWall,
+        rightWall,
+      },
+    }
+  }
 }
 
 export function toggleInventory(state: AppSettings): AppSettings {

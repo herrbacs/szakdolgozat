@@ -22,7 +22,7 @@ export function Navigation() {
 
   const handleClick = (payload: MoveDirectionEnum) => {
     setAppSettings({ action: SetAppSettingsActionEnum.SET_CURSOR_ACTIONS, payload: emptyCursorActions() })
-    setAppSettings({ action: SetAppSettingsActionEnum.MOVE, payload })
+    setAppSettings({ action: SetAppSettingsActionEnum.MOVE_AROUND, payload })
   }
 
   return (
