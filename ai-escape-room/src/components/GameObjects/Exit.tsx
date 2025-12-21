@@ -14,11 +14,12 @@ const Exit = ({ exit: { lock } }: { exit: ExitObject }) => {
      appSettings: { screenSettings: { dimension: { width, height }, perspective },
      gameInformation: { cursorActions, selectedItem } 
   }, setAppSettings}: AppSettingsContextType = useContext(AppSettingsContext)
+
   const [openTexture, setOpenTexture] = useState<Texture>(Texture.EMPTY)
   const [closedTexture, setClosedTexture] = useState<Texture>(Texture.EMPTY)
 
   const tryOpen = useCallback(() => {
-    if (type === LockTypeEnum.PASSWORD) {
+    if (type !== LockTypeEnum.KEY) {
       setAppSettings({
         action: SetAppSettingsActionEnum.SET_LOCK_MODAL,
         payload: {
