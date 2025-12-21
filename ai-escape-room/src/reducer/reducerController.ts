@@ -1,15 +1,40 @@
-import { GameObjectTypeEnum, MoveDirectionEnum } from '../shared/enums'
+import { GameObjectTypeEnum, MoveDirectionEnum, PositionEnum } from '../shared/enums'
 import { CursorActions, LevelInformation, LockModal } from '../shared/types/appTypes'
 import { AppSettings } from '../shared/types/frameworkTypes'
 import { ContainerObject, DynamicGameObject, MovableCoverObject, PickableObject, Wall } from '../shared/types/gameObjectTypes'
 import { InspectionData } from '../shared/types/gameBaseTypes'
 
-export function loadLevel(state: AppSettings, { walls }: LevelInformation): AppSettings {
-  state.gameInformation.walls = walls
-  state.gameInformation.amountOfWalls = walls.length
-  state.gameInformation.indexes.leftWall = walls.length - 1
+export function loadLevel(state: AppSettings, { walls, story }: LevelInformation): AppSettings {
+  const amountOfWalls = walls.length
+  const currentWall = 0
+  const leftWall = walls.length - 1
+  const rightWall = walls.length - 1
 
-  return { ...state }
+  const additionalInformation: PickableObject = {
+    id: 'STORY000-0000-STRY-0000-0000000STORY',
+    position: PositionEnum.F1,
+    reusable: true,
+    taken: true,
+    inspectionData: {
+      appellation: 'Story',
+      information: story,
+    },
+  }
+
+  return {
+    ...state,
+    gameInformation: {
+      ...state.gameInformation,
+      walls,
+      amountOfWalls,
+      indexes: {
+        currentWall,
+        leftWall,
+        rightWall
+      },
+      inventory: [additionalInformation]
+    }
+  }
 }
 
 export function moveAround(state: AppSettings, payload: MoveDirectionEnum): AppSettings {

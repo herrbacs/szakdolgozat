@@ -1,6 +1,5 @@
 import { SetAppSettingsActionEnum } from "../shared/enums"
 import { AppSettings, ReducerAction } from "../shared/types/frameworkTypes"
-import { Wall } from "../shared/types/gameObjectTypes"
 import {
   moveAround,
   loadLevel,

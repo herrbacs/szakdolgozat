@@ -53,6 +53,7 @@ export type ScreenSettings = {
 }
 
 export type LevelInformation = {
+  story: string,
 	walls: Wall[],
 }
 

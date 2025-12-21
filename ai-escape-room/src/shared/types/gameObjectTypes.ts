@@ -13,7 +13,7 @@ type HasPosition = {
 type BaseGameObject = HasId & HasPosition & {}
 
 type HasSprite = {
-  sprite: Sprite,
+  // sprite: Sprite,
 }
 
 type IsInspectable = {
