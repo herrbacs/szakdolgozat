@@ -36,7 +36,7 @@ const ItemsFoundModal = () => {
   if (itemsFoundModal.length > 0) {
     return (
       <BaseModal
-        title={itemsFoundModal[currentItemIndex].object.inspectionData.information}
+        title={itemsFoundModal[currentItemIndex].object.inspectionData.appellation}
         onClose={closeModal}
       >
         <>
@@ -63,8 +63,7 @@ const ItemsFoundModal = () => {
                 border: 'none',
                 borderRadius: '.4rem',
                 cursor: 'pointer',
-                marginTop: '1rem',
-                marginBottom: '1rem',
+                margin: '1rem auto .5rem .5rem'
               }}
             >
               {'<<<'}
@@ -80,8 +79,7 @@ const ItemsFoundModal = () => {
                 border: 'none',
                 borderRadius: '.4rem',
                 cursor: 'pointer',
-                marginTop: '1rem',
-                marginBottom: '1rem',
+                margin: '1rem .5rem .5rem auto',
               }}
             >
               {'>>>'}
