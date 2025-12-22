@@ -34,7 +34,7 @@ export type Wall = HasId & {
   movableCovers: MovableCoverObject[],
 }
 
-export type ExitObject = {
+export type ExitObject = IsInspectable & {
   lock: Lock,
   sprite: SpriteSet,
 }

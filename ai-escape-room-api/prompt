@@ -62,6 +62,7 @@ Wall object:
 Exit object:
   Properties
     - lock: Lock
+    - inspectionData: InspectionData
 
 Pickable object:
   Properties

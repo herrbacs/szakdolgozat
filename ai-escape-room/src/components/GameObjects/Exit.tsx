@@ -8,7 +8,7 @@ import { AppSettingsContextType } from '../../shared/types/frameworkTypes'
 import { ExitObject } from '../../shared/types/gameObjectTypes'
 import { CursorActions } from '../../shared/types/appTypes'
 
-const Exit = ({ exit: { lock } }: { exit: ExitObject }) => {
+const Exit = ({ exit: { lock, inspectionData } }: { exit: ExitObject }) => {
   const { type, activator, open } = lock
   const {
      appSettings: { screenSettings: { dimension: { width, height }, perspective },
@@ -83,13 +83,8 @@ const Exit = ({ exit: { lock } }: { exit: ExitObject }) => {
 
     const position: CursorActions = {
       position: cursorActions.position === null ? event.screen : null,
-      examine: {
-        appellation: "Exit Door",
-        information: lock.open ? "Yaaay, I'm free" : "I need to get out"
-      },
-      use: {
-        action: tryOpen
-      },
+      examine: inspectionData,
+      use: { action: tryOpen },
       take: null,
       search: null,
     }
