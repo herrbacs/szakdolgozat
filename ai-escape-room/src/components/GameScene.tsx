@@ -16,7 +16,7 @@ import Container from './GameObjects/Container/Container'
 const GameScene = () => {
   const { appSettings: { gameInformation: { walls, indexes: { currentWall } } } }: AppSettingsContextType = useContext(AppSettingsContext)
   const wall = walls[currentWall]
-  console.log(wall.inspectables)
+
   return wall && (
     <>
       <FrontWall color={wall.color} />

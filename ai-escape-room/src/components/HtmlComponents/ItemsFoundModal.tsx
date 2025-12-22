@@ -34,9 +34,6 @@ const ItemsFoundModal = () => {
     return
   }
 
-
-  console.log(currentItemIndex)
-  console.log(itemsFoundModal)
   if (itemsFoundModal.length > 0) {
     return (
       <BaseModal

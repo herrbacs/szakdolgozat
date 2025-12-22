@@ -71,7 +71,8 @@ const Map = () => {
           <Triangle
             key={index}
             color={selectCurrentWallIndex(appSettings) === index ? new Color('#ffe066') : new Color('#ffffff')}
-            strokeColor={new Color('#999999')}
+            strokeColor={new Color('#555555')}
+            strokeWidth={2}
             direction={orientation}
             position={calculatePosition(orientation)}
             onClick={() => handleClick(index)}
