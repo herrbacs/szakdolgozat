@@ -4,7 +4,7 @@ import { AppSettingsContext } from '../../context/AppSettingsContext'
 import React from 'react'
 import { AppSettingsContextType } from '../../shared/types/frameworkTypes'
 
-const FrontWall = ({ color, children } : { color: string, children: React.ReactNode  }) => {
+const FrontWall = ({ color } : { color: string }) => {
   const { appSettings: { screenSettings: { dimension: { width, height }, perspective} } } : AppSettingsContextType = useContext(AppSettingsContext)
 
   const draw = useCallback((g: GraphicsContext) => {
@@ -15,12 +15,7 @@ const FrontWall = ({ color, children } : { color: string, children: React.ReactN
     [color],
   )
 
-  return (
-    <>
-      <pixiGraphics draw={(g: Graphics) => draw(g.context)} />
-      {children}
-    </>
-  )
+  return <pixiGraphics draw={(g: Graphics) => draw(g.context)} />
 }
 
 export default FrontWall

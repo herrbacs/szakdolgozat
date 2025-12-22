@@ -3,6 +3,7 @@ import { AppSettingsContext } from '../../../context/AppSettingsContext'
 import { AppSettingsContextType } from '../../../shared/types/frameworkTypes'
 import { Assets, Texture } from 'pixi.js'
 import { SetAppSettingsActionEnum } from '../../../shared/enums'
+import { emptyCursorActions } from '../../../reducer/controllerHelpers'
 
 const Notepad = () => {
   const { appSettings: { screenSettings: { dimension: { width } } }, setAppSettings }: AppSettingsContextType = useContext(AppSettingsContext)
@@ -11,6 +12,10 @@ const Notepad = () => {
   const [scale, setScale] = useState<number>(1)
 
   const handleClick = () => {
+    setAppSettings({
+      action: SetAppSettingsActionEnum.SET_CURSOR_ACTIONS,
+      payload: emptyCursorActions()
+    })
     setAppSettings({ action: SetAppSettingsActionEnum.TOGGLE_NOTEPAD })
   }
 

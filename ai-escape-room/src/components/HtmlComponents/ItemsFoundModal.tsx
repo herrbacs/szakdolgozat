@@ -22,6 +22,7 @@ const ItemsFoundModal = () => {
   }
 
   const closeModal = () => {
+    setCurrentItemIndex(0)
     setAppSettings({ action: SetAppSettingsActionEnum.TAKE_FOUND_ITEMS })
     setAppSettings({ action: SetAppSettingsActionEnum.EMPTY_FOUD_ITEMS_MODAL, payload: null })
   }
@@ -33,6 +34,9 @@ const ItemsFoundModal = () => {
     return
   }
 
+
+  console.log(currentItemIndex)
+  console.log(itemsFoundModal)
   if (itemsFoundModal.length > 0) {
     return (
       <BaseModal

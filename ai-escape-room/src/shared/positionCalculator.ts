@@ -93,7 +93,7 @@ function centerOfSectorY(
     case 'WT':
       return perspective + (height_WB_and_WT * .5)
     case 'W':
-      return perspective + (height * .5)
+      return perspective + (wallHeight * .5)
     case 'WB':
       return perspective + wallHeight - (height_WB_and_WT * .5)
     case 'F':
