@@ -9,7 +9,7 @@ const InspectModal = () => {
 
   return inspectingModal && (
     <BaseModal
-      title=''
+      title={inspectingModal.appellation}
       onClose={() => setAppSettings({ action: SetAppSettingsActionEnum.TOGGLE_OBJECT_INSPECTING, payload: null })}
     >
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', width: '100%' }}>
