@@ -1,0 +1,146 @@
+Puzzle definition:
+- A Puzzle is ALWAYS defined as unlocking exactly ONE Lock.
+- A level MUST contain 4–5 puzzles.
+- The final puzzle MUST be the Exit lock.
+
+Puzzle progression rules:
+- Puzzles MUST be solved in a strictly progressive order.
+- Solving Puzzle N MUST unlock access to Puzzle N+1.
+- A puzzle is considered solved ONLY when its Lock is opened.
+- No puzzle-relevant Lock may be opened before all previous puzzles are solved.
+
+Puzzle depth rules:
+- Every Lock (except the first puzzle) MUST require at least one prerequisite item or information
+  that is NOT initially accessible.
+- The Exit lock MUST require information or items originating from at least 2 different puzzles.
+
+Key & container depth constraints:
+- Any KEY-type Lock MUST reference a Pickable that is NOT directly visible at level start.
+- A key item MUST be hidden at least one level deep:
+  - inside a Container, OR
+  - behind a MovableCover, OR
+  - inside a Container that itself is locked.
+
+Information fragment rules:
+- Any non-KEY Lock (CODE / PASSWORD) MUST be composed from multiple information fragments.
+- Minimum fragments per Lock: 2
+- Maximum fragments per Lock: 4
+
+Fragment acquisition rules:
+- Each fragment MUST be obtained from a DIFFERENT game object.
+- A fragment MUST NOT directly reveal its final value.
+- A fragment MUST require interpretation using a logical rule.
+
+Logical key requirement:
+- Each Puzzle MUST contain exactly ONE "logical key" object.
+- The logical key defines:
+  - HOW information fragments are selected
+  - HOW they are ordered
+  - HOW the final value is derived
+- Without the logical key, fragments MUST be insufficient to solve the puzzle.
+
+Examples of logical keys:
+- A note describing a selection rule (e.g. dates, positions, ordering principle)
+- A diagram showing how symbols map to letters or numbers
+- A document defining which words, numbers or patterns are relevant
+
+Puzzle dependency graph rules:
+- Each Puzzle represents one node in the graph.
+- An edge Puzzle A → Puzzle B means:
+  - Solving Puzzle A is REQUIRED before Puzzle B becomes solvable.
+- The graph MUST be a directed acyclic graph (DAG).
+- The graph MUST have exactly ONE sink node (the Exit puzzle).
+- The Exit puzzle MUST depend on at least 2 other puzzles.
+
+Graph shape constraints:
+- Initial puzzle:
+  - Uses only visible, unlocked objects.
+- Intermediate puzzles:
+  - Require combining information or items from earlier puzzles.
+- Final puzzle:
+  - Requires converging results from at least two independent puzzle branches.
+
+Anti-guessing rules:
+- No Lock may be solvable by guessing.
+- All required information MUST be present in the environment.
+- No puzzle may be partially solvable before its logical key is found.
+- No information fragment may be reusable for multiple Locks unless explicitly stated.
+
+Internal reasoning requirement (DO NOT OUTPUT):
+1) First, design the puzzle sequence:
+   - Puzzle 1 → Puzzle 2 → ... → Exit
+2) For each Puzzle:
+   - Define the Lock
+   - Define required fragments (2–4)
+   - Define the logical key
+3) Verify step-by-step:
+   - To open Lock X, I need fragments A, B, C
+   - To interpret them, I need logical key L
+   - A, B, C and L are only accessible after previous puzzles
+4) If any Lock can be opened earlier, REDESIGN the puzzle.
+
+## Self-verification requirement (CRITICAL):
+
+Before finalizing the JSON, the AI MUST verify each puzzle step-by-step:
+
+### Verification checklist:
+1. **For each Lock**, write down:
+   - Lock type and activator value
+   - Required fragments (2-4 pieces of information)
+   - The logical key object that explains how to combine fragments
+   - The exact calculation/derivation that produces the activator
+
+2. **For CODE_ONLY_NUMBER locks**:
+   - Example: Lock activator = "2170"
+   - Fragment 1: Clock shows 21:07
+   - Fragment 2: Note says "óra + perc számjegyeit fordítva"
+   - Logical key: "A számjegyeket fordított sorrendben írd: 2-1-7-0"
+   - Derivation: 21:07 → 2170 ✓
+
+3. **For CODE_ONLY_LETTER locks**:
+   - Example: Lock activator = "AVCS"
+   - Fragment 1: Kazetta A címke "Árnyék"
+   - Fragment 2: Kazetta B címke "Villám"
+   - Fragment 3: Kazetta C címke "Csend"
+   - Fragment 4: Kazetta D címke "Szél"
+   - Logical key: "Minden címke első betűje, ABC sorrendben"
+   - Derivation: Á-V-C-S → AVCS ✓
+
+4. **For PASSWORD locks**:
+   - Must explicitly show how EVERY character is derived
+   - Example: "ArnyekCsend2021"
+     - "Arnyak" from puzzle X (Fragment A)
+     - "Csend" from puzzle Y (Fragment B)
+     - "2021" from visible calendar (Fragment C)
+     - Logical key: "Két szó egybe, mindkettő nagybetűs kezdővel + évszám"
+
+### Validation rules:
+- If any step in the derivation is unclear → REDESIGN the puzzle
+- If the logical key doesn't fully explain the solution → ADD missing information
+- If fragments can produce multiple valid answers → ADD constraints
+- If a fragment is too obvious (directly shows the answer) → MAKE IT INDIRECT
+
+### Common errors to avoid:
+❌ "A falióra 21:07-et mutat" → activator: "2170" (no logical key!)
+✓ Add: "A jegyzet azt mondja: 'Az idő számjegyei fordítva adják a kódot'"
+
+❌ Kazetta címkék nem illeszkednek a szabályhoz
+✓ Ensure: If rule says "első betűk", címkék MUST start with the needed letters
+
+❌ Jelszó évszáma ellentmondásos ("utolsó két számjegy ismételve" → 2021?)
+✓ Clarify: "Az évszám négy számjegye: 2-0-2-1"
+
+## Mandatory output format:
+After designing the level, include a hidden section (not in JSON):
+```
+INTERNAL VERIFICATION:
+Puzzle 1: [Lock type] = [activator]
+  - Fragments: [list]
+  - Logical key: [object ID + rule]
+  - Derivation: [step-by-step]
+  - Status: ✓ VALID / ❌ NEEDS REDESIGN
+
+[Repeat for all puzzles]
+```
+
+Only output the JSON if ALL puzzles are marked ✓ VALID.

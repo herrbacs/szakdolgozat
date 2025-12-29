@@ -1,0 +1,170 @@
+
+You are generating an escape room level by the following rules and principals.
+
+Output: 
+  - Output must be a single JSON of Level object.
+  - Do not explain anything.
+
+  Level:
+    Properties
+      - story: string
+      - walls: array<Wall>
+    Usage guidelines:
+      - Level has exactly 4 walls
+
+  Wall:
+    Properties
+      - id: GUID
+      - color: "#RRGGBB"
+      - exit: null | Exit
+      - pickables: array<Pickable>
+      - inspectables: array<Inspectable>
+      - containers: array<Container>
+      - movableCovers: array<MovableCover>
+
+  Exit:
+    Properties
+      - lock: Lock
+      - inspectionData: InspectionData
+    Usage guidelines:
+      - Only one wall MUST HAVE Exit object
+      - If a wall owns exit object, the same wall can not place object to WB2 and W2
+  Pickable:
+    Properties
+      - id: GUID
+      - position: POSITION
+      - reusable: true | false
+      - inspectionData: InspectionData
+    Usage guidelines:
+      - Pickables must have a gameplay purpose.
+      - Use for keys, clues, tools or story-related items.
+      - Avoid placing Pickables without a reason.
+
+  Inspectable:
+    Properties
+      - id: GUID
+      - position: POSITION
+      - inspectionData: InspectionData
+    Usage guidelines:
+      - Inspectables are stationary clue objects.
+      - They provide story lore, hints or puzzle parts.
+      - Should not be collectible.
+
+  Container:
+    Properties
+      - id: GUID
+      - position: POSITION
+      - lock: null | LOCK
+      - content: array<DynamicGameObject>
+      - inspectionData: InspectionData
+    Usage guidelines:
+      - A Container is an object that can store one or multiple DynamicGameObjects.
+      - The content may consist of both Pickable and Inspectable objects.
+      - Only place content into a Container if it contributes to the story, puzzle progression, or provides meaningful gameplay value.
+    Placement guidelines:
+      - Floor-type covers typically F1–F3.
+      - Wall-type covers typically WT, W, WB
+    Usage Examples:ű
+      - Book shelf containing notes, pickable items on F1 POSITION
+      - Locked antique desk with pickable items and iinspectable items inside on F2 POSITION
+      - A wall safe with a number lock containing an Inspectable note or a Pickable key.
+      - A backpack without a lock that holds multiple Pickable items.
+      - A ventilation grate with a "KEY" lock wich is a screwdriver or a coin or crowbar.
+      - A book shelf without a lock
+      - Feel free to think about any other container types
+
+  MovableCover:
+    Properties
+      - id: GUID
+      - position: POSITION
+      - inspectionData: InspectionData
+      - content: DynamicGameObject
+    Usage guidelines:
+      - MovableCover represents an object that hides another interactive object beneath or behind it.
+      - It must always contain exactly one DynamicGameObject as its content wich type most be only: Pickable | Inspectable | Container.
+      - The content must always be meaningful and puzzle- or story-relevant
+      - Recommended examples: carpet hiding a key, wall poster hiding a note, loose floor tile hiding a container.
+    Placement guidelines:
+      - Floor-type covers typically F1–F3
+      - Wall-type covers typically WT, W, WB
+    Usage Examples:
+      - carpet, tile, mat, loose floorboard
+      - poster, picture frame, flat screen tv
+      - Feel free to think about any other movable cover types
+
+  Lock:
+    Properties
+      - type: "CODE_ONLY_NUMBER" | CODE_ONLY_LETTER | PASSWORD | "KEY",
+      - activator: "string"
+    Usage guidelines:
+      - When type != KEY, the code or password must be hungarian
+      - When type = CODE_ONLY_NUMBER: The activator is 4-10 characters long string of (0-9)
+      - When type = CODE_ONLY_LETTER: The activator is 4-10 characters long string of (A-Z)
+      - When type = PASSWORD: The activator is 10-20 characters long string of (A-Z, a-z, 0-9, '$', '#', '-', '_')
+      - When type = KEY: The activator is the Id of key item
+      - A Lock controls access to an object (container, door, movable cover, etc.).
+      - Locks should only be used when they contribute to puzzle progression or narrative.
+    Usage examples:
+      - KEY: brass key, lockpick, screwdriver, crowbar, scissor, coin
+      - CODE_ONLY_NUMBER: luggage lock, digital lock, dial combination lock
+      - CODE_ONLY_LETTER: cryptex, digital lock, dial combination lock
+      - PASSWORD: digital lock, mobile
+
+  DynamicGameObject:
+    Properties
+      - type: GAME_OBJECT_TYPE
+      - object: Pickable | Inspectable | MovableCover | Container
+
+  InspectionData:
+    Properties
+      - appellation: string
+      - information: string
+    Usage guidelines:
+      - Every text has to be Hungarian
+      - The information field serves TWO distinct purposes:
+        
+        A) VISUAL DESCRIPTION (for objects with observable clues):
+          - Describe what can be seen: numbers, symbols, positions, states
+          - Examples: "A clock stopped at 02:41", "A calendar with March 15th circled in red"
+          - Keep it concise (1-3 sentences)
+          
+        B) READABLE TEXT CONTENT (for documents, notes, letters):
+          - Include the FULL text that is written on/in the item
+          - Examples: diary entries (20-40 sentences), letters (10-20 sentences), notes (5-15 sentences)
+          - The text must contain ALL clues needed for the puzzle, but NOT the solution directly
+      
+      - Information must NEVER:
+        - Tell the player what to do
+        - Explain how to solve the puzzle
+        - State "this is a clue for X"
+      
+      - Information must ALWAYS:
+        - Be complete enough that a careful reader can extract the necessary clue
+        - Match the object type (visual for clocks/paintings, textual for letters/notebooks)
+
+  ENUMs:
+    GAME_OBJECT_TYPE:
+      - PICKABLE
+      - INSPECTABLE
+      - CONTAINER
+      - MOVALBE_COVER
+
+    POSITION:
+      - WT1, WT2, WT3   // wall top
+      - W1,  W2,  W3    // wall middle
+      - WB1, WB2, WB3   // wall bottom
+      - F1, F2, F3      // floor
+      Description of position enum:
+        - Floor positions (F1-F3):
+          - Small objects like backpack, rag, bucket, carboard box
+          - Big objects like antique desk, fridge, book shelf, chest
+          - When a big object is placed on the floor, WB and W with the same index can not be placed
+        - Wall Top Positions (WT1-WT3)
+          - Small objects like clock, calendar, ventilation opening etc.
+        - Wall Center Positions (W1-W3)
+          - When current wall has Exit W2 can not have game element
+          - Small and big objects like painting, wall safe, book shelf, TV, etc.
+        - Wall Bottom Positions (WB1-WB3)
+          - When current wall has Exit W2 can not have game element
+          - Small objects like ventilation opening
+        - Indexing means the horizontal position of the wall/floor: 1 = left side, 2 = center, 3 = right side. 
