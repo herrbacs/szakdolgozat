@@ -1,0 +1,79 @@
+REFERENCE (do not output, do not modify)
+The following Graphviz DOT graph is a conceptual dependency graph.
+It describes logical dependency of understanding/usability (NOT movement, NOT visibility).
+Use it only as a reference to keep the puzzle structure consistent.
+
+```dot
+digraph EscapeRoomLogic {
+    node [shape=box];
+
+    // Start / End
+    GameStart [shape=oval, fillcolor=lightgreen, style=filled, label="Game Start"];
+    GameEnd   [shape=oval, fillcolor=lightgreen, style=filled, label="Game End"];
+
+    // Puzzle nodes
+    Puzzle1 [label="Puzzle 1\n(Easy)", fillcolor=lightblue, style=filled];
+    Puzzle2 [label="Puzzle 2\n(Medium)", fillcolor=lightblue, style=filled];
+    Puzzle3 [label="Puzzle 3\n(Hard)", fillcolor=lightblue, style=filled];
+    ExitPuzzle [label="Exit Puzzle\n(Hard, Final)", fillcolor=gold, style=filled];
+
+    // Puzzle 1 Info
+    P1_Info_A [label="P1 Partial Info A\nDifficulty: Easy"];
+    P1_Info_B [label="P1 Partial Info B\nDifficulty: Easy"];
+    P1_Final  [label="P1 Final Info\nDifficulty: Easy", fillcolor=lightgray, style=filled];
+
+    // Puzzle 2 Info
+    P2_Info_A [label="P2 Partial Info A\nDifficulty: Medium\nVisible from start"];
+    P2_Info_B [label="P2 Partial Info B\nDifficulty: Medium\nVisible from start"];
+    P2_Final  [label="P2 Final Info\nDifficulty: Medium", fillcolor=lightgray, style=filled];
+
+    // Puzzle 3 Info
+    P3_Info_A [label="P3 Partial Info A\nDifficulty: Hard\nVisible early"];
+    P3_Info_B [label="P3 Partial Info B\nDifficulty: Hard\nVisible early"];
+    P3_Info_C [label="P3 Partial Info C\nDifficulty: Hard\nVisible early"];
+    P3_Final  [label="P3 Final Info\nDifficulty: Hard", fillcolor=lightgray, style=filled];
+
+    // Exit puzzle Info
+    Exit_Info_A [label="Exit Partial Info A\nDifficulty: Hard\nVisible from start"];
+    Exit_Info_B [label="Exit Partial Info B\nDifficulty: Hard\nVisible from start"];
+    Exit_Final  [label="Exit Final Info\nDifficulty: Hard\nUnlock Rule", fillcolor=lightgray, style=filled];
+
+    // Visibility edges (soft gating)
+    GameStart -> P1_Info_A;
+    GameStart -> P1_Info_B;
+    GameStart -> P2_Info_A;
+    GameStart -> P2_Info_B;
+    GameStart -> P3_Info_A;
+    GameStart -> P3_Info_B;
+    GameStart -> P3_Info_C;
+    GameStart -> Exit_Info_A;
+    GameStart -> Exit_Info_B;
+
+    // Puzzle 1 logic
+    P1_Info_A -> P1_Final;
+    P1_Info_B -> P1_Final;
+    P1_Final -> Puzzle1;
+
+    // Puzzle 2 logic
+    Puzzle1 -> P2_Final [label="Reveals meaning"];
+    P2_Info_A -> P2_Final;
+    P2_Info_B -> P2_Final;
+    P2_Final -> Puzzle2;
+
+    // Puzzle 3 logic
+    Puzzle2 -> P3_Final [label="Reveals meaning"];
+    P3_Info_A -> P3_Final;
+    P3_Info_B -> P3_Final;
+    P3_Info_C -> P3_Final;
+    P3_Final -> Puzzle3;
+
+    // Exit puzzle logic
+    Puzzle3 -> Exit_Final [label="Reveals final interpretation"];
+    Exit_Info_A -> Exit_Final;
+    Exit_Info_B -> Exit_Final;
+    Exit_Final -> ExitPuzzle;
+
+    // Game end
+    ExitPuzzle -> GameEnd;
+}
+```

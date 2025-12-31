@@ -1,36 +1,25 @@
+REFERENCE EXAMPLE (for inspiration only, do not replicate)
 
-Complex puzzle examples:
-  The maffia boss room
-  Room has an antique desk, a painting, a suit case, 2 book shelfs, a ventilation opening and an exit.
+The following is an illustrative example of a complex escape room puzzle chain.
+It demonstrates:
+- multi-step dependency
+- soft gating
+- layered information
+- increasing difficulty
+- interpretation-based puzzles
 
-  The exit lock type is CODE_ONLY_LETTER
-  Behind a painting there is a wall safe, which lock is KEY type
-  The antique desk has a locked drawer which lock is PASSWORD type
-  Suit case has a lock which type is CODE_ONLY_NUMBER
-  Chest has a KEY type lock
+Do NOT reuse:
+- story theme
+- object names
+- structure literally
 
-  First Puzzle is the Suit case. To get the code, need to search the book shelfs.
-    On the first book shelf a few hidden love letters can be found.
-    Each  is a word puzzle, containing 10-15 sentences, with hidden number references which is part of the password.
-    First the player has to find outh which word or number can be part of the password.
-    The second book shelf contains a small key for the chest.
-    Opening the chest we find another love letter, which is the last part of the puzzle.
-      It is either tells us that any of the previous letters was a mistake (referencing to the number) so this letter is the current version
-        or it is the last part of the password
-    Some letter has to be hard to figure out the passowrd, soma has to be easy.
-  
-  Second Puzzle is the antique desk. To get the code we have to search the opened suitcase
-    There is 4-6 business documents and private letters of the maffia.
-    Also a screw driver can be found within the suitcase.
-    This puzzle is similar to the previous puzzle, so the player has to figure out the final password wich opens the locked desk.
-    Each letter and document contains 10-15 sentences.
-    Using the screwdriver we can open the ventilation opening wich contains the final document, 
-      it is either tells us that any of the previous letters was a mistake (referencing to the number) so this letter is the current version
-      or it is the last part of the password
-  
-  Third Puzzle is the safe behind the painting. To get the code, need to search the opened antique desk.
-    The antique desk contains the key for the safe behind the painting
-  
-  The Forth final puzzle is the exit. To get the code we need to searh the opened safe.
-    Within the safe we can found the maffia bos personal notbook. It contains 25-40 sencentes.
-    It is the final puzzel wich is also a word puzzle. Reading the note we can get the story of the Don, and we can figure out the code, wich is the name of the Don's daughter.
+Example summary:
+
+- A room contains multiple locked objects (containers, covers, exit).
+- Early puzzles reveal documents containing partial textual clues.
+- Some clues appear to invalidate or override previous information.
+- Later puzzles unlock the interpretation rules for earlier clues.
+- Final puzzle requires reading a long narrative text and extracting a meaningful name or concept.
+- Difficulty varies across puzzles (easy → medium → hard → final).
+
+END OF REFERENCE
