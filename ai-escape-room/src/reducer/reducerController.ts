@@ -4,7 +4,7 @@ import { AppSettings } from '../shared/types/frameworkTypes'
 import { ContainerObject, DynamicGameObject, MovableCoverObject, PickableObject, Wall } from '../shared/types/gameObjectTypes'
 import { InspectionData } from '../shared/types/gameBaseTypes'
 
-export function loadLevel(state: AppSettings, { walls, story }: LevelInformation): AppSettings {
+export function loadLevel(state: AppSettings, { walls, story, derivation }: LevelInformation): AppSettings {
   const amountOfWalls = walls.length
   const currentWall = 0
   const leftWall = walls.length - 1
@@ -27,6 +27,7 @@ export function loadLevel(state: AppSettings, { walls, story }: LevelInformation
       ...state.gameInformation,
       walls,
       amountOfWalls,
+      derivation,
       indexes: {
         currentWall,
         leftWall,
@@ -151,8 +152,32 @@ export function openContainer(state: AppSettings, { id }: MovableCoverObject): A
 }
 
 export function setLockModal(state: AppSettings, payload: null | LockModal): AppSettings {
-  state.gameInformation.lockModal = payload
-  return { ...state }
+  if (payload === null) {
+    return { 
+      ...state,
+      gameInformation: {
+        ...state.gameInformation,
+        lockModal: null
+      }
+    }
+  }
+
+  const derivation = state.gameInformation.derivation
+    .find(element => element.targetId === payload?.parentObjectId)
+  
+  if (!derivation) {
+    throw new Error('Failed to find lock parent object id and its hints')
+  }
+
+  payload.hints = derivation.playerHints
+
+  return { 
+    ...state,
+    gameInformation: {
+      ...state.gameInformation,
+      lockModal: payload
+    }
+  }
 }
 
 export function emptyFoundItems(state: AppSettings): AppSettings {

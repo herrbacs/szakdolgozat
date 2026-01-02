@@ -1,7 +1,8 @@
 import { PointData } from "pixi.js"
-import { PositionEnum } from "../enums"
+import { LockTypeEnum, PositionEnum } from "../enums"
 import { DynamicGameObject, InspectableObject, PickableObject, Wall } from "./gameObjectTypes"
 import { Dimension, InspectionData, Lock } from "./gameBaseTypes"
+import { UUID } from "crypto"
 
 export type GameInformation = {
   indexes: {
@@ -11,6 +12,7 @@ export type GameInformation = {
 	}
 	amountOfWalls: number
 	walls: Wall[],
+  derivation: Derivation[]
 	inventory: PickableObject[],
 	showInventory: boolean,
 	selectedItem: null | PickableObject,
@@ -21,9 +23,22 @@ export type GameInformation = {
 	cursorActions: CursorActions,
 }
 
+export type Derivation = {
+  targetId: UUID | string,
+  lockType: LockTypeEnum,
+  expectedActivator: string,
+  dependsOn: (UUID | string)[],
+  playerHints: PlayerHint[]
+}
+
 export type Notepad = {
   content: string,
   visible: boolean,
+}
+
+export type PlayerHint = {
+  hint: string,
+  reveals: string
 }
 
 export type inspectingModal = InspectionData & {}
@@ -41,6 +56,9 @@ export type CursorAction = {
 }
 
 export type LockModal = {
+  hints: PlayerHint[],
+  parentObjectId: UUID | string,
+  title: string,
   lock: Lock,
   openCallback: () => void
 }
@@ -61,6 +79,7 @@ export type ScreenSettings = {
 export type LevelInformation = {
   story: string,
 	walls: Wall[],
+  derivation: Derivation[]
 }
 
 export type Square = {

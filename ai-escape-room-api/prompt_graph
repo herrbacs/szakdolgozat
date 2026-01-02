@@ -1,7 +1,7 @@
-REFERENCE (do not output, do not modify)
+REFERENCE (do not output, do not modify, do not copy)
 The following Graphviz DOT graph is a conceptual dependency graph.
 It describes logical dependency of understanding/usability (NOT movement, NOT visibility).
-Use it only as a reference to keep the puzzle structure consistent.
+Use it only as a reference to understand puzzle structure consistency.
 
 ```dot
 digraph EscapeRoomLogic {

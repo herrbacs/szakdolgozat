@@ -24,6 +24,7 @@ Output:
 
   Exit:
     Properties
+      - id: GUID
       - lock: Lock
       - inspectionData: InspectionData
     Usage guidelines:
@@ -97,10 +98,9 @@ Output:
       - type: "CODE_ONLY_NUMBER" | CODE_ONLY_LETTER | PASSWORD | "KEY",
       - activator: "string"
     Usage guidelines:
-      - When type != KEY, the code or password must be hungarian
-      - When type = CODE_ONLY_NUMBER: The activator is 4-10 characters long string of (0-9)
-      - When type = CODE_ONLY_LETTER: The activator is 4-10 characters long string of (A-Z)
-      - When type = PASSWORD: The activator is 10-20 characters long string of (A-Z, a-z, 0-9, '$', '#', '-', '_')
+      - When type = CODE_ONLY_NUMBER: The activator is string of (0-9)
+      - When type = CODE_ONLY_LETTER: The activator is string of (A-Z)
+      - When type = PASSWORD: The activator is string of (A-Z, 0-9)
       - When type = KEY: The activator is the Id of key item
       - A Lock controls access to an object (container, door, movable cover, etc.).
       - Locks should only be used when they contribute to puzzle progression or narrative.
@@ -120,7 +120,6 @@ Output:
       - appellation: string
       - information: string
     Usage guidelines:
-      - Every text has to be Hungarian
       - The information field serves TWO distinct purposes:
         
         A) VISUAL DESCRIPTION (for objects with observable clues):

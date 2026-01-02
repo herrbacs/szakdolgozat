@@ -42,6 +42,7 @@ export const initialState : AppSettings = {
     },
     amountOfWalls: 0,
     walls: [],
+    derivation: [],
     inventory: [],
     selectedItem: null,
     showInventory: false,

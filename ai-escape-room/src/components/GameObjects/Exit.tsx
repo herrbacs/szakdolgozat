@@ -8,7 +8,7 @@ import { AppSettingsContextType } from '../../shared/types/frameworkTypes'
 import { ExitObject } from '../../shared/types/gameObjectTypes'
 import { CursorActions } from '../../shared/types/appTypes'
 
-const Exit = ({ exit: { lock, inspectionData } }: { exit: ExitObject }) => {
+const Exit = ({ exit: { id, lock, inspectionData } }: { exit: ExitObject }) => {
   const { type, activator, open } = lock
   const {
      appSettings: { screenSettings: { dimension: { width, height }, perspective },
@@ -23,6 +23,8 @@ const Exit = ({ exit: { lock, inspectionData } }: { exit: ExitObject }) => {
       setAppSettings({
         action: SetAppSettingsActionEnum.SET_LOCK_MODAL,
         payload: {
+          parentObjectId: id,
+          title: inspectionData.appellation,
           lock,
           openCallback: () => setAppSettings({ action: SetAppSettingsActionEnum.EXIT })
         }

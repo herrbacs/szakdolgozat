@@ -51,6 +51,8 @@ const Container = ({ container }: ContainerComponentType) => {
       setAppSettings({
         action: SetAppSettingsActionEnum.SET_LOCK_MODAL,
         payload: {
+          parentObjectId: container.id,
+          title: container.inspectionData.appellation,
           lock: container.lock,
           openCallback: () => setAppSettings({ action: SetAppSettingsActionEnum.CONTAINER_OPEN, payload: container })
         }

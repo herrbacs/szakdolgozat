@@ -1,0 +1,85 @@
+{
+  "solvable": true,
+  "issues": [],
+  "derivation": [
+    {
+      "target": "LOCK",
+      "targetId": "c1-0001-aaaa-3333-333333333333",
+      "lockType": "KEY",
+      "expectedActivator": "key-0001-aaaa-2222-222222222222",
+      "dependsOn": [
+        "mc-0001-aaaa-1111-111111111111",
+        "key-0001-aaaa-2222-222222222222"
+      ],
+      "steps": [
+        "Pry Loose Floorboard => take Small Brass Key",
+        "Use Small Brass Key on Small Wooden Chest lock => chest opens"
+      ],
+      "playerHints": [
+        {
+          "hint": "Pry Loose Floorboard.",
+          "reveals": "Small Brass Key"
+        },
+        {
+          "hint": "Use the Small Brass Key on the chest hasp.",
+          "reveals": "Small Brass Key"
+        }
+      ]
+    },
+    {
+      "target": "LOCK",
+      "targetId": "c2-77777777-7777-7777-777777777777",
+      "lockType": "CODE_ONLY_LETTER",
+      "expectedActivator": "TAP",
+      "dependsOn": [
+        "note-p1-0001-4444-444444444444",
+        "map-p2-ccccdddd-cccc-dddd-cccccccccccc"
+      ],
+      "steps": [
+        "Open Small Wooden Chest => read 'Measurements logged: 5-2-1'",
+        "Map digits 5,2,1 using Number-to-Letter Chart (1→P,2→A,3→L,4→E,5→T,6→R,7→S,8→H) => TAP",
+        "Enter TAP into Oak Desk letter lock => drawer opens and reveals 738"
+      ],
+      "playerHints": [
+        {
+          "hint": "Map 5-2-1 with the Number-to-Letter Chart.",
+          "reveals": "TAP"
+        },
+        {
+          "hint": "Enter the three-letter result into the desk letter lock.",
+          "reveals": "TAP"
+        }
+      ]
+    },
+    {
+      "target": "EXIT_LOCK",
+      "targetId": "exit-0001-ffff-ffff-ffffffffffff",
+      "lockType": "CODE_ONLY_NUMBER",
+      "expectedActivator": "738521",
+      "dependsOn": [
+        "note-p2-88888888-8888-8888-888888888888",
+        "note-p1-0001-4444-444444444444",
+        "tag-desk-99999999-9999-9999-999999999999",
+        "tag-chest-66666666-6666-6666-666666666666",
+        "exit-plaque-aaaa1111-aaaa-1111-aaaaaaaaaaaa"
+      ],
+      "steps": [
+        "Open Oak Desk drawer => read stamped plate '738' (A)",
+        "Read chest note => numbers 5-2-1 => concatenate as 521 (B)",
+        "Read labels A on desk and B on chest and read 'Sequence: A → B' => order A then B",
+        "Concatenate 738 then 521 => 738521",
+        "Enter 738521 into numeric keypad => door unlocks"
+      ],
+      "playerHints": [
+        {
+          "hint": "Combine desk number (A) with chest numbers (B) following 'Sequence: A → B'.",
+          "reveals": "738521"
+        },
+        {
+          "hint": "Enter the combined numeric sequence into the keypad.",
+          "reveals": "738521"
+        }
+      ]
+    }
+  ]
+}

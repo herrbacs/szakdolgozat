@@ -71,7 +71,6 @@ const ItemsFoundModal = () => {
             </button>}
             {!isLastElement && <button
               onClick={() => setCurrentItemIndex(currentItemIndex + 1)}
-              disabled={isLastElement}
               style={{
                 padding: '.5rem 2rem',
                 fontSize: '1.1rem',

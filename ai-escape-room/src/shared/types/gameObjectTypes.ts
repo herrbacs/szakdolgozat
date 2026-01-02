@@ -3,7 +3,7 @@ import { GameObjectTypeEnum, PositionEnum } from '../enums';
 import { InspectionData, Sprite, SpriteSet, Lock } from './gameBaseTypes';
 
 type HasId = {
-  id: UUID,
+  id: UUID | string,
 }
 
 type HasPosition = {
@@ -34,7 +34,7 @@ export type Wall = HasId & {
   movableCovers: MovableCoverObject[],
 }
 
-export type ExitObject = IsInspectable & {
+export type ExitObject = IsInspectable & HasId & {
   lock: Lock,
   sprite: SpriteSet,
 }
