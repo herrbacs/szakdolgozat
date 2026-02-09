@@ -27,6 +27,7 @@ Output:
       - id: GUID
       - lock: Lock
       - inspectionData: InspectionData
+      - spriteResolution: SPRITE_RESOLUTION
     Usage guidelines:
       - Only one wall MUST HAVE Exit object
       - If a wall owns exit object, the same wall can not place object to WB2 and W2
@@ -36,6 +37,7 @@ Output:
       - position: POSITION
       - reusable: true | false
       - inspectionData: InspectionData
+      - spriteResolution: SPRITE_RESOLUTION
     Usage guidelines:
       - Pickables must have a gameplay purpose.
       - Use for keys, clues, tools or story-related items.
@@ -46,6 +48,7 @@ Output:
       - id: GUID
       - position: POSITION
       - inspectionData: InspectionData
+      - spriteResolution: SPRITE_RESOLUTION
     Usage guidelines:
       - Inspectables are stationary clue objects.
       - They provide story lore, hints or puzzle parts.
@@ -58,6 +61,7 @@ Output:
       - lock: null | LOCK
       - content: array<DynamicGameObject>
       - inspectionData: InspectionData
+      - spriteResolution: SPRITE_RESOLUTION
     Usage guidelines:
       - A Container is an object that can store one or multiple DynamicGameObjects.
       - The content may consist of both Pickable and Inspectable objects.
@@ -79,6 +83,7 @@ Output:
       - id: GUID
       - position: POSITION
       - inspectionData: InspectionData
+      - spriteResolution: SPRITE_RESOLUTION
       - content: DynamicGameObject
     Usage guidelines:
       - MovableCover represents an object that hides another interactive object beneath or behind it.
@@ -142,6 +147,16 @@ Output:
         - Match the object type (visual for clocks/paintings, textual for letters/notebooks)
 
   ENUMs:
+    SPRITE_RESOLUTION:
+      - 1024x1024 // square object
+      - 1536x1024 // wide object
+      - 1024x1536 // tall object
+    Usage guidelines:
+      Use resolution to match orientation:
+        - square object → 1024x1024
+        - wide object → 1536x1024
+        - tall object → 1024x1536
+
     GAME_OBJECT_TYPE:
       - PICKABLE
       - INSPECTABLE

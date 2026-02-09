@@ -2,6 +2,7 @@ import json
 from fastapi import FastAPI, HTTPException
 from openai import OpenAI
 from typing import Any, Dict, List, Tuple
+import base64
 
 app = FastAPI()
 
@@ -15,6 +16,9 @@ MAX_REPAIR_ROUNDS = 4
 
 @app.get("/generate")
 def generate():
+    level = generate_level_json()
+
+def generate_level_json():
     current_level = generate_level()
 
     for round_idx in range(0, MAX_REPAIR_ROUNDS):
@@ -24,7 +28,7 @@ def generate():
             level_json = json.loads(current_level)
             level_json["derivation"] = validation["derivation"]
             saveResponseJson(json.dumps(level_json), "final_level.json")
-            return {"response": json.loads(json.dumps(level_json)), "validation": validation}
+            return level_json
 
         print(f"Validation failed (round {round_idx}): {validation['issues']}")
 
@@ -195,7 +199,6 @@ def saveResponseJson(json_text: str, save_file_name: str) -> str:
     return cleaned
 
 
-
 def load_prompt(prompt_files):
     base_path = r"C:\UNIVERSITY\Szakdolgozat\ai-escape-room-api"
     prompts = []
@@ -205,3 +208,23 @@ def load_prompt(prompt_files):
             prompts.append(f.read())
 
     return "\n\n".join(prompts)
+
+
+def generateSprite():
+    result = client.images.generate(
+        model="gpt-image-1-mini",
+        prompt="""
+A hastily scrawled note reads: \"Drop the point — remember the whole.\"
+Cartoon style
+Vector Art
+""",
+        size="1024x1024",
+        background="transparent",
+        quality="low",
+    )
+
+    image_base64 = result.data[0].b64_json
+    image_bytes = base64.b64decode(image_base64)
+
+    with open("sprite.png", "wb") as f:
+        f.write(image_bytes)
