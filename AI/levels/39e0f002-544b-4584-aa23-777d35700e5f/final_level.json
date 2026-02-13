@@ -1,0 +1,258 @@
+{
+  "story": "You wake in a single spare room of an old scholar's cottage. The door is sealed by an electronic lock. Around the room are a few worn items: a calendar, an old ledger, a small safe, a chest, and faded nature prints. Hidden in the objects are a numeric sequence and a word fragment that must be combined to produce the door's six-character code and escape.",
+  "walls": [
+    {
+      "id": "e2a1c9f1-6c3f-4d2b-a8c9-1b2d3f4e5a6b",
+      "color": "#A1C3D1",
+      "exit": null,
+      "pickables": [],
+      "inspectables": [
+        {
+          "id": "b3f2d6a7-8f34-4e5b-9c12-4d8a9c0f1e2b",
+          "position": "WT1",
+          "inspectionData": {
+            "appellation": "Tattered Wall Calendar",
+            "information": "January page. The 3rd, 1st, and 7th are circled in red, arranged left-to-right."
+          },
+          "spriteResolution": "1024x1536"
+        },
+        {
+          "id": "c4e7a9d2-1b55-4f2c-8a9d-2c6e7f8b9a0c",
+          "position": "W1",
+          "inspectionData": {
+            "appellation": "Old Sales Ledger",
+            "information": "A slim ledger open to a column titled 'Totals'. The three entries in the column read vertically as: 3, 1, 7; each separated by a dotted line."
+          },
+          "spriteResolution": "1536x1024"
+        }
+      ],
+      "containers": [
+        {
+          "id": "d5f8b2c3-3e66-4a7f-9b20-7d9e0a1b2c3d",
+          "position": "F1",
+          "lock": {
+            "type": "CODE_ONLY_NUMBER",
+            "activator": "317"
+          },
+          "content": [
+            {
+              "type": "PICKABLE",
+              "object": {
+                "id": "f6a9c3d4-4f77-4b8a-a1b3-9c0d2e3f4a5b",
+                "position": "F1",
+                "reusable": false,
+                "inspectionData": {
+                  "appellation": "Brass Cabinet Key",
+                  "information": "A tarnished brass key with a triangular head. The head has the small letters 'BK' stamped on one side."
+                },
+                "spriteResolution": "1024x1024"
+              }
+            }
+          ],
+          "inspectionData": {
+            "appellation": "Small Metal Safe",
+            "information": "A compact metal safe with a three-digit rotary keypad and a narrow pull drawer. The dial shows three digits in a row."
+          },
+          "spriteResolution": "1024x1024"
+        }
+      ],
+      "movableCovers": []
+    },
+    {
+      "id": "f7b2d0e4-5a88-4c9f-b2d1-0e3f4a5b6c7d",
+      "color": "#D8BFD8",
+      "exit": null,
+      "pickables": [],
+      "inspectables": [
+        {
+          "id": "a8c1d2e3-6b99-4d0f-8c2b-1e3f4a5b6c7e",
+          "position": "WT2",
+          "inspectionData": {
+            "appellation": "Faded Nature Poster",
+            "information": "A weathered poster illustrating three birds left-to-right: 'Owl', 'Wren', 'Lark'. The print is labeled with the species names under each figure."
+          },
+          "spriteResolution": "1536x1024"
+        },
+        {
+          "id": "b9d3f4a6-7c11-4e2b-9f3a-2b4c5d6e7f8a",
+          "position": "W2",
+          "inspectionData": {
+            "appellation": "Brass Cage Tag",
+            "information": "A small brass tag nailed to the wall lists three common birds used in the cottage's notes: 'Owl', 'Wren', 'Lark'. The letters O, W, L appear slightly darker at the start of each name."
+          },
+          "spriteResolution": "1024x1024"
+        }
+      ],
+      "containers": [
+        {
+          "id": "c1d2e3f4-8b22-4a6b-a3c4-5d6e7f8a9b0c",
+          "position": "F2",
+          "lock": {
+            "type": "KEY",
+            "activator": "f6a9c3d4-4f77-4b8a-a1b3-9c0d2e3f4a5b"
+          },
+          "content": [
+            {
+              "type": "INSPECTABLE",
+              "object": {
+                "id": "d2e3f4a5-9c33-4b7d-b4e5-6f7a8b9c0d1e",
+                "position": "F2",
+                "inspectionData": {
+                  "appellation": "Folded Scrap of Paper",
+                  "information": "Three short lines penned in ink list: 'Owl', 'Wren', 'Lark', each on its own line and aligned center. A faint underline runs beneath the first letters of each word."
+                },
+                "spriteResolution": "1024x1024"
+              }
+            }
+          ],
+          "inspectionData": {
+            "appellation": "Wooden Travel Chest",
+            "information": "A low wooden chest bound with iron straps. The lid has a small keyhole and sings hollow when tapped."
+          },
+          "spriteResolution": "1536x1024"
+        }
+      ],
+      "movableCovers": []
+    },
+    {
+      "id": "a3d4e5f6-9b44-4c8d-a5e6-7f8a9b0c1d2e",
+      "color": "#F2E1C4",
+      "exit": null,
+      "pickables": [],
+      "inspectables": [
+        {
+          "id": "e3f4a5b6-0c55-4d9e-b6f7-8a9b0c1d2e3f",
+          "position": "WT3",
+          "inspectionData": {
+            "appellation": "Stencil of Alternation",
+            "information": "A faint stencil on the plaster shows a repeating pattern of six characters: N L N L N L (each separated by a small dot)."
+          },
+          "spriteResolution": "1536x1024"
+        }
+      ],
+      "containers": [],
+      "movableCovers": []
+    },
+    {
+      "id": "b4e5f6a7-1c66-4d9f-b7e8-9a0b1c2d3e4f",
+      "color": "#D1E7D6",
+      "exit": {
+        "id": "f8a9b0c1-2d77-4eaf-b8c9-0d1e2f3a4b5c",
+        "lock": {
+          "type": "PASSWORD",
+          "activator": "3O1W7L"
+        },
+        "inspectionData": {
+          "appellation": "Reinforced Exit Door",
+          "information": "A heavy wooden door fitted with an electronic keypad and a small slot for entering a six-character code. Six small square impressions sit above the keypad."
+        },
+        "spriteResolution": "1024x1536"
+      },
+      "pickables": [],
+      "inspectables": [
+        {
+          "id": "f9b0c1d2-3e88-4f0a-c9d1-2e3f4a5b6c7d",
+          "position": "WT2",
+          "inspectionData": {
+            "appellation": "Brass Door Plaque",
+            "information": "A narrow brass plaque with six empty square impressions labeled 1 through 6 in tiny numerals beneath them."
+          },
+          "spriteResolution": "1536x1024"
+        },
+        {
+          "id": "0a1b2c3d-4e99-4f1b-d0e2-3f4a5b6c7d8e",
+          "position": "WB1",
+          "inspectionData": {
+            "appellation": "Worn Instruction Plate",
+            "information": "An engraved plate with two short lines: 'Pattern preserved. Order fixed.' The engraving is shallow and faint at the edges."
+          },
+          "spriteResolution": "1024x1024"
+        }
+      ],
+      "containers": [],
+      "movableCovers": []
+    }
+  ],
+  "derivation": [
+    {
+      "target": "LOCK",
+      "targetId": "d5f8b2c3-3e66-4a7f-9b20-7d9e0a1b2c3d",
+      "lockType": "CODE_ONLY_NUMBER",
+      "expectedActivator": "317",
+      "dependsOn": [
+        "b3f2d6a7-8f34-4e5b-9c12-4d8a9c0f1e2b",
+        "c4e7a9d2-1b55-4f2c-8a9d-2c6e7f8b9a0c"
+      ],
+      "steps": [
+        "Read Tattered Wall Calendar circled digits left-to-right => 3,1,7",
+        "Read Old Sales Ledger 'Totals' column top-to-bottom => 3,1,7"
+      ],
+      "playerHints": [
+        {
+          "hint": "Examine the Tattered Wall Calendar.",
+          "reveals": "317"
+        },
+        {
+          "hint": "Inspect the Old Sales Ledger 'Totals' column.",
+          "reveals": "317"
+        }
+      ]
+    },
+    {
+      "target": "LOCK",
+      "targetId": "c1d2e3f4-8b22-4a6b-a3c4-5d6e7f8a9b0c",
+      "lockType": "KEY",
+      "expectedActivator": "f6a9c3d4-4f77-4b8a-a1b3-9c0d2e3f4a5b",
+      "dependsOn": [
+        "d5f8b2c3-3e66-4a7f-9b20-7d9e0a1b2c3d",
+        "f6a9c3d4-4f77-4b8a-a1b3-9c0d2e3f4a5b",
+        "a8c1d2e3-6b99-4d0f-8c2b-1e3f4a5b6c7e",
+        "b9d3f4a6-7c11-4e2b-9f3a-2b4c5d6e7f8a"
+      ],
+      "steps": [
+        "Open Small Metal Safe with code 317 => retrieve Brass Cabinet Key",
+        "Use Brass Cabinet Key on Wooden Travel Chest lock => chest opens"
+      ],
+      "playerHints": [
+        {
+          "hint": "Take the key from the Small Metal Safe.",
+          "reveals": "Brass Cabinet Key"
+        },
+        {
+          "hint": "Use the Brass Cabinet Key on the Wooden Travel Chest.",
+          "reveals": "opens chest"
+        }
+      ]
+    },
+    {
+      "target": "EXIT_LOCK",
+      "targetId": "f8a9b0c1-2d77-4eaf-b8c9-0d1e2f3a4b5c",
+      "lockType": "PASSWORD",
+      "expectedActivator": "3O1W7L",
+      "dependsOn": [
+        "b3f2d6a7-8f34-4e5b-9c12-4d8a9c0f1e2b",
+        "c4e7a9d2-1b55-4f2c-8a9d-2c6e7f8b9a0c",
+        "d2e3f4a5-9c33-4b7d-b4e5-6f7a8b9c0d1e",
+        "e3f4a5b6-0c55-4d9e-b6f7-8a9b0c1d2e3f",
+        "f9b0c1d2-3e88-4f0a-c9d1-2e3f4a5b6c7d",
+        "0a1b2c3d-4e99-4f1b-d0e2-3f4a5b6c7d8e"
+      ],
+      "steps": [
+        "Take numbers in order from calendar/ledger => 3,1,7",
+        "Take letters in order from Folded Scrap (Owl, Wren, Lark) => O,W,L",
+        "Apply stencil pattern N L N L N L => interleave to 3 O 1 W 7 L => '3O1W7L'"
+      ],
+      "playerHints": [
+        {
+          "hint": "Preserve the order: read the numbers sequence and the letters sequence.",
+          "reveals": "3,1,7 and O,W,L"
+        },
+        {
+          "hint": "Use the alternating stencil pattern N L N L N L to combine them.",
+          "reveals": "3O1W7L"
+        }
+      ]
+    }
+  ],
+  "id": "39e0f002-544b-4584-aa23-777d35700e5f"
+}
