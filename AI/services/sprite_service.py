@@ -71,21 +71,9 @@ def edit_sprite(
 
 
 def generate_door_pair(*, out_dir: Path) -> tuple[Path, Path]:
-    door_style = """
-Cartoon style, vector art look, clean outlines, flat shading.
-Same camera angle, centered, full door visible, neutral background.
-Door details: wooden door with vertical panels, brass handle on the right,
-small peephole centered above handle, white door frame.
-"""
-
-    closed_prompt = f"""
-{door_style}
-A closed door, fully shut.
-"""
-
     closed_path = generate_sprite(
         out_dir=out_dir,
-        prompt=closed_prompt,
+        prompt="A door, cartoon style, vector art",
         file_name="door_closed.png",
         resolution="1024x1536",
     )
@@ -95,7 +83,6 @@ Using the provided image as the reference, keep the exact same door:
 same materials, colors, panel pattern, handle, frame, lighting, and camera angle.
 Change only one thing: the door is now open about 45 degrees inward.
 Show a slight dark interior gap behind the door. Do not change background.
-{door_style}
 """
 
     open_path = edit_sprite(
