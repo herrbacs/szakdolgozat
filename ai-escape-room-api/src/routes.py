@@ -1,17 +1,19 @@
-from flask import Blueprint, Response, send_from_directory
-import json
-from .services.level_generator import generate_level_information
+from fastapi import APIRouter
+from fastapi.responses import JSONResponse, FileResponse
+from pathlib import Path
+from src.controllers.level_controller import generate_new_level_handler
 
-routes = Blueprint("routes", __name__)
+router = APIRouter()
 
-@routes.route("/")
+@router.get("/")
 def hello_world():
-    return { "message": "Hello World" }
+    return {"message": "Hello World"}
 
-@routes.route('/images/<filename>')
-def serve_image(filename):
-    return send_from_directory('./sprites', filename)
+# @router.get("/images/{filename}")
+# def serve_image(filename: str):
+#     file_path = SPRITES_DIR / filename
+#     return FileResponse(file_path)
 
-@routes.route("/generate-level")
+@router.get("/generate-level")
 def generate_level():
-    return Response(json.dumps(generate_level_information()), content_type="application/json")
+    return JSONResponse(content=generate_new_level_handler())

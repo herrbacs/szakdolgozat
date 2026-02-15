@@ -1,13 +1,17 @@
-from flask import Flask
-from flask_cors import CORS
 import os
-from src.routes import routes
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
-app = Flask(__name__)
-app.register_blueprint(routes)
+from src.routes import router
+
+app = FastAPI()
+app.include_router(router)
 
 if os.environ.get("ENVIRONMENT") == "development":
-    CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
-
-if __name__ == "__main__":
-    app.run(debug=True)
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["http://localhost:3000"],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )

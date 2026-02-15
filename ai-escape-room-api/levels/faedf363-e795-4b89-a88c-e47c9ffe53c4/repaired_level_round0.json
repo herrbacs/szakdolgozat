@@ -1,0 +1,169 @@
+{
+  "story": "You awaken in a small curator's study locked from the outside. The room smells of old paper and oil; a single heavy door with a mechanical panel bars the only exit. Scattered notes, a locked drawer and a locked wall cabinet hold fragments of information. Solve the sequence: decipher the drawer, use its contents to open the cabinet, then combine the results with the markings on the door to reach the final code and escape.",
+  "walls": [
+    {
+      "id": "a3b2c1d0-0000-4000-8000-111111111111",
+      "color": "#DDEEFF",
+      "exit": null,
+      "pickables": [],
+      "inspectables": [
+        {
+          "id": "66666666-6666-4666-8666-ffffffffffff",
+          "position": "WT1",
+          "inspectionData": {
+            "appellation": "Torn shelf note",
+            "information": "A small torn note pinned to the shelf reads: \"Read the wall from left to right.\""
+          },
+          "spriteResolution": "1024x1024"
+        }
+      ],
+      "containers": [
+        {
+          "id": "88888888-8888-4888-8888-aaaaaaaaaaaa",
+          "position": "W3",
+          "lock": {
+            "type": "KEY",
+            "activator": "55555555-5555-4555-8555-eeeeeeeeeeee"
+          },
+          "content": [
+            {
+              "type": "INSPECTABLE",
+              "object": {
+                "id": "99999999-9999-4999-8999-bbbbbbbbbbbb",
+                "position": "W3",
+                "inspectionData": {
+                  "appellation": "Narrow metal strip",
+                  "information": "A narrow metal strip stamped with the digits: 18."
+                },
+                "spriteResolution": "1536x1024"
+              }
+            }
+          ],
+          "inspectionData": {
+            "appellation": "Locked wall cabinet",
+            "information": "A compact wall cabinet mounted at chest height. Its door has a small keyhole and a single shallow shelf."
+          },
+          "spriteResolution": "1536x1024"
+        }
+      ],
+      "movableCovers": []
+    },
+    {
+      "id": "b4c3d2e1-0000-4000-8000-222222222222",
+      "color": "#E8E8E8",
+      "exit": {
+        "id": "eeeeeeee-eeee-4eee-8eee-333333333333",
+        "lock": {
+          "type": "CODE_ONLY_NUMBER",
+          "activator": "3918"
+        },
+        "inspectionData": {
+          "appellation": "Heavy study door — painted diagram",
+          "information": "A faded maintenance diagram painted on the door shows two schematic boxes labeled A and B with a thin arrow from A to B. Near the first box a small icon suggests a low/floor position; near the second box an icon suggests a higher/shelf position."
+        },
+        "spriteResolution": "1536x1024"
+      },
+      "pickables": [],
+      "inspectables": [],
+      "containers": [],
+      "movableCovers": []
+    },
+    {
+      "id": "c5d4e3f2-0000-4000-8000-333333333333",
+      "color": "#FFF7E0",
+      "exit": null,
+      "pickables": [],
+      "inspectables": [
+        {
+          "id": "11111111-1111-4111-8111-aaaaaaaaaaaa",
+          "position": "WT1",
+          "inspectionData": {
+            "appellation": "Small brass plaque",
+            "information": "A small brass plaque is etched with a single digit: 3."
+          },
+          "spriteResolution": "1024x1024"
+        },
+        {
+          "id": "22222222-2222-4222-8222-bbbbbbbbbbbb",
+          "position": "WT3",
+          "inspectionData": {
+            "appellation": "Rug corner embroidery",
+            "information": "The corner of the floor rug has a faded embroidered digit: 9."
+          },
+          "spriteResolution": "1024x1024"
+        }
+      ],
+      "containers": [
+        {
+          "id": "33333333-3333-4333-8333-cccccccccccc",
+          "position": "F2",
+          "lock": {
+            "type": "CODE_ONLY_NUMBER",
+            "activator": "39"
+          },
+          "content": [
+            {
+              "type": "PICKABLE",
+              "object": {
+                "id": "55555555-5555-4555-8555-eeeeeeeeeeee",
+                "position": "F2",
+                "reusable": false,
+                "inspectionData": {
+                  "appellation": "Brass key",
+                  "information": "A short brass key with a rectangular bow; the side is stamped with tiny letters 'BR'."
+                },
+                "spriteResolution": "1024x1024"
+              }
+            },
+            {
+              "type": "INSPECTABLE",
+              "object": {
+                "id": "44444444-4444-4444-8444-dddddddddddd",
+                "position": "F2",
+                "inspectionData": {
+                  "appellation": "Steel identification tag",
+                  "information": "A thin steel tag punched with the digits: 18."
+                },
+                "spriteResolution": "1024x1024"
+              }
+            }
+          ],
+          "inspectionData": {
+            "appellation": "Low wooden drawer",
+            "information": "A low wooden drawer set into a small cabinet. The drawer is secured by a two-digit rotary combination lock with separate tens and ones dials."
+          },
+          "spriteResolution": "1536x1024"
+        }
+      ],
+      "movableCovers": []
+    },
+    {
+      "id": "d6e5f4a3-0000-4000-8000-444444444444",
+      "color": "#F7EFEF",
+      "exit": null,
+      "pickables": [],
+      "inspectables": [
+        {
+          "id": "77777777-7777-4777-8777-999999999999",
+          "position": "WT2",
+          "inspectionData": {
+            "appellation": "Sepia photograph",
+            "information": "A sepia photograph of a mantel clock: the hour hand points squarely at 8 while the minute hand rests at 12."
+          },
+          "spriteResolution": "1024x1536"
+        },
+        {
+          "id": "aaaaaaaa-aaaa-4aaa-8aaa-111111111111",
+          "position": "WT1",
+          "inspectionData": {
+            "appellation": "Brittle sticky note",
+            "information": "A brittle sticky note shows two tiny icons side by side: one of a floor-level square and the other of a shelf-level square, separated by a small arrow."
+          },
+          "spriteResolution": "1024x1024"
+        }
+      ],
+      "containers": [],
+      "movableCovers": []
+    }
+  ]
+}
