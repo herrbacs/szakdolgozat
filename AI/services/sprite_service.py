@@ -70,10 +70,10 @@ def edit_sprite(
     return out_path
 
 
-def generate_door_pair(*, out_dir: Path) -> tuple[Path, Path]:
+def generate_door_pair(out_dir: Path, prompt) -> tuple[Path, Path]:
     closed_path = generate_sprite(
         out_dir=out_dir,
-        prompt="A door, cartoon style, vector art",
+        prompt=prompt,
         file_name="door_closed.png",
         resolution="1024x1536",
     )
@@ -134,4 +134,20 @@ def generate_ui_sprites(*, out_dir: Path):
         resolution="1024x1024",
     )
 
-    generate_door_pair(out_dir=out_dir)
+def generate_game_object_sprites(found_objects: list[dict], out_dir: Path):
+    for obj in found_objects:
+        appellation = obj["object"]["inspectionData"]["appellation"]
+        information = obj["object"]["inspectionData"]["information"]
+        prompt=f'Cartoon Style, {appellation}, {information}'
+        id = obj["object"]["id"]
+        resolution = obj["object"]["spriteResolution"]
+
+        if obj["is_exit"]:
+            generate_door_pair(out_dir, prompt)
+        else:
+            generate_sprite(
+                out_dir=(out_dir / "sprites"),
+                prompt=prompt,
+                file_name=f'{id}.png',
+                resolution=resolution,
+            )

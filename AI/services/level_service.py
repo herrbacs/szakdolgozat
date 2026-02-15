@@ -163,3 +163,25 @@ def generate_level_json() -> Dict[str, Any]:
             "last_validation": last_validation,
         },
     )
+
+def find_objects_with_id_and_inspection(obj: Any, results=None, path=()):
+    if results is None:
+        results = []
+
+    if isinstance(obj, dict):
+        if "id" in obj and "inspectionData" in obj:
+            is_exit = "exit" in path
+            results.append({
+                "object": obj,
+                "path": path,
+                "is_exit": is_exit,
+            })
+
+        for key, value in obj.items():
+            find_objects_with_id_and_inspection(value, results, path + (key,))
+
+    elif isinstance(obj, list):
+        for idx, item in enumerate(obj):
+            find_objects_with_id_and_inspection(item, results, path + (idx,))
+
+    return results
