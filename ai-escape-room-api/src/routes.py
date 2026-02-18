@@ -1,7 +1,6 @@
 from fastapi import APIRouter
 from fastapi.responses import JSONResponse, FileResponse
-from pathlib import Path
-from src.controllers.level_controller import generate_new_level_handler
+from src.controllers.level_controller import generate_new_level_handler, get_level_object_sprite_handler
 
 router = APIRouter()
 
@@ -9,11 +8,10 @@ router = APIRouter()
 def hello_world():
     return {"message": "Hello World"}
 
-# @router.get("/images/{filename}")
-# def serve_image(filename: str):
-#     file_path = SPRITES_DIR / filename
-#     return FileResponse(file_path)
+@router.get("/sprites/{level_id}/{object_id}")
+def serve_image(level_id: str, object_id: str):
+    return FileResponse(get_level_object_sprite_handler(level_id, object_id))
 
-@router.get("/generate-level")
+@router.get("/generate-new-level")
 def generate_level():
     return JSONResponse(content=generate_new_level_handler())
