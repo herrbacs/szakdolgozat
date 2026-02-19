@@ -3,6 +3,7 @@ from pathlib import Path
 from src.services.level_service import generate_new_level, find_objects_with_id_and_inspection
 from src.services.sprite_service import generate_ui_sprites, generate_level_object_sprites
 from config import LEVELS_DIR
+import json
 
 def generate_new_level_handler():
     level, level_id = generate_new_level()
@@ -16,10 +17,24 @@ def get_level_object_sprite_handler(level_id: str, object_id: str) -> Path:
     level_dir = LEVELS_DIR / level_id
 
     if not level_dir.exists() or not level_dir.is_dir():
-        raise HTTPException(status_code=404, detail="Folder not found")
+        raise HTTPException(status_code=404, detail="Level not found")
 
     sprite_path = level_dir / "sprites" / f"{object_id}.png"
     if not sprite_path.exists() or not sprite_path.is_file():
-        raise HTTPException(status_code=404, detail="File not found")
+        raise HTTPException(status_code=404, detail="Sprite not found")
 
     return sprite_path
+
+def load_level_handler(level_id: str):
+    level_dir = LEVELS_DIR / level_id
+    
+    if not level_dir.exists() or not level_dir.is_dir():
+        raise HTTPException(status_code=404, detail="Level not found")
+
+    file_path = level_dir / "final_level.json"
+    
+    if not file_path.exists():
+        raise HTTPException(status_code=404, detail="Level file not found")
+
+    with open(file_path, "r", encoding="utf-8") as f:
+        return json.load(f)
