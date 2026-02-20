@@ -9,6 +9,7 @@ import Pickable from "../Pickable"
 import Inspectable from "../Inspectable/Inspectable"
 import Container from "../Container/Container"
 import { CursorActions } from "../../../shared/types/appTypes"
+import { useSprite } from "../../../useHooks/useSprites"
 
 type MovableCoverComponentType = {
 	movableCover: MovableCoverObject,
@@ -16,15 +17,14 @@ type MovableCoverComponentType = {
 
 const MovableCover = ({ movableCover }: MovableCoverComponentType) => {
 	const {
-    appSettings: { screenSettings, gameInformation: { cursorActions }
-  }, setAppSettings }: AppSettingsContextType = useContext(AppSettingsContext)
+    appSettings: {
+      screenSettings,
+      gameInformation: { cursorActions, levelId }
+    },
+  setAppSettings
+}: AppSettingsContextType = useContext(AppSettingsContext)
 	const [spriteCoordinate, setSpriteCoordinate] = useState<PointData>({} as PointData)
-
-  const drawCircle = useCallback((g: GraphicsContext) => {
-    g.circle(0, 0, 25)
-      .fill({ color: 0xc2c2c2 })
-      .stroke({ width: 3, color: 0xFFFFFF })
-  }, [])
+  const { sprite, spriteLoaded } = useSprite(levelId, movableCover.id)
 
   const openCursorActions = (event: FederatedPointerEvent) => {
     const position: CursorActions = {
@@ -51,28 +51,18 @@ const MovableCover = ({ movableCover }: MovableCoverComponentType) => {
 		}))
   }, [])
 
-  if (!movableCover.used) {
+  if (!movableCover.used && spriteLoaded) {
     return (
-      <pixiGraphics
-        x={spriteCoordinate.x}
-        y={spriteCoordinate.y}
-        draw={(g: Graphics) => drawCircle(g.context)}
+      <pixiSprite
+        anchor={0.5}
+        texture={sprite}
         eventMode="static"
         cursor="pointer"
         onRightClick={openCursorActions}
-      >
-        <pixiText
-          text={'🧩'}
-          anchor={0.5}
-          x={0}
-          y={0}
-          style={{
-            fill: 0xffec99,
-            fontSize: 25,
-            fontWeight: 'bold'
-          }}
-        />
-      </pixiGraphics>
+        scale={.07}
+        x={spriteCoordinate.x}
+        y={spriteCoordinate.y}
+      />
     )
   }
 

@@ -6,23 +6,24 @@ import { setPositionOn } from "../../shared/positionCalculator"
 import { AppSettingsContext } from "../../context/AppSettingsContext"
 import { FederatedPointerEvent, Graphics, GraphicsContext, PointData, Texture } from "pixi.js"
 import { CursorActions } from "../../shared/types/appTypes"
+import { useSprite } from "../../useHooks/useSprites"
 
 type PickableComponentTypeProperties = {
   pickable: PickableObject,
 }
 
 const Pickable = ({ pickable }: PickableComponentTypeProperties) => {
-  const { appSettings: { screenSettings, gameInformation: { cursorActions } }, setAppSettings }: AppSettingsContextType = useContext(AppSettingsContext)
+  const { appSettings: {
+    screenSettings,
+    gameInformation: { cursorActions, levelId }
+  },
+  setAppSettings
+  }: AppSettingsContextType = useContext(AppSettingsContext)
   const [spriteCoordinate, setSpriteCoordinate] = useState<PointData>({ x: 0, y: 0 })
+  const { sprite, spriteLoaded } = useSprite(levelId, pickable.id)
 
   const handlePickUp = useCallback(() => {
     setAppSettings({ action: SetAppSettingsActionEnum.PICK_UP_ITEM, payload: pickable });
-  }, [])
-
-  const drawCircle = useCallback((g: GraphicsContext) => {
-    g.circle(0, 0, 25)
-      .fill({ color: 0xc2c2c2 })
-      .stroke({ width: 3, color: 0xFFFFFF })
   }, [])
 
   const openCursorActions = (event: FederatedPointerEvent) => {
@@ -49,27 +50,17 @@ const Pickable = ({ pickable }: PickableComponentTypeProperties) => {
     )
   }, [])
 
-  return !pickable.taken
-    ? <pixiGraphics
-      x={spriteCoordinate.x}
-      y={spriteCoordinate.y}
-      draw={(g: Graphics) => drawCircle(g.context)}
+  return (spriteLoaded && !pickable.taken)
+    ? <pixiSprite
+      anchor={0.5}
+      texture={sprite}
       eventMode="static"
       cursor="pointer"
       onRightClick={openCursorActions}
-    >
-      <pixiText
-        text={'⭐'}
-        anchor={0.5}
-        x={0}
-        y={0}
-        style={{
-          fill: 0xffec99,
-          fontSize: 25,
-          fontWeight: 'bold'
-        }}
-      />
-    </pixiGraphics>
+      scale={.07}
+      x={spriteCoordinate.x}
+      y={spriteCoordinate.y}
+    />
     : null
 }
 

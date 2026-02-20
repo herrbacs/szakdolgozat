@@ -6,6 +6,7 @@ import { FederatedPointerEvent, Graphics, GraphicsContext, PointData } from "pix
 import { setPositionOn } from "../../../shared/positionCalculator"
 import { SetAppSettingsActionEnum } from "../../../shared/enums"
 import { CursorActions } from "../../../shared/types/appTypes"
+import { useSprite } from "../../../useHooks/useSprites"
 
 type InspectableComponentType = {
 	inspectable: InspectableObject,
@@ -13,16 +14,11 @@ type InspectableComponentType = {
 
 const Inspectable = ({ inspectable }: InspectableComponentType) => {
   const { 
-    appSettings: { screenSettings, gameInformation: { cursorActions } },
+    appSettings: { screenSettings, gameInformation: { cursorActions, levelId }},
     setAppSettings
   }: AppSettingsContextType = useContext(AppSettingsContext)
 	const [spriteCoordinate, setSpriteCoordinate] = useState<PointData>({} as PointData)
-
-  const drawCircle = useCallback((g: GraphicsContext) => {
-    g.circle(0, 0, 25)
-      .fill({ color: 0xc2c2c2 })
-      .stroke({ width: 3, color: 0xFFFFFF })
-  }, [])
+  const { sprite, spriteLoaded } = useSprite(levelId, inspectable.id)
 
   const openCursorActions = (event: FederatedPointerEvent) => {
     const position: CursorActions = {
@@ -47,27 +43,17 @@ const Inspectable = ({ inspectable }: InspectableComponentType) => {
 		}))
   }, [])
 
-  return (
-    <pixiGraphics
-      x={spriteCoordinate.x}
-      y={spriteCoordinate.y}
-      draw={(g: Graphics) => drawCircle(g.context)}
+  return spriteLoaded && (
+    <pixiSprite
+      anchor={0.5}
+      texture={sprite}
       eventMode="static"
       cursor="pointer"
       onRightClick={openCursorActions}
-    >
-      <pixiText
-        text={'🔍'}
-        anchor={0.5}
-        x={0}
-        y={0}
-        style={{
-          fill: 0xffec99,
-          fontSize: 25,
-          fontWeight: 'bold'
-        }}
-      />
-    </pixiGraphics>
+      scale={.07}
+      x={spriteCoordinate.x}
+      y={spriteCoordinate.y}
+    />
   )
 }
 

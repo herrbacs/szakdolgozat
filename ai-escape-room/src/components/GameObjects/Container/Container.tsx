@@ -6,6 +6,7 @@ import { FederatedPointerEvent, Graphics, GraphicsContext, PointData } from "pix
 import { setPositionOn } from "../../../shared/positionCalculator"
 import { LockTypeEnum, SetAppSettingsActionEnum } from "../../../shared/enums"
 import { CursorActions } from "../../../shared/types/appTypes"
+import { useSprite } from "../../../useHooks/useSprites"
 
 type ContainerComponentType = {
   container: ContainerObject,
@@ -15,16 +16,11 @@ const Container = ({ container }: ContainerComponentType) => {
   const { 
     appSettings: { 
       screenSettings,
-      gameInformation: { cursorActions, selectedItem } },
+      gameInformation: { cursorActions, selectedItem, levelId } },
     setAppSettings
   }: AppSettingsContextType = useContext(AppSettingsContext)
   const [spriteCoordinate, setSpriteCoordinate] = useState<PointData>({} as PointData)
-
-  const drawCircle = useCallback((g: GraphicsContext) => {
-    g.circle(0, 0, 25)
-      .fill({ color: 0xc2c2c2 })
-      .stroke({ width: 3, color: 0xFFFFFF })
-  }, [])
+  const { sprite, spriteLoaded } = useSprite(levelId, container.id)
 
   const tryKeyOpen = () => {
     if (selectedItem?.id !== container.lock!.activator) {
@@ -94,27 +90,17 @@ const Container = ({ container }: ContainerComponentType) => {
       }))
   }, [])
 
-  return (
-    <pixiGraphics
-      x={spriteCoordinate.x}
-      y={spriteCoordinate.y}
-      draw={(g: Graphics) => drawCircle(g.context)}
+  return spriteLoaded && (
+    <pixiSprite
+      anchor={0.5}
+      texture={sprite}
       eventMode="static"
       cursor="pointer"
       onRightClick={openCursorActions}
-    >
-      <pixiText
-        text={container.lock === null ? '📦' : container.lock.open ? '🔓' : '🔒'}
-        anchor={0.5}
-        x={0}
-        y={0}
-        style={{
-          fill: 0xffec99,
-          fontSize: 25,
-          fontWeight: 'bold'
-        }}
-      />
-    </pixiGraphics>
+      scale={.07}
+      x={spriteCoordinate.x}
+      y={spriteCoordinate.y}
+    />
   )
 }
 
