@@ -1,10 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { AppSettingsContext } from '../../../context/AppSettingsContext'
 import { AppSettingsContextType } from '../../../shared/types/frameworkTypes'
 import { Assets, Texture } from 'pixi.js';
 import { SetAppSettingsActionEnum } from '../../../shared/enums';
 import { emptyCursorActions } from '../../../reducer/controllerHelpers';
 import { spriteUrl } from '../../../shared/urls';
+import { useSprite } from '../../../useHooks/useSprites';
 
 const ToggleInventory = () => {
   const { 
@@ -15,8 +16,7 @@ const ToggleInventory = () => {
     setAppSettings
   }: AppSettingsContextType = useContext(AppSettingsContext)
   const padding = 25
-  const [texture, setTexture] = useState<Texture>(Texture.EMPTY)
-  const [scale, setScale] = useState<number>(1)
+  const { sprite, spriteLoaded } = useSprite(levelId, 'inventory')
 
   const handleClick = () => {
     setAppSettings({
@@ -26,32 +26,25 @@ const ToggleInventory = () => {
     setAppSettings({ action: SetAppSettingsActionEnum.TOGGLE_INVENTORY })
   }
 
-  const loadTextures = async () => {
-    const texture = await Assets.load({
-      src: spriteUrl(levelId, 'inventory'),
-      parser: 'loadTextures',
-    })
+  const scale = useMemo(
+    () => spriteLoaded ? (75 / sprite.width) : 1, 
+    [sprite, spriteLoaded]
+  )
 
-    if (!texture) {
-      throw new Error('Failed To Load Inventory Sptrite')
-    }
+  const xPosition = useMemo(
+    () => spriteLoaded 
+      ? width - padding - sprite.width * scale
+      : 1
+    , [sprite, spriteLoaded, scale])
 
-    setTexture(texture)
-    setScale(75 / texture.width)
-  }
-
-  useEffect(() => {
-    loadTextures()
-  }, [])
-
-  return (
+  return spriteLoaded && (
     <pixiSprite
-      texture={texture}
+      texture={sprite}
       eventMode="static"
       cursor="pointer"
       onPointerTap={handleClick}
       scale={scale}
-      x={width - padding - texture.width * scale}
+      x={xPosition}
       y={padding}
     />
   )

@@ -1,13 +1,13 @@
 
 import React from 'react'
-import { Assets, FederatedPointerEvent, FederatedWheelEvent, PointData, Texture } from 'pixi.js'
+import { FederatedPointerEvent, FederatedWheelEvent, PointData, Texture } from 'pixi.js'
 import { useCallback, useContext, useEffect, useState } from 'react'
 import { AppSettingsContext } from '../../context/AppSettingsContext'
 import { LockTypeEnum, SetAppSettingsActionEnum } from '../../shared/enums'
 import { AppSettingsContextType } from '../../shared/types/frameworkTypes'
 import { ExitObject } from '../../shared/types/gameObjectTypes'
 import { CursorActions } from '../../shared/types/appTypes'
-import { spriteUrl } from '../../shared/urls'
+import { useSprite } from '../../useHooks/useSprites'
 
 const Exit = ({ exit: { id, lock, inspectionData } } : { exit: ExitObject }) => {
   const { type, activator, open } = lock
@@ -19,8 +19,10 @@ const Exit = ({ exit: { id, lock, inspectionData } } : { exit: ExitObject }) => 
     setAppSettings
   }: AppSettingsContextType = useContext(AppSettingsContext)
 
-  const [openTexture, setOpenTexture] = useState<Texture>(Texture.EMPTY)
-  const [closedTexture, setClosedTexture] = useState<Texture>(Texture.EMPTY)
+  const openendSprite = useSprite(levelId, 'door_open')
+  const closedSprite = useSprite(levelId, 'door_closed')
+
+
 
   const tryOpen = useCallback(() => {
     if (type !== LockTypeEnum.KEY) {
@@ -46,43 +48,26 @@ const Exit = ({ exit: { id, lock, inspectionData } } : { exit: ExitObject }) => 
     setAppSettings({ action: SetAppSettingsActionEnum.EXIT })
   }, [selectedItem])
 
-  const loadTextures = async () => {
-    const open = await Assets.load({
-      src: spriteUrl(levelId, 'door_open'),
-      parser: 'loadTextures',
-    })
-    const closed = await Assets.load({
-      src: spriteUrl(levelId, 'door_closed'),
-      parser: 'loadTextures',
-    })
-
-    setOpenTexture(open)
-    setClosedTexture(closed)
-
-    if (!open || !closed) {
-      throw new Error('Failed To Load Exit Sprites')
-    }
-  }
-
   const setPivotToBottomLeft = (): PointData =>
-    open
+    (openendSprite.spriteLoaded && closedSprite.spriteLoaded)
+    && open
       ? {
-        x: openTexture.width / 2,
-        y: openTexture.height,
+        x: openendSprite.sprite.width / 2,
+        y: openendSprite.sprite.height,
       }
       : {
-        x: closedTexture.width / 2,
-        y: closedTexture.height,
+        x: closedSprite.sprite.width / 2,
+        y: closedSprite.sprite.height,
       }
 
   const calculateScale = () => {
     const targetHeight = (height - 2 * perspective) * 0.75
-    const texture = open ? openTexture : closedTexture
-    if (texture === Texture.EMPTY) {
+    const sprite = open ? openendSprite.sprite : closedSprite.sprite
+    if (sprite === Texture.EMPTY) {
       return { x: 1, y: 1 }
     }
 
-    const scaleY = targetHeight / texture.height
+    const scaleY = targetHeight / sprite.height
     const scaleX = scaleY
 
     return { x: scaleX, y: scaleY }
@@ -107,16 +92,12 @@ const Exit = ({ exit: { id, lock, inspectionData } } : { exit: ExitObject }) => 
     })
   }
 
-  useEffect(() => {
-    loadTextures()
-  }, [])
-
-  return closedTexture && openTexture
+  return closedSprite.spriteLoaded && openendSprite.spriteLoaded
     ? <pixiSprite
       eventMode="static"
       cursor="pointer"
       onRightClick={openCursorActions}
-      texture={open ? openTexture : closedTexture}
+      texture={open ? openendSprite.sprite : closedSprite.sprite}
       pivot={setPivotToBottomLeft()}
       x={width / 2}
       y={height - perspective}
