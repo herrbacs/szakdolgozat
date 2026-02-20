@@ -6,7 +6,12 @@ import { PickableObject } from '../../shared/types/gameObjectTypes'
 import { CursorActions } from '../../shared/types/appTypes'
 
 const Inventory = () => {
-	const { appSettings: { screenSettings: { dimension: { width } }, gameInformation: { inventory, showInventory, selectedItem, cursorActions } }, setAppSettings} : AppSettingsContextType = useContext(AppSettingsContext)
+	const { 
+    appSettings: {
+     screenSettings: { dimension: { width } }, gameInformation: { inventory, showInventory, selectedItem, cursorActions },
+    },
+    setAppSettings
+  } : AppSettingsContextType = useContext(AppSettingsContext)
 
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 

@@ -67,3 +67,9 @@ export enum SpritePerspectiveEnum {
   RIGHT = 'RIGHT',
   LEFT = 'LEFT',
 }
+
+export enum SpriteResolutionEnum {
+  SQUARE = '1024x1024',
+  WIDE = '1536x1024',
+  TALL = '1024x1536',
+}

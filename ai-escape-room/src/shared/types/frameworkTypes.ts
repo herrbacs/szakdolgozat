@@ -1,6 +1,8 @@
 import { SetAppSettingsActionEnum } from "../enums"
 import { GameInformation, ScreenSettings } from "./appTypes"
 
+export type UUID = `${string}-${string}-${string}-${string}-${string}`;
+
 export type AppSettingsContextType = {
   appSettings: AppSettings,
   setAppSettings: any,

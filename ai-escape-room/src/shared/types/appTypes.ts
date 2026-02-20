@@ -2,7 +2,7 @@ import { PointData } from "pixi.js"
 import { LockTypeEnum, PositionEnum } from "../enums"
 import { DynamicGameObject, InspectableObject, PickableObject, Wall } from "./gameObjectTypes"
 import { Dimension, InspectionData, Lock } from "./gameBaseTypes"
-import { UUID } from "crypto"
+import { UUID } from "./frameworkTypes"
 
 export type GameInformation = {
   indexes: {
@@ -21,6 +21,7 @@ export type GameInformation = {
 	lockModal: null | LockModal,
 	itemsFoundModal: null | DynamicGameObject[],
 	cursorActions: CursorActions,
+  levelId: UUID,
 }
 
 export type Derivation = {
@@ -79,7 +80,8 @@ export type ScreenSettings = {
 export type LevelInformation = {
   story: string,
 	walls: Wall[],
-  derivation: Derivation[]
+  derivation: Derivation[],
+  id: UUID,
 }
 
 export type Square = {

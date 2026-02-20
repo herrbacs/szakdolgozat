@@ -4,9 +4,16 @@ import { AppSettingsContextType } from '../../../shared/types/frameworkTypes'
 import { Assets, Texture } from 'pixi.js'
 import { SetAppSettingsActionEnum } from '../../../shared/enums'
 import { emptyCursorActions } from '../../../reducer/controllerHelpers'
+import { loadLevelUrl, spriteUrl } from '../../../shared/urls'
 
 const Notepad = () => {
-  const { appSettings: { screenSettings: { dimension: { width } } }, setAppSettings }: AppSettingsContextType = useContext(AppSettingsContext)
+  const { 
+    appSettings: { 
+      screenSettings: { dimension: { width } },
+      gameInformation: { levelId }
+    },
+    setAppSettings
+  }: AppSettingsContextType = useContext(AppSettingsContext)
   const padding = 25
   const [texture, setTexture] = useState<Texture>(Texture.EMPTY)
   const [scale, setScale] = useState<number>(1)
@@ -20,7 +27,11 @@ const Notepad = () => {
   }
 
   const loadTextures = async () => {
-    const texture = await Assets.load('http://localhost:5000/images/notepad.jpg')
+    const texture = await Assets.load({
+      src: spriteUrl(levelId, 'notepad'),
+      parser: 'loadTextures',
+    })
+
     if (!texture) {
       throw new Error('Failed To Load Notepad Sptrite')
     }

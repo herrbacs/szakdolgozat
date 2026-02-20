@@ -10,7 +10,8 @@ def hello_world():
 
 @router.get("/sprites/{level_id}/{object_id}")
 def serve_image(level_id: str, object_id: str):
-    return FileResponse(get_level_object_sprite_handler(level_id, object_id))
+    path = get_level_object_sprite_handler(level_id, object_id)
+    return FileResponse(path)
 
 @router.get("/generate-new-level")
 def generate_level():

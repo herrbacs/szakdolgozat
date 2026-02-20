@@ -7,13 +7,17 @@ import { LockTypeEnum, SetAppSettingsActionEnum } from '../../shared/enums'
 import { AppSettingsContextType } from '../../shared/types/frameworkTypes'
 import { ExitObject } from '../../shared/types/gameObjectTypes'
 import { CursorActions } from '../../shared/types/appTypes'
+import { spriteUrl } from '../../shared/urls'
 
-const Exit = ({ exit: { id, lock, inspectionData } }: { exit: ExitObject }) => {
+const Exit = ({ exit: { id, lock, inspectionData } } : { exit: ExitObject }) => {
   const { type, activator, open } = lock
   const {
-     appSettings: { screenSettings: { dimension: { width, height }, perspective },
-     gameInformation: { cursorActions, selectedItem } 
-  }, setAppSettings}: AppSettingsContextType = useContext(AppSettingsContext)
+     appSettings: { 
+      screenSettings: { dimension: { width, height }, perspective },
+      gameInformation: { cursorActions, selectedItem, levelId } 
+    }, 
+    setAppSettings
+  }: AppSettingsContextType = useContext(AppSettingsContext)
 
   const [openTexture, setOpenTexture] = useState<Texture>(Texture.EMPTY)
   const [closedTexture, setClosedTexture] = useState<Texture>(Texture.EMPTY)
@@ -31,7 +35,7 @@ const Exit = ({ exit: { id, lock, inspectionData } }: { exit: ExitObject }) => {
       })
     }
 
-    if (selectedItem?.id !== activator) {
+    if (selectedItem === null ||selectedItem.id !== activator) {
       return
     }
 
@@ -43,8 +47,14 @@ const Exit = ({ exit: { id, lock, inspectionData } }: { exit: ExitObject }) => {
   }, [selectedItem])
 
   const loadTextures = async () => {
-    const open = await Assets.load('http://localhost:5000/images/exit_open.png')
-    const closed = await Assets.load('http://localhost:5000/images/exit_closed.png')
+    const open = await Assets.load({
+      src: spriteUrl(levelId, 'door_open'),
+      parser: 'loadTextures',
+    })
+    const closed = await Assets.load({
+      src: spriteUrl(levelId, 'door_closed'),
+      parser: 'loadTextures',
+    })
 
     setOpenTexture(open)
     setClosedTexture(closed)

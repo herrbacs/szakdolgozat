@@ -3,10 +3,16 @@ import { AppSettingsContext } from '../../../context/AppSettingsContext'
 import { AppSettingsContextType } from '../../../shared/types/frameworkTypes'
 import { SetAppSettingsActionEnum } from '../../../shared/enums';
 import { emptyCursorActions } from '../../../reducer/controllerHelpers';
+import { spriteUrl } from '../../../shared/urls';
 
 const CursorActions = () => {
   const {
-    appSettings: { gameInformation: { cursorActions: { position, examine, search, take, use } } },
+    appSettings: {
+      gameInformation: {
+        cursorActions: { position, examine, search, take, use },
+        levelId
+      },
+    },
     setAppSettings
   }: AppSettingsContextType = useContext(AppSettingsContext)
 
@@ -17,16 +23,16 @@ const CursorActions = () => {
   const getActions = () => {
     const arr = []
     if (examine) {
-      arr.push({ textureSrc: 'http://localhost:5000/images/cursor_examine.jpg', action: examineItem })
+      arr.push({ textureSrc: spriteUrl(levelId, 'cursor_examine'), action: examineItem })
     }
     if (search) {
-      arr.push({ textureSrc: 'http://localhost:5000/images/cursor_search.jpg', action: search.action })
+      arr.push({ textureSrc: spriteUrl(levelId, 'cursor_search'), action: search.action })
     }
     if (take) {
-      arr.push({ textureSrc: 'http://localhost:5000/images/cursor_take.jpg', action: take.action })
+      arr.push({ textureSrc: spriteUrl(levelId, 'cursor_take'), action: take.action })
     }
     if (use) {
-      arr.push({ textureSrc: 'http://localhost:5000/images/cursor_use.jpg', action: use.action })
+      arr.push({ textureSrc: spriteUrl(levelId, 'cursor_use'), action: use.action })
     }
 
     return arr

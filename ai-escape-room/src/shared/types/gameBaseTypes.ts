@@ -1,5 +1,5 @@
-import { UUID } from "crypto"
 import { LockTypeEnum, SizeEnum } from "../enums"
+import { UUID } from "./frameworkTypes"
 
 export type Lock = {
   type: LockTypeEnum

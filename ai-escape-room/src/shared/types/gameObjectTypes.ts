@@ -1,5 +1,5 @@
-import { UUID } from 'crypto';
-import { GameObjectTypeEnum, PositionEnum } from '../enums';
+import { GameObjectTypeEnum, PositionEnum, SpriteResolutionEnum } from '../enums';
+import { UUID } from './frameworkTypes';
 import { InspectionData, Sprite, SpriteSet, Lock } from './gameBaseTypes';
 
 type HasId = {
@@ -13,7 +13,7 @@ type HasPosition = {
 type BaseGameObject = HasId & HasPosition & {}
 
 type HasSprite = {
-  // sprite: Sprite,
+  spriteResolution: SpriteResolutionEnum,
 }
 
 type IsInspectable = {
@@ -34,7 +34,7 @@ export type Wall = HasId & {
   movableCovers: MovableCoverObject[],
 }
 
-export type ExitObject = IsInspectable & HasId & {
+export type ExitObject = IsInspectable & HasSprite & HasId & {
   lock: Lock,
   sprite: SpriteSet,
 }

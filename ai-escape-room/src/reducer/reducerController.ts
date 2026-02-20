@@ -4,27 +4,17 @@ import { AppSettings } from '../shared/types/frameworkTypes'
 import { ContainerObject, DynamicGameObject, MovableCoverObject, PickableObject, Wall } from '../shared/types/gameObjectTypes'
 import { InspectionData } from '../shared/types/gameBaseTypes'
 
-export function loadLevel(state: AppSettings, { walls, story, derivation }: LevelInformation): AppSettings {
+export function loadLevel(state: AppSettings, { walls, story, derivation, id }: LevelInformation): AppSettings {
   const amountOfWalls = walls.length
   const currentWall = 0
   const leftWall = walls.length - 1
   const rightWall = walls.length - 1
 
-  const additionalInformation: PickableObject = {
-    id: 'STORY000-0000-STRY-0000-0000000STORY',
-    position: PositionEnum.F1,
-    reusable: true,
-    taken: true,
-    inspectionData: {
-      appellation: 'Story',
-      information: story,
-    },
-  }
-
   return {
     ...state,
     gameInformation: {
       ...state.gameInformation,
+      levelId: id,
       walls,
       amountOfWalls,
       derivation,
@@ -33,7 +23,7 @@ export function loadLevel(state: AppSettings, { walls, story, derivation }: Leve
         leftWall,
         rightWall
       },
-      inventory: [additionalInformation]
+      inventory: []
     }
   }
 }

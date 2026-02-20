@@ -16,6 +16,7 @@ import {
 import { SetAppSettingsActionEnum } from './shared/enums'
 import GameScene from './components/GameScene'
 import UserInterface from './components/Application/UserInterface/UserInterface'
+import { loadLevelUrl } from './shared/urls'
 
 extend({
   Container,
@@ -45,8 +46,9 @@ export default function App() {
     };
   }
 
-  const generateLevel = async () => {
-    const response = await fetch('http://localhost:5000/generate-level', {
+  const loadLevel = async () => {
+    const levelUrl = loadLevelUrl('faedf363-e795-4b89-a88c-e47c9ffe53c4')
+    const response = await fetch(levelUrl, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -63,7 +65,7 @@ export default function App() {
   }
 
   useEffect(() => {
-    generateLevel()
+    loadLevel()
   }, [])
   useEffect(disableRightClickDefaultBehavior, []);
 
