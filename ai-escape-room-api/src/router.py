@@ -7,6 +7,7 @@ from src.routes.level_routes import router as level_router
 router = APIRouter()
 
 router.include_router(auth_router)
+router.include_router(level_router)
 
 @router.get("/")
 def hello_world():

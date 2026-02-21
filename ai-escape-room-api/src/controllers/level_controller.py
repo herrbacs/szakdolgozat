@@ -1,15 +1,33 @@
 from fastapi import HTTPException
 from pathlib import Path
-from src.services.level_service import generate_new_level, find_objects_with_id_and_inspection
+from src.services.level_service import generate_new_level, find_objects_with_id_and_inspection, create_level_with_id, update_level_successful_sprite_generation
 from src.services.sprite_service import generate_ui_sprites, generate_level_object_sprites
 from config import LEVELS_DIR
 import json
+from sqlalchemy.orm import Session
 
-def generate_new_level_handler():
-    level, level_id = generate_new_level()
+def generate_new_level_handler(db: Session):
+    success, level, level_id = generate_new_level()
+    level_db_entity = create_level_with_id(
+        db=db,
+        level_id=level_id,
+        success=success,
+        story=level["story"] if success else "",
+        title=level["title"] if success else "",
+    )
+
+    if (success is False):  
+        raise HTTPException(
+            status_code=500,
+            detail={
+                "message": "Nem sikerült végigjátszható pályát generálni.",
+            },
+        )
+
     level_objects = find_objects_with_id_and_inspection(level)
     generate_ui_sprites(level_id)
     generate_level_object_sprites(level_objects, level_id)
+    update_level_successful_sprite_generation(db, level_db_entity)
 
     return level
 

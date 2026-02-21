@@ -5,6 +5,7 @@ from alembic import context
 
 from db.models.base import Base
 from db.models import user
+from db.models import level
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

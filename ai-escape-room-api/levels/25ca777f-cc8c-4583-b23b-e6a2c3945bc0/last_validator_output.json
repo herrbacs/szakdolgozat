@@ -1,0 +1,77 @@
+{
+  "solvable": true,
+  "issues": [],
+  "derivation": [
+    {
+      "target": "LOCK",
+      "targetId": "7b2c1e8f-6a45-4d9b-bf11-2d6e8a3c4f55",
+      "lockType": "CODE_ONLY_NUMBER",
+      "expectedActivator": "314",
+      "dependsOn": [
+        "e6f5d4c3-b2a1-4c3d-9e8f-1a2b3c4d5e33"
+      ],
+      "steps": [
+        "Read Stamped Plate: '3 - 1 - 4' => digits 3,1,4",
+        "Enter 314 into Wall Safe dial => opens"
+      ],
+      "playerHints": [
+        {
+          "hint": "Read the Stamped Plate.",
+          "reveals": "314"
+        },
+        {
+          "hint": "Dial the Wall Safe with the three stamped digits.",
+          "reveals": "314"
+        }
+      ]
+    },
+    {
+      "target": "LOCK",
+      "targetId": "d4e5f6a7-8b9c-40d1-9e2f-3a4b5c6d7e99",
+      "lockType": "KEY",
+      "expectedActivator": "c9f0b7d3-2a11-4c8f-9a22-6e4d9b1f7a77",
+      "dependsOn": [
+        "c9f0b7d3-2a11-4c8f-9a22-6e4d9b1f7a77"
+      ],
+      "steps": [
+        "Acquire Brass Key from Wall Safe => obtain key item",
+        "Use Brass Key on Locked Desk => drawer opens and reveal Folded Paper"
+      ],
+      "playerHints": [
+        {
+          "hint": "Take the Brass Key from the Wall Safe.",
+          "reveals": "Brass Key"
+        },
+        {
+          "hint": "Use the Brass Key to open the Locked Desk.",
+          "reveals": "Brass Key"
+        }
+      ]
+    },
+    {
+      "target": "EXIT_LOCK",
+      "targetId": "5f6e7d8c-9b0a-4c3d-8e1f-2a3b4c5d6e55",
+      "lockType": "PASSWORD",
+      "expectedActivator": "OAK314",
+      "dependsOn": [
+        "a5b6c7d8-9e0f-41a2-b3c4-5d6e7f8a9010",
+        "7b2c1e8f-6a45-4d9b-bf11-2d6e8a3c4f55"
+      ],
+      "steps": [
+        "Read Folded Paper: letters left to right O A K => OAK",
+        "Recall safe digits obtained while solving safe => 314",
+        "Concatenate OAK + 314 => OAK314 and enter on hatch keypad"
+      ],
+      "playerHints": [
+        {
+          "hint": "Take letters left to right from the Folded Paper.",
+          "reveals": "OAK"
+        },
+        {
+          "hint": "Combine the letters with the three digits found when solving the safe.",
+          "reveals": "OAK314"
+        }
+      ]
+    }
+  ]
+}

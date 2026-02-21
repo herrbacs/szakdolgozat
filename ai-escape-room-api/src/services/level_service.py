@@ -1,7 +1,7 @@
 from __future__ import annotations
 import json
 import uuid
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional, Tuple
 from fastapi import HTTPException
 from config import GPT_MINI, GPT_5_2, MAX_REPAIR_ROUNDS
 from openai_client import get_openai_client
@@ -10,6 +10,8 @@ from src.utils.json_utils import ensure_valid_json_and_save, strip_code_fences
 from src.utils.path_utils import ensure_and_get_level_dir
 from src.postprocess.normalize_ids import normalize_level_id_structures
 from pathlib import Path
+from sqlalchemy.orm import Session
+from db.models.level import Level
 
 client = get_openai_client()
 
@@ -103,10 +105,9 @@ Level structure principals:
 {load_prompt(["prompt_principals"])}
 """
 
-def generate_new_level() -> Dict[str, Any]:
+def generate_new_level() -> Tuple[bool, Optional[Dict[str, Any]], Optional[str]]:
     level_id = str(uuid.uuid4())
     level_dir = ensure_and_get_level_dir(level_id)
-    last_validation: Dict[str, Any] | None = None
     
     current_level = call_openai(
         out_dir=level_dir,
@@ -119,13 +120,14 @@ def generate_new_level() -> Dict[str, Any]:
             "prompt_level_examples",
         ]),
     )
-    print("Level generated")
+    print("Prototype level generated")
 
     for round_idx in range(0, MAX_REPAIR_ROUNDS):
         validation = validate_level(level_obj=current_level, out_dir=level_dir)
-        last_validation = validation
 
         if validation["solvable"] is True:
+            print("Level validated sucessfully")
+
             level = normalize_level_id_structures(current_level)
             level["derivation"] = validation.get("derivation")
             level["id"] = level_id
@@ -133,9 +135,9 @@ def generate_new_level() -> Dict[str, Any]:
             with open((level_dir / "final_level.json"), "w", encoding="utf-8") as f:
                 json.dump(level, f, ensure_ascii=False, indent=2)
 
-            return level, level_id
+            return True, level, level_id
 
-        print(f"Validation failed (round {round_idx}): {validation['issues']}")
+        print(f"Level validation failed (round {round_idx}): {validation['issues']}")
         current_level = repair_level(
             current_level_obj=current_level,
             validation=validation,
@@ -143,16 +145,7 @@ def generate_new_level() -> Dict[str, Any]:
             out_dir=level_dir,
         )
 
-    raise HTTPException(
-        status_code=500,
-        detail={
-            "message": "Nem sikerült végigjátszható pályát generálni.",
-            "level_id": level_id,
-            "out_dir": str(level_dir),
-            "max_repair_rounds": MAX_REPAIR_ROUNDS,
-            "last_validation": last_validation,
-        },
-    )
+    return False, None, None
 
 def find_objects_with_id_and_inspection(obj: Any, results=None, path=()):
     if results is None:
@@ -175,3 +168,33 @@ def find_objects_with_id_and_inspection(obj: Any, results=None, path=()):
             find_objects_with_id_and_inspection(item, results, path + (idx,))
 
     return results
+
+def create_level_with_id(
+    db: Session,
+    level_id: uuid.UUID,
+    success: bool,
+    story: str = "",
+    title: str = ""
+) -> Level:
+    level = Level(
+        id=level_id,
+        title=title,
+        story=story,
+        sucessfull_level_generation=success,
+        sucessfull_sprite_generation=False
+    )
+
+    db.add(level)
+    db.commit()
+    db.refresh(level)
+
+    return level
+
+def update_level_successful_sprite_generation(
+    db: Session,
+    level: Level
+) -> Level:
+    level.sucessfull_sprite_generation = True
+    db.commit()
+    db.refresh(level)
+    return level
