@@ -1,0 +1,198 @@
+{
+  "story": "You wake in a small study sealed by a heavy metal door. The room feels tended but neglected: a framed painting, a wall calendar, a row of dusty books, and an antique desk dominate the space. Solving a sequence of linked mysteries — a numeric clue in the artwork and calendar, a key hidden behind a safe, an order hidden in a desk, and a faded plaque mapping tree types to letters — will reveal the four-letter sequence that unlocks the door.",
+  "walls": [
+    {
+      "id": "d1b4a8d2-3f7f-4c2f-9c1a-1a2b3c4d5e6f",
+      "color": "#C8D6FF",
+      "exit": null,
+      "pickables": [],
+      "inspectables": [
+        {
+          "id": "bb111111-1111-4111-8111-111111111111",
+          "position": "W1",
+          "inspectionData": {
+            "appellation": "Framed Painting",
+            "information": "A pastoral painting of three sparrows perched on a branch. At the lower right of the frame, tiny etched numerals sit next to each bird: 3, 1, 4."
+          },
+          "spriteResolution": "1536x1024"
+        },
+        {
+          "id": "cc222222-2222-4222-8222-222222222222",
+          "position": "WT1",
+          "inspectionData": {
+            "appellation": "Wall Calendar",
+            "information": "A paper calendar open to March. The date March 14 is circled heavily in red ink; someone has scribbled the words: \"Remember Pi day\" beneath the circle."
+          },
+          "spriteResolution": "1024x1536"
+        }
+      ],
+      "containers": [
+        {
+          "id": "dd333333-3333-4333-8333-333333333333",
+          "position": "W3",
+          "lock": {
+            "type": "CODE_ONLY_NUMBER",
+            "activator": "314"
+          },
+          "content": [
+            {
+              "type": "PICKABLE",
+              "object": {
+                "id": "ee444444-4444-4444-9444-444444444444",
+                "position": "F1",
+                "reusable": true,
+                "inspectionData": {
+                  "appellation": "Brass Key",
+                  "information": "A small brass key with a shallow engraving on the bow: a single capital letter 'D'. The metal is warm to the touch."
+                },
+                "spriteResolution": "1024x1024"
+              }
+            }
+          ],
+          "inspectionData": {
+            "appellation": "Small Wall Safe",
+            "information": "A recessed metal safe with a three-digit keypad. The digits around the buttons are worn from use; a slim seam runs along its door."
+          },
+          "spriteResolution": "1024x1024"
+        }
+      ],
+      "movableCovers": []
+    },
+    {
+      "id": "e2c5b9f3-2a4b-41c3-8d2b-2b3c4d5e6f7a",
+      "color": "#FFF3BF",
+      "exit": null,
+      "pickables": [],
+      "inspectables": [
+        {
+          "id": "ff555555-5555-4555-a555-555555555555",
+          "position": "W1",
+          "inspectionData": {
+            "appellation": "Bookshelf (three titles)",
+            "information": "Three weathered book spines sit in a row from left to right: 'Oak', 'Elm', 'Pine'. Each title is printed in faded gold lettering."
+          },
+          "spriteResolution": "1536x1024"
+        },
+        {
+          "id": "ab666666-6666-4666-b666-666666666666",
+          "position": "WT3",
+          "inspectionData": {
+            "appellation": "Worn Label",
+            "information": "A small adhesive label stuck near the shelf edge reads, in hurried ink: 'Left → Right. Sequence matters.'"
+          },
+          "spriteResolution": "1024x1024"
+        }
+      ],
+      "containers": [
+        {
+          "id": "bc777777-7777-4777-c777-777777777777",
+          "position": "F2",
+          "lock": {
+            "type": "KEY",
+            "activator": "ee444444-4444-4444-9444-444444444444"
+          },
+          "content": [
+            {
+              "type": "INSPECTABLE",
+              "object": {
+                "id": "cd888888-8888-4888-d888-888888888888",
+                "position": "F2",
+                "inspectionData": {
+                  "appellation": "Yellowed Note",
+                  "information": "A folded slip of paper reads in plain handwriting: 'Order: 2 - 1 - 3.' There are no other marks on the page."
+                },
+                "spriteResolution": "1024x1024"
+              }
+            }
+          ],
+          "inspectionData": {
+            "appellation": "Antique Desk (locked)",
+            "information": "An old oak desk with a small keyhole beneath a brass handle. The lock is built into the desktop; the lid resists opening without the correct key."
+          },
+          "spriteResolution": "1536x1024"
+        }
+      ],
+      "movableCovers": []
+    },
+    {
+      "id": "f3d6c0a4-3b5c-42d4-9e3c-3c4d5e6f7a8b",
+      "color": "#E8F6EF",
+      "exit": null,
+      "pickables": [],
+      "inspectables": [
+        {
+          "id": "f3444444-4444-4444-3444-444444443444",
+          "position": "WT2",
+          "inspectionData": {
+            "appellation": "Old Wall Clock",
+            "information": "A round clock with brass hands stopped at 07:22. The glass is smudged but the maker's mark on the face is illegible."
+          },
+          "spriteResolution": "1024x1024"
+        }
+      ],
+      "containers": [],
+      "movableCovers": [
+        {
+          "id": "de999999-9999-4999-e999-999999999999",
+          "position": "F3",
+          "inspectionData": {
+            "appellation": "Loose Floorboard",
+            "information": "A slightly raised floorboard that can be pried up. Dust and faint scratch marks line the underside."
+          },
+          "spriteResolution": "1024x1024",
+          "content": {
+            "type": "INSPECTABLE",
+            "object": {
+              "id": "ef101010-1010-4010-f101-010101010101",
+              "position": "F3",
+              "inspectionData": {
+                "appellation": "Scratched Note Underboard",
+                "information": "Scrape marks form no clear letters; someone once tested a knife here and left a shallow cluster of scratches."
+              },
+              "spriteResolution": "1024x1024"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "a4e7d1b5-4c6d-43e5-8f4d-4d5e6f7a8b9c",
+      "color": "#F8EDEB",
+      "exit": {
+        "id": "f2333333-3333-4333-2333-333333332333",
+        "lock": {
+          "type": "CODE_ONLY_LETTER",
+          "activator": "OGLD"
+        },
+        "inspectionData": {
+          "appellation": "Heavy Metal Exit Door",
+          "information": "A reinforced steel door fitted with a four-button alphabetic keypad. Faint gouge marks ring the handle; the keypad awaits a four-letter entry."
+        },
+        "spriteResolution": "1024x1536"
+      },
+      "pickables": [],
+      "inspectables": [
+        {
+          "id": "f0111111-1111-4111-0111-111111110111",
+          "position": "WT1",
+          "inspectionData": {
+            "appellation": "Faded Plaque (tree letters)",
+            "information": "A rectangular plaque shows three carved tree icons, each with a painted letter beside it: an oak icon beside 'G', an elm icon beside 'O', and a pine icon beside 'L'. The paint is flaking but the letters remain legible."
+          },
+          "spriteResolution": "1536x1024"
+        },
+        {
+          "id": "f1222222-2222-4222-1222-222222220122",
+          "position": "W3",
+          "inspectionData": {
+            "appellation": "Scuffed Metal Inscription",
+            "information": "An etched strip reads: 'Combine symbols and order; one last mark is on the smallest keepsake.' The last three words are faint but readable."
+          },
+          "spriteResolution": "1536x1024"
+        }
+      ],
+      "containers": [],
+      "movableCovers": []
+    }
+  ]
+}

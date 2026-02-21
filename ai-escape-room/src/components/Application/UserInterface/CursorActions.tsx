@@ -52,6 +52,12 @@ const CursorActions = () => {
             src={textureSrc}
             className='cursor-action-img'
             onClick={() => handleAction(action)}
+             style={{
+              width: '4rem',
+              height: '4rem',
+              objectFit: 'contain',
+              display: 'block',
+            }}
           />
         ))
       }

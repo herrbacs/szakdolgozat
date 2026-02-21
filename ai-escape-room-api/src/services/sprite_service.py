@@ -1,5 +1,9 @@
-from pathlib import Path
+from PIL import Image
+import numpy as np
 import base64
+import io
+from pathlib import Path
+from PIL import Image
 from openai_client import get_openai_client
 from src.utils.path_utils import ensure_and_get_sprites_of_level_dir
 
@@ -8,6 +12,26 @@ client = get_openai_client()
 SPRITE_QUALITY = "low"
 SPRITE_BACKGROUND = "transparent"
 SPRITE_MODEL = "gpt-image-1-mini"
+
+def trim_transparent_bytes(image_bytes: bytes) -> bytes:
+    img = Image.open(io.BytesIO(image_bytes)).convert("RGBA")
+    data = np.array(img)
+
+    alpha = data[:, :, 3]
+    mask = alpha > 5
+    coords = np.argwhere(mask)
+
+    if coords.size == 0:
+        return image_bytes
+
+    y0, x0 = coords.min(axis=0)
+    y1, x1 = coords.max(axis=0) + 1
+
+    cropped = img.crop((x0, y0, x1, y1))
+
+    output = io.BytesIO()
+    cropped.save(output, format="PNG")
+    return output.getvalue()
 
 
 def generate_sprite(
@@ -28,8 +52,9 @@ def generate_sprite(
     image_base64 = result.data[0].b64_json
     image_bytes = base64.b64decode(image_base64)
 
+    trimmed_bytes = trim_transparent_bytes(image_bytes)
     file_path = out_dir / file_name
-    file_path.write_bytes(image_bytes)
+    file_path.write_bytes(trimmed_bytes)
 
     return file_path
 

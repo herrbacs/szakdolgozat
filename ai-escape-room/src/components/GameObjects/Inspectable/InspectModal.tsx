@@ -24,7 +24,7 @@ const InspectModal = () => {
     >
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', width: '100%' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <img src={spriteUrl(levelId, inspectingModal.id)} style={{ width: '12rem', height: 'auto' }}/>
+          <img src={spriteUrl(levelId, inspectingModal.id)} style={{ width: '15rem', height: 'auto' }}/>
         </div>
         <div style={{ width: '90%', maxHeight: '90%', overflow: 'auto', display: 'flex', fontSize: '1.3rem', color: '#ffec99', justifyContent: 'center' }}>
           <p style={{ wordBreak: 'break-word', textAlign: 'center' }}>{inspectingModal.information}</p>

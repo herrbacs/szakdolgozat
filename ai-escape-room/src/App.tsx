@@ -47,8 +47,7 @@ export default function App() {
   }
 
   const loadLevel = async () => {
-    // const levelUrl = loadLevelUrl('faedf363-e795-4b89-a88c-e47c9ffe53c4')
-    const levelUrl = loadLevelUrl('8f9b386b-1fe8-462b-bfdb-eb61543c9022')
+    const levelUrl = loadLevelUrl('a727bd4e-6762-4f60-bf3a-6917a00eb92d')
     const response = await fetch(levelUrl, {
       method: 'GET',
       headers: {
