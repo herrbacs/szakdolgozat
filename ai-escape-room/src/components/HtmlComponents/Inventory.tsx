@@ -4,11 +4,13 @@ import { SetAppSettingsActionEnum } from '../../shared/enums'
 import { AppSettingsContextType } from '../../shared/types/frameworkTypes'
 import { PickableObject } from '../../shared/types/gameObjectTypes'
 import { CursorActions } from '../../shared/types/appTypes'
+import { spriteUrl } from '../../shared/urls'
 
 const Inventory = () => {
 	const { 
     appSettings: {
-     screenSettings: { dimension: { width } }, gameInformation: { inventory, showInventory, selectedItem, cursorActions },
+     screenSettings: { dimension: { width } },
+     gameInformation: { inventory, showInventory, selectedItem, cursorActions, levelId },
     },
     setAppSettings
   } : AppSettingsContextType = useContext(AppSettingsContext)
@@ -53,7 +55,7 @@ const Inventory = () => {
         onMouseEnter={() => setHoveredIndex(i)}
         onMouseLeave={() => setHoveredIndex(null)}
       >
-        <h1 style={{display: 'block', maxHeight: '90%', maxWidth: '90%'}}>⭐</h1>
+        <img src={spriteUrl(levelId, inventory[i].id)} style={{ width: '3rem', height: 'auto' }}/>
       </div>
 		))
 	}
@@ -69,7 +71,7 @@ const Inventory = () => {
       : null
     const payload: CursorActions = {
       position,
-      examine: item.inspectionData,
+      examine: { ...item.inspectionData, id: item.id },
       use: { action: () => selectItem(item) },
       take: null,
       search: null,
