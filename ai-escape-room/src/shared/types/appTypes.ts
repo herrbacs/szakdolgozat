@@ -1,6 +1,6 @@
 import { PointData } from "pixi.js"
 import { LockTypeEnum, PositionEnum } from "../enums"
-import { DynamicGameObject, InspectableObject, PickableObject, Wall } from "./gameObjectTypes"
+import { DynamicGameObject, HasId, InspectableObject, PickableObject, Wall } from "./gameObjectTypes"
 import { Dimension, InspectionData, Lock } from "./gameBaseTypes"
 import { UUID } from "./frameworkTypes"
 
@@ -42,11 +42,11 @@ export type PlayerHint = {
   reveals: string
 }
 
-export type inspectingModal = InspectionData & {}
+export type inspectingModal = InspectionData & HasId
 
 export type CursorActions = {
   position: null | PointData
-  examine: null | InspectionData,
+  examine: null | InspectionData & HasId,
   take: null | CursorAction,
   use: null | CursorAction,
   search: null | CursorAction,

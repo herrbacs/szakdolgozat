@@ -29,7 +29,7 @@ const Pickable = ({ pickable }: PickableComponentTypeProperties) => {
   const openCursorActions = (event: FederatedPointerEvent) => {
     const position: CursorActions = {
       position: cursorActions.position === null ? event.screen : null,
-      examine: pickable.inspectionData,
+      examine: { ...pickable.inspectionData, id: pickable.id },
       use: null,
       take: { action: handlePickUp },
       search: null,

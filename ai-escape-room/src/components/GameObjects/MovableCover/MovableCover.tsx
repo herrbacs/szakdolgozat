@@ -29,7 +29,7 @@ const MovableCover = ({ movableCover }: MovableCoverComponentType) => {
   const openCursorActions = (event: FederatedPointerEvent) => {
     const position: CursorActions = {
       position: cursorActions.position === null ? event.screen : null,
-      examine: movableCover.inspectionData,
+      examine: { ...movableCover.inspectionData, id: movableCover.id },
       use: {
         action: () => setAppSettings({ action: SetAppSettingsActionEnum.REMOVE_COVER, payload: movableCover })
       },

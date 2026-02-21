@@ -3,23 +3,15 @@ import { AppSettingsContext } from '../../context/AppSettingsContext'
 import { AppSettingsContextType } from '../../shared/types/frameworkTypes'
 import { GameObjectTypeEnum, SetAppSettingsActionEnum } from '../../shared/enums'
 import BaseModal from './BaseModal'
+import { useSprite } from '../../useHooks/useSprites'
+import { spriteUrl } from '../../shared/urls'
 
 const ItemsFoundModal = () => {
-  const { appSettings: { gameInformation: { itemsFoundModal } }, setAppSettings }: AppSettingsContextType = useContext(AppSettingsContext)
+  const { appSettings: {
+    gameInformation: { itemsFoundModal, levelId }
+  }, setAppSettings }: AppSettingsContextType = useContext(AppSettingsContext)
 
   const [currentItemIndex, setCurrentItemIndex] = useState<number>(0)
-
-  const renderIcon = () => {
-    if (itemsFoundModal === null) {
-      throw new Error('ItemsFoundModal is empty')
-    }
-
-    if (itemsFoundModal[currentItemIndex].type === GameObjectTypeEnum.PICKABLE) {
-      return '⭐'
-    } else if (itemsFoundModal[currentItemIndex].type === GameObjectTypeEnum.INSPECTABLE) {
-      return '🔍'
-    }
-  }
 
   const closeModal = () => {
     setCurrentItemIndex(0)
@@ -44,7 +36,7 @@ const ItemsFoundModal = () => {
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', width: '100%' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <h1 style={{ width: '90%' }}>
-                {renderIcon()}
+                <img src={spriteUrl(levelId, itemsFoundModal[currentItemIndex].object.id)} style={{ width: '12rem', height: 'auto' }}/>
               </h1>
             </div>
             <div style={{ width: '90%', display: 'flex', fontSize: '1.2rem', color: '#ffec99', justifyContent: 'center' }}>
@@ -96,7 +88,6 @@ const ItemsFoundModal = () => {
       onClose={() => setAppSettings({ action: SetAppSettingsActionEnum.EMPTY_FOUD_ITEMS_MODAL, payload: null })}>
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', width: '100%' }}>
         <h1 style={{ fontSize: '2rem', padding: '1rem' }}>It Is Empty</h1>
-        <h1 style={{ fontSize: '3rem' }}>📦</h1>
       </div>
     </BaseModal>
   )

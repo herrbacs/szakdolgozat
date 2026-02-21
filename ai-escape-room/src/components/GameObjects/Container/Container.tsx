@@ -70,7 +70,7 @@ const Container = ({ container }: ContainerComponentType) => {
 
     const position: CursorActions = {
       position: cursorActions.position === null ? event.screen : null,
-      examine: container.inspectionData,
+      examine: { ...container.inspectionData, id: container.id },
       take: null,
       use,
       search,

@@ -2,7 +2,7 @@ import { GameObjectTypeEnum, PositionEnum, SpriteResolutionEnum } from '../enums
 import { UUID } from './frameworkTypes';
 import { InspectionData, Sprite, SpriteSet, Lock } from './gameBaseTypes';
 
-type HasId = {
+export type HasId = {
   id: UUID | string,
 }
 

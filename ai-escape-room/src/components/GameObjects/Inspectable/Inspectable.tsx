@@ -23,7 +23,7 @@ const Inspectable = ({ inspectable }: InspectableComponentType) => {
   const openCursorActions = (event: FederatedPointerEvent) => {
     const position: CursorActions = {
       position: cursorActions.position === null ? event.screen : null,
-      examine: inspectable.inspectionData,
+      examine: { ...inspectable.inspectionData, id: inspectable.id },
       use: null,
       take: null,
       search: null,

@@ -3,10 +3,20 @@ import { AppSettingsContext } from '../../../context/AppSettingsContext'
 import { AppSettingsContextType } from '../../../shared/types/frameworkTypes'
 import { SetAppSettingsActionEnum } from '../../../shared/enums'
 import BaseModal from '../../HtmlComponents/BaseModal'
+import { spriteUrl } from '../../../shared/urls'
 
 const InspectModal = () => {
-  const { appSettings: { gameInformation: { inspectingModal } }, setAppSettings }: AppSettingsContextType = useContext(AppSettingsContext)
+  const {
+    appSettings: {
+      gameInformation: { inspectingModal, levelId}
+    },
+    setAppSettings
+  }: AppSettingsContextType = useContext(AppSettingsContext)
 
+  if (!inspectingModal) {
+    return
+  }
+  
   return inspectingModal && (
     <BaseModal
       title={inspectingModal.appellation}
@@ -14,7 +24,7 @@ const InspectModal = () => {
     >
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', width: '100%' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <h1 style={{ width: '90%' }}>🔍</h1>
+          <img src={spriteUrl(levelId, inspectingModal.id)} style={{ width: '12rem', height: 'auto' }}/>
         </div>
         <div style={{ width: '90%', maxHeight: '90%', overflow: 'auto', display: 'flex', fontSize: '1.3rem', color: '#ffec99', justifyContent: 'center' }}>
           <p style={{ wordBreak: 'break-word', textAlign: 'center' }}>{inspectingModal.information}</p>

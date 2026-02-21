@@ -22,8 +22,6 @@ const Exit = ({ exit: { id, lock, inspectionData } } : { exit: ExitObject }) => 
   const openendSprite = useSprite(levelId, 'door_open')
   const closedSprite = useSprite(levelId, 'door_closed')
 
-
-
   const tryOpen = useCallback(() => {
     if (type !== LockTypeEnum.KEY) {
       setAppSettings({
@@ -80,7 +78,7 @@ const Exit = ({ exit: { id, lock, inspectionData } } : { exit: ExitObject }) => 
 
     const position: CursorActions = {
       position: cursorActions.position === null ? event.screen : null,
-      examine: inspectionData,
+      examine: { ...inspectionData, id: open ? 'door_open' : 'door_closed' },
       use: { action: tryOpen },
       take: null,
       search: null,
