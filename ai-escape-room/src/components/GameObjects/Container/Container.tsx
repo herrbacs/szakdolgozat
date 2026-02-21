@@ -96,7 +96,7 @@ const Container = ({ container }: ContainerComponentType) => {
       texture={sprite}
       eventMode="static"
       cursor="pointer"
-      onRightClick={openCursorActions}
+      onClick={openCursorActions}
       scale={.07}
       x={spriteCoordinate.x}
       y={spriteCoordinate.y}

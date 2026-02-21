@@ -58,7 +58,7 @@ const MovableCover = ({ movableCover }: MovableCoverComponentType) => {
         texture={sprite}
         eventMode="static"
         cursor="pointer"
-        onRightClick={openCursorActions}
+        onClick={openCursorActions}
         scale={.07}
         x={spriteCoordinate.x}
         y={spriteCoordinate.y}

@@ -94,7 +94,7 @@ const Exit = ({ exit: { id, lock, inspectionData } } : { exit: ExitObject }) => 
     ? <pixiSprite
       eventMode="static"
       cursor="pointer"
-      onRightClick={openCursorActions}
+      onClick={openCursorActions}
       texture={open ? openendSprite.sprite : closedSprite.sprite}
       pivot={setPivotToBottomLeft()}
       x={width / 2}
