@@ -26,3 +26,5 @@ notes
 .env
 __pycache__
 *.pdf
+
+*.pem

@@ -9,5 +9,18 @@ class LoginRequest(BaseModel):
     identifier: str
     password: str
 
+class LoginResponse(BaseModel):
+    success: bool
+    access_token: str | None = None
+    refresh_token: str | None = None
+    token_type: str = "bearer"
+
+class RefreshRequest(BaseModel):
+    refresh_token: str
+
+class RefreshResponse(BaseModel):
+    access_token: str
+    refresh_token: str | None = None
+    token_type: str = "bearer"
 class AuthResult(BaseModel):
     success: bool

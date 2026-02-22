@@ -17,3 +17,9 @@ History lekérdezése
 
 Migráció visszavonása
     - Futtasd ```alembic downgrade -1```
+
+Privát kulcs:
+    - Futtasd ```openssl genpkey -algorithm RSA -out jwt_private.pem -pkeyopt rsa_keygen_bits:2048```
+
+Public kulcs:
+    - Futtasd ```openssl rsa -pubout -in jwt_private.pem -out jwt_public.pem```
