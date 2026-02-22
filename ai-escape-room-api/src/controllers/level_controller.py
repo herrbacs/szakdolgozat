@@ -5,6 +5,10 @@ from src.services.sprite_service import generate_ui_sprites, generate_level_obje
 from config import LEVELS_DIR
 import json
 from sqlalchemy.orm import Session
+from sqlalchemy import select
+from db.models.level_rating import LevelRating
+from db.models.user import User
+from src.schemas.level import RateLevelRequest
 
 def generate_new_level_handler(db: Session):
     success, level, level_id = generate_new_level()
@@ -56,3 +60,29 @@ def load_level_handler(level_id: str):
 
     with open(file_path, "r", encoding="utf-8") as f:
         return json.load(f)
+
+def rate_level_handler(
+    level_id: str,
+    req: RateLevelRequest,
+    db: Session,
+    user: User
+):
+    rating = req.rate
+    user_id = user.id
+ 
+    if rating < 1 or rating > 5:
+        raise ValueError("rating must be between 1 and 5")
+
+    existing = db.execute(
+        select(LevelRating).where(
+            LevelRating.user_id == user_id,
+            LevelRating.level_id == level_id
+        )
+    ).scalar_one_or_none()
+
+    if existing is None:
+        db.add(LevelRating(user_id=user_id, level_id=level_id, rating=rating))
+    else:
+        existing.rating = rating
+
+    db.commit()
