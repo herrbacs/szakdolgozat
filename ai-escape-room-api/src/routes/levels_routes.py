@@ -1,21 +1,18 @@
 from fastapi import APIRouter, Depends
-from fastapi.responses import JSONResponse
 from db.connection import get_db
 from sqlalchemy.orm import Session
 from src.security.deps import get_current_user
 from db.models.user import User
-from src.schemas.level import RateLevelRequest
-from src.controllers.level_controller import generate_new_level_handler, load_level_handler, rate_level_handler, add_to_favorite_handler, remove_from_favorite_handler
-from src.schemas.levels import PagedLevelsResponse, LevelListItem
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends
 from src.controllers.levels_controller import list_levels_handler
+from src.schemas.pagination import PaginationQuery, PagedResponse
+from src.services.pagination_service import get_pagination
 
 router = APIRouter(prefix="/levels", tags=["levels"])
 
-@router.get("", response_model=PagedLevelsResponse)
+@router.get("", response_model=PagedResponse)
 def list_levels(
-    page: int = Query(1, ge=1),
-    page_size: int = Query(20, ge=1, le=100),
+    pagination: PaginationQuery = Depends(get_pagination),
     db: Session = Depends(get_db),
     _: User = Depends(get_current_user)
-): return list_levels_handler(page, page_size, db)
+): return list_levels_handler(pagination, db)
