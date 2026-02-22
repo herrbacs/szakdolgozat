@@ -1,10 +1,11 @@
-from sqlalchemy import ForeignKey, Integer, CheckConstraint, UniqueConstraint, Index
+from sqlalchemy import ForeignKey, UniqueConstraint, Index
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from .base import Base
 import uuid
 
-class LevelRating(Base):
-    __tablename__ = "level_ratings"
+
+class FavoriteLevel(Base):
+    __tablename__ = "favorite_levels"
 
     user_id: Mapped[uuid.UUID] = mapped_column(
         ForeignKey("users.id", ondelete="CASCADE"),
@@ -18,12 +19,9 @@ class LevelRating(Base):
         index=True,
     )
 
-    rating: Mapped[int] = mapped_column(Integer, nullable=False)
-
     __table_args__ = (
-        CheckConstraint("rating >= 1 AND rating <= 5", name="ck_level_ratings_rating_1_5"),
-        UniqueConstraint("user_id", "level_id", name="uq_level_ratings_user_level"),
-        Index("ix_level_ratings_level_id_user_id", "level_id", "user_id"),
+        UniqueConstraint("user_id", "level_id", name="uq_favorite_levels_user_level"),
+        Index("ix_favorite_levels_level_user", "level_id", "user_id"),
     )
 
     user = relationship("User", lazy="selectin")

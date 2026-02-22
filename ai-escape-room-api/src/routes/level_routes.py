@@ -2,10 +2,10 @@ from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse
 from db.connection import get_db
 from sqlalchemy.orm import Session
-from src.controllers.level_controller import generate_new_level_handler, load_level_handler, rate_level_handler
 from src.security.deps import get_current_user
 from db.models.user import User
 from src.schemas.level import RateLevelRequest
+from src.controllers.level_controller import generate_new_level_handler, load_level_handler, rate_level_handler, add_to_favorite_handler, remove_from_favorite_handler
 
 router = APIRouter(prefix="/level", tags=["level"])
 
@@ -24,3 +24,17 @@ def rate_level(
     db: Session = Depends(get_db),
     user: User = Depends(get_current_user)
 ): rate_level_handler(level_id, req, db, user)
+
+@router.post("/favorite/{level_id}")
+def add_to_favorite(
+    level_id: str,
+    db: Session = Depends(get_db),
+    user: User = Depends(get_current_user)
+): add_to_favorite_handler(level_id, db, user)
+
+@router.delete("/favorite/{level_id}")
+def remove_from_favorite(
+    level_id: str,
+    db: Session = Depends(get_db),
+    user: User = Depends(get_current_user)
+): remove_from_favorite_handler(level_id, db, user)

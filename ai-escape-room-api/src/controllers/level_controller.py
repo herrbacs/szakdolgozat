@@ -1,4 +1,4 @@
-from fastapi import HTTPException
+from fastapi import HTTPException, status
 from pathlib import Path
 from src.services.level_service import generate_new_level, find_objects_with_id_and_inspection, create_level_with_id, update_level_successful_sprite_generation
 from src.services.sprite_service import generate_ui_sprites, generate_level_object_sprites
@@ -8,6 +8,8 @@ from sqlalchemy.orm import Session
 from sqlalchemy import select
 from db.models.level_rating import LevelRating
 from db.models.user import User
+from db.models.level import Level
+from db.models.favorite_level import FavoriteLevel
 from src.schemas.level import RateLevelRequest
 
 def generate_new_level_handler(db: Session):
@@ -85,4 +87,52 @@ def rate_level_handler(
     else:
         existing.rating = rating
 
+    db.commit()
+
+def add_to_favorite_handler(
+    level_id: str,
+    db: Session,
+    user: User
+):
+    level = db.execute(
+        select(Level).where(Level.id == level_id)
+    ).scalar_one_or_none()
+
+    if not level:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Level not found")
+
+    existing = db.execute(
+        select(FavoriteLevel).where(
+            FavoriteLevel.user_id == user.id,
+            FavoriteLevel.level_id == level_id,
+        )
+    ).scalar_one_or_none()
+
+    if existing:
+        return
+
+    fav = FavoriteLevel(
+        user_id=user.id,
+        level_id=level_id,
+    )
+
+    db.add(fav)
+    db.commit()
+
+def remove_from_favorite_handler(
+    level_id: str,
+    db: Session,
+    user: User
+):
+    existing = db.execute(
+        select(FavoriteLevel).where(
+            FavoriteLevel.user_id == user.id,
+            FavoriteLevel.level_id == level_id,
+        )
+    ).scalar_one_or_none()
+
+    if not existing:
+        return
+
+    db.delete(existing)
     db.commit()
