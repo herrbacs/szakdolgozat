@@ -4,15 +4,22 @@ from sqlalchemy.orm import Session
 from src.security.deps import get_current_user
 from db.models.user import User
 from fastapi import APIRouter, Depends
-from src.controllers.levels_controller import list_levels_handler
+from src.controllers.levels_controller import list_levels_handler, list_favorites_handler
 from src.schemas.pagination import PaginationQuery, PagedResponse
 from src.services.pagination_service import get_pagination
 
 router = APIRouter(prefix="/levels", tags=["levels"])
 
-@router.get("", response_model=PagedResponse)
+@router.get("/", response_model=PagedResponse)
 def list_levels(
     pagination: PaginationQuery = Depends(get_pagination),
     db: Session = Depends(get_db),
     _: User = Depends(get_current_user)
 ): return list_levels_handler(pagination, db)
+
+@router.get("/favorites", response_model=PagedResponse)
+def list_favorites(
+    pagination: PaginationQuery = Depends(get_pagination),
+    db: Session = Depends(get_db),
+    user: User = Depends(get_current_user)
+): return list_favorites_handler(pagination, db, user)
