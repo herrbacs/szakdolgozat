@@ -27,9 +27,13 @@ services:
       - ${API_DOCKER_FILE}/jwt_public.pem:/run/secrets/jwt_public.pem:ro
     environment:
       - ENVIRONMENT=development
+      - DATABASE_URL=${DATABASE_URL}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    depends_on:
+      - postgres
     networks:
       - app-network
-  db:
+  postgres:
     image: postgres:16
     container_name: ai-escape-room-db
     restart: always
