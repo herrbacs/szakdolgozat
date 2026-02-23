@@ -1,18 +1,19 @@
-FROM python:latest
+FROM python:3.12-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    ENVIRONMENT=development
+
 WORKDIR /app
+
+# (Opcionális) ha kell build tool natív csomagokhoz (psycopg2, cryptography, stb.)
+# RUN apt-get update && apt-get install -y --no-install-recommends gcc && rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-ENV FLASK_APP=app.py
-ENV FLASK_RUN_HOST=0.0.0.0
+EXPOSE 8000
 
-RUN apt-get update && \
-    apt-get install -y libgl1 libglib2.0-0 && \
-    rm -rf /var/lib/apt/lists/* && \
-    pip install -r requirements.txt
-
-RUN alembic upgrade head
-
-EXPOSE 5000
-
-CMD ["flask", "run", "--debug", "--reload"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]

@@ -4,8 +4,8 @@ import os
 
 DATABASE_URL = os.getenv(
     "DATABASE_URL",
-    "postgresql+psycopg://escape:escape@localhost:5432/escape_room"
-    # "postgresql+psycopg://escape:escape@db:5432/escape_room" // Docker Compose network
+    # "postgresql+psycopg://escape:escape@localhost:5432/escape_room"
+    "postgresql+psycopg://escape:escape@db:5432/escape_room" # Docker Compose network
 )
 
 engine = create_engine(DATABASE_URL, future=True)

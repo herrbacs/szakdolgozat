@@ -16,12 +16,15 @@ services:
       - api
   api:
     container_name: ai-escape-room-api
+    command: bash -lc "alembic upgrade head && uvicorn app:app --host 0.0.0.0 --port 8000 --reload"
     build: 
       context: ${API_DOCKER_FILE}
     ports:
-      - "5000:5000"
+      - "8000:8000"
     volumes:
       - ${API_DOCKER_FILE}:/app
+      - ${API_DOCKER_FILE}/jwt_private.pem:/run/secrets/jwt_private.pem:ro
+      - ${API_DOCKER_FILE}/jwt_public.pem:/run/secrets/jwt_public.pem:ro
     environment:
       - ENVIRONMENT=development
     networks:
