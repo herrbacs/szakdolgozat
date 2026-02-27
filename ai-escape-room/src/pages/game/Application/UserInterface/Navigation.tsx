@@ -1,0 +1,49 @@
+import { useContext, useMemo } from 'react'
+import React from 'react'
+import { Triangle, TriangleDirection } from '../Triangle'
+import { Color } from 'pixi.js'
+import { AppSettingsContextType } from '../../../../shared/types/frameworkTypes'
+import { AppSettingsContext } from '../../../../context/AppSettingsContext'
+import { MoveDirectionEnum, SetAppSettingsActionEnum } from '../../../../shared/enums'
+import { emptyCursorActions } from '../../../../reducer/controllerHelpers'
+
+export function Navigation() {
+  const padding = 20
+  const { appSettings: { screenSettings: { dimension: { width, height } } }, setAppSettings }: AppSettingsContextType = useContext(AppSettingsContext)
+
+  const calculateYPosition = useMemo(
+    () => height / 2,
+    [height]
+  )
+
+  const calculateXPositionOfRightArrow = useMemo(
+    () => (width - padding),
+    [width]
+  )
+
+  const handleClick = (payload: MoveDirectionEnum) => {
+    setAppSettings({ action: SetAppSettingsActionEnum.SET_CURSOR_ACTIONS, payload: emptyCursorActions() })
+    setAppSettings({ action: SetAppSettingsActionEnum.MOVE_AROUND, payload })
+  }
+
+  return (
+    <>
+      <Triangle
+        direction={TriangleDirection.LEFT}
+        x={padding}
+        y={calculateYPosition}
+        size={30}
+        onClick={() => handleClick(MoveDirectionEnum.LEFT)}
+        strokeColor={new Color('#999999')}
+        />
+      <Triangle
+        direction={TriangleDirection.RIGHT}
+        x={calculateXPositionOfRightArrow}
+        y={calculateYPosition}
+        size={30}
+        onClick={() => handleClick(MoveDirectionEnum.RIGHT)}
+        strokeColor={new Color('#999999')}
+      />
+    </>
+  )
+}

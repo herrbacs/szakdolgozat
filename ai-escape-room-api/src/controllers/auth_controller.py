@@ -33,17 +33,22 @@ def register_handler(req: RegisterRequest, db: Session = Depends(get_db)):
 
     return AuthResult(success=True)
 
-
 def login_handler(req: LoginRequest, db: Session = Depends(get_db)) -> LoginResponse:
     user_query = select(User).where(or_(User.email == req.identifier, User.username == req.identifier))
     user = db.execute(user_query).scalar_one_or_none()
 
     if not user:
-        return LoginResponse(success=False)
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid credentials"
+        )
 
     ok = verify_password(req.password, user.password_hash)
     if not ok:
-        return LoginResponse(success=False)
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid credentials"
+        )
 
     access = create_access_token(user_id=user.id)
     refresh, refresh_exp = create_refresh_token(user_id=user.id)
