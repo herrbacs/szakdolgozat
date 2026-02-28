@@ -1,11 +1,6 @@
 import React, { useState } from "react"
-import { API_BASE_URL } from "../../shared/urls"
-import { StatusCodes } from "http-status-codes"
-
-type LoginResponse = {
-  access_token: string,
-  refresh_token: string
-}
+import { tryLogin } from "../../api/auth"
+import { useNavigate } from "react-router-dom"
 
 type LoginCredentials = {
   identifier: string
@@ -13,12 +8,13 @@ type LoginCredentials = {
 }
 
 const Login: React.FC = () => {
+  const navigate = useNavigate()
   const [credentials, setCredentials] = useState<LoginCredentials>({
     identifier: "",
     password: "",
   })
 
-  const [error, setError] = useState<{ message: string; field?: string } | null>(null)
+  const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState<boolean>(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -28,42 +24,21 @@ const Login: React.FC = () => {
       credentials.identifier.trim() === "" ||
       credentials.password.trim() === ""
     ) {
-      setError({ message: "Please fill in all fields" })
+      setError("Please fill in all fields")
       return
     }
 
     setError(null)
     setLoading(true)
 
-    try {
-      const resp = await fetch(`${API_BASE_URL}/auth/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(credentials),
-      })
 
-      
-      if (!resp.ok) {
-        if (resp.status === StatusCodes.UNAUTHORIZED) {
-          setError({ message: 'Invalid credentials' })
-          return
-        }
-
-        setError({ message: 'Something went wrong' })
-        return
-      }
-      
-      const data:LoginResponse = await resp.json()
-
-      localStorage.setItem('access_token', data.access_token)
-      localStorage.setItem('refresh_token', data.refresh_token)
-    } catch {
-      setError({ message: 'Network error' })
-    } finally {
+    if (!await tryLogin(credentials, setError)) {
       setLoading(false)
+      return
     }
+
+    setLoading(false)
+    navigate("/menu")
   }
 
   return (
@@ -113,8 +88,7 @@ const Login: React.FC = () => {
 
           {error && (
             <div className="bg-red-50 border border-red-200 text-red-600 text-sm p-3 rounded-lg">
-              {error.field ? `${error.field}: ` : ""}
-              {error.message}
+              {error}
             </div>
           )}
 

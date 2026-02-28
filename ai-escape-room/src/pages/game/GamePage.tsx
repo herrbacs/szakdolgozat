@@ -52,7 +52,7 @@ const GamePage: React.FC = () => {
   }
 
   const loadLevel = async () => {
-    const levelUrl = loadLevelUrl('a727bd4e-6762-4f60-bf3a-6917a00eb92d')
+    const levelUrl = loadLevelUrl('25ca777f-cc8c-4583-b23b-e6a2c3945bc0')
     const response = await fetch(levelUrl, {
       method: 'GET',
       headers: {
