@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import select, or_
 from db.connection import get_db
 from db.models.user import User
-from src.schemas.auth import RegisterRequest, LoginRequest, RefreshRequest, LoginResponse, AuthResult
+from src.schemas.auth import RegisterRequest, LoginRequest, RefreshRequest, LoginResponse
 from src.security.password import hash_password, verify_password
 from fastapi import Depends
 from sqlalchemy import select, or_
@@ -30,8 +30,6 @@ def register_handler(req: RegisterRequest, db: Session = Depends(get_db)):
 
     db.add(user)
     db.commit()
-
-    return AuthResult(success=True)
 
 def login_handler(req: LoginRequest, db: Session = Depends(get_db)) -> LoginResponse:
     user_query = select(User).where(or_(User.email == req.identifier, User.username == req.identifier))
