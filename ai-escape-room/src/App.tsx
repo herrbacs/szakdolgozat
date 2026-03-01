@@ -5,6 +5,8 @@ import Registration from './pages/registration/Registration'
 import GamePage from './pages/game/GamePage'
 import NotFound from './pages/NotFound'
 import Menu from './pages/Menu'
+import Levels from './pages/levels/Levels'
+import NewLevel from './pages/new-level/NewLevel'
 import ProtectedRoute from './components/ProtectedRoute'
 
 export default function App() {
@@ -27,6 +29,22 @@ export default function App() {
           element={
             <ProtectedRoute>
               <GamePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/levels"
+          element={
+            <ProtectedRoute>
+              <Levels />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/new-level"
+          element={
+            <ProtectedRoute>
+              <NewLevel />
             </ProtectedRoute>
           }
         />
