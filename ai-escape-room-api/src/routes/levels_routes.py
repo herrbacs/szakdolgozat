@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 from src.security.deps import get_current_user
 from db.models.user import User
 from src.schemas.level import RateLevelRequest
+from src.schemas.levels import LevelListQuery
 from src.controllers.levels_controller import list_levels_handler, list_favorites_handler, generate_new_level_handler, load_level_handler, rate_level_handler, add_to_favorite_handler, remove_from_favorite_handler
 from src.schemas.pagination import PaginationQuery, PagedResponse
 from src.services.pagination_service import get_pagination
@@ -14,9 +15,10 @@ router = APIRouter(prefix="/levels", tags=["levels"])
 @router.get("/", response_model=PagedResponse)
 def list_levels(
     pagination: PaginationQuery = Depends(get_pagination),
+    query: LevelListQuery = Depends(),
     db: Session = Depends(get_db),
     _: User = Depends(get_current_user)
-): return list_levels_handler(pagination, db)
+): return list_levels_handler(pagination, db, query)
 
 @router.get("/favorites", response_model=PagedResponse)
 def list_favorites(

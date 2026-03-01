@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { AppSettingsContextType } from '../../shared/types/frameworkTypes'
 import { AppSettingsContext } from '../../context/AppSettingsContext'
 import AppHtmlOverlay from '../../pages/game/HtmlComponents/AppHtmlOverlay'
@@ -27,6 +28,7 @@ extend({
 })
 
 const GamePage: React.FC = () => {
+  const [searchParams] = useSearchParams()
   const {
     appSettings: {
       screenSettings: { dimension: { width, height } },
@@ -52,7 +54,13 @@ const GamePage: React.FC = () => {
   }
 
   const loadLevel = async () => {
-    const levelUrl = loadLevelUrl('25ca777f-cc8c-4583-b23b-e6a2c3945bc0')
+    const selectedLevelId = searchParams.get('levelId')
+    
+    if (!selectedLevelId) {
+      throw new Error('No levelId in URL')
+    }
+
+    const levelUrl = loadLevelUrl(selectedLevelId)
     const response = await fetch(levelUrl, {
       method: 'GET',
       headers: {
@@ -71,7 +79,7 @@ const GamePage: React.FC = () => {
 
   useEffect(() => {
     loadLevel()
-  }, [])
+  }, [searchParams])
   useEffect(disableRightClickDefaultBehavior, [])
 
   return levelLoaded ? (

@@ -1,3 +1,4 @@
+from ast import Tuple
 import json
 from fastapi import HTTPException, status
 from pathlib import Path
@@ -10,8 +11,8 @@ from db.models.user import User
 from db.models.level import Level
 from db.models.favorite_level import FavoriteLevel
 from src.schemas.level import RateLevelRequest
-from sqlalchemy import select, func
-from src.schemas.levels import LevelListItem
+from sqlalchemy import UUID, Select, select, func
+from src.schemas.levels import LevelListItem, LevelListQuery
 from src.schemas.pagination import PaginationQuery, PagedResponse
 from src.services.pagination_service import paginate
 
@@ -143,18 +144,34 @@ def remove_from_favorite_handler(
 
 def list_levels_handler(
     pagination: PaginationQuery,
-    db: Session
+    db: Session,
+    query: LevelListQuery,
 ) -> PagedResponse[LevelListItem]:
     avg_rating = func.avg(LevelRating.rating).label("avg_rating")
+
+    def apply_filters(stmt: Select) -> Select:
+        if query.title:
+            stmt = stmt.where(Level.title.ilike(f"%{query.title.strip()}%"))
+        if query.story:
+            stmt = stmt.where(Level.story.ilike(f"%{query.story.strip()}%"))
+        if query.rating_gte is not None:
+            stmt = stmt.having(avg_rating >= query.rating_gte)
+        return stmt
+
+    base_stmt = (
+        select(Level.id)
+        .outerjoin(LevelRating, LevelRating.level_id == Level.id)
+        .group_by(Level.id)
+    )
+    base_stmt = apply_filters(base_stmt)
+    count_stmt = select(func.count()).select_from(base_stmt.subquery())
 
     data_stmt = (
         select(Level, avg_rating)
         .outerjoin(LevelRating, LevelRating.level_id == Level.id)
         .group_by(Level.id)
-        .order_by(Level.title.asc())
     )
-
-    count_stmt = select(func.count()).select_from(Level)
+    data_stmt = apply_filters(data_stmt).order_by(Level.title.asc())
 
     def map_row(row) -> LevelListItem:
         level, avg = row
@@ -162,6 +179,7 @@ def list_levels_handler(
             id=level.id,
             title=level.title,
             story=level.story,
+            generated_at=level.created_at,
             rating=(round(float(avg), 2) if avg is not None else None),
         )
 
@@ -201,6 +219,7 @@ def list_favorites_handler(
             id=level.id,
             title=level.title,
             story=level.story,
+            generated_at=level.created_at,
             rating=(round(float(avg), 2) if avg is not None else None),
         )
 
