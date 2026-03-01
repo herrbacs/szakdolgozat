@@ -8,26 +8,26 @@ import { spriteUrl } from '../../../../shared/urls'
 const InspectModal = () => {
   const {
     appSettings: {
-      gameInformation: { inspectingModal, levelId}
+      gameInformation: { InspectingModal, levelId}
     },
     setAppSettings
   }: AppSettingsContextType = useContext(AppSettingsContext)
 
-  if (!inspectingModal) {
+  if (!InspectingModal) {
     return
   }
   
-  return inspectingModal && (
+  return InspectingModal && (
     <BaseModal
-      title={inspectingModal.appellation}
+      title={InspectingModal.appellation}
       onClose={() => setAppSettings({ action: SetAppSettingsActionEnum.TOGGLE_OBJECT_INSPECTING, payload: null })}
     >
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', width: '100%' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <img src={spriteUrl(levelId, inspectingModal.id)} style={{ width: '15rem', height: 'auto' }}/>
+          <img src={spriteUrl(levelId, InspectingModal.id)} style={{ width: '15rem', height: 'auto' }}/>
         </div>
         <div style={{ width: '90%', maxHeight: '90%', overflow: 'auto', display: 'flex', fontSize: '1.3rem', color: '#ffec99', justifyContent: 'center' }}>
-          <p style={{ wordBreak: 'break-word', textAlign: 'center' }}>{inspectingModal.information}</p>
+          <p style={{ wordBreak: 'break-word', textAlign: 'center' }}>{InspectingModal.information}</p>
         </div>
       </div>
     </BaseModal>

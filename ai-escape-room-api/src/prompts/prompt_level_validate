@@ -27,11 +27,11 @@ Return EXACTLY one JSON object with this schema and nothing else:
       "playerHints": [
         {
           "hint": "short, deterministic step 1",
-          "reveals": "CODE or PASSWORD or KEY APPELLATION"
+          "reveals": "the value of key activator or the appellation of key when the lockType is key"
         },
         {
           "hint": "short, deterministic step 2",
-          "reveals": "CODE or PASSWORD or KEY APPELLATION"
+          "reveals": "the value of key activator or the appellation of key when the lockType is key"
         }
       ]
     }
@@ -65,12 +65,12 @@ CONSTRAINTS
         "reveals": "0317"
       },
       {
-        "hint": "Take letters 2,5,7 from 'BUDAPEST'",
-        "reveals": "UPS"
+        "hint": "Take letters 0,3,1,7 from 'BUDAPEST'",
+        "reveals": "BAUT"
       },
       {
-        "hint": "Take the key from xy",
-        "reveals": "KEY ITEM APPELLATION"
+        "hint": "Open safe using 'BAUT' code",
+        "reveals": "Rusty key"
       },
 
 DETERMINISM REQUIREMENT

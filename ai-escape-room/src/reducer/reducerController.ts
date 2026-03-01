@@ -1,5 +1,5 @@
 import { GameObjectTypeEnum, MoveDirectionEnum, PositionEnum } from '../shared/enums'
-import { CursorActions, LevelInformation, LockModal } from '../shared/types/appTypes'
+import { CursorActions, InspectingModal, LevelInformation, LockModal } from '../shared/types/appTypes'
 import { AppSettings } from '../shared/types/frameworkTypes'
 import { ContainerObject, DynamicGameObject, MovableCoverObject, PickableObject, Wall } from '../shared/types/gameObjectTypes'
 import { InspectionData } from '../shared/types/gameBaseTypes'
@@ -23,7 +23,9 @@ export function loadLevel(state: AppSettings, { walls, story, derivation, id }: 
         leftWall,
         rightWall
       },
-      inventory: []
+      inventory: [],
+      showGameMenu: false,
+      showLevelCompleteModal: false,
     }
   }
 }
@@ -123,11 +125,13 @@ export function destroyItemFromInventory(state: AppSettings, payload: PickableOb
 
 export function exit(state: AppSettings): AppSettings {
   getCurrentWall(state).exit!.lock.open = true
+  state.gameInformation.showLevelCompleteModal = true
+  state.gameInformation.showGameMenu = false
   return { ...state }
 }
 
-export function toggleObjetInspecting(state: AppSettings, payload: InspectionData | null): AppSettings {
-  state.gameInformation.inspectingModal = payload
+export function toggleObjetInspecting(state: AppSettings, payload: InspectingModal | null): AppSettings {
+  state.gameInformation.InspectingModal = payload
   return { ...state }
 }
 
@@ -217,6 +221,26 @@ export function setCursorActions(state: AppSettings, payload: CursorActions): Ap
     gameInformation: {
       ...state.gameInformation,
       cursorActions: payload
+    }
+  }
+}
+
+export function toggleGameMenu(state: AppSettings): AppSettings {
+  return {
+    ...state,
+    gameInformation: {
+      ...state.gameInformation,
+      showGameMenu: !state.gameInformation.showGameMenu,
+    }
+  }
+}
+
+export function setLevelCompleteModal(state: AppSettings, payload: boolean): AppSettings {
+  return {
+    ...state,
+    gameInformation: {
+      ...state.gameInformation,
+      showLevelCompleteModal: payload,
     }
   }
 }

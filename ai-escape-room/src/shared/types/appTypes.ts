@@ -17,7 +17,7 @@ export type GameInformation = {
 	showInventory: boolean,
 	selectedItem: null | PickableObject,
   notepad: Notepad,
-	inspectingModal: null | inspectingModal,
+	InspectingModal: null | InspectingModal,
 	lockModal: null | LockModal,
 	itemsFoundModal: null | DynamicGameObject[],
 	cursorActions: CursorActions,
@@ -44,7 +44,7 @@ export type PlayerHint = {
   reveals: string
 }
 
-export type inspectingModal = InspectionData & HasId
+export type InspectingModal = InspectionData & HasId
 
 export type CursorActions = {
   position: null | PointData

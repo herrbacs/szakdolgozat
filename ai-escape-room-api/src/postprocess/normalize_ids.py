@@ -20,15 +20,16 @@ def normalize_level_id_structures(level: Dict[str, Any]) -> Dict[str, Any]:
             return old
         return mapping.setdefault(old, str(uuid.uuid4()))
 
+    ID_KEYS = {"id", "targetId", "dependsOn"}
+
     def walk(node: Any) -> None:
         if isinstance(node, dict):
-            if "id" in node:
-                val = node["id"]
-                if isinstance(val, str):
-                    node["id"] = ensure_uuid(val)
-                else:
-                    node["id"] = str(uuid.uuid4())
-            for v in node.values():
+            for k, v in list(node.items()):
+                if k in ID_KEYS:
+                    if isinstance(v, str):
+                        node[k] = ensure_uuid(v)
+                    else:
+                        node[k] = str(uuid.uuid4())
                 walk(v)
         elif isinstance(node, list):
             for item in node:

@@ -128,8 +128,8 @@ def generate_new_level() -> Tuple[bool, Optional[Dict[str, Any]], Optional[str]]
         if validation["solvable"] is True:
             print("Level validated sucessfully")
 
+            current_level["derivation"] = validation.get("derivation")
             level = normalize_level_id_structures(current_level)
-            level["derivation"] = validation.get("derivation")
             level["id"] = level_id
 
             with open((level_dir / "final_level.json"), "w", encoding="utf-8") as f:

@@ -48,7 +48,7 @@ export const initialState : AppSettings = {
     inventory: [],
     selectedItem: null,
     showInventory: false,
-    inspectingModal: null,
+    InspectingModal: null,
     lockModal: null,
     itemsFoundModal: null,
     cursorActions: {
