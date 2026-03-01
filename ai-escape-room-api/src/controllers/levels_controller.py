@@ -5,7 +5,7 @@ from pathlib import Path
 from src.services.level_service import generate_new_level, find_objects_with_id_and_inspection, create_level_with_id, update_level_successful_sprite_generation
 from src.services.sprite_service import generate_ui_sprites, generate_level_object_sprites
 from config import LEVELS_DIR
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, aliased
 from db.models.level_rating import LevelRating
 from db.models.user import User
 from db.models.level import Level
@@ -148,6 +148,7 @@ def list_levels_handler(
     query: LevelListQuery,
 ) -> PagedResponse[LevelListItem]:
     avg_rating = func.avg(LevelRating.rating).label("avg_rating")
+    favorite_count = func.count(func.distinct(FavoriteLevel.user_id)).label("favorite_count")
 
     def apply_filters(stmt: Select) -> Select:
         if query.title:
@@ -167,20 +168,22 @@ def list_levels_handler(
     count_stmt = select(func.count()).select_from(base_stmt.subquery())
 
     data_stmt = (
-        select(Level, avg_rating)
+        select(Level, avg_rating, favorite_count)
         .outerjoin(LevelRating, LevelRating.level_id == Level.id)
+        .outerjoin(FavoriteLevel, FavoriteLevel.level_id == Level.id)
         .group_by(Level.id)
     )
     data_stmt = apply_filters(data_stmt).order_by(Level.title.asc())
 
     def map_row(row) -> LevelListItem:
-        level, avg = row
+        level, avg, favorites = row
         return LevelListItem(
             id=level.id,
             title=level.title,
             story=level.story,
             generated_at=level.created_at,
             rating=(round(float(avg), 2) if avg is not None else None),
+            favorite_count=int(favorites or 0),
         )
 
     return paginate(
@@ -197,11 +200,14 @@ def list_favorites_handler(
     user: User,
 ) -> PagedResponse[LevelListItem]:
     avg_rating = func.avg(LevelRating.rating).label("avg_rating")
+    favorite_count_alias = aliased(FavoriteLevel)
+    favorite_count = func.count(func.distinct(favorite_count_alias.user_id)).label("favorite_count")
 
     data_stmt = (
-        select(Level, avg_rating)
+        select(Level, avg_rating, favorite_count)
         .join(FavoriteLevel, FavoriteLevel.level_id == Level.id)
         .outerjoin(LevelRating, LevelRating.level_id == Level.id)
+        .outerjoin(favorite_count_alias, favorite_count_alias.level_id == Level.id)
         .where(FavoriteLevel.user_id == user.id)
         .group_by(Level.id)
         .order_by(Level.title.asc())
@@ -214,13 +220,14 @@ def list_favorites_handler(
     )
 
     def map_row(row) -> LevelListItem:
-        level, avg = row
+        level, avg, favorites = row
         return LevelListItem(
             id=level.id,
             title=level.title,
             story=level.story,
             generated_at=level.created_at,
             rating=(round(float(avg), 2) if avg is not None else None),
+            favorite_count=int(favorites or 0),
         )
 
     return paginate(

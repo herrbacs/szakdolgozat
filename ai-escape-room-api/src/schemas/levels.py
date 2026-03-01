@@ -13,6 +13,7 @@ class LevelListItem(BaseModel):
     story: str
     generated_at: datetime
     rating: Optional[float] = None
+    favorite_count: int = 0
 
 class LevelListQuery(BaseModel):
     title: str | None = None
