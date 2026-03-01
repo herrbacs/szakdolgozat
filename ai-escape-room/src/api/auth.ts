@@ -2,6 +2,7 @@ import { StatusCodes } from "http-status-codes"
 import { API_BASE_URL } from "../shared/urls"
 import { post } from "./api"
 import type { LoginRequest, LoginResponse, RegisterRequest } from "./types/auth"
+import type { RefreshResponse } from "./types/auth"
 import { AuthTokens, authTokenStorage } from "../store/tokenStorage"
 
 export async function tryLogin(
@@ -30,6 +31,34 @@ export async function tryLogin(
     return true
   } catch (err) {
     setError("An error occurred while logging in")
+    return false
+  }
+}
+
+export async function tryRefresh(): Promise<boolean> {
+  const tokens = authTokenStorage.get()
+  if (!tokens?.refreshToken) {
+    return false
+  }
+
+  try {
+    const response = await post(
+      `${API_BASE_URL}/auth/refresh-token`,
+      { refresh_token: tokens.refreshToken }
+    )
+
+    if (!response.ok) {
+      return false
+    }
+
+    const data: RefreshResponse = await response.json()
+    authTokenStorage.set({
+      accessToken: data.access_token,
+      refreshToken: data.refresh_token,
+    } as AuthTokens)
+
+    return true
+  } catch {
     return false
   }
 }

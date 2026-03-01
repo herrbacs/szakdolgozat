@@ -13,3 +13,12 @@ export type RegisterRequest = {
   username: string
   password: string
 }
+
+export type RefreshRequest = {
+  refresh_token: string
+}
+
+export type RefreshResponse = {
+  access_token: string
+  refresh_token: string
+}

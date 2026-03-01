@@ -31,7 +31,6 @@ const Login: React.FC = () => {
     setError(null)
     setLoading(true)
 
-
     if (!await tryLogin(credentials, setError)) {
       setLoading(false)
       return

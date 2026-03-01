@@ -6,7 +6,7 @@ from db.models.user import User
 from src.schemas.auth import RegisterRequest, LoginRequest, RefreshRequest, LoginResponse
 from src.security.password import hash_password, verify_password
 from fastapi import Depends
-from sqlalchemy import select, or_
+from sqlalchemy import update, select, or_
 from sqlalchemy.orm import Session
 from src.security.jwt import create_access_token, create_refresh_token, decode_token
 from db.models.user import User
@@ -73,24 +73,26 @@ def refresh_token_handler(req: RefreshRequest, db: Session):
     if not sub:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token payload")
 
-    rt = db.execute(
-        select(RefreshToken).where(RefreshToken.token == token)
-    ).scalar_one_or_none()
+    stmt = (
+        update(RefreshToken)
+        .where(RefreshToken.token == token, RefreshToken.revoked == False)
+        .values(revoked=True)
+        .returning(RefreshToken.user_id)
+    )
 
-    if not rt:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Refresh token not found")
+    user_id = db.execute(stmt).scalar_one_or_none()
 
-    if rt.revoked:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Refresh token revoked")
+    if not user_id:
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Refresh token revoked or not found"
+        )
 
-    if str(rt.user_id) != str(sub):
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token payload")
-
-    user = db.execute(select(User).where(User.id == rt.user_id)).scalar_one_or_none()
+    user = db.execute(select(User).where(User.id == user_id)).scalar_one_or_none()
     if not user:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found")
-
-    rt.revoked = True
+        db.rollback()
+        raise HTTPException(status_code=401, detail="Refresh token revoked or not found")
 
     new_access = create_access_token(user_id=user.id)
     new_refresh, new_refresh_exp = create_refresh_token(user_id=user.id)

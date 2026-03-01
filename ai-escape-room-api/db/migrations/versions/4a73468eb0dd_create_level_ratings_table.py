@@ -1,8 +1,8 @@
 """create level ratings table
 
-Revision ID: d7cb967f8adf
-Revises: f133c4f3b48a
-Create Date: 2026-02-22 17:39:44.881652
+Revision ID: 4a73468eb0dd
+Revises: 8b2c9746deac
+Create Date: 2026-03-01 12:48:37.893109
 
 """
 from typing import Sequence, Union
@@ -12,8 +12,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = 'd7cb967f8adf'
-down_revision: Union[str, Sequence[str], None] = 'f133c4f3b48a'
+revision: str = '4a73468eb0dd'
+down_revision: Union[str, Sequence[str], None] = '8b2c9746deac'
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 

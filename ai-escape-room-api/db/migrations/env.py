@@ -1,4 +1,5 @@
 from logging.config import fileConfig
+import os
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 from alembic import context
@@ -6,9 +7,9 @@ from db.connection import DATABASE_URL
 
 from db.models.base import Base
 from db.models import user
+from db.models import refresh_token
 from db.models import level
 from db.models import level_rating
-from db.models import refresh_token
 from db.models import favorite_level
 
 
@@ -33,6 +34,8 @@ target_metadata = Base.metadata
 # ... etc.
 
 
+config.set_main_option( 'sqlalchemy.url', DATABASE_URL)
+
 def run_migrations_offline() -> None:
     """Run migrations in 'offline' mode.
 
@@ -45,16 +48,6 @@ def run_migrations_offline() -> None:
     script output.
 
     """
-    url = config.get_main_option("sqlalchemy.url")
-    if DATABASE_URL:
-        config.set_main_option("sqlalchemy.url", DATABASE_URL)
-    context.configure(
-        url=url,
-        target_metadata=target_metadata,
-        literal_binds=True,
-        dialect_opts={"paramstyle": "named"},
-    )
-
     with context.begin_transaction():
         context.run_migrations()
 
