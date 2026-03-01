@@ -1,0 +1,166 @@
+{
+  "title": "The Gilded Cipher",
+  "story": "You awaken inside a small chamber of a private collector. Four walls hold relics and locks; the heavy exit door waits locked by a final passphrase. Scattered notes and symbols are visible, but their meanings are hidden until you uncover the intermediate solutions. Solve the wall puzzles in order, combine what they reveal, and speak the passphrase to leave.",
+  "walls": [
+    {
+      "id": "b3a9f6a1-1c2e-4a6b-9f7a-111111111111",
+      "color": "#C8B38A",
+      "exit": null,
+      "pickables": [],
+      "inspectables": [
+        {
+          "id": "p1-partialA-8a7f4c1d-2222-4444-aaaa-bbbbbbbbbbbb",
+          "position": "WT1",
+          "inspectionData": {
+            "appellation": "Brass Plaque",
+            "information": "The plaque lists a simple letter-number key: A = 1, B = 7, C = 3."
+          },
+          "spriteResolution": "1024x1024"
+        },
+        {
+          "id": "p1-partialB-c2d3e4f5-3333-6666-cccc-dddddddddddd",
+          "position": "W3",
+          "inspectionData": {
+            "appellation": "Sealed Envelope",
+            "information": "A short slip inside contains three letters printed plainly: C A B"
+          },
+          "spriteResolution": "1024x1024"
+        }
+      ],
+      "containers": [
+        {
+          "id": "p1-safe-9f8e7d6c-4444-8888-eeee-ffffffffffff",
+          "position": "W1",
+          "lock": {
+            "type": "CODE_ONLY_NUMBER",
+            "activator": "317"
+          },
+          "content": [
+            {
+              "type": "INSPECTABLE",
+              "object": {
+                "id": "p1-final-note-0a1b2c3d-5555-9999-gggg-hhhhhhhhhhhh",
+                "position": null,
+                "inspectionData": {
+                  "appellation": "Folded Note (inside safe)",
+                  "information": "A small folded note lists four worn symbols and letters beside them: Diamond = O, Circle = G, Triangle = D, Square = L."
+                },
+                "spriteResolution": "1024x1024"
+              }
+            }
+          ],
+          "inspectionData": {
+            "appellation": "Small Wall Safe",
+            "information": "A compact wall safe with a three-digit combination lock. The dial is worn from use."
+          },
+          "spriteResolution": "1536x1024"
+        }
+      ],
+      "movableCovers": []
+    },
+    {
+      "id": "d4b7e8c2-2d3f-4b9a-8c6a-222222222222",
+      "color": "#9FB5C8",
+      "exit": null,
+      "pickables": [],
+      "inspectables": [
+        {
+          "id": "p2-partialA-1e2d3c4b-6666-aaaa-hhhh-iiiiiiiiiiii",
+          "position": "WT3",
+          "inspectionData": {
+            "appellation": "Faded Mural",
+            "information": "A horizontal mural shows four symbols left to right: Diamond, Circle, Triangle, Square."
+          },
+          "spriteResolution": "1536x1024"
+        },
+        {
+          "id": "p2-partialB-f6e5d4c3-7777-bbbb-jjjj-kkkkkkkkkkkk",
+          "position": "WB1",
+          "inspectionData": {
+            "appellation": "Brass Plate",
+            "information": "A stamped sequence of numbers runs along the base: 2 - 1 - 4 - 3."
+          },
+          "spriteResolution": "1024x1024"
+        },
+        {
+          "id": "exit-partialB-3c4d5e6f-8888-cccc-llll-mmmmmmmmmmmm",
+          "position": "WT1",
+          "inspectionData": {
+            "appellation": "Chalk Scribble",
+            "information": "Two words scrawled quickly: 'word then number.'"
+          },
+          "spriteResolution": "1024x1024"
+        }
+      ],
+      "containers": [
+        {
+          "id": "p2-desk-5a6b7c8d-9999-dddd-mmmm-nnnnnnnnnnnn",
+          "position": "F2",
+          "lock": {
+            "type": "CODE_ONLY_LETTER",
+            "activator": "GOLD"
+          },
+          "content": [
+            {
+              "type": "INSPECTABLE",
+              "object": {
+                "id": "p2-final-tag-7f6e5d4c-aaaa-eeee-oooo-pppppppppppp",
+                "position": null,
+                "inspectionData": {
+                  "appellation": "Brass Token (inside desk)",
+                  "information": "A small brass token lies within. One side is stamped with a single word in block letters: GOLD."
+                },
+                "spriteResolution": "1024x1024"
+              }
+            }
+          ],
+          "inspectionData": {
+            "appellation": "Antique Writing Desk",
+            "information": "An old mahogany desk with a locked center drawer. The drawer accepts a four-letter code."
+          },
+          "spriteResolution": "1024x1536"
+        }
+      ],
+      "movableCovers": []
+    },
+    {
+      "id": "e5c8d9b3-3e4f-5c0a-7b8c-333333333333",
+      "color": "#B8D3A6",
+      "exit": {
+        "id": "exit-door-aaaaaaaa-bbbb-cccc-dddd-444444444444",
+        "lock": {
+          "type": "PASSWORD",
+          "activator": "GOLD317"
+        },
+        "inspectionData": {
+          "appellation": "Reinforced Exit Door",
+          "information": "A heavy steel door fitted with an alphanumeric keypad. A small engraved plate above the keypad reads: 'Say the treasure followed by its number.'"
+        },
+        "spriteResolution": "1024x1536"
+      },
+      "pickables": [],
+      "inspectables": [],
+      "containers": [],
+      "movableCovers": []
+    },
+    {
+      "id": "f6d1e2a4-4f5a-6b7c-8d9e-444444444444",
+      "color": "#E8D0C0",
+      "exit": null,
+      "pickables": [],
+      "inspectables": [
+        {
+          "id": "exit-partialA-0f1e2d3c-5555-ffff-qqqq-rrrrrrrrrrrr",
+          "position": "WT1",
+          "inspectionData": {
+            "appellation": "Event Poster",
+            "information": "A handbill lists a riddle in two lines: 'Name the hoarded shine, then the number that opens its chest.'"
+          },
+          "spriteResolution": "1024x1024"
+        }
+      ],
+      "containers": [],
+      "movableCovers": []
+    }
+  ]
+}

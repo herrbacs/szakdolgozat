@@ -1,0 +1,252 @@
+{
+  "title": "The Gilded Cipher",
+  "story": "You awaken inside a small chamber of a private collector. Four walls hold relics and locks; the heavy exit door waits locked by a final passphrase. Scattered notes and symbols are visible, but their meanings are hidden until you uncover the intermediate solutions. Solve the wall puzzles in order, combine what they reveal, and speak the passphrase to leave.",
+  "walls": [
+    {
+      "id": "b3a9f6a1-1c2e-4a6b-9f7a-111111111111",
+      "color": "#C8B38A",
+      "exit": null,
+      "pickables": [],
+      "inspectables": [
+        {
+          "id": "277d2a8d-fa3f-49ff-9231-e8296252fcc7",
+          "position": "WT1",
+          "inspectionData": {
+            "appellation": "Brass Plaque",
+            "information": "The plaque lists a simple letter-number key: A = 1, B = 7, C = 3."
+          },
+          "spriteResolution": "1024x1024"
+        },
+        {
+          "id": "ae5c6c31-7ea5-41c1-882d-7d817f1237a9",
+          "position": "W3",
+          "inspectionData": {
+            "appellation": "Sealed Envelope",
+            "information": "A short slip inside contains three letters printed plainly: C A B"
+          },
+          "spriteResolution": "1024x1024"
+        }
+      ],
+      "containers": [
+        {
+          "id": "0180ec1b-a3ae-4e67-bde8-9b458cc9e4f6",
+          "position": "W1",
+          "lock": {
+            "type": "CODE_ONLY_NUMBER",
+            "activator": "317"
+          },
+          "content": [
+            {
+              "type": "INSPECTABLE",
+              "object": {
+                "id": "379f6a25-7a85-4911-af6b-ace99d0dcf6f",
+                "position": null,
+                "inspectionData": {
+                  "appellation": "Folded Note (inside safe)",
+                  "information": "A small folded note lists four worn symbols and letters beside them: Diamond = O, Circle = G, Triangle = D, Square = L."
+                },
+                "spriteResolution": "1024x1024"
+              }
+            }
+          ],
+          "inspectionData": {
+            "appellation": "Small Wall Safe",
+            "information": "A compact wall safe with a three-digit combination lock. The dial is worn from use."
+          },
+          "spriteResolution": "1536x1024"
+        }
+      ],
+      "movableCovers": []
+    },
+    {
+      "id": "d4b7e8c2-2d3f-4b9a-8c6a-222222222222",
+      "color": "#9FB5C8",
+      "exit": null,
+      "pickables": [],
+      "inspectables": [
+        {
+          "id": "c7b7cad5-441f-4a0f-acf7-9f5404f33885",
+          "position": "WT3",
+          "inspectionData": {
+            "appellation": "Faded Mural",
+            "information": "A horizontal mural shows four symbols left to right: Diamond, Circle, Triangle, Square."
+          },
+          "spriteResolution": "1536x1024"
+        },
+        {
+          "id": "cbd73172-90a2-4206-8b64-5568dc9938aa",
+          "position": "WB1",
+          "inspectionData": {
+            "appellation": "Brass Plate",
+            "information": "A stamped sequence of numbers runs along the base: 2 - 1 - 4 - 3."
+          },
+          "spriteResolution": "1024x1024"
+        },
+        {
+          "id": "8fcf04cc-d987-4853-83ee-aad0a130daaf",
+          "position": "WT1",
+          "inspectionData": {
+            "appellation": "Chalk Scribble",
+            "information": "Two words scrawled quickly: 'word then number.'"
+          },
+          "spriteResolution": "1024x1024"
+        }
+      ],
+      "containers": [
+        {
+          "id": "c092cdb5-20fe-4d23-bd3b-ee4b3769604c",
+          "position": "F2",
+          "lock": {
+            "type": "CODE_ONLY_LETTER",
+            "activator": "GOLD"
+          },
+          "content": [
+            {
+              "type": "INSPECTABLE",
+              "object": {
+                "id": "21c5da8f-3247-419b-9abb-84491534cf56",
+                "position": null,
+                "inspectionData": {
+                  "appellation": "Brass Token (inside desk)",
+                  "information": "A small brass token lies within. One side is stamped with a single word in block letters: GOLD."
+                },
+                "spriteResolution": "1024x1024"
+              }
+            }
+          ],
+          "inspectionData": {
+            "appellation": "Antique Writing Desk",
+            "information": "An old mahogany desk with a locked center drawer. The drawer accepts a four-letter code."
+          },
+          "spriteResolution": "1024x1536"
+        }
+      ],
+      "movableCovers": []
+    },
+    {
+      "id": "e5c8d9b3-3e4f-5c0a-7b8c-333333333333",
+      "color": "#B8D3A6",
+      "exit": {
+        "id": "c7b91166-eab8-40fe-b061-3cb6cf4c1ff7",
+        "lock": {
+          "type": "PASSWORD",
+          "activator": "GOLD317"
+        },
+        "inspectionData": {
+          "appellation": "Reinforced Exit Door",
+          "information": "A heavy steel door fitted with an alphanumeric keypad. A small engraved plate above the keypad reads: 'Say the treasure followed by its number.'"
+        },
+        "spriteResolution": "1024x1536"
+      },
+      "pickables": [],
+      "inspectables": [],
+      "containers": [],
+      "movableCovers": []
+    },
+    {
+      "id": "f6d1e2a4-4f5a-6b7c-8d9e-444444444444",
+      "color": "#E8D0C0",
+      "exit": null,
+      "pickables": [],
+      "inspectables": [
+        {
+          "id": "f5d8ec6d-a177-4559-a3ef-01a46319c7a4",
+          "position": "WT1",
+          "inspectionData": {
+            "appellation": "Event Poster",
+            "information": "A handbill lists a riddle in two lines: 'Name the hoarded shine, then the number that opens its chest.'"
+          },
+          "spriteResolution": "1024x1024"
+        }
+      ],
+      "containers": [],
+      "movableCovers": []
+    }
+  ],
+  "derivation": [
+    {
+      "target": "LOCK",
+      "targetId": "p1-safe-9f8e7d6c-4444-8888-eeee-ffffffffffff",
+      "lockType": "CODE_ONLY_NUMBER",
+      "expectedActivator": "317",
+      "dependsOn": [
+        "p1-partialA-8a7f4c1d-2222-4444-aaaa-bbbbbbbbbbbb",
+        "p1-partialB-c2d3e4f5-3333-6666-cccc-dddddddddddd"
+      ],
+      "steps": [
+        "Read Brass Plaque: A=1, B=7, C=3",
+        "Read Sealed Envelope: letters C A B",
+        "Map C,A,B via plaque => 3 1 7",
+        "Combine digits => 317"
+      ],
+      "playerHints": [
+        {
+          "hint": "Inspect the Brass Plaque.",
+          "reveals": "A=1,B=7,C=3"
+        },
+        {
+          "hint": "Open the Sealed Envelope and map its letters.",
+          "reveals": "317"
+        }
+      ]
+    },
+    {
+      "target": "LOCK",
+      "targetId": "p2-desk-5a6b7c8d-9999-dddd-mmmm-nnnnnnnnnnnn",
+      "lockType": "CODE_ONLY_LETTER",
+      "expectedActivator": "GOLD",
+      "dependsOn": [
+        "p2-partialA-1e2d3c4b-6666-aaaa-hhhh-iiiiiiiiiiii",
+        "p2-partialB-f6e5d4c3-7777-bbbb-jjjj-kkkkkkkkkkkk",
+        "p1-final-note-0a1b2c3d-5555-9999-gggg-hhhhhhhhhhhh"
+      ],
+      "steps": [
+        "Read Mural: symbols left-to-right = Diamond, Circle, Triangle, Square",
+        "Read Brass Plate: sequence = 2-1-4-3",
+        "Read Folded Note (from safe): Diamond=O, Circle=G, Triangle=D, Square=L",
+        "Reorder mural by 2-1-4-3 => Circle, Diamond, Square, Triangle",
+        "Map symbols to letters => G O L D",
+        "Combine letters => GOLD"
+      ],
+      "playerHints": [
+        {
+          "hint": "Observe the mural and the brass plate sequence.",
+          "reveals": "Reordered symbol sequence"
+        },
+        {
+          "hint": "Use the symbol-to-letter mappings from the folded note.",
+          "reveals": "GOLD"
+        }
+      ]
+    },
+    {
+      "target": "EXIT_LOCK",
+      "targetId": "exit-door-aaaaaaaa-bbbb-cccc-dddd-444444444444",
+      "lockType": "PASSWORD",
+      "expectedActivator": "GOLD317",
+      "dependsOn": [
+        "p1-final-note-0a1b2c3d-5555-9999-gggg-hhhhhhhhhhhh",
+        "p2-final-tag-7f6e5d4c-aaaa-eeee-oooo-pppppppppppp",
+        "exit-partialA-0f1e2d3c-5555-ffff-qqqq-rrrrrrrrrrrr",
+        "exit-partialB-3c4d5e6f-8888-cccc-llll-mmmmmmmmmmmm"
+      ],
+      "steps": [
+        "Read Brass Token (inside desk) => GOLD",
+        "Read folded safe note => 317",
+        "Read Exit plate and poster: 'treasure then number' / 'word then number'",
+        "Concatenate GOLD + 317 => GOLD317"
+      ],
+      "playerHints": [
+        {
+          "hint": "Take the Brass Token from the desk.",
+          "reveals": "GOLD"
+        },
+        {
+          "hint": "Combine the token word with the safe number as the exit plate instructs.",
+          "reveals": "GOLD317"
+        }
+      ]
+    }
+  ],
+  "id": "b19c029f-4aea-4fbd-845c-eb694887627f"
+}

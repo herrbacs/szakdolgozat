@@ -1,0 +1,89 @@
+{
+  "solvable": true,
+  "issues": [],
+  "derivation": [
+    {
+      "target": "LOCK",
+      "targetId": "p1-safe-9f8e7d6c-4444-8888-eeee-ffffffffffff",
+      "lockType": "CODE_ONLY_NUMBER",
+      "expectedActivator": "317",
+      "dependsOn": [
+        "p1-partialA-8a7f4c1d-2222-4444-aaaa-bbbbbbbbbbbb",
+        "p1-partialB-c2d3e4f5-3333-6666-cccc-dddddddddddd"
+      ],
+      "steps": [
+        "Read Brass Plaque: A=1, B=7, C=3",
+        "Read Sealed Envelope: letters C A B",
+        "Map C,A,B via plaque => 3 1 7",
+        "Combine digits => 317"
+      ],
+      "playerHints": [
+        {
+          "hint": "Inspect the Brass Plaque.",
+          "reveals": "A=1,B=7,C=3"
+        },
+        {
+          "hint": "Open the Sealed Envelope and map its letters.",
+          "reveals": "317"
+        }
+      ]
+    },
+    {
+      "target": "LOCK",
+      "targetId": "p2-desk-5a6b7c8d-9999-dddd-mmmm-nnnnnnnnnnnn",
+      "lockType": "CODE_ONLY_LETTER",
+      "expectedActivator": "GOLD",
+      "dependsOn": [
+        "p2-partialA-1e2d3c4b-6666-aaaa-hhhh-iiiiiiiiiiii",
+        "p2-partialB-f6e5d4c3-7777-bbbb-jjjj-kkkkkkkkkkkk",
+        "p1-final-note-0a1b2c3d-5555-9999-gggg-hhhhhhhhhhhh"
+      ],
+      "steps": [
+        "Read Mural: symbols left-to-right = Diamond, Circle, Triangle, Square",
+        "Read Brass Plate: sequence = 2-1-4-3",
+        "Read Folded Note (from safe): Diamond=O, Circle=G, Triangle=D, Square=L",
+        "Reorder mural by 2-1-4-3 => Circle, Diamond, Square, Triangle",
+        "Map symbols to letters => G O L D",
+        "Combine letters => GOLD"
+      ],
+      "playerHints": [
+        {
+          "hint": "Observe the mural and the brass plate sequence.",
+          "reveals": "Reordered symbol sequence"
+        },
+        {
+          "hint": "Use the symbol-to-letter mappings from the folded note.",
+          "reveals": "GOLD"
+        }
+      ]
+    },
+    {
+      "target": "EXIT_LOCK",
+      "targetId": "exit-door-aaaaaaaa-bbbb-cccc-dddd-444444444444",
+      "lockType": "PASSWORD",
+      "expectedActivator": "GOLD317",
+      "dependsOn": [
+        "p1-final-note-0a1b2c3d-5555-9999-gggg-hhhhhhhhhhhh",
+        "p2-final-tag-7f6e5d4c-aaaa-eeee-oooo-pppppppppppp",
+        "exit-partialA-0f1e2d3c-5555-ffff-qqqq-rrrrrrrrrrrr",
+        "exit-partialB-3c4d5e6f-8888-cccc-llll-mmmmmmmmmmmm"
+      ],
+      "steps": [
+        "Read Brass Token (inside desk) => GOLD",
+        "Read folded safe note => 317",
+        "Read Exit plate and poster: 'treasure then number' / 'word then number'",
+        "Concatenate GOLD + 317 => GOLD317"
+      ],
+      "playerHints": [
+        {
+          "hint": "Take the Brass Token from the desk.",
+          "reveals": "GOLD"
+        },
+        {
+          "hint": "Combine the token word with the safe number as the exit plate instructs.",
+          "reveals": "GOLD317"
+        }
+      ]
+    }
+  ]
+}
