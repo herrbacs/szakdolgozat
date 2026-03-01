@@ -23,6 +23,8 @@ export enum SetAppSettingsActionEnum {
   CONTAINER_OPEN,
   TAKE_FOUND_ITEMS,
   SET_CURSOR_ACTIONS,
+  TOGGLE_GAME_MENU,
+  SET_LEVEL_COMPLETE_MODAL,
 }
 
 export enum GameObjectTypeEnum {

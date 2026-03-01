@@ -20,6 +20,8 @@ import {
   moveTo,
   toggleNotepad,
   updateNotepad,
+  toggleGameMenu,
+  setLevelCompleteModal,
 } from "./reducerController"
 
 export const initialState : AppSettings = {
@@ -55,7 +57,10 @@ export const initialState : AppSettings = {
       take: null,
       use: null,
       search: null,
-    }
+    },
+    showGameMenu: false,
+    showLevelCompleteModal: false,
+    levelId: '00000000-0000-0000-0000-000000000000',
   }
 }
 
@@ -73,6 +78,10 @@ export const reducer = (state: AppSettings, { action, payload }: ReducerAction) 
       return moveTo(state, payload)
     case SetAppSettingsActionEnum.SET_CURSOR_ACTIONS:
       return setCursorActions(state, payload)
+    case SetAppSettingsActionEnum.TOGGLE_GAME_MENU:
+      return toggleGameMenu(state)
+    case SetAppSettingsActionEnum.SET_LEVEL_COMPLETE_MODAL:
+      return setLevelCompleteModal(state, payload)
     case SetAppSettingsActionEnum.TOGGLE_INVENTORY:
       return toggleInventory(state)
     case SetAppSettingsActionEnum.PICK_UP_ITEM:

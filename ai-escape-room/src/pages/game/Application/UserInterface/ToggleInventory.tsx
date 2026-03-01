@@ -31,7 +31,7 @@ const ToggleInventory = () => {
 
   const xPosition = useMemo(
     () => spriteLoaded 
-      ? width - padding - sprite.width * scale
+      ? width - (padding * 2) - (sprite.width * scale) * 2
       : 1
     , [sprite, spriteLoaded, scale])
 

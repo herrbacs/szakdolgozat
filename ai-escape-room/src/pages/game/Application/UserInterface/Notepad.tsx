@@ -32,7 +32,7 @@ const Notepad = () => {
 
   const xPosition = useMemo(
     () => spriteLoaded 
-      ? width - (padding * 2) - (sprite.width * scale) * 2
+      ? width - (padding * 3) - (sprite.width * scale) * 3
       : 1
     , [sprite, spriteLoaded, scale])
 

@@ -21,6 +21,8 @@ export type GameInformation = {
 	lockModal: null | LockModal,
 	itemsFoundModal: null | DynamicGameObject[],
 	cursorActions: CursorActions,
+  showGameMenu: boolean,
+  showLevelCompleteModal: boolean,
   levelId: UUID,
 }
 
