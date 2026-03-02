@@ -20,7 +20,7 @@ export async function listLevels(
     params.set("rating_gte", query.ratingGte)
   }
 
-  const response = await get(`${API_BASE_URL}/levels?${params.toString()}`, token)
+  const response = await get(`${API_BASE_URL}/levels?${params.toString()}`)
 
   if (!response.ok) {
     throw new Error("Failed to fetch levels")
@@ -30,7 +30,7 @@ export async function listLevels(
 }
 
 export async function rateLevel(levelId: string, rate: number, token: string): Promise<void> {
-  const response = await post(`${API_BASE_URL}/levels/rate/${levelId}`, { rate }, token)
+  const response = await post(`${API_BASE_URL}/levels/rate/${levelId}`, { rate })
 
   if (!response.ok) {
     throw new Error("Failed to rate level")
@@ -38,7 +38,7 @@ export async function rateLevel(levelId: string, rate: number, token: string): P
 }
 
 export async function addLevelToFavorites(levelId: string, token: string): Promise<void> {
-  const response = await post(`${API_BASE_URL}/levels/favorite/${levelId}`, {}, token)
+  const response = await post(`${API_BASE_URL}/levels/favorite/${levelId}`, {})
 
   if (!response.ok) {
     throw new Error("Failed to add level to favorites")

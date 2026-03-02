@@ -35,34 +35,6 @@ export async function tryLogin(
   }
 }
 
-export async function tryRefresh(): Promise<boolean> {
-  const tokens = authTokenStorage.get()
-  if (!tokens?.refreshToken) {
-    return false
-  }
-
-  try {
-    const response = await post(
-      `${API_BASE_URL}/auth/refresh-token`,
-      { refresh_token: tokens.refreshToken }
-    )
-
-    if (!response.ok) {
-      return false
-    }
-
-    const data: RefreshResponse = await response.json()
-    authTokenStorage.set({
-      accessToken: data.access_token,
-      refreshToken: data.refresh_token,
-    } as AuthTokens)
-
-    return true
-  } catch {
-    return false
-  }
-}
-
 export async function tryRegister(
   payload: RegisterRequest,
   setError: React.Dispatch<React.SetStateAction<string | null>>
