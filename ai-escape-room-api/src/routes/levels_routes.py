@@ -28,8 +28,11 @@ def list_favorites(
 ): return list_favorites_handler(pagination, db, user)
 
 @router.post("/generate")
-def generate_level(db: Session = Depends(get_db)):
-    return JSONResponse(content=generate_new_level_handler(db))
+def generate_level(
+    db: Session = Depends(get_db),
+    user: User = Depends(get_current_user)
+):
+    return JSONResponse(content=generate_new_level_handler(db, user))
 
 @router.get("/load/{level_id}")
 def load_level(level_id: str):

@@ -1,4 +1,3 @@
-from ast import Tuple
 import json
 from fastapi import HTTPException, status
 from pathlib import Path
@@ -10,15 +9,22 @@ from db.models.level_rating import LevelRating
 from db.models.user import User
 from db.models.level import Level
 from db.models.favorite_level import FavoriteLevel
+from db.models.level_token_usage import LevelTokenUsage
+from db.models.user_tokens import UserTokens
 from src.schemas.level import RateLevelRequest
-from sqlalchemy import UUID, Select, select, func
+from sqlalchemy import Select, select, func
 from src.schemas.levels import LevelListItem, LevelListQuery
 from src.schemas.pagination import PaginationQuery, PagedResponse
 from src.services.pagination_service import paginate
 
 
-def generate_new_level_handler(db: Session):
-    success, level, level_id = generate_new_level()
+def generate_new_level_handler(db: Session, user: User):
+    result = generate_new_level()
+    success = result["success"]
+    level = result["level"]
+    level_id = result["level_id"]
+    tokens = result["tokens"]
+    
     level_db_entity = create_level_with_id(
         db=db,
         level_id=level_id,
@@ -27,7 +33,7 @@ def generate_new_level_handler(db: Session):
         title=level["title"] if success else "",
     )
 
-    if (success is False):  
+    if success is False:  
         raise HTTPException(
             status_code=500,
             detail={
@@ -36,10 +42,32 @@ def generate_new_level_handler(db: Session):
         )
 
     level_objects = find_objects_with_id_and_inspection(level)
-    generate_ui_sprites(level_id)
-    generate_level_object_sprites(level_objects, level_id)
+    ui_sprite_tokens = generate_ui_sprites(level_id)
+    object_sprite_tokens = generate_level_object_sprites(level_objects, level_id)
+    
+    tokens["sprite_tokens"] = ui_sprite_tokens + object_sprite_tokens
+    tokens["total_tokens"] += tokens["sprite_tokens"]
+    
     update_level_successful_sprite_generation(db, level_db_entity)
-
+    
+    token_usage = LevelTokenUsage(
+        level_id=level_id,
+        total_tokens=tokens["total_tokens"],
+        generation_tokens=tokens["generation_tokens"],
+        validation_tokens=tokens["validation_tokens"],
+        repair_tokens=tokens["repair_tokens"],
+        sprite_tokens=tokens["sprite_tokens"],
+        repair_count=tokens["repair_count"],
+    )
+    db.add(token_usage)
+    
+    user_tokens = db.execute(
+        select(UserTokens).where(UserTokens.user_id == user.id)
+    ).scalar_one_or_none()
+    
+    user_tokens.balance -= tokens["total_tokens"]
+    db.commit()
+    
     return level
 
 def get_level_object_sprite_handler(level_id: str, object_id: str) -> Path:
@@ -179,6 +207,8 @@ def list_levels_handler(
     favorite_count = func.count(func.distinct(FavoriteLevel.user_id)).label("favorite_count")
 
     def apply_filters(stmt: Select) -> Select:
+        # Only show successfully generated levels
+        stmt = stmt.where(Level.sucessfull_level_generation == True)
         if query.title:
             stmt = stmt.where(Level.title.ilike(f"%{query.title.strip()}%"))
         if query.story:
@@ -196,15 +226,16 @@ def list_levels_handler(
     count_stmt = select(func.count()).select_from(base_stmt.subquery())
 
     data_stmt = (
-        select(Level, avg_rating, favorite_count)
+        select(Level, avg_rating, favorite_count, LevelTokenUsage.total_tokens, LevelTokenUsage.repair_count)
         .outerjoin(LevelRating, LevelRating.level_id == Level.id)
         .outerjoin(FavoriteLevel, FavoriteLevel.level_id == Level.id)
-        .group_by(Level.id)
+        .outerjoin(LevelTokenUsage, LevelTokenUsage.level_id == Level.id)
+        .group_by(Level.id, LevelTokenUsage.total_tokens, LevelTokenUsage.repair_count)
     )
     data_stmt = apply_filters(data_stmt).order_by(Level.title.asc())
 
     def map_row(row) -> LevelListItem:
-        level, avg, favorites = row
+        level, avg, favorites, total_tokens, repair_count = row
         return LevelListItem(
             id=level.id,
             title=level.title,
@@ -212,6 +243,8 @@ def list_levels_handler(
             generated_at=level.created_at,
             rating=(round(float(avg), 2) if avg is not None else None),
             favorite_count=int(favorites or 0),
+            total_tokens=int(total_tokens or 0),
+            repair_count=int(repair_count or 0),
         )
 
     return paginate(
@@ -232,12 +265,14 @@ def list_favorites_handler(
     favorite_count = func.count(func.distinct(favorite_count_alias.user_id)).label("favorite_count")
 
     data_stmt = (
-        select(Level, avg_rating, favorite_count)
+        select(Level, avg_rating, favorite_count, LevelTokenUsage.total_tokens, LevelTokenUsage.repair_count)
         .join(FavoriteLevel, FavoriteLevel.level_id == Level.id)
         .outerjoin(LevelRating, LevelRating.level_id == Level.id)
         .outerjoin(favorite_count_alias, favorite_count_alias.level_id == Level.id)
+        .outerjoin(LevelTokenUsage, LevelTokenUsage.level_id == Level.id)
         .where(FavoriteLevel.user_id == user.id)
-        .group_by(Level.id)
+        .where(Level.sucessfull_level_generation == True)
+        .group_by(Level.id, LevelTokenUsage.total_tokens, LevelTokenUsage.repair_count)
         .order_by(Level.title.asc())
     )
 
@@ -248,7 +283,7 @@ def list_favorites_handler(
     )
 
     def map_row(row) -> LevelListItem:
-        level, avg, favorites = row
+        level, avg, favorites, total_tokens, repair_count = row
         return LevelListItem(
             id=level.id,
             title=level.title,
@@ -256,6 +291,8 @@ def list_favorites_handler(
             generated_at=level.created_at,
             rating=(round(float(avg), 2) if avg is not None else None),
             favorite_count=int(favorites or 0),
+            total_tokens=int(total_tokens or 0),
+            repair_count=int(repair_count or 0),
         )
 
     return paginate(

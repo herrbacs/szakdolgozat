@@ -12,6 +12,7 @@ from db.models import level
 from db.models import level_rating
 from db.models import favorite_level
 from db.models import user_tokens
+from db.models import level_token_usage
 
 
 # this is the Alembic Config object, which provides

@@ -98,6 +98,12 @@ const Levels: React.FC = () => {
                   Favorites
                 </th>
                 <th className="text-left px-4 py-3 text-gray-600 font-semibold">
+                  Total Tokens
+                </th>
+                <th className="text-left px-4 py-3 text-gray-600 font-semibold">
+                  Repairs
+                </th>
+                <th className="text-left px-4 py-3 text-gray-600 font-semibold">
                   Actions
                 </th>
               </tr>
@@ -105,13 +111,13 @@ const Levels: React.FC = () => {
             <tbody>
               {loading ? (
                 <tr>
-                  <td colSpan={5} className="px-4 py-6 text-center text-gray-500">
+                  <td colSpan={7} className="px-4 py-6 text-center text-gray-500">
                     Loading levels...
                   </td>
                 </tr>
               ) : levels.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="px-4 py-6 text-center text-gray-500">
+                  <td colSpan={7} className="px-4 py-6 text-center text-gray-500">
                     No levels found
                   </td>
                 </tr>
@@ -127,6 +133,12 @@ const Levels: React.FC = () => {
                     </td>
                     <td className="px-4 py-3 text-gray-700">
                       {level.favorite_count}
+                    </td>
+                    <td className="px-4 py-3 text-gray-700 font-medium">
+                      {level.total_tokens}
+                    </td>
+                    <td className="px-4 py-3 text-gray-700 font-medium">
+                      {level.repair_count}
                     </td>
                     <td className="px-4 py-3">
                       <button

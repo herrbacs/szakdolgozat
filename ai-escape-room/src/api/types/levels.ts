@@ -7,6 +7,8 @@ export type LevelListItem = {
   generated_at: string
   rating: number | null
   favorite_count: number
+  total_tokens: number
+  repair_count: number
 }
 
 export type PagedResponse<T> = {

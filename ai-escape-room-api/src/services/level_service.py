@@ -15,7 +15,17 @@ from db.models.level import Level
 
 client = get_openai_client()
 
-def call_openai(*, out_dir: Path, file_name: str, **openai_params: Any) -> Dict[str, Any]:
+def extract_token_usage(response: Any) -> Dict[str, int]:
+    """Extract token usage from OpenAI response."""
+    if hasattr(response, 'usage') and response.usage:
+        return {
+            "input_tokens": getattr(response.usage, 'input_tokens', 0),
+            "output_tokens": getattr(response.usage, 'output_tokens', 0),
+            "total_tokens": getattr(response.usage, 'total_tokens', 0),
+        }
+    return {"input_tokens": 0, "output_tokens": 0, "total_tokens": 0}
+
+def call_openai(*, out_dir: Path, file_name: str, **openai_params: Any) -> Tuple[Dict[str, Any], Dict[str, int]]:
     response = client.responses.create(**openai_params)
     text = (response.output_text or "").strip()
 
@@ -29,7 +39,9 @@ def call_openai(*, out_dir: Path, file_name: str, **openai_params: Any) -> Dict[
         )
 
     valid_json_str = ensure_valid_json_and_save(text, out_dir / file_name)
-    return json.loads(valid_json_str)
+    result = json.loads(valid_json_str)
+    usage = extract_token_usage(response)
+    return result, usage
 
 def parse_validator_verdict_obj(obj: Dict[str, Any]) -> Dict[str, Any]:
     if "solvable" not in obj or "issues" not in obj:
@@ -50,10 +62,10 @@ def parse_validator_verdict_obj(obj: Dict[str, Any]) -> Dict[str, Any]:
     return obj
 
 
-def validate_level(*, level_obj: Dict[str, Any], out_dir: Path) -> Dict[str, Any]:
+def validate_level(*, level_obj: Dict[str, Any], out_dir: Path) -> Tuple[Dict[str, Any], Dict[str, int]]:
     validator_prompt = load_prompt(["prompt_level_validate"])
 
-    verdict_obj = call_openai(
+    verdict_obj, usage = call_openai(
         out_dir=out_dir,
         file_name="last_validator_output.json",
         model=GPT_MINI,
@@ -71,11 +83,11 @@ Generated Level Json:
 """,
     )
 
-    return parse_validator_verdict_obj(verdict_obj)
+    return parse_validator_verdict_obj(verdict_obj), usage
 
 
-def repair_level(*, current_level_obj: Dict[str, Any], validation: Dict[str, Any], round_idx: int, out_dir: Path) -> Dict[str, Any]:
-    repaired_obj = call_openai(
+def repair_level(*, current_level_obj: Dict[str, Any], validation: Dict[str, Any], round_idx: int, out_dir: Path) -> Tuple[Dict[str, Any], Dict[str, int]]:
+    repaired_obj, usage = call_openai(
         out_dir=out_dir,
         file_name=f"repaired_level_round{round_idx}.json",
         model=GPT_5_2,
@@ -84,7 +96,7 @@ def repair_level(*, current_level_obj: Dict[str, Any], validation: Dict[str, Any
         temperature=0,
     )
     print("Level Repaired")
-    return repaired_obj
+    return repaired_obj, usage
 
 
 def assemble_repair_prompt(level_obj: Dict[str, Any], issue_report: List[str] | None) -> str:
@@ -105,11 +117,37 @@ Level structure principals:
 {load_prompt(["prompt_principals"])}
 """
 
-def generate_new_level() -> Tuple[bool, Optional[Dict[str, Any]], Optional[str]]:
+def generate_new_level() -> Dict[str, Any]:
+    """
+    Generate a new level with token tracking.
+    
+    Returns:
+        {
+            "success": bool,
+            "level": Dict[str, Any] or None,
+            "level_id": str or None,
+            "tokens": {
+                "generation_tokens": int,
+                "validation_tokens": int,
+                "repair_tokens": int,
+                "sprite_tokens": int (0 for now, populated elsewhere),
+                "total_tokens": int,
+                "repair_count": int
+            }
+        }
+    """
     level_id = str(uuid.uuid4())
     level_dir = ensure_and_get_level_dir(level_id)
     
-    current_level = call_openai(
+    token_tracker = {
+        "generation_tokens": 0,
+        "validation_tokens": 0,
+        "repair_tokens": 0,
+        "total_tokens": 0,
+        "repair_count": 0,
+    }
+    
+    current_level, gen_usage = call_openai(
         out_dir=level_dir,
         file_name="generated_level.json",
         model=GPT_MINI,
@@ -120,10 +158,14 @@ def generate_new_level() -> Tuple[bool, Optional[Dict[str, Any]], Optional[str]]
             "prompt_level_examples",
         ]),
     )
+    token_tracker["generation_tokens"] += gen_usage.get("total_tokens", 0)
+    token_tracker["total_tokens"] += gen_usage.get("total_tokens", 0)
     print("Prototype level generated")
 
     for round_idx in range(0, MAX_REPAIR_ROUNDS):
-        validation = validate_level(level_obj=current_level, out_dir=level_dir)
+        validation, val_usage = validate_level(level_obj=current_level, out_dir=level_dir)
+        token_tracker["validation_tokens"] += val_usage.get("total_tokens", 0)
+        token_tracker["total_tokens"] += val_usage.get("total_tokens", 0)
 
         if validation["solvable"] is True:
             print("Level validated sucessfully")
@@ -135,17 +177,44 @@ def generate_new_level() -> Tuple[bool, Optional[Dict[str, Any]], Optional[str]]
             with open((level_dir / "final_level.json"), "w", encoding="utf-8") as f:
                 json.dump(level, f, ensure_ascii=False, indent=2)
 
-            return True, level, level_id
+            return {
+                "success": True,
+                "level": level,
+                "level_id": level_id,
+                "tokens": {
+                    "generation_tokens": token_tracker["generation_tokens"],
+                    "validation_tokens": token_tracker["validation_tokens"],
+                    "repair_tokens": token_tracker["repair_tokens"],
+                    "sprite_tokens": 0,
+                    "total_tokens": token_tracker["total_tokens"],
+                    "repair_count": token_tracker["repair_count"],
+                }
+            }
 
         print(f"Level validation failed (round {round_idx}): {validation['issues']}")
-        current_level = repair_level(
+        current_level, repair_usage = repair_level(
             current_level_obj=current_level,
             validation=validation,
             round_idx=round_idx,
             out_dir=level_dir,
         )
+        token_tracker["repair_tokens"] += repair_usage.get("total_tokens", 0)
+        token_tracker["total_tokens"] += repair_usage.get("total_tokens", 0)
+        token_tracker["repair_count"] += 1
 
-    return False, None, None
+    return {
+        "success": False,
+        "level": None,
+        "level_id": None,
+        "tokens": {
+            "generation_tokens": token_tracker["generation_tokens"],
+            "validation_tokens": token_tracker["validation_tokens"],
+            "repair_tokens": token_tracker["repair_tokens"],
+            "sprite_tokens": 0,
+            "total_tokens": token_tracker["total_tokens"],
+            "repair_count": token_tracker["repair_count"],
+        }
+    }
 
 def find_objects_with_id_and_inspection(obj: Any, results=None, path=()):
     if results is None:

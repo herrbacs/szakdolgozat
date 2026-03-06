@@ -3,6 +3,7 @@ import numpy as np
 import base64
 import io
 from pathlib import Path
+from typing import Tuple, Dict, Any
 from PIL import Image
 from openai_client import get_openai_client
 from src.utils.path_utils import ensure_and_get_sprites_of_level_dir
@@ -12,6 +13,14 @@ client = get_openai_client()
 SPRITE_QUALITY = "low"
 SPRITE_BACKGROUND = "transparent"
 SPRITE_MODEL = "gpt-image-1-mini"
+
+def extract_sprite_token_usage(response: Any) -> Dict[str, int]:
+    """Extract token usage from OpenAI image generation response."""
+    if hasattr(response, 'usage') and response.usage:
+        return {
+            "total_tokens": getattr(response.usage, 'total_tokens', 1),
+        }
+    return {"total_tokens": 1}
 
 def trim_transparent_bytes(image_bytes: bytes) -> bytes:
     img = Image.open(io.BytesIO(image_bytes)).convert("RGBA")
@@ -40,7 +49,7 @@ def generate_sprite(
     prompt: str,
     file_name: str,
     resolution: str,
-) -> Path:
+) -> Tuple[Path, Dict[str, int]]:
     result = client.images.generate(
         prompt=prompt,
         size=resolution,
@@ -56,7 +65,8 @@ def generate_sprite(
     file_path = out_dir / file_name
     file_path.write_bytes(trimmed_bytes)
 
-    return file_path
+    usage = extract_sprite_token_usage(result)
+    return file_path, usage
 
 
 def edit_sprite(
@@ -66,7 +76,7 @@ def edit_sprite(
     prompt: str,
     file_name: str,
     resolution: str = "1024x1024",
-) -> Path:
+) -> Tuple[Path, Dict[str, int]]:
     out_path = out_dir / file_name
     if not source_image_path.exists():
         raise FileNotFoundError(f"Source image not found: {source_image_path}")
@@ -84,11 +94,12 @@ def edit_sprite(
     image_base64 = result.data[0].b64_json
     out_path.write_bytes(base64.b64decode(image_base64))
 
-    return out_path
+    usage = extract_sprite_token_usage(result)
+    return out_path, usage
 
 
-def generate_door_pair(out_dir: Path, prompt) -> tuple[Path, Path]:
-    closed_path = generate_sprite(
+def generate_door_pair(out_dir: Path, prompt) -> Tuple[Tuple[Path, Path], int]:
+    closed_path, usage1 = generate_sprite(
         out_dir=out_dir,
         prompt=prompt,
         file_name="door_closed.png",
@@ -102,7 +113,7 @@ Change only one thing: the door is now open about 45 degrees inward.
 Show a slight dark interior gap behind the door. Do not change background.
 """
 
-    open_path = edit_sprite(
+    open_path, usage2 = edit_sprite(
         out_dir=out_dir,
         source_image_path=closed_path,
         prompt=open_prompt,
@@ -110,50 +121,70 @@ Show a slight dark interior gap behind the door. Do not change background.
         resolution="1024x1536",
     )
 
-    return closed_path, open_path
+    total_tokens = usage1.get("total_tokens", 0) + usage2.get("total_tokens", 0)
+    return (closed_path, open_path), total_tokens
 
 
-def generate_ui_sprites(level_id: str):
+def generate_ui_sprites(level_id: str) -> int:
+    """Generate UI sprites and return total tokens used."""
     sprite_dir = ensure_and_get_sprites_of_level_dir(level_id)
-    generate_sprite(
+    total_tokens = 0
+    
+    _, tokens = generate_sprite(
         out_dir=sprite_dir,
         prompt="A notepad, Cartoon style, Vector Art",
         file_name="notepad.png",
         resolution="1024x1024",
     )
-    generate_sprite(
+    total_tokens += tokens.get("total_tokens", 0)
+    
+    _, tokens = generate_sprite(
         out_dir=sprite_dir,
         prompt="A backpack, Cartoon style, Vector Art",
         file_name="inventory.png",
         resolution="1024x1024",
     )
-    generate_sprite(
+    total_tokens += tokens.get("total_tokens", 0)
+    
+    _, tokens = generate_sprite(
         out_dir=sprite_dir,
         prompt="A single detailed human eye, Cartoon style, Vector Art",
         file_name="cursor_examine.png",
         resolution="1024x1024",
     )
-    generate_sprite(
+    total_tokens += tokens.get("total_tokens", 0)
+    
+    _, tokens = generate_sprite(
         out_dir=sprite_dir,
         prompt="A magnifying glass, Cartoon style, Vector Art",
         file_name="cursor_search.png",
         resolution="1024x1024",
     )
-    generate_sprite(
+    total_tokens += tokens.get("total_tokens", 0)
+    
+    _, tokens = generate_sprite(
         out_dir=sprite_dir,
         prompt="A hand palm, Cartoon style, Vector Art",
         file_name="cursor_use.png",
         resolution="1024x1024",
     )
-    generate_sprite(
+    total_tokens += tokens.get("total_tokens", 0)
+    
+    _, tokens = generate_sprite(
         out_dir=sprite_dir,
         prompt="A hand, doing a picking up gesture, Cartoon style, Vector Art",
         file_name="cursor_take.png",
         resolution="1024x1024",
     )
+    total_tokens += tokens.get("total_tokens", 0)
+    
+    return total_tokens
 
-def generate_level_object_sprites(found_objects: list[dict], level_id: str):
+def generate_level_object_sprites(found_objects: list[dict], level_id: str) -> int:
+    """Generate level object sprites and return total tokens used."""
     sprite_dir = ensure_and_get_sprites_of_level_dir(level_id)
+    total_tokens = 0
+    
     for obj in found_objects:
         appellation = obj["object"]["inspectionData"]["appellation"]
         information = obj["object"]["inspectionData"]["information"]
@@ -162,11 +193,15 @@ def generate_level_object_sprites(found_objects: list[dict], level_id: str):
         resolution = obj["object"]["spriteResolution"]
 
         if obj["is_exit"]:
-            generate_door_pair(sprite_dir, prompt)
+            (_, _), tokens = generate_door_pair(sprite_dir, prompt)
+            total_tokens += tokens
         else:
-            generate_sprite(
+            _, tokens = generate_sprite(
                 out_dir=sprite_dir,
                 prompt=prompt,
                 file_name=f'{id}.png',
                 resolution=resolution,
             )
+            total_tokens += tokens.get("total_tokens", 0)
+    
+    return total_tokens
