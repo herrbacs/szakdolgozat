@@ -142,6 +142,34 @@ def remove_from_favorite_handler(
     db.delete(existing)
     db.commit()
 
+def get_user_level_rating_handler(
+    level_id: str,
+    db: Session,
+    user: User
+):
+    rating = db.execute(
+        select(LevelRating).where(
+            LevelRating.user_id == user.id,
+            LevelRating.level_id == level_id
+        )
+    ).scalar_one_or_none()
+
+    return {"rating": rating.rating if rating else None}
+
+def get_level_favorite_status_handler(
+    level_id: str,
+    db: Session,
+    user: User
+):
+    favorite = db.execute(
+        select(FavoriteLevel).where(
+            FavoriteLevel.user_id == user.id,
+            FavoriteLevel.level_id == level_id,
+        )
+    ).scalar_one_or_none()
+
+    return {"is_favorite": favorite is not None}
+
 def list_levels_handler(
     pagination: PaginationQuery,
     db: Session,

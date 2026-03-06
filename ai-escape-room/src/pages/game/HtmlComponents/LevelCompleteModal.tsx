@@ -5,7 +5,7 @@ import { AppSettingsContext } from "../../../context/AppSettingsContext"
 import { AppSettingsContextType } from "../../../shared/types/frameworkTypes"
 import { SetAppSettingsActionEnum } from "../../../shared/enums"
 import { authTokenStorage } from "../../../store/tokenStorage"
-import { addLevelToFavorites, rateLevel } from "../../../api/levels"
+import { addLevelToFavorites, rateLevel, removeLevelFromFavorites, getUserLevelRating, isLevelFavorite } from "../../../api/levels"
 
 const LevelCompleteModal = () => {
   const navigate = useNavigate()
@@ -18,6 +18,7 @@ const LevelCompleteModal = () => {
 
   const [selectedRating, setSelectedRating] = useState<number>(5)
   const [busy, setBusy] = useState<boolean>(false)
+  const [userRating, setUserRating] = useState<number | null>(null)
   const [favoriteAdded, setFavoriteAdded] = useState<boolean>(false)
   const [message, setMessage] = useState<string>("")
 
@@ -36,6 +37,7 @@ const LevelCompleteModal = () => {
     setMessage("")
     try {
       await rateLevel(levelId, selectedRating, token)
+      setUserRating(selectedRating)
       setMessage("Rating submitted.")
     } catch {
       setMessage("Failed to submit rating.")
@@ -64,97 +66,130 @@ const LevelCompleteModal = () => {
     }
   }
 
+  const removeFavorite = async () => {
+    const token = authTokenStorage.get()?.accessToken
+    if (!token) {
+      setMessage("Missing access token.")
+      return
+    }
+
+    setBusy(true)
+    setMessage("")
+    try {
+      await removeLevelFromFavorites(levelId, token)
+      setFavoriteAdded(false)
+      setMessage("Removed from favorites.")
+    } catch {
+      setMessage("Failed to remove from favorites.")
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  const loadInitialData = async () => {
+    const token = authTokenStorage.get()?.accessToken
+    if (!token) return
+
+    try {
+      const rating = await getUserLevelRating(levelId, token)
+      setUserRating(rating)
+      if (rating) {
+        setSelectedRating(rating)
+      }
+
+      const isFavorite = await isLevelFavorite(levelId, token)
+      setFavoriteAdded(isFavorite)
+    } catch (err) {
+      console.error("Failed to load initial data:", err)
+    }
+  }
+
   useEffect(() => {
     if (!showLevelCompleteModal) {
       return
     }
 
-    setSelectedRating(5)
-    setBusy(false)
-    setFavoriteAdded(false)
-    setMessage("")
+    loadInitialData()
   }, [showLevelCompleteModal, levelId])
 
   return showLevelCompleteModal && (
     <BaseModal title="Congratulations!" onClose={closeModal}>
-      <div style={{ width: "100%", padding: "0 1.25rem 1.5rem 1.25rem", color: "#ffffff" }}>
-        <p style={{ textAlign: "center", margin: ".5rem 0 1rem 0" }}>
+      <div className="w-full px-5 pb-6 text-white space-y-4">
+        <p className="text-center">
           You escaped the room. Rate this level and save it to your favorites.
         </p>
 
-        <div style={{ display: "flex", justifyContent: "center", gap: ".5rem", marginBottom: "1rem" }}>
-          {[1, 2, 3, 4, 5].map((value) => (
+        {/* Rating Section */}
+        <div className="space-y-2">
+          {userRating && (
+            <p className="text-sm text-gray-300 text-center">
+              Your rating: <span className="font-bold text-yellow-400">{userRating}</span>
+            </p>
+          )}
+          <div className="flex justify-center gap-2">
+            {[1, 2, 3, 4, 5].map((value) => (
+              <button
+                key={value}
+                disabled={busy}
+                onClick={() => !userRating && setSelectedRating(value)}
+                className={`w-9 h-9 rounded-full font-bold text-sm transition-colors ${
+                  selectedRating === value
+                    ? "bg-yellow-400 text-gray-900 shadow-lg"
+                    : userRating
+                    ? "bg-gray-600 text-white cursor-not-allowed"
+                    : "bg-white text-gray-900 hover:bg-gray-200 cursor-pointer"
+                } disabled:opacity-50`}
+              >
+                {value}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Action Buttons */}
+        <div className="flex flex-col gap-3 pt-2">
+          {!userRating && (
             <button
-              key={value}
               disabled={busy}
-              onClick={() => setSelectedRating(value)}
-              style={{
-                width: "2.3rem",
-                height: "2.3rem",
-                borderRadius: "50%",
-                border: "none",
-                cursor: "pointer",
-                fontWeight: 700,
-                backgroundColor: selectedRating === value ? "#ffd54f" : "#ffffff",
-                color: "#333333",
-              }}
+              onClick={submitRating}
+              className="w-full px-4 py-2 rounded-md font-bold text-white bg-amber-500 hover:bg-amber-600 disabled:opacity-50 transition-colors"
             >
-              {value}
+              Submit Rating
             </button>
-          ))}
-        </div>
+          )}
 
-        <div style={{ display: "flex", justifyContent: "center", gap: ".75rem", marginBottom: ".75rem" }}>
-          <button
-            disabled={busy}
-            onClick={submitRating}
-            style={{
-              padding: ".55rem 1rem",
-              borderRadius: ".4rem",
-              border: "none",
-              cursor: "pointer",
-              backgroundColor: "#f59e0b",
-              color: "#ffffff",
-              fontWeight: 700,
-            }}
-          >
-            Submit Rating
-          </button>
-          <button
-            disabled={busy || favoriteAdded}
-            onClick={submitFavorite}
-            style={{
-              padding: ".55rem 1rem",
-              borderRadius: ".4rem",
-              border: "none",
-              cursor: favoriteAdded ? "default" : "pointer",
-              backgroundColor: favoriteAdded ? "#9ca3af" : "#2563eb",
-              color: "#ffffff",
-              fontWeight: 700,
-            }}
-          >
-            {favoriteAdded ? "Favorited" : "Add to Favorites"}
-          </button>
-        </div>
+          {!favoriteAdded ? (
+            <button
+              disabled={busy}
+              onClick={submitFavorite}
+              className="w-full px-4 py-2 rounded-md font-bold text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-50 transition-colors"
+            >
+              Add to Favorites
+            </button>
+          ) : (
+            <button
+              disabled={busy}
+              onClick={removeFavorite}
+              className="w-full px-4 py-2 rounded-md font-bold text-white bg-red-600 hover:bg-red-700 disabled:opacity-50 transition-colors"
+            >
+              Remove from Favorites
+            </button>
+          )}
 
-        <div style={{ display: "flex", justifyContent: "center" }}>
           <button
             onClick={() => navigate("/menu")}
-            style={{
-              padding: ".55rem 1rem",
-              borderRadius: ".4rem",
-              border: "none",
-              cursor: "pointer",
-              backgroundColor: "#22c55e",
-              color: "#ffffff",
-              fontWeight: 700,
-            }}
+            className="w-full px-4 py-2 rounded-md font-bold text-white bg-green-600 hover:bg-green-700 transition-colors"
           >
             Back to Menu
           </button>
         </div>
 
-        {message && <div style={{ textAlign: "center", marginTop: ".75rem" }}>{message}</div>}
+        {/* Message Display */}
+        {message && (
+          <div className="text-center text-sm text-blue-300 pt-2">
+            {message}
+          </div>
+        )}
       </div>
     </BaseModal>
   )
