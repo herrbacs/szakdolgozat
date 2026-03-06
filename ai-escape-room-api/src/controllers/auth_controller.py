@@ -12,6 +12,7 @@ from src.security.jwt import create_access_token, create_refresh_token, decode_t
 from db.models.user import User
 from db.models.refresh_token import RefreshToken
 from jose import JWTError, ExpiredSignatureError
+from db.models.user_tokens import UserTokens
 
 def register_handler(req: RegisterRequest, db: Session = Depends(get_db)):
     existing_user_query = select(User).where(or_(User.email == req.email, User.username == req.username))
@@ -29,6 +30,9 @@ def register_handler(req: RegisterRequest, db: Session = Depends(get_db)):
     )
 
     db.add(user)
+    db.commit()
+
+    db.add(UserTokens(user_id=user.id, balance=1000))
     db.commit()
 
 def login_handler(req: LoginRequest, db: Session = Depends(get_db)) -> LoginResponse:

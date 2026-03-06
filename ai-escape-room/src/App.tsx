@@ -10,6 +10,7 @@ import NewLevel from "./pages/new-level/NewLevel"
 import ProtectedRoute from "./components/ProtectedRoute"
 import { setOnAuthFailed } from "./api/api"
 import { authTokenStorage } from "./store/tokenStorage"
+import Profile from "./pages/Profile"
 
 function AppRoutes() {
   const navigate = useNavigate()
@@ -57,6 +58,14 @@ function AppRoutes() {
           element={
             <ProtectedRoute>
               <NewLevel />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
             </ProtectedRoute>
           }
         />

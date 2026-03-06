@@ -15,6 +15,14 @@ const Menu: React.FC = () => {
         <ul className="space-y-4">
           <li>
             <button
+              onClick={() => navigate("/profile")}
+              className="w-full py-2.5 rounded-lg font-semibold text-white transition bg-green-600 hover:bg-green-700 active:scale-[0.98]"
+            >
+              Profile
+            </button>
+          </li>
+          <li>
+            <button
               onClick={() => navigate("/levels")}
               className="w-full py-2.5 rounded-lg font-semibold text-white transition bg-indigo-600 hover:bg-indigo-700 active:scale-[0.98]"
             >
