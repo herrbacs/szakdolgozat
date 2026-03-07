@@ -7,7 +7,7 @@ from fastapi import HTTPException
 from config import GPT_MINI, GPT_5_2, MAX_REPAIR_ROUNDS
 from openai_client import get_openai_client
 from src.prompts.prompts import load_prompt
-from src.utils.json_utils import ensure_valid_json_and_save, strip_code_fences
+from src.utils.json_utils import ensure_valid_json_and_save
 from src.utils.path_utils import ensure_and_get_level_dir
 from src.postprocess.normalize_ids import normalize_level_id_structures
 from pathlib import Path
@@ -83,7 +83,7 @@ def call_openai(*, out_dir: Path, file_name: str, **openai_params: Any) -> Tuple
             },
         )
 
-    valid_json_str = ensure_valid_json_and_save(text, out_dir / file_name)
+    valid_json_str = ensure_valid_json_and_save(text, out_dir, file_name)
     result = json.loads(valid_json_str)
     usage = extract_token_usage(response)
     return result, usage, minutes
