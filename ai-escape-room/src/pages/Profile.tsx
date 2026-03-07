@@ -6,6 +6,7 @@ import type {
   TokenPurchaseRequest,
   TokenPurchaseResponse,
 } from "../api/types/tokens"
+import { TokenCategory } from "../api/types/tokens"
 
 const cardWrapperClass =
   "min-h-screen flex items-center justify-center bg-linear-to-br from-indigo-500 via-purple-500 to-pink-500 px-4"
@@ -15,9 +16,9 @@ const Profile: React.FC = () => {
   const [profile, setProfile] = useState<ProfileResponse | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [purchaseCategory, setPurchaseCategory] = useState<
-    "basic" | "medium" | "high"
-  >("basic")
+  const [purchaseCategory, setPurchaseCategory] = useState<TokenCategory>(
+    TokenCategory.Basic
+  )
   const [message, setMessage] = useState<string | null>(null)
 
   useEffect(() => {
@@ -113,13 +114,13 @@ const Profile: React.FC = () => {
           <select
             value={purchaseCategory}
             onChange={(e) =>
-              setPurchaseCategory(e.target.value as "basic" | "medium" | "high")
+              setPurchaseCategory(e.target.value as TokenCategory)
             }
             className="w-full border rounded px-2 py-1 mb-2"
           >
-            <option value="basic">Basic (100 tokens)</option>
-            <option value="medium">Medium (500 tokens)</option>
-            <option value="high">High (1000 tokens)</option>
+            <option value={TokenCategory.Basic}>Kicsi (50 000 token)</option>
+            <option value={TokenCategory.Medium}>Közepes (75 000 token)</option>
+            <option value={TokenCategory.High}>Nagy (100 000 token)</option>
           </select>
 
           <button

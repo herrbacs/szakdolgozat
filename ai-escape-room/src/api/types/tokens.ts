@@ -1,5 +1,11 @@
+export enum TokenCategory {
+  Basic = "basic",
+  Medium = "medium",
+  High = "high",
+}
+
 export type TokenPurchaseRequest = {
-  category: "basic" | "medium" | "high"
+  category: TokenCategory
 }
 
 export type TokenPurchaseResponse = {

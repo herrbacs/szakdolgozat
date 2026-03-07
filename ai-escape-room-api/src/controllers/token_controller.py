@@ -3,6 +3,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 from db.models.user import User
 from db.models.user_tokens import UserTokens
+from src.schemas.tokens import TokenCategory
 
 
 def profile_handler(user: User, db: Session):
@@ -11,8 +12,12 @@ def profile_handler(user: User, db: Session):
     return {"id": user.id, "email": user.email, "username": user.username, "tokens": balance}
 
 
-def buy_tokens_handler(category: str, user: User, db: Session):
-    mapping = {"basic": 100, "medium": 500, "high": 1000}
+def buy_tokens_handler(category: TokenCategory, user: User, db: Session):
+    mapping = {
+        TokenCategory.basic: 50000,
+        TokenCategory.medium: 75000,
+        TokenCategory.high: 100000,
+    }
     if category not in mapping:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid purchase category")
     amount = mapping[category]
