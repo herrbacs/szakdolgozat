@@ -1,0 +1,110 @@
+{
+  "solvable": true,
+  "issues": [],
+  "derivation": [
+    {
+      "target": "LOCK",
+      "targetId": "1a2b3c4d-0201-4f6a-9a2b-333333333333",
+      "lockType": "CODE_ONLY_LETTER",
+      "expectedActivator": "O",
+      "dependsOn": [
+        "1a2b3c4d-0101-4f6a-9a2b-222222222222",
+        "1a2b3c4d-0102-4f6a-9a2b-222222222223"
+      ],
+      "steps": [
+        "Read Morse Plaque: ---",
+        "Use Legend Plate mapping (•=short, —=long) to decode --- => O"
+      ],
+      "playerHints": [
+        {
+          "hint": "Read the Morse Plaque.",
+          "reveals": "O"
+        },
+        {
+          "hint": "Check the Legend Plate mapping dots/dashes.",
+          "reveals": "O"
+        }
+      ]
+    },
+    {
+      "target": "LOCK",
+      "targetId": "2b3c4d5e-0201-4a6b-8c3d-777777777777",
+      "lockType": "CODE_ONLY_LETTER",
+      "expectedActivator": "P",
+      "dependsOn": [
+        "1a2b3c4d-0301-4f6a-9a2b-444444444444",
+        "2b3c4d5e-0101-4a6b-8c3d-666666666666",
+        "2b3c4d5e-0102-4a6b-8c3d-666666666667"
+      ],
+      "steps": [
+        "Read Stamped Letter from first box => O",
+        "Apply '+1' shift to O using Alphabet Strip => P"
+      ],
+      "playerHints": [
+        {
+          "hint": "Read the stamped letter from the opened wooden box.",
+          "reveals": "O"
+        },
+        {
+          "hint": "Apply the '+1' instruction to that letter using the Alphabet Strip.",
+          "reveals": "P"
+        }
+      ]
+    },
+    {
+      "target": "LOCK",
+      "targetId": "3c4d5e6f-0201-4b7c-8d4e-cccccccccccc",
+      "lockType": "CODE_ONLY_LETTER",
+      "expectedActivator": "E",
+      "dependsOn": [
+        "2b3c4d5e-0301-4a6b-8c3d-888888888888",
+        "3c4d5e6f-0101-4b7c-8d4e-bbbbbbbbbbbb",
+        "3c4d5e6f-0102-4b7c-8d4e-bbbbbbbbbbbc"
+      ],
+      "steps": [
+        "Read Pressed Token from safe => P",
+        "Map P to 16 (Number Key), subtract 11 => 5 => E"
+      ],
+      "playerHints": [
+        {
+          "hint": "Read the pressed token inside the metal safe.",
+          "reveals": "P"
+        },
+        {
+          "hint": "Use the Number Key and 'Subtract 11' instruction to convert P => E.",
+          "reveals": "E"
+        }
+      ]
+    },
+    {
+      "target": "EXIT_LOCK",
+      "targetId": "4d5e6f7a-1101-4c8d-9e5f-121212121212",
+      "lockType": "PASSWORD",
+      "expectedActivator": "OPEN",
+      "dependsOn": [
+        "1a2b3c4d-0301-4f6a-9a2b-444444444444",
+        "2b3c4d5e-0301-4a6b-8c3d-888888888888",
+        "3c4d5e6f-0301-4b7c-8d4e-dddddddddddd",
+        "3c4d5e6f-0302-4b7c-8d4e-eeeeeeeeeeee",
+        "1a2b3c4d-0201-4f6a-9a2b-333333333333",
+        "2b3c4d5e-0201-4a6b-8c3d-777777777777",
+        "3c4d5e6f-0201-4b7c-8d4e-cccccccccccc"
+      ],
+      "steps": [
+        "Collect letters from boxes in opened order => 1st O, 2nd P, 3rd E",
+        "Compute 4th letter: take 1st letter O, reduce alphabetical value by 1 => N",
+        "Assemble 1-4 => O P E N => 'OPEN'"
+      ],
+      "playerHints": [
+        {
+          "hint": "Follow the Hidden Note's instruction about box order and the reduction rule.",
+          "reveals": "ORDER and reduction rule to produce last letter"
+        },
+        {
+          "hint": "Arrange the collected letters O, P, E and compute last letter from the first => N, yielding 'OPEN'.",
+          "reveals": "OPEN"
+        }
+      ]
+    }
+  ]
+}
