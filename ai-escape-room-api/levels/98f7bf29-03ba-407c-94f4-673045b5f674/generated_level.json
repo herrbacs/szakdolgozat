@@ -1,0 +1,308 @@
+{
+  "title": "The Clockmaker's Atelier",
+  "story": "You awaken inside a small workshop of a retired clockmaker. The door is a heavy steel hatch with four recessed slots. Scattered notes, a locked safe, and a faded painting suggest the maker left behind a chain of mechanical hints. Solve each artifact in sequence to gather four digits and unlock the hatch before the workshop's silence becomes permanent.",
+  "walls": [
+    {
+      "id": "1a3f9d1e-8b2d-4c6b-9e4f-d2a6e1b7f001",
+      "color": "#CFE8FF",
+      "exit": null,
+      "pickables": [],
+      "inspectables": [
+        {
+          "id": "0b7f2a12-4ca6-4a3b-9c88-2f3d7fbc0001",
+          "position": "WT1",
+          "inspectionData": {
+            "appellation": "Portrait of three orbs",
+            "information": "Three small orbs painted left-to-right bear the numbers 2, 7, 5 beneath them."
+          },
+          "spriteResolution": "1536x1024"
+        },
+        {
+          "id": "2c1b4e5a-9a27-4e29-9b8a-3e8f0aab0002",
+          "position": "WT2",
+          "inspectionData": {
+            "appellation": "Yellow sticky",
+            "information": "A scrawled note reads: 'Middle first, then outwards.'"
+          },
+          "spriteResolution": "1024x1024"
+        }
+      ],
+      "containers": [
+        {
+          "id": "f3d9c2ef-6dbe-4f6d-ae11-7b4f8d000003",
+          "position": "F1",
+          "lock": {
+            "type": "CODE_ONLY_NUMBER",
+            "activator": "275"
+          },
+          "content": [
+            {
+              "type": "PICKABLE",
+              "object": {
+                "id": "5e6a7b8c-1111-4444-8888-0a0b0c000004",
+                "position": "F1",
+                "reusable": false,
+                "inspectionData": {
+                  "appellation": "Small brass key",
+                  "information": "A short brass key with a rounded bow and a single tooth."
+                },
+                "spriteResolution": "1024x1024"
+              }
+            },
+            {
+              "type": "INSPECTABLE",
+              "object": {
+                "id": "7f9d1e2b-2222-3333-9999-1b1c1d000005",
+                "position": "F1",
+                "inspectionData": {
+                  "appellation": "Folded note (color mapping)",
+                  "information": "Blue=L; Amber=A; Magenta=M; Pink=P."
+                },
+                "spriteResolution": "1024x1536"
+              }
+            }
+          ],
+          "inspectionData": {
+            "appellation": "Small steel safe",
+            "information": "A reinforced metal safe with a three-digit keypad inset and a brushed-steel finish."
+          },
+          "spriteResolution": "1024x1024"
+        }
+      ],
+      "movableCovers": []
+    },
+    {
+      "id": "2b4e8f3c-3d9b-4c7a-8f22-9d5e6f000006",
+      "color": "#FFF2CC",
+      "exit": {
+        "id": "a12f3e4b-5678-4c9d-8f77-0c0d0e000007",
+        "lock": {
+          "type": "CODE_ONLY_NUMBER",
+          "activator": "8314"
+        },
+        "inspectionData": {
+          "appellation": "Heavy steel hatch",
+          "information": "A heavy steel hatch with four small recessed slots labeled A, B, C, D (top to bottom). Each slot looks like it accepts a numbered tile."
+        },
+        "spriteResolution": "1024x1536"
+      },
+      "pickables": [],
+      "inspectables": [
+        {
+          "id": "bb3c5d6e-4444-5555-aaaa-2c2d2e000008",
+          "position": "WT1",
+          "inspectionData": {
+            "appellation": "Ceiling fan plaque",
+            "information": "A small maker's plaque: 'E. Caplin — Precision & Order'. The date is rubbed but you can make out a faint '19'."
+          },
+          "spriteResolution": "1024x1024"
+        },
+        {
+          "id": "cc4d6e7f-5555-6666-bbbb-3d3e3f000009",
+          "position": "WT3",
+          "inspectionData": {
+            "appellation": "Faded schematic",
+            "information": "A faded schematic shows four rectangular slots and arrows indicating a left-to-right flow."
+          },
+          "spriteResolution": "1536x1024"
+        }
+      ],
+      "containers": [],
+      "movableCovers": []
+    },
+    {
+      "id": "3c5f7a2d-6a88-4b0e-9c33-4e6f7a000010",
+      "color": "#F6E7FF",
+      "exit": null,
+      "pickables": [],
+      "inspectables": [
+        {
+          "id": "d1e2f3a4-6666-7777-cccc-4e4f4a000011",
+          "position": "WT2",
+          "inspectionData": {
+            "appellation": "Poster with color swatches",
+            "information": "Four color swatches are arranged left-to-right: Blue, Amber, Magenta, Pink."
+          },
+          "spriteResolution": "1536x1024"
+        },
+        {
+          "id": "e2f3a4b5-7777-8888-dddd-5f5g5h000012",
+          "position": "W3",
+          "inspectionData": {
+            "appellation": "Cracked plaque",
+            "information": "Small printed letters beneath each swatch are faded and hard to read; only the swatches are clear."
+          },
+          "spriteResolution": "1024x1536"
+        }
+      ],
+      "containers": [
+        {
+          "id": "f4a5b6c7-8888-9999-eeee-6a6b6c000013",
+          "position": "W1",
+          "lock": {
+            "type": "CODE_ONLY_LETTER",
+            "activator": "LAMP"
+          },
+          "content": [
+            {
+              "type": "INSPECTABLE",
+              "object": {
+                "id": "a5b6c7d8-9999-aaaa-ffff-7b7c7d000014",
+                "position": "W1",
+                "inspectionData": {
+                  "appellation": "Stamped metal plate",
+                  "information": "Two small metal tiles are riveted to the plate and stamped with the digits: 8 and 3."
+                },
+                "spriteResolution": "1024x1024"
+              }
+            },
+            {
+              "type": "PICKABLE",
+              "object": {
+                "id": "b6c7d8e9-aaaa-bbbb-1111-8c8d8e000015",
+                "position": "W1",
+                "reusable": true,
+                "inspectionData": {
+                  "appellation": "Precision screwdriver",
+                  "information": "A thin precision screwdriver with a worn handle; the tip fits small slotted screws."
+                },
+                "spriteResolution": "1024x1024"
+              }
+            }
+          ],
+          "inspectionData": {
+            "appellation": "Wooden wall safe",
+            "information": "A narrow wooden safe set into the wall with a four-letter keypad and carved floral trim."
+          },
+          "spriteResolution": "1536x1024"
+        }
+      ],
+      "movableCovers": []
+    },
+    {
+      "id": "4d6b8c1f-9b00-4f1a-8a44-5f7g8h000016",
+      "color": "#FFF5EE",
+      "exit": null,
+      "pickables": [],
+      "inspectables": [
+        {
+          "id": "c6d7e8f9-bbbb-cccc-2222-9d9e9f000017",
+          "position": "WT1",
+          "inspectionData": {
+            "appellation": "Sequence note",
+            "information": "A penciled note pinned to the wall reads: 'Order the found tiles: middle, left, right.'"
+          },
+          "spriteResolution": "1024x1024"
+        },
+        {
+          "id": "d7e8f9a0-cccc-dddd-3333-0e0f0g000018",
+          "position": "WT2",
+          "inspectionData": {
+            "appellation": "Vent grate with stamped digit",
+            "information": "A small vent grate has a tiny brass peg visible through the slats stamped with the number 1."
+          },
+          "spriteResolution": "1024x1024"
+        }
+      ],
+      "containers": [
+        {
+          "id": "e8f9a0b1-dddd-eeee-4444-1f1g1h000019",
+          "position": "F2",
+          "lock": {
+            "type": "CODE_ONLY_NUMBER",
+            "activator": "831"
+          },
+          "content": [
+            {
+              "type": "PICKABLE",
+              "object": {
+                "id": "f9a0b1c2-eeee-ffff-5555-2g2h2i000020",
+                "position": "F2",
+                "reusable": false,
+                "inspectionData": {
+                  "appellation": "Brass tag",
+                  "information": "A thin brass tag stamped with the single digit: 1."
+                },
+                "spriteResolution": "1024x1024"
+              }
+            },
+            {
+              "type": "INSPECTABLE",
+              "object": {
+                "id": "0a1b2c3d-ffff-0000-6666-3h3i3j000021",
+                "position": "F2",
+                "inspectionData": {
+                  "appellation": "Folded slip (painting code)",
+                  "information": "A folded slip of paper, unfolded it clearly shows the three digits: 742."
+                },
+                "spriteResolution": "1024x1536"
+              }
+            }
+          ],
+          "inspectionData": {
+            "appellation": "Locked metal trunk",
+            "information": "A compact metal trunk with a three-digit rotary dial inlaid into a brass clasp."
+          },
+          "spriteResolution": "1024x1024"
+        }
+      ],
+      "movableCovers": [
+        {
+          "id": "1b2c3d4e-0000-1111-7777-4i4j4k000022",
+          "position": "W3",
+          "inspectionData": {
+            "appellation": "Faded painting (movable)",
+            "information": "A faded portrait held by a cast-brass clasp at its bottom edge; moving it would reveal what sits behind it."
+          },
+          "spriteResolution": "1536x1024",
+          "content": {
+            "type": "CONTAINER",
+            "object": {
+              "id": "2c3d4e5f-1111-2222-8888-5j5k5l000023",
+              "position": "W3",
+              "lock": {
+                "type": "KEY",
+                "activator": "5e6a7b8c-1111-4444-8888-0a0b0c000004"
+              },
+              "content": [
+                {
+                  "type": "INSPECTABLE",
+                  "object": {
+                    "id": "3d4e5f60-2222-3333-9999-6k6l6m000024",
+                    "position": "W3",
+                    "inspectionData": {
+                      "appellation": "Polished tile",
+                      "information": "A small ceramic tile stamped with the digit: 4."
+                    },
+                    "spriteResolution": "1024x1024"
+                  }
+                },
+                {
+                  "type": "INSPECTABLE",
+                  "object": {
+                    "id": "4e5f6071-3333-4444-aaaa-7l7m7n000025",
+                    "position": "W3",
+                    "inspectionData": {
+                      "appellation": "Folded note (exit assembly)",
+                      "information": "Four slots on the hatch correspond to the tiles you collect. Assemble them left-to-right: the two-digit plate, then the single stamped tag, then the final tile obtained behind the painting."
+                    },
+                    "spriteResolution": "1024x1536"
+                  }
+                }
+              ],
+              "inspectionData": {
+                "appellation": "Hidden wooden chest",
+                "information": "A small wooden chest lined in felt; its lid is secured by a keyhole."
+              },
+              "spriteResolution": "1024x1024"
+            }
+          },
+          "lock": {
+            "type": "CODE_ONLY_NUMBER",
+            "activator": "742"
+          }
+        }
+      ]
+    }
+  ]
+}

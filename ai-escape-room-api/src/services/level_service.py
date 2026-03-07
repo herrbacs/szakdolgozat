@@ -195,7 +195,6 @@ def generate_new_level(difficulty: int = 3, sprite_style: SpriteStyle = SpriteSt
     level_id = str(uuid.uuid4())
     level_dir = ensure_and_get_level_dir(level_id)
     
-    # use breakdown by type so storage and reporting later is simpler
     token_tracker = {
         "generation": {"tokens": 0, "minutes": 0.0},
         "validation": {"tokens": 0, "minutes": 0.0},

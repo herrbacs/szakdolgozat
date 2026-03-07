@@ -1,0 +1,7 @@
+{
+  "solvable": false,
+  "issues": [
+    "Small steel safe (three-digit) activator '275' is inconsistent with its clues: Portrait shows digits left-to-right 2,7,5 and the sticky says 'Middle first, then outwards.' Deterministic application of that instruction yields '725' (or at least not '275'), so the safe code is not derivable."
+  ],
+  "derivation": []
+}

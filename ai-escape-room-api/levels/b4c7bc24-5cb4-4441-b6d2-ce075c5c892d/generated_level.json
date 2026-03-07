@@ -1,0 +1,326 @@
+{
+  "title": "Clockwork Workshop",
+  "story": "You awaken in a cramped workshop filled with faded posters and dusty tools. A reinforced door bars the only exit; above its keypad are four tiny icons—each matching objects scattered around the room. The room's clues are layered: some facts are visible immediately but make sense only after you unlock earlier discoveries. Solve the sequence of workshop puzzles to collect four numeric tokens and enter the four-digit code to escape.",
+  "walls": [
+    {
+      "id": "9b2f1b1a-8d2a-4d3a-9f2b-1a3c0e8f1111",
+      "color": "#F5E1C4",
+      "exit": null,
+      "pickables": [],
+      "inspectables": [
+        {
+          "id": "0a1d6a24-2b8f-4a4f-8b3e-2c9f7a222222",
+          "position": "WT1",
+          "inspectionData": {
+            "appellation": "Marked Calendar",
+            "information": "A calendar page for July. The day '7' is circled in red with a shaky pen; the surrounding dates are clean."
+          },
+          "spriteResolution": "1536x1024"
+        },
+        {
+          "id": "1b3e7c35-3c9d-4b5b-9a4f-3d8e8b333333",
+          "position": "W1",
+          "inspectionData": {
+            "appellation": "Stopped Clock",
+            "information": "An old wall clock frozen with the hour hand on 7 and the minute hand on 12; the glass is dusty but intact."
+          },
+          "spriteResolution": "1024x1024"
+        }
+      ],
+      "containers": [
+        {
+          "id": "2c4f8d46-4dbe-4c6c-9b5f-4e9f9c444444",
+          "position": "WB1",
+          "lock": {
+            "type": "CODE_ONLY_NUMBER",
+            "activator": "7"
+          },
+          "content": [
+            {
+              "type": "PICKABLE",
+              "object": {
+                "id": "3d5f9e57-5ef0-4d7d-9c6f-5f0f0d555555",
+                "position": "F1",
+                "reusable": false,
+                "inspectionData": {
+                  "appellation": "Small Brass Key",
+                  "information": "A tiny brass key; the bow has a faint stamped letter 'T' on one side."
+                },
+                "spriteResolution": "1024x1024"
+              }
+            },
+            {
+              "type": "INSPECTABLE",
+              "object": {
+                "id": "4e6f0f68-6f01-4e8e-9d7f-6a1f1e666666",
+                "position": "F1",
+                "inspectionData": {
+                  "appellation": "Scratched Note",
+                  "information": "A quick scrawl reads: 'Toolbox keeps the next piece. Don't force the bolts.' The handwriting is hurried."
+                },
+                "spriteResolution": "1024x1024"
+              }
+            }
+          ],
+          "inspectionData": {
+            "appellation": "Small Wall Safe",
+            "information": "An old metal safe inset into the wall; the dial shows a one-digit code slot and the door has a small keyhole."
+          },
+          "spriteResolution": "1024x1024"
+        }
+      ],
+      "movableCovers": []
+    },
+    {
+      "id": "a7c3d814-1e3f-4b2d-8c7a-7b2d6f777777",
+      "color": "#DDEEFF",
+      "exit": null,
+      "pickables": [],
+      "inspectables": [
+        {
+          "id": "5f7a1b79-7f12-4f9f-8b8b-8c3f8f888888",
+          "position": "WT2",
+          "inspectionData": {
+            "appellation": "Faded Sticker",
+            "information": "A worn sticker showing three small bolt icons in a row; beneath them the Roman numeral 'III' is printed."
+          },
+          "spriteResolution": "1536x1024"
+        },
+        {
+          "id": "6a8b2c8a-8f23-4fac-9c9c-9d4f9f999999",
+          "position": "WT3",
+          "inspectionData": {
+            "appellation": "Workshop Checklist",
+            "information": "A torn checklist pinned to the wall: 'Tighten bolts: quantity 3.' Someone underlined the number '3'."
+          },
+          "spriteResolution": "1024x1024"
+        },
+        {
+          "id": "d1f7b3a3-b2c4-4a6a-9e2f-11a2b2c2d2d2",
+          "position": "W1",
+          "inspectionData": {
+            "appellation": "Photo Strip (Exit Partial)",
+            "information": "A faint stencil showing four small icons aligned horizontally: a key, a toolbox, a vent grate, and a chest. The stencil is smudged but recognizable."
+          },
+          "spriteResolution": "1536x1024"
+        }
+      ],
+      "containers": [
+        {
+          "id": "7b9c3d9b-2b34-4b8b-a0b0-0e2f2f000000",
+          "position": "F2",
+          "lock": {
+            "type": "KEY",
+            "activator": "3d5f9e57-5ef0-4d7d-9c6f-5f0f0d555555"
+          },
+          "content": [
+            {
+              "type": "PICKABLE",
+              "object": {
+                "id": "8c0d4eac-3c45-4c9c-b1c1-1f3f3f111111",
+                "position": "F1",
+                "reusable": false,
+                "inspectionData": {
+                  "appellation": "Metal Token '3'",
+                  "information": "A small round metal token, impressed with a bold '3' on its face."
+                },
+                "spriteResolution": "1024x1024"
+              }
+            },
+            {
+              "type": "PICKABLE",
+              "object": {
+                "id": "9d1e5fbd-4d56-4dad-c2d2-2f4f4f222222",
+                "position": "F1",
+                "reusable": true,
+                "inspectionData": {
+                  "appellation": "Flathead Screwdriver",
+                  "information": "A flathead screwdriver with a worn wooden handle; the tip shows marks of frequent use."
+                },
+                "spriteResolution": "1024x1024"
+              }
+            },
+            {
+              "type": "INSPECTABLE",
+              "object": {
+                "id": "ae2f60ce-5e67-4ebe-d3e3-3f5f5f333333",
+                "position": "F1",
+                "inspectionData": {
+                  "appellation": "Toolbox Interior Note",
+                  "information": "A smudged label inside the toolbox reads: 'Spare bits and tokens for the vent. Keep flat tools handy.'"
+                },
+                "spriteResolution": "1024x1024"
+              }
+            }
+          ],
+          "inspectionData": {
+            "appellation": "Locked Steel Toolbox",
+            "information": "A heavy metal toolbox with a keyed lock; dents and oil stains suggest regular use."
+          },
+          "spriteResolution": "1536x1024"
+        },
+        {
+          "id": "f3a4b1d1-6f78-4cba-b4d4-4f6f6f444444",
+          "position": "F1",
+          "lock": {
+            "type": "CODE_ONLY_NUMBER",
+            "activator": "4"
+          },
+          "content": [
+            {
+              "type": "PICKABLE",
+              "object": {
+                "id": "b4c5d2e2-7f89-4dcb-c5e5-5f7f7f555555",
+                "position": "F1",
+                "reusable": false,
+                "inspectionData": {
+                  "appellation": "Wooden Token '4'",
+                  "information": "A small wooden token burned with the numeral '4'. The burn marks are dark but deliberate."
+                },
+                "spriteResolution": "1024x1024"
+              }
+            },
+            {
+              "type": "INSPECTABLE",
+              "object": {
+                "id": "c5d6e3f3-809a-4edc-d6f6-6f8f8f666666",
+                "position": "F1",
+                "inspectionData": {
+                  "appellation": "Old Photograph",
+                  "information": "An old photograph shows three workshop shelves; each shelf has a small label, but the labels are blurred. The leftmost shelf appears slightly scuffed."
+                },
+                "spriteResolution": "1536x1024"
+              }
+            }
+          ],
+          "inspectionData": {
+            "appellation": "Antique Chest",
+            "information": "A battered wooden chest bound in iron, fitted with a small numerical dial for a single-digit code."
+          },
+          "spriteResolution": "1024x1536"
+        }
+      ],
+      "movableCovers": []
+    },
+    {
+      "id": "0f4b8a2b-3a90-47ef-8d1b-8a9b9a888888",
+      "color": "#FFEECC",
+      "exit": null,
+      "pickables": [],
+      "inspectables": [
+        {
+          "id": "d7e8f4a4-90ab-4f0f-9f0f-7b8b8b777777",
+          "position": "WT1",
+          "inspectionData": {
+            "appellation": "Mural of Symbols",
+            "information": "A faded mural shows three distinct symbols in a row: a crescent, a gear, and a square—each roughly the size of a palm."
+          },
+          "spriteResolution": "1536x1024"
+        },
+        {
+          "id": "e8f905b5-a1bc-4f1f-8f1f-8c9c9c888888",
+          "position": "WT2",
+          "inspectionData": {
+            "appellation": "Numbered Plaque",
+            "information": "A small plaque beneath the mural reads the sequence '2 - 1 - 3' engraved beneath tiny silhouettes matching the mural's symbols."
+          },
+          "spriteResolution": "1024x1024"
+        },
+        {
+          "id": "f9a016c6-b2cd-4f2f-9f2f-9da0a0999999",
+          "position": "WT3",
+          "inspectionData": {
+            "appellation": "Columned Words",
+            "information": "A torn flyer lists the words 'Left', 'Center', 'Right' vertically; someone has penciled small arrows next to each word."
+          },
+          "spriteResolution": "1024x1536"
+        }
+      ],
+      "containers": [],
+      "movableCovers": [
+        {
+          "id": "0b2c3d4e-5f60-4f70-9a0a-0b1b1b000000",
+          "position": "W3",
+          "inspectionData": {
+            "appellation": "Peeling Movie Poster",
+            "information": "A colorful movie poster is tacked to the wall; its lower edge is loosened and the paper creases at one corner."
+          },
+          "spriteResolution": "1536x1024",
+          "content": {
+            "type": "CONTAINER",
+            "object": {
+              "id": "1c3d4e5f-6a71-4f81-9b1b-1c2c2c123123",
+              "position": "W3",
+              "lock": {
+                "type": "KEY",
+                "activator": "9d1e5fbd-4d56-4dad-c2d2-2f4f4f222222"
+              },
+              "content": [
+                {
+                  "type": "PICKABLE",
+                  "object": {
+                    "id": "2d4e5f60-7b82-4f92-9c2c-2d3d3d234234",
+                    "position": "F1",
+                    "reusable": false,
+                    "inspectionData": {
+                      "appellation": "Metal Token '1'",
+                      "information": "A slim metal token with the number '1' stamped clearly on its face; the metal is cold to the touch."
+                    },
+                    "spriteResolution": "1024x1024"
+                  }
+                },
+                {
+                  "type": "INSPECTABLE",
+                  "object": {
+                    "id": "3e5f6071-8c93-4fa3-9d3d-3e4e4e345345",
+                    "position": "F1",
+                    "inspectionData": {
+                      "appellation": "Folded Slip",
+                      "information": "A folded slip reads: 'When arranging the photos, start from the rightmost image and read left.' The ink is faded but legible."
+                    },
+                    "spriteResolution": "1024x1024"
+                  }
+                }
+              ],
+              "inspectionData": {
+                "appellation": "Hidden Wall Compartment",
+                "information": "Behind the poster is a narrow metal compartment fitted into the wall with a small keyed lock."
+              },
+              "spriteResolution": "1024x1024"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "6e5d4c3b-2a19-4b8a-9f8e-5c4b3a222222",
+      "color": "#CCEEDD",
+      "exit": {
+        "id": "4f3e2d1c-0b9a-4a8b-9c7d-6e5f4a111111",
+        "lock": {
+          "type": "CODE_ONLY_NUMBER",
+          "activator": "7314"
+        },
+        "inspectionData": {
+          "appellation": "Reinforced Workshop Door",
+          "information": "A heavy steel door fitted with a four-digit keypad. Above the keypad are four small recessed icons (a key, a toolbox, a vent grate, a chest). The keypad waits for a four-digit entry."
+        },
+        "spriteResolution": "1024x1536"
+      },
+      "pickables": [],
+      "inspectables": [
+        {
+          "id": "7f6e5d4c-3b2a-4c9b-8e7d-6f5e5e777777",
+          "position": "WT2",
+          "inspectionData": {
+            "appellation": "Slot Diagram (Exit Partial)",
+            "information": "A faint diagram shows four slots above the keypad with tiny icons etched in the same order as on the door: a key, a toolbox, a vent grate, and a chest. The etching is worn but the icons match objects seen around the room."
+          },
+          "spriteResolution": "1536x1024"
+        }
+      ],
+      "containers": [],
+      "movableCovers": []
+    }
+  ]
+}

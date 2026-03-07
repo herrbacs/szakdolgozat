@@ -1,0 +1,304 @@
+{
+  "title": "The Four-Fold Cipher",
+  "story": "You awaken in a compact study sealed by a heavy metal door. Scattered around the four walls are fragments of someone’s research into symbols and sequences. To escape you must assemble the fragments into a passphrase and numbers the lock demands. Each solved lock reveals the next piece of the interpretation until the exit yields.",
+  "walls": [
+    {
+      "id": "b1f3a7d2-6c4e-4d8f-9a2b-1cd2f0a9e5a1",
+      "color": "#2E3B4E",
+      "exit": {
+        "id": "f0c9b8a1-3e67-4a5f-9b2c-7f3d6b2a9c4d",
+        "lock": {
+          "type": "PASSWORD",
+          "activator": "KEYS2718"
+        },
+        "inspectionData": {
+          "appellation": "Heavy Metal Door",
+          "information": "A reinforced metal door with a rectangular keypad and small recessed display. The display is currently blank; a faint engraving above reads 'Combine word then number to pass.'"
+        },
+        "spriteResolution": "1536x1024"
+      },
+      "pickables": [],
+      "inspectables": [
+        {
+          "id": "d3a2b5c6-9f71-4a8b-b2b9-2e1f4c3d5a6b",
+          "position": "WT1",
+          "inspectionData": {
+            "appellation": "Faded Stencil",
+            "information": "A faint stencil near the top of the door frame shows four empty square outlines followed by four dotted square outlines."
+          },
+          "spriteResolution": "1024x1024"
+        },
+        {
+          "id": "a7c5e2b1-4d3f-4b8a-9e3c-5f2b1d6e7a8c",
+          "position": "WT3",
+          "inspectionData": {
+            "appellation": "Small Brass Plaque",
+            "information": "An aged plaque bolted beside the door: 'Combine word then number to pass.' The text is centered and slightly worn."
+          },
+          "spriteResolution": "1536x1024"
+        }
+      ],
+      "containers": [],
+      "movableCovers": []
+    },
+    {
+      "id": "c2e8f4a9-8b2d-47f0-91a3-6d7b2c9e0f12",
+      "color": "#7F6A58",
+      "exit": null,
+      "pickables": [],
+      "inspectables": [
+        {
+          "id": "e1f2a3b4-c5d6-47e8-9f0a-1b2c3d4e5f60",
+          "position": "WT1",
+          "inspectionData": {
+            "appellation": "Brass Wall Clock",
+            "information": "A heavy brass clock stopped at 03:14; the hour hand rests just after 3 and the minute hand is at 14 minutes."
+          },
+          "spriteResolution": "1024x1024"
+        },
+        {
+          "id": "f4d5c6b7-a8e9-4f01-9b2c-3d4e5f607182",
+          "position": "WT3",
+          "inspectionData": {
+            "appellation": "Yellow Sticky Note",
+            "information": "A scribbled note: 'Pi Day run-through — 3.14 3.14' in hurried blue ink."
+          },
+          "spriteResolution": "1024x1024"
+        }
+      ],
+      "containers": [
+        {
+          "id": "b6c7d8e9-0a1b-4c2d-8e9f-3a4b5c6d7e8f",
+          "position": "F1",
+          "lock": {
+            "type": "CODE_ONLY_NUMBER",
+            "activator": "314"
+          },
+          "content": [
+            {
+              "type": "PICKABLE",
+              "object": {
+                "id": "e4655427-558b-40d4-9f88-9d674120b0d3",
+                "position": "F1",
+                "reusable": false,
+                "inspectionData": {
+                  "appellation": "Rusty Key",
+                  "information": "An iron key pitted with age. A tiny stamped tag reads 'SAFE' in faint letters."
+                },
+                "spriteResolution": "1024x1024"
+              }
+            }
+          ],
+          "inspectionData": {
+            "appellation": "Old Oak Drawer",
+            "information": "A narrow oak drawer built into a small desk, its face carved with a shallow groove where digits might align."
+          },
+          "spriteResolution": "1024x1536"
+        }
+      ],
+      "movableCovers": []
+    },
+    {
+      "id": "9a8b7c6d-5e4f-4321-8a9b-0c1d2e3f4a5b",
+      "color": "#4A5A6A",
+      "exit": null,
+      "pickables": [],
+      "inspectables": [
+        {
+          "id": "c9d8e7f6-a5b4-4c3d-9e8f-7a6b5c4d3e2f",
+          "position": "WT1",
+          "inspectionData": {
+            "appellation": "Abstract Painting",
+            "information": "A framed composition: four symbols left to right — triangle (teal), circle (gold), square (crimson), star (navy). Small numerals beneath them read: 2,1,4,3."
+          },
+          "spriteResolution": "1536x1024"
+        },
+        {
+          "id": "d7e6f5a4-b3c2-4d1e-9f8a-7b6c5d4e3f21",
+          "position": "WT3",
+          "inspectionData": {
+            "appellation": "Travel Postcard",
+            "information": "A postcard with a hurried note: 'Familiar shapes — order matters, start left.'"
+          },
+          "spriteResolution": "1024x1024"
+        }
+      ],
+      "containers": [
+        {
+          "id": "413e3757-4c91-4f7f-9216-d07714faa61c",
+          "position": "W2",
+          "lock": {
+            "type": "KEY",
+            "activator": "e4655427-558b-40d4-9f88-9d674120b0d3"
+          },
+          "content": [
+            {
+              "type": "INSPECTABLE",
+              "object": {
+                "id": "1ed51e2a-e3d4-4f90-930a-ff05c51fb126",
+                "position": "W2",
+                "inspectionData": {
+                  "appellation": "Folded Cipher Sheet",
+                  "information": "A small folded sheet lists symbol-to-letter mappings:\nTriangle = K\nSquare = E\nCircle = Y\nStar = S\nThe typeface is blocky and each mapping is on its own line."
+                },
+                "spriteResolution": "1024x1024"
+              }
+            }
+          ],
+          "inspectionData": {
+            "appellation": "Wall Safe",
+            "information": "A narrow vertical safe flush with the wall. The door has a small keyhole and a recessed insignia."
+          },
+          "spriteResolution": "1536x1024"
+        }
+      ],
+      "movableCovers": []
+    },
+    {
+      "id": "2d3c4b5a-6f7e-4a2b-8c9d-0e1f2a3b4c5d",
+      "color": "#6B7C86",
+      "exit": null,
+      "pickables": [],
+      "inspectables": [
+        {
+          "id": "13593c29-4bbd-4d4c-b9d8-32cadc2f2f29",
+          "position": "WT2",
+          "inspectionData": {
+            "appellation": "Festival Poster",
+            "information": "A printed poster shows the sequence of four symbols with arrows: triangle → square → circle → star. The subtitle reads: 'Follow the procession.'"
+          },
+          "spriteResolution": "1536x1024"
+        },
+        {
+          "id": "f5b57921-d670-41b3-a739-1df7f48d7142",
+          "position": "WT3",
+          "inspectionData": {
+            "appellation": "Shipping Ledger",
+            "information": "A ledger page lists items tagged by symbol: A — triangle; B — square; C — circle; D — star. Quantities beside them are 1,2,3,4 respectively."
+          },
+          "spriteResolution": "1024x1536"
+        }
+      ],
+      "containers": [
+        {
+          "id": "5230e0a8-047c-42b9-a03a-9459deb32d7d",
+          "position": "F2",
+          "lock": {
+            "type": "CODE_ONLY_LETTER",
+            "activator": "KEYS"
+          },
+          "content": [
+            {
+              "type": "PICKABLE",
+              "object": {
+                "id": "0eb076f2-7971-4639-b5c3-485da53ef4ef",
+                "position": "F2",
+                "reusable": false,
+                "inspectionData": {
+                  "appellation": "Brass Plate",
+                  "information": "A small brass plate engraved with a sequence of four digits: 2718. The digits are neatly stamped and centered."
+                },
+                "spriteResolution": "1024x1024"
+              }
+            }
+          ],
+          "inspectionData": {
+            "appellation": "Locked Oak Chest",
+            "information": "An old chest with ornate iron bands; its lid is secured by a letter-based locking mechanism with four letter dials."
+          },
+          "spriteResolution": "1024x1536"
+        }
+      ],
+      "movableCovers": []
+    }
+  ],
+  "derivation": [
+    {
+      "target": "LOCK",
+      "targetId": "b6c7d8e9-0a1b-4c2d-8e9f-3a4b5c6d7e8f",
+      "lockType": "CODE_ONLY_NUMBER",
+      "expectedActivator": "314",
+      "dependsOn": "7f0d6e75-f508-4a26-950d-a7db60c92684",
+      "steps": [
+        "Read Yellow Sticky Note: '3.14 3.14' => digits 314",
+        "Enter 314 into Old Oak Drawer => drawer opens, reveal Rusty Key"
+      ],
+      "playerHints": [
+        {
+          "hint": "Read Yellow Sticky Note.",
+          "reveals": "314"
+        },
+        {
+          "hint": "Open Old Oak Drawer using 314.",
+          "reveals": "Rusty Key"
+        }
+      ]
+    },
+    {
+      "target": "LOCK",
+      "targetId": "413e3757-4c91-4f7f-9216-d07714faa61c",
+      "lockType": "KEY",
+      "expectedActivator": "e4655427-558b-40d4-9f88-9d674120b0d3",
+      "dependsOn": "78228d28-0364-47ae-a5cb-a9783c889065",
+      "steps": [
+        "Open Old Oak Drawer with 314 => take Rusty Key",
+        "Use Rusty Key on Wall Safe => safe opens, reveal Folded Cipher Sheet"
+      ],
+      "playerHints": [
+        {
+          "hint": "Take the Rusty Key from the drawer.",
+          "reveals": "Rusty Key"
+        },
+        {
+          "hint": "Use the Rusty Key on the Wall Safe.",
+          "reveals": "Folded Cipher Sheet"
+        }
+      ]
+    },
+    {
+      "target": "LOCK",
+      "targetId": "5230e0a8-047c-42b9-a03a-9459deb32d7d",
+      "lockType": "CODE_ONLY_LETTER",
+      "expectedActivator": "KEYS",
+      "dependsOn": "1ffb5137-bee0-41df-89ec-94565d975588",
+      "steps": [
+        "Read Folded Cipher Sheet: Triangle=K, Square=E, Circle=Y, Star=S",
+        "Read Shipping Ledger: triangle=1, square=2, circle=3, star=4 => assemble letters positions1..4 => KEYS",
+        "Enter KEYS into Locked Oak Chest => chest opens"
+      ],
+      "playerHints": [
+        {
+          "hint": "Read the Folded Cipher Sheet.",
+          "reveals": "Triangle=K, Square=E, Circle=Y, Star=S"
+        },
+        {
+          "hint": "Read the Shipping Ledger quantities (1..4) for the symbols.",
+          "reveals": "KEYS"
+        }
+      ]
+    },
+    {
+      "target": "EXIT_LOCK",
+      "targetId": "f0c9b8a1-3e67-4a5f-9b2c-7f3d6b2a9c4d",
+      "lockType": "PASSWORD",
+      "expectedActivator": "KEYS2718",
+      "dependsOn": "3f182f98-e309-42c2-b1ce-2bd2b5febdfc",
+      "steps": [
+        "Open Locked Oak Chest with KEYS => take Brass Plate (2718)",
+        "Read Small Brass Plaque: 'Combine word then number to pass' => combine KEYS + 2718 => KEYS2718",
+        "Enter KEYS2718 into Heavy Metal Door => door opens"
+      ],
+      "playerHints": [
+        {
+          "hint": "Read the Brass Plate from inside the chest.",
+          "reveals": "2718"
+        },
+        {
+          "hint": "Combine the chest word with the plate digits as instructed by the plaque.",
+          "reveals": "KEYS2718"
+        }
+      ]
+    }
+  ],
+  "id": "28456bb8-0943-46cf-b76b-dca8e559082d"
+}

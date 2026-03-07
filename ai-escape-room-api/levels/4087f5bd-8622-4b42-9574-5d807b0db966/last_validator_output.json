@@ -1,0 +1,8 @@
+{
+  "solvable": false,
+  "issues": [
+    "Lock floor-chest-3333-4abc-9fde-7777-dddddddddddd (activator '2718') is not derivable: the explicit sequence '2,7,1,8' appears only on an engraved plate that is inside the chest (circular dependency). Visible evidence (painting ▲→2, ■→7, ●→1 and other stickers/calendar) can produce '217' but there is no deterministic rule or external source to produce the final '2718' sequence or the trailing '8'.",
+    "Exit lock exit-door-aaaa-bbbb-cccc-1234567890ab (activator 'SOLAR9') is not deterministically derivable: the letters needed for 'SOLAR' are split among items where some required letters (for example 'R' and some letter positions) are only available inside locked containers (the chest contains an 'R' plate), and the assembly/order of fragments (e.g. 'SO' from the safe, 'LA' on the folded slip, faded poster pattern) is ambiguous. This creates circular dependencies and multiple possible interpretations for the word part of the password; therefore the full 'SOLAR9' cannot be uniquely derived."
+  ],
+  "derivation": []
+}

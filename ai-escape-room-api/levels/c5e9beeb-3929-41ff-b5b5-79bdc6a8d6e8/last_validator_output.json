@@ -1,0 +1,112 @@
+{
+  "solvable": true,
+  "issues": [],
+  "derivation": [
+    {
+      "target": "LOCK",
+      "targetId": "d4f9c8e5-3b6a-4d1c-c4fa-45e1d4f30004",
+      "lockType": "CODE_ONLY_NUMBER",
+      "expectedActivator": "47",
+      "dependsOn": [
+        "b2d7a6c3-1f4e-4b9a-a2d8-23c9b2f10002",
+        "c3e8b7d4-2a5f-4c0b-b3e9-34d0c3f20003"
+      ],
+      "steps": [
+        "Read Index Card: Position 1 = 4",
+        "Read Torn Calendar: Position 2 = 7",
+        "Combine digits Position1-Position2 => 47"
+      ],
+      "playerHints": [
+        {
+          "hint": "Read Index Card.",
+          "reveals": "4"
+        },
+        {
+          "hint": "Read Torn Calendar.",
+          "reveals": "7"
+        }
+      ]
+    },
+    {
+      "target": "LOCK",
+      "targetId": "h8d3f2c9-7e0a-4b5a-08de-89i5j8k70008",
+      "lockType": "CODE_ONLY_LETTER",
+      "expectedActivator": "RUN",
+      "dependsOn": [
+        "e5a0d9f6-4c7b-4e2d-d5ab-56f2e5f40005",
+        "g7c2e1b8-6d9f-4a4f-f7cd-78h4i7j60007"
+      ],
+      "steps": [
+        "Read Scrap of Paper: Red=R,Blue=U,Green=N",
+        "Read Three-dot Painting left-to-right: red,blue,green",
+        "Map colors to letters left-to-right => RUN"
+      ],
+      "playerHints": [
+        {
+          "hint": "Read Scrap of Paper.",
+          "reveals": "Red=R,Blue=U,Green=N"
+        },
+        {
+          "hint": "Read Three-dot Painting left-to-right and map letters.",
+          "reveals": "RUN"
+        }
+      ]
+    },
+    {
+      "target": "LOCK",
+      "targetId": "n4j9k8i5-3k6l-4h1g-e5jk-45o1p4q30014",
+      "lockType": "CODE_ONLY_LETTER",
+      "expectedActivator": "AMX",
+      "dependsOn": [
+        "i9e4g3d0-8f1b-4c6b-19ef-90j6k9l80009",
+        "k1g6h5f2-0h3i-4e8d-b2gh-12l8m1n00011",
+        "l2h7i6g3-1i4j-4f9e-c3hi-23m9n2o10012",
+        "m3i8j7h4-2j5k-4g0f-d4ij-34n0o3p20013"
+      ],
+      "steps": [
+        "Open Wall Safe using RUN => retrieve Folded Note (Order 2-1-3)",
+        "Read Book Spines left-to-right => M,A,X",
+        "Apply order 2-1-3 to M,A,X => A,M,X",
+        "Combine => AMX"
+      ],
+      "playerHints": [
+        {
+          "hint": "Open Wall Safe and read Folded Note.",
+          "reveals": "Order: 2-1-3"
+        },
+        {
+          "hint": "Read Book Spines left-to-right and apply order 2-1-3.",
+          "reveals": "AMX"
+        }
+      ]
+    },
+    {
+      "target": "EXIT_LOCK",
+      "targetId": "q7m2n1l8-6n9o-4k4j-h8mn-78r4s7t60017",
+      "lockType": "CODE_ONLY_LETTER",
+      "expectedActivator": "RUNS",
+      "dependsOn": [
+        "e5a0d9f6-4c7b-4e2d-d5ab-56f2e5f40005",
+        "o5k0l9j6-4l7m-4i2h-f6kl-56p2q5r40015",
+        "q7m2n1l8-6n9o-4k4j-h8mn-78r4s7t60017"
+      ],
+      "steps": [
+        "Read Scrap of Paper: Red=R,Blue=U,Green=N",
+        "Take Golden Tag from Antique Trunk => S",
+        "Read Door panel colors left-to-right: red,blue,green,gold",
+        "Map colors to letters => R,U,N,S",
+        "Combine => RUNS"
+      ],
+      "playerHints": [
+        {
+          "hint": "Take Golden Tag from Antique Trunk.",
+          "reveals": "S"
+        },
+        {
+          "hint": "Map door panel colors left-to-right using scrap mapping.",
+          "reveals": "RUNS"
+        }
+      ]
+    }
+  ]
+}

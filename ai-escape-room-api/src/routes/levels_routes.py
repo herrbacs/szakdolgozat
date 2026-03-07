@@ -42,7 +42,6 @@ def generate_level(
     db: Session = Depends(get_db),
     user: User = Depends(get_current_user)
 ):
-    # returning JSONResponse to preserve flexibility (errors still handled in controller)
     return JSONResponse(content=generate_new_level_handler(req, db, user))
 
 @router.post("/estimate-tokens", response_model=EstimateTokensResponse)
