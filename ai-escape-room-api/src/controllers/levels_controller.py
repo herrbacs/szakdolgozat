@@ -265,9 +265,10 @@ def list_levels_handler(
         if query.difficulty is not None:
             stmt = stmt.where(Level.difficulty == query.difficulty)
         if query.favorites_only:
+            favorite_filter = aliased(FavoriteLevel)
             stmt = stmt.where(
-                select(FavoriteLevel.id)
-                .where(FavoriteLevel.level_id == Level.id, FavoriteLevel.user_id == user.id)
+                select(favorite_filter.id)
+                .where(favorite_filter.level_id == Level.id, favorite_filter.user_id == user.id)
                 .exists()
             )
         if query.rating_gte is not None:
