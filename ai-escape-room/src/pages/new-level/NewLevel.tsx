@@ -14,6 +14,7 @@ const NewLevel: React.FC = () => {
 
   const [tokenUsageData, setTokenUsageData] = useState<EstimateTokensResponse>({
     estimated_tokens: 0,
+    estimated_minutes: 0,
     current_balance: 0,
     sufficient: false
   })
@@ -40,7 +41,10 @@ const NewLevel: React.FC = () => {
     setError("")
 
     try {
-      await generateLevel(generateLevelRequest)
+      const response = await generateLevel(generateLevelRequest)
+      alert(
+        `Level generated! Total tokens: ${response.tokens.total_tokens}, time: ${response.tokens.total_minutes.toFixed(2)} min`
+      )
       navigate("/menu")
     } catch (err: any) {
       setError(err.message || "Failed to generate level")
@@ -104,6 +108,7 @@ const NewLevel: React.FC = () => {
           <div className="bg-gray-50 p-4 rounded-lg">
             <div className="text-sm text-gray-600">
               <div>Estimated tokens: <span className="font-semibold">{tokenUsageData.estimated_tokens}</span></div>
+              <div>Estimated time: <span className="font-semibold">{tokenUsageData.estimated_minutes.toFixed(2)} min</span></div>
               <div>Your balance: <span className="font-semibold">{tokenUsageData.current_balance}</span></div>
               <div className={`font-semibold ${tokenUsageData.sufficient ? 'text-green-600' : 'text-red-600'}`}>
                 {tokenUsageData.sufficient ? '✓ Sufficient tokens' : '✗ Insufficient tokens'}

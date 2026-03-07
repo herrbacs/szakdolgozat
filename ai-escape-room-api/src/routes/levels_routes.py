@@ -5,7 +5,13 @@ from sqlalchemy.orm import Session
 from sqlalchemy import select
 from src.security.deps import get_current_user
 from db.models.user import User
-from src.schemas.level import RateLevelRequest, GenerateLevelRequest, EstimateTokensRequest
+from src.schemas.level import (
+    RateLevelRequest,
+    GenerateLevelRequest,
+    EstimateTokensRequest,
+    EstimateTokensResponse,
+    GenerateLevelResponse,
+)
 from src.schemas.levels import LevelListQuery
 from src.controllers.levels_controller import list_levels_handler, list_favorites_handler, generate_new_level_handler, load_level_handler, rate_level_handler, add_to_favorite_handler, remove_from_favorite_handler, get_user_level_rating_handler, get_level_favorite_status_handler
 from src.schemas.pagination import PaginationQuery, PagedResponse
@@ -30,27 +36,31 @@ def list_favorites(
     user: User = Depends(get_current_user)
 ): return list_favorites_handler(pagination, db, user)
 
-@router.post("/generate")
+@router.post("/generate", response_model=GenerateLevelResponse)
 def generate_level(
     req: GenerateLevelRequest,
     db: Session = Depends(get_db),
     user: User = Depends(get_current_user)
 ):
+    # returning JSONResponse to preserve flexibility (errors still handled in controller)
     return JSONResponse(content=generate_new_level_handler(req, db, user))
 
-@router.post("/estimate-tokens")
+@router.post("/estimate-tokens", response_model=EstimateTokensResponse)
 def estimate_tokens(
     req: EstimateTokensRequest,
     db: Session = Depends(get_db),
     user: User = Depends(get_current_user)
 ):
-    estimated_tokens = get_average_tokens_for_difficulty(db, req.difficulty)
+    estimate = get_average_tokens_for_difficulty(db, req.difficulty)
+    estimated_tokens = estimate["tokens"]
+    estimated_minutes = estimate["minutes"]
     user_tokens = db.execute(
         select(UserTokens).where(UserTokens.user_id == user.id)
     ).scalar_one_or_none()
     
     return JSONResponse(content={
         "estimated_tokens": estimated_tokens,
+        "estimated_minutes": estimated_minutes,
         "current_balance": user_tokens.balance if user_tokens else 0,
         "sufficient": (user_tokens.balance if user_tokens else 0) >= estimated_tokens
     })

@@ -15,6 +15,7 @@ class LevelListItem(BaseModel):
     rating: Optional[float] = None
     favorite_count: int = 0
     total_tokens: int = 0
+    total_minutes: float = 0.0
     repair_count: int = 0
 
 class LevelListQuery(BaseModel):

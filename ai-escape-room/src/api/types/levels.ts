@@ -10,6 +10,7 @@ export type LevelListItem = {
   rating: number | null
   favorite_count: number
   total_tokens: number
+  total_minutes: number
   repair_count: number
 }
 
@@ -35,6 +36,7 @@ export interface EstimateTokensRequest {
 
 export interface EstimateTokensResponse {
   estimated_tokens: number
+  estimated_minutes: number
   current_balance: number
   sufficient: boolean
 }
@@ -43,4 +45,21 @@ export interface GenerateLevelRequest {
   difficulty: number
   sprite_style: SpriteStyleEnum
   story: string
+}
+
+export interface GenerateLevelResponse {
+  level: any
+  tokens: {
+    generation_tokens: number
+    generation_minutes: number
+    validation_tokens: number
+    validation_minutes: number
+    repair_tokens: number
+    repair_minutes: number
+    sprite_tokens: number
+    sprite_minutes: number
+    total_tokens: number
+    total_minutes: number
+    repair_count: number
+  }
 }

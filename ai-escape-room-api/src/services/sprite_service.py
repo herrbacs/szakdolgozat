@@ -2,6 +2,7 @@ from PIL import Image
 import numpy as np
 import base64
 import io
+import time
 from pathlib import Path
 from typing import Tuple, Dict, Any
 from PIL import Image
@@ -50,7 +51,8 @@ def generate_sprite(
     prompt: str,
     file_name: str,
     resolution: str,
-) -> Tuple[Path, Dict[str, int]]:
+) -> Tuple[Path, Dict[str, int], float]:
+    start = time.time()
     result = client.images.generate(
         prompt=prompt,
         size=resolution,
@@ -58,6 +60,8 @@ def generate_sprite(
         background=SPRITE_BACKGROUND,
         quality=SPRITE_QUALITY,
     )
+    elapsed = time.time() - start
+    minutes = elapsed / 60.0
 
     image_base64 = result.data[0].b64_json
     image_bytes = base64.b64decode(image_base64)
@@ -67,7 +71,7 @@ def generate_sprite(
     file_path.write_bytes(trimmed_bytes)
 
     usage = extract_sprite_token_usage(result)
-    return file_path, usage
+    return file_path, usage, minutes
 
 
 def edit_sprite(
@@ -77,11 +81,12 @@ def edit_sprite(
     prompt: str,
     file_name: str,
     resolution: str = "1024x1024",
-) -> Tuple[Path, Dict[str, int]]:
+) -> Tuple[Path, Dict[str, int], float]:
     out_path = out_dir / file_name
     if not source_image_path.exists():
         raise FileNotFoundError(f"Source image not found: {source_image_path}")
 
+    start = time.time()
     with open(source_image_path, "rb") as img_file:
         result = client.images.edit(
             model=SPRITE_MODEL,
@@ -91,16 +96,18 @@ def edit_sprite(
             background=SPRITE_BACKGROUND,
             quality=SPRITE_QUALITY,
         )
+    elapsed = time.time() - start
+    minutes = elapsed / 60.0
 
     image_base64 = result.data[0].b64_json
     out_path.write_bytes(base64.b64decode(image_base64))
 
     usage = extract_sprite_token_usage(result)
-    return out_path, usage
+    return out_path, usage, minutes
 
 
-def generate_door_pair(out_dir: Path, prompt) -> Tuple[Tuple[Path, Path], int]:
-    closed_path, usage1 = generate_sprite(
+def generate_door_pair(out_dir: Path, prompt) -> Tuple[Tuple[Path, Path], int, float]:
+    closed_path, usage1, mins1 = generate_sprite(
         out_dir=out_dir,
         prompt=prompt,
         file_name="door_closed.png",
@@ -114,7 +121,7 @@ Change only one thing: the door is now open about 45 degrees inward.
 Show a slight dark interior gap behind the door. Do not change background.
 """
 
-    open_path, usage2 = edit_sprite(
+    open_path, usage2, mins2 = edit_sprite(
         out_dir=out_dir,
         source_image_path=closed_path,
         prompt=open_prompt,
@@ -123,70 +130,79 @@ Show a slight dark interior gap behind the door. Do not change background.
     )
 
     total_tokens = usage1.get("total_tokens", 0) + usage2.get("total_tokens", 0)
-    return (closed_path, open_path), total_tokens
+    total_minutes = mins1 + mins2
+    return (closed_path, open_path), total_tokens, total_minutes
 
 
-def generate_ui_sprites(level_id: str, sprite_style: SpriteStyle = SpriteStyle.CARTOON) -> int:
-    """Generate UI sprites and return total tokens used."""
+def generate_ui_sprites(level_id: str, sprite_style: SpriteStyle = SpriteStyle.CARTOON) -> Tuple[int, float]:
+    """Generate UI sprites and return total tokens and minutes used."""
     sprite_dir = ensure_and_get_sprites_of_level_dir(level_id)
     total_tokens = 0
+    total_minutes = 0.0
     
     style_prompt = f"{sprite_style} style"
     
-    _, tokens = generate_sprite(
+    _, tokens, mins = generate_sprite(
         out_dir=sprite_dir,
         prompt=f"A notepad, {style_prompt}",
         file_name="notepad.png",
         resolution="1024x1024",
     )
     total_tokens += tokens.get("total_tokens", 0)
+    total_minutes += mins
     
-    _, tokens = generate_sprite(
+    _, tokens, mins = generate_sprite(
         out_dir=sprite_dir,
         prompt=f"A backpack, {style_prompt}",
         file_name="inventory.png",
         resolution="1024x1024",
     )
     total_tokens += tokens.get("total_tokens", 0)
+    total_minutes += mins
     
-    _, tokens = generate_sprite(
+    _, tokens, mins = generate_sprite(
         out_dir=sprite_dir,
         prompt=f"A single detailed human eye, {style_prompt}",
         file_name="cursor_examine.png",
         resolution="1024x1024",
     )
     total_tokens += tokens.get("total_tokens", 0)
+    total_minutes += mins
     
-    _, tokens = generate_sprite(
+    _, tokens, mins = generate_sprite(
         out_dir=sprite_dir,
         prompt=f"A magnifying glass, {style_prompt}",
         file_name="cursor_search.png",
         resolution="1024x1024",
     )
     total_tokens += tokens.get("total_tokens", 0)
+    total_minutes += mins
     
-    _, tokens = generate_sprite(
+    _, tokens, mins = generate_sprite(
         out_dir=sprite_dir,
         prompt=f"A hand palm, {style_prompt}",
         file_name="cursor_use.png",
         resolution="1024x1024",
     )
     total_tokens += tokens.get("total_tokens", 0)
+    total_minutes += mins
     
-    _, tokens = generate_sprite(
+    _, tokens, mins = generate_sprite(
         out_dir=sprite_dir,
         prompt=f"A hand, doing a picking up gesture, {style_prompt}",
         file_name="cursor_take.png",
         resolution="1024x1024",
     )
     total_tokens += tokens.get("total_tokens", 0)
+    total_minutes += mins
     
-    return total_tokens
+    return total_tokens, total_minutes
 
-def generate_level_object_sprites(found_objects: list[dict], level_id: str, sprite_style: str = "Cartoon") -> int:
-    """Generate level object sprites and return total tokens used."""
+def generate_level_object_sprites(found_objects: list[dict], level_id: str, sprite_style: str = "Cartoon") -> Tuple[int, float]:
+    """Generate level object sprites and return total tokens and minutes used."""
     sprite_dir = ensure_and_get_sprites_of_level_dir(level_id)
     total_tokens = 0
+    total_minutes = 0.0
     
     for obj in found_objects:
         appellation = obj["object"]["inspectionData"]["appellation"]
@@ -196,15 +212,17 @@ def generate_level_object_sprites(found_objects: list[dict], level_id: str, spri
         resolution = obj["object"]["spriteResolution"]
 
         if obj["is_exit"]:
-            (_, _), tokens = generate_door_pair(sprite_dir, prompt)
+            (_, _), tokens, mins = generate_door_pair(sprite_dir, prompt)
             total_tokens += tokens
+            total_minutes += mins
         else:
-            _, tokens = generate_sprite(
+            _, tokens, mins = generate_sprite(
                 out_dir=sprite_dir,
                 prompt=prompt,
                 file_name=f'{id}.png',
                 resolution=resolution,
             )
             total_tokens += tokens.get("total_tokens", 0)
+            total_minutes += mins
     
-    return total_tokens
+    return total_tokens, total_minutes

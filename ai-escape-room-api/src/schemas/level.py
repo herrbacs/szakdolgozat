@@ -15,3 +15,15 @@ class GenerateLevelRequest(BaseModel):
 
 class EstimateTokensRequest(BaseModel):
     difficulty: int = Field(min=1, max=5)
+
+
+class EstimateTokensResponse(BaseModel):
+    estimated_tokens: int
+    estimated_minutes: float
+    current_balance: int
+    sufficient: bool
+
+
+class GenerateLevelResponse(BaseModel):
+    level: dict
+    tokens: dict

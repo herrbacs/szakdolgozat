@@ -101,6 +101,9 @@ const Levels: React.FC = () => {
                   Total Tokens
                 </th>
                 <th className="text-left px-4 py-3 text-gray-600 font-semibold">
+                  Total Minutes
+                </th>
+                <th className="text-left px-4 py-3 text-gray-600 font-semibold">
                   Repairs
                 </th>
                 <th className="text-left px-4 py-3 text-gray-600 font-semibold">
@@ -111,13 +114,13 @@ const Levels: React.FC = () => {
             <tbody>
               {loading ? (
                 <tr>
-                  <td colSpan={7} className="px-4 py-6 text-center text-gray-500">
+                  <td colSpan={8} className="px-4 py-6 text-center text-gray-500">
                     Loading levels...
                   </td>
                 </tr>
               ) : levels.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="px-4 py-6 text-center text-gray-500">
+                  <td colSpan={8} className="px-4 py-6 text-center text-gray-500">
                     No levels found
                   </td>
                 </tr>
@@ -136,6 +139,9 @@ const Levels: React.FC = () => {
                     </td>
                     <td className="px-4 py-3 text-gray-700 font-medium">
                       {level.total_tokens}
+                    </td>
+                    <td className="px-4 py-3 text-gray-700 font-medium">
+                      {level.total_minutes.toFixed(1)}
                     </td>
                     <td className="px-4 py-3 text-gray-700 font-medium">
                       {level.repair_count}

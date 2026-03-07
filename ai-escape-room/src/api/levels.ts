@@ -1,11 +1,8 @@
 import { API_BASE_URL } from "../shared/urls"
 import { get, post, del } from "./api"
-import type { EstimateTokensRequest, EstimateTokensResponse, GenerateLevelRequest, LevelListItem, ListLevelsQuery, PagedResponse } from "./types/levels"
+import type { EstimateTokensRequest, EstimateTokensResponse, GenerateLevelRequest, GenerateLevelResponse, LevelListItem, ListLevelsQuery, PagedResponse } from "./types/levels"
 
-export async function listLevels(
-  query: ListLevelsQuery,
-  token: string
-): Promise<PagedResponse<LevelListItem>> {
+export async function listLevels(query: ListLevelsQuery): Promise<PagedResponse<LevelListItem>> {
   const params = new URLSearchParams()
   params.set("page", String(query.page))
   params.set("page_size", String(query.pageSize))
@@ -85,7 +82,7 @@ export async function estimateTokens(request: EstimateTokensRequest): Promise<Es
   return await response.json()
 }
 
-export async function generateLevel(request: GenerateLevelRequest): Promise<any> {
+export async function generateLevel(request: GenerateLevelRequest): Promise<GenerateLevelResponse> {
   const response = await post(`${API_BASE_URL}/levels/generate`, request)
 
   if (!response.ok) {

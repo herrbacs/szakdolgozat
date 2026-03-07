@@ -4,22 +4,33 @@ from .base import Base
 import uuid
 
 
+from enum import Enum
+from sqlalchemy import String, Float
+
+
+class UsageType(str, Enum):
+    GENERATION = "generation"
+    VALIDATION = "validation"
+    REPAIR = "repair"
+    SPRITE = "sprite"
+
+
 class LevelTokenUsage(Base):
     __tablename__ = "level_token_usage"
+
+    # primary key so that we can have multiple rows per level
+    id: Mapped[uuid.UUID] = mapped_column(UUID, primary_key=True, default=uuid.uuid4)
 
     level_id: Mapped[uuid.UUID] = mapped_column(
         UUID,
         ForeignKey("levels.id", ondelete="CASCADE"),
         nullable=False,
-        unique=True,
         index=True,
     )
 
-    total_tokens: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
-    generation_tokens: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
-    validation_tokens: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
-    repair_tokens: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
-    sprite_tokens: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
-    repair_count: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    usage_type: Mapped[UsageType] = mapped_column(String, nullable=False)
+
+    tokens: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    minutes: Mapped[float] = mapped_column(Float, nullable=False, default=0.0)
 
     level = relationship("Level", lazy="selectin")

@@ -1,7 +1,13 @@
 import json
 from fastapi import HTTPException, status
 from pathlib import Path
-from src.services.level_service import generate_new_level, find_objects_with_id_and_inspection, create_level_with_id, update_level_successful_sprite_generation, get_average_tokens_for_difficulty
+from src.services.level_service import (
+    generate_new_level,
+    find_objects_with_id_and_inspection,
+    create_level_with_id,
+    update_level_successful_sprite_generation,
+    get_average_tokens_for_difficulty,
+)
 from src.services.sprite_service import generate_ui_sprites, generate_level_object_sprites
 from config import LEVELS_DIR
 from sqlalchemy.orm import Session, aliased
@@ -9,17 +15,20 @@ from db.models.level_rating import LevelRating
 from db.models.user import User
 from db.models.level import Level
 from db.models.favorite_level import FavoriteLevel
-from db.models.level_token_usage import LevelTokenUsage
+from db.models.level_token_usage import LevelTokenUsage, UsageType
 from db.models.user_tokens import UserTokens
 from src.schemas.level import RateLevelRequest, GenerateLevelRequest
-from sqlalchemy import Select, select, func
+from sqlalchemy import Select, select, func, case
 from src.schemas.levels import LevelListItem, LevelListQuery
 from src.schemas.pagination import PaginationQuery, PagedResponse
 from src.services.pagination_service import paginate
 
 
 def generate_new_level_handler(req: GenerateLevelRequest, db: Session, user: User):
-    estimated_tokens = get_average_tokens_for_difficulty(db, req.difficulty)
+    estimate = get_average_tokens_for_difficulty(db, req.difficulty)
+    estimated_tokens = estimate["tokens"]
+    estimated_minutes = estimate["minutes"]
+
     user_tokens = db.execute(
         select(UserTokens).where(UserTokens.user_id == user.id)
     ).scalar_one_or_none()
@@ -30,6 +39,7 @@ def generate_new_level_handler(req: GenerateLevelRequest, db: Session, user: Use
             detail={
                 "message": "Nincs elég token a pálya generáláshoz.",
                 "required_tokens": estimated_tokens,
+                "required_minutes": estimated_minutes,
                 "current_balance": user_tokens.balance,
             },
         )
@@ -59,24 +69,45 @@ def generate_new_level_handler(req: GenerateLevelRequest, db: Session, user: Use
         )
 
     level_objects = find_objects_with_id_and_inspection(level)
-    ui_sprite_tokens = generate_ui_sprites(level_id, req.sprite_style)
-    object_sprite_tokens = generate_level_object_sprites(level_objects, level_id, req.sprite_style)
+    ui_sprite_tokens, ui_sprite_minutes = generate_ui_sprites(level_id, req.sprite_style)
+    object_sprite_tokens, object_sprite_minutes = generate_level_object_sprites(level_objects, level_id, req.sprite_style)
     
     tokens["sprite_tokens"] = ui_sprite_tokens + object_sprite_tokens
+    tokens["sprite_minutes"] = ui_sprite_minutes + object_sprite_minutes
     tokens["total_tokens"] += tokens["sprite_tokens"]
+    tokens["total_minutes"] = tokens.get("total_minutes", 0.0) + tokens["sprite_minutes"]
     
     update_level_successful_sprite_generation(db, level_db_entity)
     
-    token_usage = LevelTokenUsage(
+    # insert one row per usage type
+    entries = []
+    entries.append(LevelTokenUsage(
         level_id=level_id,
-        total_tokens=tokens["total_tokens"],
-        generation_tokens=tokens["generation_tokens"],
-        validation_tokens=tokens["validation_tokens"],
-        repair_tokens=tokens["repair_tokens"],
-        sprite_tokens=tokens["sprite_tokens"],
-        repair_count=tokens["repair_count"],
-    )
-    db.add(token_usage)
+        usage_type=UsageType.GENERATION.value,
+        tokens=tokens.get("generation_tokens", 0),
+        minutes=tokens.get("generation_minutes", 0.0),
+    ))
+    entries.append(LevelTokenUsage(
+        level_id=level_id,
+        usage_type=UsageType.VALIDATION.value,
+        tokens=tokens.get("validation_tokens", 0),
+        minutes=tokens.get("validation_minutes", 0.0),
+    ))
+    # repair entry (may be zero if no repairs happened)
+    entries.append(LevelTokenUsage(
+        level_id=level_id,
+        usage_type=UsageType.REPAIR.value,
+        tokens=tokens.get("repair_tokens", 0),
+        minutes=tokens.get("repair_minutes", 0.0),
+    ))
+    # sprite entry
+    entries.append(LevelTokenUsage(
+        level_id=level_id,
+        usage_type=UsageType.SPRITE.value,
+        tokens=tokens.get("sprite_tokens", 0),
+        minutes=tokens.get("sprite_minutes", 0.0),
+    ))
+    db.add_all(entries)
     
     user_tokens = db.execute(
         select(UserTokens).where(UserTokens.user_id == user.id)
@@ -85,7 +116,8 @@ def generate_new_level_handler(req: GenerateLevelRequest, db: Session, user: Use
     user_tokens.balance -= tokens["total_tokens"]
     db.commit()
     
-    return level
+    # return generated level along with usage stats so client can display them
+    return {"level": level, "tokens": tokens}
 
 def get_level_object_sprite_handler(level_id: str, object_id: str) -> Path:
     level_dir = LEVELS_DIR / level_id
@@ -234,6 +266,19 @@ def list_levels_handler(
             stmt = stmt.having(avg_rating >= query.rating_gte)
         return stmt
 
+    # pre-aggregate usage per level so we can return totals/minutes/repair count
+    usage_subq = (
+        select(
+            LevelTokenUsage.level_id.label("level_id"),
+            func.sum(LevelTokenUsage.tokens).label("sum_tokens"),
+            func.sum(LevelTokenUsage.minutes).label("sum_minutes"),
+            # repair_count uses case with positional tuple per SQLAlchemy 2.0
+            func.sum(case((LevelTokenUsage.usage_type == UsageType.REPAIR.value, 1), else_=0)).label("repair_count"),
+        )
+        .group_by(LevelTokenUsage.level_id)
+        .subquery()
+    )
+
     base_stmt = (
         select(Level.id)
         .outerjoin(LevelRating, LevelRating.level_id == Level.id)
@@ -243,16 +288,16 @@ def list_levels_handler(
     count_stmt = select(func.count()).select_from(base_stmt.subquery())
 
     data_stmt = (
-        select(Level, avg_rating, favorite_count, LevelTokenUsage.total_tokens, LevelTokenUsage.repair_count)
+        select(Level, avg_rating, favorite_count, usage_subq.c.sum_tokens, usage_subq.c.sum_minutes, usage_subq.c.repair_count)
         .outerjoin(LevelRating, LevelRating.level_id == Level.id)
         .outerjoin(FavoriteLevel, FavoriteLevel.level_id == Level.id)
-        .outerjoin(LevelTokenUsage, LevelTokenUsage.level_id == Level.id)
-        .group_by(Level.id, LevelTokenUsage.total_tokens, LevelTokenUsage.repair_count)
+        .outerjoin(usage_subq, usage_subq.c.level_id == Level.id)
+        .group_by(Level.id, usage_subq.c.sum_tokens, usage_subq.c.sum_minutes, usage_subq.c.repair_count)
     )
     data_stmt = apply_filters(data_stmt).order_by(Level.title.asc())
 
     def map_row(row) -> LevelListItem:
-        level, avg, favorites, total_tokens, repair_count = row
+        level, avg, favorites, total_tokens, total_minutes, repair_count = row
         return LevelListItem(
             id=level.id,
             title=level.title,
@@ -261,6 +306,7 @@ def list_levels_handler(
             rating=(round(float(avg), 2) if avg is not None else None),
             favorite_count=int(favorites or 0),
             total_tokens=int(total_tokens or 0),
+            total_minutes=float(total_minutes or 0.0),
             repair_count=int(repair_count or 0),
         )
 
@@ -281,15 +327,27 @@ def list_favorites_handler(
     favorite_count_alias = aliased(FavoriteLevel)
     favorite_count = func.count(func.distinct(favorite_count_alias.user_id)).label("favorite_count")
 
+    # re‑use the subquery logic used in list_levels to compute sums and repair count
+    usage_subq = (
+        select(
+            LevelTokenUsage.level_id.label("level_id"),
+            func.sum(LevelTokenUsage.tokens).label("sum_tokens"),
+            func.sum(LevelTokenUsage.minutes).label("sum_minutes"),
+            func.sum(case((LevelTokenUsage.usage_type == UsageType.REPAIR.value, 1), else_=0)).label("repair_count"),
+        )
+        .group_by(LevelTokenUsage.level_id)
+        .subquery()
+    )
+
     data_stmt = (
-        select(Level, avg_rating, favorite_count, LevelTokenUsage.total_tokens, LevelTokenUsage.repair_count)
+        select(Level, avg_rating, favorite_count, usage_subq.c.sum_tokens, usage_subq.c.sum_minutes, usage_subq.c.repair_count)
         .join(FavoriteLevel, FavoriteLevel.level_id == Level.id)
         .outerjoin(LevelRating, LevelRating.level_id == Level.id)
         .outerjoin(favorite_count_alias, favorite_count_alias.level_id == Level.id)
-        .outerjoin(LevelTokenUsage, LevelTokenUsage.level_id == Level.id)
+        .outerjoin(usage_subq, usage_subq.c.level_id == Level.id)
         .where(FavoriteLevel.user_id == user.id)
         .where(Level.sucessfull_level_generation == True)
-        .group_by(Level.id, LevelTokenUsage.total_tokens, LevelTokenUsage.repair_count)
+        .group_by(Level.id, usage_subq.c.sum_tokens, usage_subq.c.sum_minutes, usage_subq.c.repair_count)
         .order_by(Level.title.asc())
     )
 
@@ -300,7 +358,7 @@ def list_favorites_handler(
     )
 
     def map_row(row) -> LevelListItem:
-        level, avg, favorites, total_tokens, repair_count = row
+        level, avg, favorites, total_tokens, total_minutes, repair_count = row
         return LevelListItem(
             id=level.id,
             title=level.title,
@@ -309,6 +367,7 @@ def list_favorites_handler(
             rating=(round(float(avg), 2) if avg is not None else None),
             favorite_count=int(favorites or 0),
             total_tokens=int(total_tokens or 0),
+            total_minutes=float(total_minutes or 0.0),
             repair_count=int(repair_count or 0),
         )
 
