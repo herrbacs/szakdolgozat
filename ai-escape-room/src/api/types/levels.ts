@@ -1,3 +1,5 @@
+import { SpriteStyleEnum } from "../../shared/enums"
+
 export type RatingFilter = "3" | "4" | ""
 
 export type LevelListItem = {
@@ -25,4 +27,20 @@ export type ListLevelsQuery = {
   title?: string
   story?: string
   ratingGte?: RatingFilter
+}
+
+export interface EstimateTokensRequest {
+  difficulty: number
+}
+
+export interface EstimateTokensResponse {
+  estimated_tokens: number
+  current_balance: number
+  sufficient: boolean
+}
+
+export interface GenerateLevelRequest {
+  difficulty: number
+  sprite_style: SpriteStyleEnum
+  story: string
 }

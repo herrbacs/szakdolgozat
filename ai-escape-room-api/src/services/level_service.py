@@ -12,6 +12,19 @@ from src.postprocess.normalize_ids import normalize_level_id_structures
 from pathlib import Path
 from sqlalchemy.orm import Session
 from db.models.level import Level
+from db.models.level_token_usage import LevelTokenUsage
+from sqlalchemy import select, func
+from src.schemas.level import SpriteStyle
+
+def get_average_tokens_for_difficulty(db: Session, difficulty: int) -> int:
+    """Calculate average total tokens for levels with given difficulty."""
+    result = db.execute(
+        select(func.avg(LevelTokenUsage.total_tokens))
+        .join(Level, Level.id == LevelTokenUsage.level_id)
+        .where(Level.difficulty == difficulty, Level.sucessfull_level_generation == True)
+    ).scalar_one_or_none()
+    
+    return int(result) if result else 1000
 
 client = get_openai_client()
 
@@ -117,9 +130,14 @@ Level structure principals:
 {load_prompt(["prompt_principals"])}
 """
 
-def generate_new_level() -> Dict[str, Any]:
+def generate_new_level(difficulty: int = 3, sprite_style: SpriteStyle = SpriteStyle.CARTOON, story: str = "") -> Dict[str, Any]:
     """
     Generate a new level with token tracking.
+    
+    Args:
+        difficulty: Difficulty level (1-5), determines number of logical puzzles
+        sprite_style: Style for sprite generation ("Cartoon" or "Realistic")
+        story: Custom story for the level, if empty AI will generate
     
     Returns:
         {
@@ -147,6 +165,12 @@ def generate_new_level() -> Dict[str, Any]:
         "repair_count": 0,
     }
     
+    replacements = {
+        "{NUM_PUZZLES}": str(difficulty),
+        "{SPRITE_STYLE}": sprite_style,
+        "{STORY}": story if story else "AI-generated story",
+    }
+    
     current_level, gen_usage = call_openai(
         out_dir=level_dir,
         file_name="generated_level.json",
@@ -156,7 +180,7 @@ def generate_new_level() -> Dict[str, Any]:
             "prompt_principals",
             "prompt_graph",
             "prompt_level_examples",
-        ]),
+        ], replacements),
     )
     token_tracker["generation_tokens"] += gen_usage.get("total_tokens", 0)
     token_tracker["total_tokens"] += gen_usage.get("total_tokens", 0)
@@ -243,14 +267,18 @@ def create_level_with_id(
     level_id: uuid.UUID,
     success: bool,
     story: str = "",
-    title: str = ""
+    title: str = "",
+    difficulty: int = 3,
+    sprite_style: SpriteStyle = SpriteStyle.CARTOON
 ) -> Level:
     level = Level(
         id=level_id,
         title=title,
         story=story,
         sucessfull_level_generation=success,
-        sucessfull_sprite_generation=False
+        sucessfull_sprite_generation=False,
+        difficulty=difficulty,
+        sprite_style=sprite_style
     )
 
     db.add(level)

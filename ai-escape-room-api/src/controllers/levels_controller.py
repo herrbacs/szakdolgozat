@@ -1,7 +1,7 @@
 import json
 from fastapi import HTTPException, status
 from pathlib import Path
-from src.services.level_service import generate_new_level, find_objects_with_id_and_inspection, create_level_with_id, update_level_successful_sprite_generation
+from src.services.level_service import generate_new_level, find_objects_with_id_and_inspection, create_level_with_id, update_level_successful_sprite_generation, get_average_tokens_for_difficulty
 from src.services.sprite_service import generate_ui_sprites, generate_level_object_sprites
 from config import LEVELS_DIR
 from sqlalchemy.orm import Session, aliased
@@ -11,15 +11,30 @@ from db.models.level import Level
 from db.models.favorite_level import FavoriteLevel
 from db.models.level_token_usage import LevelTokenUsage
 from db.models.user_tokens import UserTokens
-from src.schemas.level import RateLevelRequest
+from src.schemas.level import RateLevelRequest, GenerateLevelRequest
 from sqlalchemy import Select, select, func
 from src.schemas.levels import LevelListItem, LevelListQuery
 from src.schemas.pagination import PaginationQuery, PagedResponse
 from src.services.pagination_service import paginate
 
 
-def generate_new_level_handler(db: Session, user: User):
-    result = generate_new_level()
+def generate_new_level_handler(req: GenerateLevelRequest, db: Session, user: User):
+    estimated_tokens = get_average_tokens_for_difficulty(db, req.difficulty)
+    user_tokens = db.execute(
+        select(UserTokens).where(UserTokens.user_id == user.id)
+    ).scalar_one_or_none()
+    
+    if user_tokens.balance < estimated_tokens:
+        raise HTTPException(
+            status_code=402,
+            detail={
+                "message": "Nincs elég token a pálya generáláshoz.",
+                "required_tokens": estimated_tokens,
+                "current_balance": user_tokens.balance,
+            },
+        )
+    
+    result = generate_new_level(req.difficulty, req.sprite_style, req.story)
     success = result["success"]
     level = result["level"]
     level_id = result["level_id"]
@@ -31,6 +46,8 @@ def generate_new_level_handler(db: Session, user: User):
         success=success,
         story=level["story"] if success else "",
         title=level["title"] if success else "",
+        difficulty=req.difficulty,
+        sprite_style=req.sprite_style
     )
 
     if success is False:  
@@ -42,8 +59,8 @@ def generate_new_level_handler(db: Session, user: User):
         )
 
     level_objects = find_objects_with_id_and_inspection(level)
-    ui_sprite_tokens = generate_ui_sprites(level_id)
-    object_sprite_tokens = generate_level_object_sprites(level_objects, level_id)
+    ui_sprite_tokens = generate_ui_sprites(level_id, req.sprite_style)
+    object_sprite_tokens = generate_level_object_sprites(level_objects, level_id, req.sprite_style)
     
     tokens["sprite_tokens"] = ui_sprite_tokens + object_sprite_tokens
     tokens["total_tokens"] += tokens["sprite_tokens"]

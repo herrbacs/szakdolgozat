@@ -1,6 +1,6 @@
 import { API_BASE_URL } from "../shared/urls"
 import { get, post, del } from "./api"
-import type { LevelListItem, ListLevelsQuery, PagedResponse } from "./types/levels"
+import type { EstimateTokensRequest, EstimateTokensResponse, GenerateLevelRequest, LevelListItem, ListLevelsQuery, PagedResponse } from "./types/levels"
 
 export async function listLevels(
   query: ListLevelsQuery,
@@ -29,7 +29,7 @@ export async function listLevels(
   return (await response.json()) as PagedResponse<LevelListItem>
 }
 
-export async function rateLevel(levelId: string, rate: number, token: string): Promise<void> {
+export async function rateLevel(levelId: string, rate: number): Promise<void> {
   const response = await post(`${API_BASE_URL}/levels/rate/${levelId}`, { rate })
 
   if (!response.ok) {
@@ -37,7 +37,7 @@ export async function rateLevel(levelId: string, rate: number, token: string): P
   }
 }
 
-export async function addLevelToFavorites(levelId: string, token: string): Promise<void> {
+export async function addLevelToFavorites(levelId: string): Promise<void> {
   const response = await post(`${API_BASE_URL}/levels/favorite/${levelId}`, {})
 
   if (!response.ok) {
@@ -45,7 +45,7 @@ export async function addLevelToFavorites(levelId: string, token: string): Promi
   }
 }
 
-export async function removeLevelFromFavorites(levelId: string, token: string): Promise<void> {
+export async function removeLevelFromFavorites(levelId: string): Promise<void> {
   const response = await del(`${API_BASE_URL}/levels/favorite/${levelId}`)
 
   if (!response.ok) {
@@ -53,7 +53,7 @@ export async function removeLevelFromFavorites(levelId: string, token: string): 
   }
 }
 
-export async function getUserLevelRating(levelId: string, token: string): Promise<number | null> {
+export async function getUserLevelRating(levelId: string): Promise<number | null> {
   const response = await get(`${API_BASE_URL}/levels/rating/${levelId}`)
 
   if (!response.ok) {
@@ -64,7 +64,7 @@ export async function getUserLevelRating(levelId: string, token: string): Promis
   return data.rating
 }
 
-export async function isLevelFavorite(levelId: string, token: string): Promise<boolean> {
+export async function isLevelFavorite(levelId: string): Promise<boolean> {
   const response = await get(`${API_BASE_URL}/levels/is-favorite/${levelId}`)
 
   if (!response.ok) {
@@ -73,4 +73,25 @@ export async function isLevelFavorite(levelId: string, token: string): Promise<b
 
   const data = (await response.json()) as { is_favorite: boolean }
   return data.is_favorite
+}
+
+export async function estimateTokens(request: EstimateTokensRequest): Promise<EstimateTokensResponse> {
+  const response = await post(`${API_BASE_URL}/levels/estimate-tokens`, request)
+
+  if (!response.ok) {
+    throw new Error("Failed to estimate tokens")
+  }
+
+  return await response.json()
+}
+
+export async function generateLevel(request: GenerateLevelRequest): Promise<any> {
+  const response = await post(`${API_BASE_URL}/levels/generate`, request)
+
+  if (!response.ok) {
+    const errorData = await response.json()
+    throw new Error(errorData.detail?.message || "Failed to generate level")
+  }
+
+  return await response.json()
 }

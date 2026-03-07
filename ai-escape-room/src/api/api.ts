@@ -218,7 +218,6 @@ export async function publicPost(url: string, body?: unknown): Promise<Response>
   )
 }
 
-// Convenience: API_BASE_URL-os path-okhoz
 export const api = {
   get: (path: string) => get(`${API_BASE_URL}${path}`),
   post: (path: string, body?: unknown) => post(`${API_BASE_URL}${path}`, body),
@@ -226,6 +225,5 @@ export const api = {
   del: (path: string, body?: unknown) => del(`${API_BASE_URL}${path}`, body),
 
   publicGet: (path: string) => publicGet(`${API_BASE_URL}${path}`),
-  publicPost: (path: string, body?: unknown) =>
-    publicPost(`${API_BASE_URL}${path}`, body),
+  publicPost: (path: string, body?: unknown) => publicPost(`${API_BASE_URL}${path}`, body),
 }

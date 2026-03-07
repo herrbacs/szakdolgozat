@@ -9,8 +9,10 @@ This is a LOGICAL DEPENDENCY GRAPH describing when information becomes interpret
 LEVEL STRUCTURE
 ────────────────────────────────
 - The room must contain:
-  - Exactly 2 regular puzzles
+  - Exactly {NUM_PUZZLES} regular puzzles
   - Exactly 1 Exit Puzzle (final, mandatory)
+
+- Use sprite style for image generation. Replace {SPRITE_STYLE} with desired style (Cartoon, Realistic, etc.)
 
 - Each puzzle consists of:
   - Partial Information nodes (1–4 depending on difficulty)

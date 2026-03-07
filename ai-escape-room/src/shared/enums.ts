@@ -75,3 +75,8 @@ export enum SpriteResolutionEnum {
   WIDE = '1536x1024',
   TALL = '1024x1536',
 }
+
+export enum SpriteStyleEnum {
+  CARTOON = 'Cartoon',
+  REALISTIC = 'Realistic',
+}

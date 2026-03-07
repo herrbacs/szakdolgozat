@@ -7,6 +7,7 @@ from typing import Tuple, Dict, Any
 from PIL import Image
 from openai_client import get_openai_client
 from src.utils.path_utils import ensure_and_get_sprites_of_level_dir
+from src.schemas.level import SpriteStyle
 
 client = get_openai_client()
 
@@ -125,14 +126,16 @@ Show a slight dark interior gap behind the door. Do not change background.
     return (closed_path, open_path), total_tokens
 
 
-def generate_ui_sprites(level_id: str) -> int:
+def generate_ui_sprites(level_id: str, sprite_style: SpriteStyle = SpriteStyle.CARTOON) -> int:
     """Generate UI sprites and return total tokens used."""
     sprite_dir = ensure_and_get_sprites_of_level_dir(level_id)
     total_tokens = 0
     
+    style_prompt = f"{sprite_style} style"
+    
     _, tokens = generate_sprite(
         out_dir=sprite_dir,
-        prompt="A notepad, Cartoon style, Vector Art",
+        prompt=f"A notepad, {style_prompt}",
         file_name="notepad.png",
         resolution="1024x1024",
     )
@@ -140,7 +143,7 @@ def generate_ui_sprites(level_id: str) -> int:
     
     _, tokens = generate_sprite(
         out_dir=sprite_dir,
-        prompt="A backpack, Cartoon style, Vector Art",
+        prompt=f"A backpack, {style_prompt}",
         file_name="inventory.png",
         resolution="1024x1024",
     )
@@ -148,7 +151,7 @@ def generate_ui_sprites(level_id: str) -> int:
     
     _, tokens = generate_sprite(
         out_dir=sprite_dir,
-        prompt="A single detailed human eye, Cartoon style, Vector Art",
+        prompt=f"A single detailed human eye, {style_prompt}",
         file_name="cursor_examine.png",
         resolution="1024x1024",
     )
@@ -156,7 +159,7 @@ def generate_ui_sprites(level_id: str) -> int:
     
     _, tokens = generate_sprite(
         out_dir=sprite_dir,
-        prompt="A magnifying glass, Cartoon style, Vector Art",
+        prompt=f"A magnifying glass, {style_prompt}",
         file_name="cursor_search.png",
         resolution="1024x1024",
     )
@@ -164,7 +167,7 @@ def generate_ui_sprites(level_id: str) -> int:
     
     _, tokens = generate_sprite(
         out_dir=sprite_dir,
-        prompt="A hand palm, Cartoon style, Vector Art",
+        prompt=f"A hand palm, {style_prompt}",
         file_name="cursor_use.png",
         resolution="1024x1024",
     )
@@ -172,7 +175,7 @@ def generate_ui_sprites(level_id: str) -> int:
     
     _, tokens = generate_sprite(
         out_dir=sprite_dir,
-        prompt="A hand, doing a picking up gesture, Cartoon style, Vector Art",
+        prompt=f"A hand, doing a picking up gesture, {style_prompt}",
         file_name="cursor_take.png",
         resolution="1024x1024",
     )
@@ -180,7 +183,7 @@ def generate_ui_sprites(level_id: str) -> int:
     
     return total_tokens
 
-def generate_level_object_sprites(found_objects: list[dict], level_id: str) -> int:
+def generate_level_object_sprites(found_objects: list[dict], level_id: str, sprite_style: str = "Cartoon") -> int:
     """Generate level object sprites and return total tokens used."""
     sprite_dir = ensure_and_get_sprites_of_level_dir(level_id)
     total_tokens = 0
@@ -188,7 +191,7 @@ def generate_level_object_sprites(found_objects: list[dict], level_id: str) -> i
     for obj in found_objects:
         appellation = obj["object"]["inspectionData"]["appellation"]
         information = obj["object"]["inspectionData"]["information"]
-        prompt=f'Cartoon Style, {appellation}, {information}'
+        prompt=f'{sprite_style} Style, {appellation}, {information}'
         id = obj["object"]["id"]
         resolution = obj["object"]["spriteResolution"]
 
