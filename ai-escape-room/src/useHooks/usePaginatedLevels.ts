@@ -1,12 +1,14 @@
 import { useCallback, useEffect, useState } from "react"
 import { listLevels } from "../api/levels"
-import type { LevelListItem, PagedResponse, RatingFilter } from "../api/types/levels"
+import type { DifficultyFilter, LevelListItem, PagedResponse, RatingFilter } from "../api/types/levels"
 import { authTokenStorage } from "../store/tokenStorage"
 
 type LevelFilters = {
   title: string
   story: string
   ratingGte: RatingFilter
+  difficulty: DifficultyFilter
+  favoritesOnly: boolean
 }
 
 type UsePaginatedLevelsResult = {
@@ -20,6 +22,8 @@ type UsePaginatedLevelsResult = {
   setTitleFilter: (value: string) => void
   setStoryFilter: (value: string) => void
   setRatingFilter: (value: RatingFilter) => void
+  setDifficultyFilter: (value: DifficultyFilter) => void
+  setFavoritesOnlyFilter: (value: boolean) => void
   setPage: (value: number) => void
   refresh: () => Promise<void>
 }
@@ -35,6 +39,8 @@ export const usePaginatedLevels = (): UsePaginatedLevelsResult => {
     title: "",
     story: "",
     ratingGte: "",
+    difficulty: "",
+    favoritesOnly: false,
   })
 
   const fetchLevels = useCallback(async () => {
@@ -48,23 +54,22 @@ export const usePaginatedLevels = (): UsePaginatedLevelsResult => {
     setError(null)
 
     try {
-      const data = await listLevels(
-        {
-          page,
-          pageSize: PAGE_SIZE,
-          title: filters.title,
-          story: filters.story,
-          ratingGte: filters.ratingGte,
-        },
-        tokens.accessToken
-      )
+      const data = await listLevels({
+        page,
+        pageSize: PAGE_SIZE,
+        title: filters.title,
+        story: filters.story,
+        ratingGte: filters.ratingGte,
+        difficulty: filters.difficulty,
+        favoritesOnly: filters.favoritesOnly,
+      })
       setResponse(data)
     } catch {
       setError("Failed to load levels")
     } finally {
       setLoading(false)
     }
-  }, [page, filters.title, filters.story, filters.ratingGte])
+  }, [page, filters.title, filters.story, filters.ratingGte, filters.difficulty, filters.favoritesOnly])
 
   useEffect(() => {
     fetchLevels()
@@ -84,6 +89,14 @@ export const usePaginatedLevels = (): UsePaginatedLevelsResult => {
     setPage(1)
     setFilters((prev) => ({ ...prev, ratingGte: value }))
   }
+  const updateDifficulty = (value: DifficultyFilter) => {
+    setPage(1)
+    setFilters((prev) => ({ ...prev, difficulty: value }))
+  }
+  const updateFavoritesOnly = (value: boolean) => {
+    setPage(1)
+    setFilters((prev) => ({ ...prev, favoritesOnly: value }))
+  }
 
   return {
     levels: response?.items ?? [],
@@ -96,6 +109,8 @@ export const usePaginatedLevels = (): UsePaginatedLevelsResult => {
     setTitleFilter: updateTitle,
     setStoryFilter: updateStory,
     setRatingFilter: updateRating,
+    setDifficultyFilter: updateDifficulty,
+    setFavoritesOnlyFilter: updateFavoritesOnly,
     setPage,
     refresh: fetchLevels,
   }

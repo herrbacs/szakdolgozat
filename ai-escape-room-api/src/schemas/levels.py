@@ -11,6 +11,7 @@ class LevelListItem(BaseModel):
     id: uuid.UUID
     title: str
     story: str
+    difficulty: int
     generated_at: datetime
     rating: Optional[float] = None
     favorite_count: int = 0
@@ -22,3 +23,5 @@ class LevelListQuery(BaseModel):
     title: str | None = None
     story: str | None = None
     rating_gte: Literal[3, 4] | None = None
+    difficulty: Literal[1, 2, 3, 4, 5] | None = None
+    favorites_only: bool = False

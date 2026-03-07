@@ -251,17 +251,25 @@ def list_levels_handler(
     pagination: PaginationQuery,
     db: Session,
     query: LevelListQuery,
+    user: User,
 ) -> PagedResponse[LevelListItem]:
     avg_rating = func.avg(LevelRating.rating).label("avg_rating")
     favorite_count = func.count(func.distinct(FavoriteLevel.user_id)).label("favorite_count")
 
     def apply_filters(stmt: Select) -> Select:
-        # Only show successfully generated levels
         stmt = stmt.where(Level.sucessfull_level_generation == True)
         if query.title:
             stmt = stmt.where(Level.title.ilike(f"%{query.title.strip()}%"))
         if query.story:
             stmt = stmt.where(Level.story.ilike(f"%{query.story.strip()}%"))
+        if query.difficulty is not None:
+            stmt = stmt.where(Level.difficulty == query.difficulty)
+        if query.favorites_only:
+            stmt = stmt.where(
+                select(FavoriteLevel.id)
+                .where(FavoriteLevel.level_id == Level.id, FavoriteLevel.user_id == user.id)
+                .exists()
+            )
         if query.rating_gte is not None:
             stmt = stmt.having(avg_rating >= query.rating_gte)
         return stmt
@@ -302,67 +310,7 @@ def list_levels_handler(
             id=level.id,
             title=level.title,
             story=level.story,
-            generated_at=level.created_at,
-            rating=(round(float(avg), 2) if avg is not None else None),
-            favorite_count=int(favorites or 0),
-            total_tokens=int(total_tokens or 0),
-            total_minutes=float(total_minutes or 0.0),
-            repair_count=int(repair_count or 0),
-        )
-
-    return paginate(
-        db=db,
-        pagination=pagination,
-        data_stmt=data_stmt,
-        count_stmt=count_stmt,
-        map_row=map_row,
-    )
-
-def list_favorites_handler(
-    pagination: PaginationQuery,
-    db: Session,
-    user: User,
-) -> PagedResponse[LevelListItem]:
-    avg_rating = func.avg(LevelRating.rating).label("avg_rating")
-    favorite_count_alias = aliased(FavoriteLevel)
-    favorite_count = func.count(func.distinct(favorite_count_alias.user_id)).label("favorite_count")
-
-    # re‑use the subquery logic used in list_levels to compute sums and repair count
-    usage_subq = (
-        select(
-            LevelTokenUsage.level_id.label("level_id"),
-            func.sum(LevelTokenUsage.tokens).label("sum_tokens"),
-            func.sum(LevelTokenUsage.minutes).label("sum_minutes"),
-            func.sum(case((LevelTokenUsage.usage_type == UsageType.REPAIR.value, 1), else_=0)).label("repair_count"),
-        )
-        .group_by(LevelTokenUsage.level_id)
-        .subquery()
-    )
-
-    data_stmt = (
-        select(Level, avg_rating, favorite_count, usage_subq.c.sum_tokens, usage_subq.c.sum_minutes, usage_subq.c.repair_count)
-        .join(FavoriteLevel, FavoriteLevel.level_id == Level.id)
-        .outerjoin(LevelRating, LevelRating.level_id == Level.id)
-        .outerjoin(favorite_count_alias, favorite_count_alias.level_id == Level.id)
-        .outerjoin(usage_subq, usage_subq.c.level_id == Level.id)
-        .where(FavoriteLevel.user_id == user.id)
-        .where(Level.sucessfull_level_generation == True)
-        .group_by(Level.id, usage_subq.c.sum_tokens, usage_subq.c.sum_minutes, usage_subq.c.repair_count)
-        .order_by(Level.title.asc())
-    )
-
-    count_stmt = (
-        select(func.count())
-        .select_from(FavoriteLevel)
-        .where(FavoriteLevel.user_id == user.id)
-    )
-
-    def map_row(row) -> LevelListItem:
-        level, avg, favorites, total_tokens, total_minutes, repair_count = row
-        return LevelListItem(
-            id=level.id,
-            title=level.title,
-            story=level.story,
+            difficulty=level.difficulty,
             generated_at=level.created_at,
             rating=(round(float(avg), 2) if avg is not None else None),
             favorite_count=int(favorites or 0),

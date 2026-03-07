@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import type { LevelListItem, RatingFilter } from "../../api/types/levels"
+import type { DifficultyFilter, LevelListItem, RatingFilter } from "../../api/types/levels"
 import { usePaginatedLevels } from "../../useHooks/usePaginatedLevels"
 
 const Levels: React.FC = () => {
@@ -16,6 +16,8 @@ const Levels: React.FC = () => {
     setTitleFilter,
     setStoryFilter,
     setRatingFilter,
+    setDifficultyFilter,
+    setFavoritesOnlyFilter,
     setPage,
   } = usePaginatedLevels()
 
@@ -52,7 +54,7 @@ const Levels: React.FC = () => {
           </button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-3 mb-5">
+        <div className="grid grid-cols-1 md:grid-cols-6 gap-3 mb-5">
           <input
             type="text"
             value={filters.title}
@@ -76,6 +78,26 @@ const Levels: React.FC = () => {
             <option value="4">{ 'Rating >= 4' }</option>
             <option value="3">{ 'Rating >= 3' }</option>
           </select>
+          <select
+            value={filters.difficulty}
+            onChange={(e) => setDifficultyFilter(e.target.value as DifficultyFilter)}
+            className="px-4 py-2.5 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          >
+            <option value="">Difficulty: All</option>
+            <option value="1">Difficulty 1</option>
+            <option value="2">Difficulty 2</option>
+            <option value="3">Difficulty 3</option>
+            <option value="4">Difficulty 4</option>
+            <option value="5">Difficulty 5</option>
+          </select>
+          <label className="px-4 py-2.5 rounded-lg border border-gray-200 bg-gray-50 text-sm text-gray-700 flex items-center gap-2">
+            <input
+              type="checkbox"
+              checked={filters.favoritesOnly}
+              onChange={(e) => setFavoritesOnlyFilter(e.target.checked)}
+            />
+            Favorites only
+          </label>
           <div className="px-4 py-2.5 rounded-lg border border-gray-200 bg-gray-50 text-sm text-gray-600">
             Found: {total} | Rating: {ratingLabel}
           </div>
@@ -87,6 +109,9 @@ const Levels: React.FC = () => {
               <tr>
                 <th className="text-left px-4 py-3 text-gray-600 font-semibold">
                   Title
+                </th>
+                <th className="text-left px-4 py-3 text-gray-600 font-semibold">
+                  Difficulty
                 </th>
                 <th className="text-left px-4 py-3 text-gray-600 font-semibold">
                   Generated at
@@ -114,13 +139,13 @@ const Levels: React.FC = () => {
             <tbody>
               {loading ? (
                 <tr>
-                  <td colSpan={8} className="px-4 py-6 text-center text-gray-500">
+                  <td colSpan={9} className="px-4 py-6 text-center text-gray-500">
                     Loading levels...
                   </td>
                 </tr>
               ) : levels.length === 0 ? (
                 <tr>
-                  <td colSpan={8} className="px-4 py-6 text-center text-gray-500">
+                  <td colSpan={9} className="px-4 py-6 text-center text-gray-500">
                     No levels found
                   </td>
                 </tr>
@@ -128,6 +153,7 @@ const Levels: React.FC = () => {
                 levels.map((level) => (
                   <tr key={level.id} className="border-t border-gray-100">
                     <td className="px-4 py-3 text-gray-800">{level.title}</td>
+                    <td className="px-4 py-3 text-gray-700">{level.difficulty}</td>
                     <td className="px-4 py-3 text-gray-700">
                       {formatGeneratedAt(level.generated_at)}
                     </td>

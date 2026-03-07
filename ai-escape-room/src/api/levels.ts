@@ -16,6 +16,12 @@ export async function listLevels(query: ListLevelsQuery): Promise<PagedResponse<
   if (query.ratingGte) {
     params.set("rating_gte", query.ratingGte)
   }
+  if (query.difficulty) {
+    params.set("difficulty", query.difficulty)
+  }
+  if (query.favoritesOnly) {
+    params.set("favorites_only", "true")
+  }
 
   const response = await get(`${API_BASE_URL}/levels?${params.toString()}`)
 
