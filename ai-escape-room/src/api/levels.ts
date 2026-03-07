@@ -1,6 +1,6 @@
 import { API_BASE_URL } from "../shared/urls"
 import { get, post, del } from "./api"
-import type { EstimateTokensRequest, EstimateTokensResponse, GenerateLevelRequest, GenerateLevelResponse, LevelListItem, ListLevelsQuery, PagedResponse } from "./types/levels"
+import type { EstimateTokensRequest, EstimateTokensResponse, GenerateLevelRequest, GenerateLevelResponse, LevelCompletionRequest, LevelListItem, ListLevelsQuery, PagedResponse } from "./types/levels"
 
 export async function listLevels(query: ListLevelsQuery): Promise<PagedResponse<LevelListItem>> {
   const params = new URLSearchParams()
@@ -97,4 +97,15 @@ export async function generateLevel(request: GenerateLevelRequest): Promise<Gene
   }
 
   return await response.json()
+}
+
+export async function recordLevelCompletion(levelId: string, request: LevelCompletionRequest): Promise<boolean> {
+  const response = await post(`${API_BASE_URL}/levels/complete/${levelId}`, request)
+
+  if (!response.ok) {
+    throw new Error("Failed to record level completion")
+  }
+
+  const data = (await response.json()) as { saved: boolean }
+  return data.saved
 }

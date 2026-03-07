@@ -24,6 +24,7 @@ export type GameInformation = {
   showGameMenu: boolean,
   showLevelCompleteModal: boolean,
   levelId: UUID,
+  levelStartedAt: number,
 }
 
 export type Derivation = {

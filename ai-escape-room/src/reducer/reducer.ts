@@ -61,6 +61,7 @@ export const initialState : AppSettings = {
     showGameMenu: false,
     showLevelCompleteModal: false,
     levelId: '00000000-0000-0000-0000-000000000000',
+    levelStartedAt: Date.now(),
   }
 }
 

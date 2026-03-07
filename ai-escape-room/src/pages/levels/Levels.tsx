@@ -43,7 +43,7 @@ const Levels: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-linear-to-br from-indigo-500 via-purple-500 to-pink-500 px-4 py-10">
-      <div className="w-full max-w-6xl mx-auto bg-white rounded-2xl shadow-2xl p-6 md:p-8">
+      <div className="w-full max-w-4/6 mx-auto bg-white rounded-2xl shadow-2xl p-6 md:p-8">
         <div className="flex items-center justify-between gap-3 mb-6">
           <h1 className="text-3xl font-semibold text-gray-800">Levels</h1>
           <button
@@ -129,6 +129,9 @@ const Levels: React.FC = () => {
                   Total Minutes
                 </th>
                 <th className="text-left px-4 py-3 text-gray-600 font-semibold">
+                  Avg Play Time (min)
+                </th>
+                <th className="text-left px-4 py-3 text-gray-600 font-semibold">
                   Repairs
                 </th>
                 <th className="text-left px-4 py-3 text-gray-600 font-semibold">
@@ -139,13 +142,13 @@ const Levels: React.FC = () => {
             <tbody>
               {loading ? (
                 <tr>
-                  <td colSpan={9} className="px-4 py-6 text-center text-gray-500">
+                  <td colSpan={10} className="px-4 py-6 text-center text-gray-500">
                     Loading levels...
                   </td>
                 </tr>
               ) : levels.length === 0 ? (
                 <tr>
-                  <td colSpan={9} className="px-4 py-6 text-center text-gray-500">
+                  <td colSpan={10} className="px-4 py-6 text-center text-gray-500">
                     No levels found
                   </td>
                 </tr>
@@ -168,6 +171,9 @@ const Levels: React.FC = () => {
                     </td>
                     <td className="px-4 py-3 text-gray-700 font-medium">
                       {level.total_minutes.toFixed(1)}
+                    </td>
+                    <td className="px-4 py-3 text-gray-700 font-medium">
+                      {level.avg_completion_minutes !== null ? level.avg_completion_minutes.toFixed(1) : "-"}
                     </td>
                     <td className="px-4 py-3 text-gray-700 font-medium">
                       {level.repair_count}

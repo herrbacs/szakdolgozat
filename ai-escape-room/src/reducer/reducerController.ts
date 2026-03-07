@@ -1,8 +1,7 @@
-import { GameObjectTypeEnum, MoveDirectionEnum, PositionEnum } from '../shared/enums'
+import { GameObjectTypeEnum, MoveDirectionEnum } from '../shared/enums'
 import { CursorActions, InspectingModal, LevelInformation, LockModal } from '../shared/types/appTypes'
 import { AppSettings } from '../shared/types/frameworkTypes'
 import { ContainerObject, DynamicGameObject, MovableCoverObject, PickableObject, Wall } from '../shared/types/gameObjectTypes'
-import { InspectionData } from '../shared/types/gameBaseTypes'
 
 export function loadLevel(state: AppSettings, { walls, story, derivation, id }: LevelInformation): AppSettings {
   const amountOfWalls = walls.length
@@ -26,6 +25,7 @@ export function loadLevel(state: AppSettings, { walls, story, derivation, id }: 
       inventory: [],
       showGameMenu: false,
       showLevelCompleteModal: false,
+      levelStartedAt: Date.now(),
     }
   }
 }

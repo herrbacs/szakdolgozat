@@ -12,8 +12,8 @@ from src.schemas.level import (
     EstimateTokensResponse,
     GenerateLevelResponse,
 )
-from src.schemas.levels import LevelListQuery
-from src.controllers.levels_controller import list_levels_handler, generate_new_level_handler, load_level_handler, rate_level_handler, add_to_favorite_handler, remove_from_favorite_handler, get_user_level_rating_handler, get_level_favorite_status_handler
+from src.schemas.levels import LevelListQuery, LevelCompletionRequest
+from src.controllers.levels_controller import list_levels_handler, generate_new_level_handler, load_level_handler, rate_level_handler, add_to_favorite_handler, remove_from_favorite_handler, get_user_level_rating_handler, get_level_favorite_status_handler, record_level_completion_handler
 from src.schemas.pagination import PaginationQuery, PagedResponse
 from src.services.pagination_service import get_pagination
 from src.services.level_service import get_average_tokens_for_difficulty
@@ -98,3 +98,13 @@ def get_level_favorite_status(
     user: User = Depends(get_current_user)
 ):
     return get_level_favorite_status_handler(level_id, db, user)
+
+
+@router.post("/complete/{level_id}")
+def record_level_completion(
+    level_id: str,
+    req: LevelCompletionRequest,
+    db: Session = Depends(get_db),
+    user: User = Depends(get_current_user),
+):
+    return record_level_completion_handler(level_id, req, db, user)

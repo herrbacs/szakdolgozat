@@ -14,6 +14,7 @@ export type LevelListItem = {
   total_tokens: number
   total_minutes: number
   repair_count: number
+  avg_completion_minutes: number | null
 }
 
 export type PagedResponse<T> = {
@@ -66,4 +67,8 @@ export interface GenerateLevelResponse {
     total_minutes: number
     repair_count: number
   }
+}
+
+export interface LevelCompletionRequest {
+  completion_minutes: number
 }

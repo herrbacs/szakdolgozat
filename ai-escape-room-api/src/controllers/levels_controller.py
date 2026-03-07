@@ -16,10 +16,11 @@ from db.models.user import User
 from db.models.level import Level
 from db.models.favorite_level import FavoriteLevel
 from db.models.level_token_usage import LevelTokenUsage, UsageType
+from db.models.level_completion import LevelCompletion
 from db.models.user_tokens import UserTokens
 from src.schemas.level import RateLevelRequest, GenerateLevelRequest
 from sqlalchemy import Select, select, func, case
-from src.schemas.levels import LevelListItem, LevelListQuery
+from src.schemas.levels import LevelListItem, LevelListQuery, LevelCompletionRequest
 from src.schemas.pagination import PaginationQuery, PagedResponse
 from src.services.pagination_service import paginate
 
@@ -247,6 +248,43 @@ def get_level_favorite_status_handler(
 
     return {"is_favorite": favorite is not None}
 
+
+def record_level_completion_handler(
+    level_id: str,
+    req: LevelCompletionRequest,
+    db: Session,
+    user: User,
+):
+    level = db.execute(
+        select(Level).where(
+            Level.id == level_id,
+            Level.sucessfull_level_generation == True,
+        )
+    ).scalar_one_or_none()
+
+    if not level:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Level not found")
+
+    existing_completion = db.execute(
+        select(LevelCompletion).where(
+            LevelCompletion.user_id == user.id,
+            LevelCompletion.level_id == level_id,
+        )
+    ).scalar_one_or_none()
+
+    if existing_completion:
+        return {"saved": False}
+
+    db.add(
+        LevelCompletion(
+            user_id=user.id,
+            level_id=level_id,
+            completion_minutes=req.completion_minutes,
+        )
+    )
+    db.commit()
+    return {"saved": True}
+
 def list_levels_handler(
     pagination: PaginationQuery,
     db: Session,
@@ -288,6 +326,15 @@ def list_levels_handler(
         .subquery()
     )
 
+    completion_subq = (
+        select(
+            LevelCompletion.level_id.label("level_id"),
+            func.avg(LevelCompletion.completion_minutes).label("avg_completion_minutes"),
+        )
+        .group_by(LevelCompletion.level_id)
+        .subquery()
+    )
+
     base_stmt = (
         select(Level.id)
         .outerjoin(LevelRating, LevelRating.level_id == Level.id)
@@ -297,16 +344,31 @@ def list_levels_handler(
     count_stmt = select(func.count()).select_from(base_stmt.subquery())
 
     data_stmt = (
-        select(Level, avg_rating, favorite_count, usage_subq.c.sum_tokens, usage_subq.c.sum_minutes, usage_subq.c.repair_count)
+        select(
+            Level,
+            avg_rating,
+            favorite_count,
+            usage_subq.c.sum_tokens,
+            usage_subq.c.sum_minutes,
+            usage_subq.c.repair_count,
+            completion_subq.c.avg_completion_minutes,
+        )
         .outerjoin(LevelRating, LevelRating.level_id == Level.id)
         .outerjoin(FavoriteLevel, FavoriteLevel.level_id == Level.id)
         .outerjoin(usage_subq, usage_subq.c.level_id == Level.id)
-        .group_by(Level.id, usage_subq.c.sum_tokens, usage_subq.c.sum_minutes, usage_subq.c.repair_count)
+        .outerjoin(completion_subq, completion_subq.c.level_id == Level.id)
+        .group_by(
+            Level.id,
+            usage_subq.c.sum_tokens,
+            usage_subq.c.sum_minutes,
+            usage_subq.c.repair_count,
+            completion_subq.c.avg_completion_minutes,
+        )
     )
     data_stmt = apply_filters(data_stmt).order_by(Level.title.asc())
 
     def map_row(row) -> LevelListItem:
-        level, avg, favorites, total_tokens, total_minutes, repair_count = row
+        level, avg, favorites, total_tokens, total_minutes, repair_count, avg_completion_minutes = row
         return LevelListItem(
             id=level.id,
             title=level.title,
@@ -318,6 +380,7 @@ def list_levels_handler(
             total_tokens=int(total_tokens or 0),
             total_minutes=float(total_minutes or 0.0),
             repair_count=int(repair_count or 0),
+            avg_completion_minutes=(round(float(avg_completion_minutes), 2) if avg_completion_minutes is not None else None),
         )
 
     return paginate(

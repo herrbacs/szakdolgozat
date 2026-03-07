@@ -18,6 +18,11 @@ class LevelListItem(BaseModel):
     total_tokens: int = 0
     total_minutes: float = 0.0
     repair_count: int = 0
+    avg_completion_minutes: Optional[float] = None
+
+
+class LevelCompletionRequest(BaseModel):
+    completion_minutes: float = Field(gt=0)
 
 class LevelListQuery(BaseModel):
     title: str | None = None

@@ -4,14 +4,13 @@ import BaseModal from "./BaseModal"
 import { AppSettingsContext } from "../../../context/AppSettingsContext"
 import { AppSettingsContextType } from "../../../shared/types/frameworkTypes"
 import { SetAppSettingsActionEnum } from "../../../shared/enums"
-import { authTokenStorage } from "../../../store/tokenStorage"
-import { addLevelToFavorites, rateLevel, removeLevelFromFavorites, getUserLevelRating, isLevelFavorite } from "../../../api/levels"
+import { addLevelToFavorites, rateLevel, removeLevelFromFavorites, getUserLevelRating, isLevelFavorite, recordLevelCompletion } from "../../../api/levels"
 
 const LevelCompleteModal = () => {
   const navigate = useNavigate()
   const {
     appSettings: {
-      gameInformation: { showLevelCompleteModal, levelId },
+      gameInformation: { showLevelCompleteModal, levelId, levelStartedAt },
     },
     setAppSettings,
   }: AppSettingsContextType = useContext(AppSettingsContext)
@@ -27,16 +26,10 @@ const LevelCompleteModal = () => {
   }
 
   const submitRating = async () => {
-    const token = authTokenStorage.get()?.accessToken
-    if (!token) {
-      setMessage("Missing access token.")
-      return
-    }
-
     setBusy(true)
     setMessage("")
     try {
-      await rateLevel(levelId, selectedRating, token)
+      await rateLevel(levelId, selectedRating)
       setUserRating(selectedRating)
       setMessage("Rating submitted.")
     } catch {
@@ -47,16 +40,10 @@ const LevelCompleteModal = () => {
   }
 
   const submitFavorite = async () => {
-    const token = authTokenStorage.get()?.accessToken
-    if (!token) {
-      setMessage("Missing access token.")
-      return
-    }
-
     setBusy(true)
     setMessage("")
     try {
-      await addLevelToFavorites(levelId, token)
+      await addLevelToFavorites(levelId)
       setFavoriteAdded(true)
       setMessage("Added to favorites.")
     } catch {
@@ -67,16 +54,10 @@ const LevelCompleteModal = () => {
   }
 
   const removeFavorite = async () => {
-    const token = authTokenStorage.get()?.accessToken
-    if (!token) {
-      setMessage("Missing access token.")
-      return
-    }
-
     setBusy(true)
     setMessage("")
     try {
-      await removeLevelFromFavorites(levelId, token)
+      await removeLevelFromFavorites(levelId)
       setFavoriteAdded(false)
       setMessage("Removed from favorites.")
     } catch {
@@ -87,20 +68,28 @@ const LevelCompleteModal = () => {
   }
 
   const loadInitialData = async () => {
-    const token = authTokenStorage.get()?.accessToken
-    if (!token) return
-
     try {
-      const rating = await getUserLevelRating(levelId, token)
+      const rating = await getUserLevelRating(levelId)
       setUserRating(rating)
       if (rating) {
         setSelectedRating(rating)
       }
 
-      const isFavorite = await isLevelFavorite(levelId, token)
+      const isFavorite = await isLevelFavorite(levelId)
       setFavoriteAdded(isFavorite)
     } catch (err) {
       console.error("Failed to load initial data:", err)
+    }
+  }
+
+  const saveCompletionTime = async () => {
+    const elapsedMs = Date.now() - levelStartedAt
+    const completionMinutes = Math.max(elapsedMs / 60000, 0.01)
+
+    try {
+      await recordLevelCompletion(levelId, { completion_minutes: completionMinutes })
+    } catch (err) {
+      console.error("Failed to record completion:", err)
     }
   }
 
@@ -110,7 +99,8 @@ const LevelCompleteModal = () => {
     }
 
     loadInitialData()
-  }, [showLevelCompleteModal, levelId])
+    saveCompletionTime()
+  }, [showLevelCompleteModal, levelId, levelStartedAt])
 
   return showLevelCompleteModal && (
     <BaseModal title="Congratulations!" onClose={closeModal}>
