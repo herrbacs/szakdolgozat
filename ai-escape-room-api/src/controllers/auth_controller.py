@@ -1,7 +1,7 @@
 from typing import Any
 from fastapi import Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from sqlalchemy import select, or_
+from sqlalchemy import select, or_, update
 from db.connection import get_db
 from src.schemas.auth import RegisterRequest, LoginRequest, RefreshRequest, LoginResponse
 from src.security.password import hash_password, verify_password

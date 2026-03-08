@@ -1,9 +1,19 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import { useNavigate } from "react-router-dom"
 import { estimateTokens, generateLevel } from "../../api/levels"
 import { SpriteStyleEnum } from "../../shared/enums"
 import { EstimateTokensRequest, EstimateTokensResponse, GenerateLevelRequest } from "../../api/types/levels"
 import SelectedLevelModal, { SelectedLevelPreview } from "../levels/components/SelectedLevelModal"
+import { io, Socket } from "socket.io-client"
+import { SOCKET_BASE_URL } from "../../shared/urls"
+
+type GenerationUpdate = {
+  roomId: string
+  step: string
+  status: string
+  message: string
+  timestamp: string
+}
 
 const NewLevel: React.FC = () => {
   const navigate = useNavigate()
@@ -23,6 +33,8 @@ const NewLevel: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false)
   const [error, setError] = useState<string>("")
   const [selectedLevel, setSelectedLevel] = useState<SelectedLevelPreview | null>(null)
+  const [generationUpdates, setGenerationUpdates] = useState<GenerationUpdate[]>([])
+  const socketRef = useRef<Socket | null>(null)
 
   const fetchTokenEstimate = async () => {
     try {
@@ -38,12 +50,46 @@ const NewLevel: React.FC = () => {
     fetchTokenEstimate()
   }, [generateLevelRequest.difficulty])
 
+  useEffect(() => {
+    return () => {
+      socketRef.current?.disconnect()
+      socketRef.current = null
+    }
+  }, [])
+
   const handleGenerate = async () => {
     setLoading(true)
     setError("")
+    setGenerationUpdates([])
+
+    const levelId = crypto.randomUUID()
+    const socket = io(SOCKET_BASE_URL, { transports: ["websocket"] })
+    socketRef.current = socket
+
+    socket.on("connect", () => {
+      socket.emit("join-room", { roomId: levelId })
+    })
+    socket.on("level-generation-update", (event: GenerationUpdate) => {
+      setGenerationUpdates((prev) => [...prev, event])
+    })
+    socket.on("connect_error", () => {
+      setGenerationUpdates((prev) => [
+        ...prev,
+        {
+          roomId: levelId,
+          step: "socket",
+          status: "failed",
+          message: "Socket connection failed.",
+          timestamp: new Date().toISOString(),
+        },
+      ])
+    })
 
     try {
-      const response = await generateLevel(generateLevelRequest)
+      const response = await generateLevel({
+        ...generateLevelRequest,
+        level_id: levelId,
+      })
       setSelectedLevel({
         id: response.level.id,
         title: response.level.title,
@@ -53,6 +99,12 @@ const NewLevel: React.FC = () => {
       setError(err.message || "Failed to generate level")
     } finally {
       setLoading(false)
+      setTimeout(() => {
+        socket.disconnect()
+        if (socketRef.current === socket) {
+          socketRef.current = null
+        }
+      }, 1000)
     }
   }
 
@@ -130,6 +182,17 @@ const NewLevel: React.FC = () => {
           {error && (
             <div className="text-red-600 text-sm text-center">
               {error}
+            </div>
+          )}
+
+          {generationUpdates.length > 0 && (
+            <div className="bg-gray-50 p-3 rounded-lg border border-gray-200 max-h-40 overflow-y-auto">
+              <div className="text-xs font-semibold text-gray-700 mb-1">Generation progress</div>
+              {generationUpdates.map((event, index) => (
+                <div key={`${event.timestamp}-${index}`} className="text-xs text-gray-600">
+                  {event.message}
+                </div>
+              ))}
             </div>
           )}
 

@@ -22,6 +22,7 @@ from src.models.service_types import (
     TokenEstimate,
     TokenUsage,
 )
+from src.services.socket_service import emit_level_generation_update
 
 JsonDict = dict[str, Any]
 
@@ -170,7 +171,12 @@ Level structure principals:
 {load_prompt(["prompt_principals"])}
 """
 
-def generate_new_level(difficulty: int = 3, sprite_style: SpriteStyle = SpriteStyle.CARTOON, story: str = "") -> LevelGenerationResult:
+def generate_new_level(
+    difficulty: int = 3,
+    sprite_style: SpriteStyle = SpriteStyle.CARTOON,
+    story: str = "",
+    level_id: str | None = None,
+) -> LevelGenerationResult:
     """
     Generate a new level with token tracking.
     
@@ -200,7 +206,7 @@ def generate_new_level(difficulty: int = 3, sprite_style: SpriteStyle = SpriteSt
             }
         }
     """
-    level_id = str(uuid.uuid4())
+    level_id = level_id or str(uuid.uuid4())
     level_dir = ensure_and_get_level_dir(level_id)
     
     token_tracker = {
@@ -219,6 +225,12 @@ def generate_new_level(difficulty: int = 3, sprite_style: SpriteStyle = SpriteSt
         "{STORY}": story if story else "AI-generated story",
     }
     
+    emit_level_generation_update(
+        level_id=level_id,
+        step="draft-generation",
+        status="in_progress",
+        message="Generating first draft level layout.",
+    )
     current_level, gen_usage, gen_minutes = call_openai(
         out_dir=level_dir,
         file_name="generated_level.json",
@@ -235,8 +247,21 @@ def generate_new_level(difficulty: int = 3, sprite_style: SpriteStyle = SpriteSt
     token_tracker["total_tokens"] += gen_usage.get("total_tokens", 0)
     token_tracker["total_minutes"] += gen_minutes
     print("Prototype level generated")
+    emit_level_generation_update(
+        level_id=level_id,
+        step="draft-generation",
+        status="completed",
+        message="Draft level generated.",
+    )
 
     for round_idx in range(0, MAX_REPAIR_ROUNDS):
+        emit_level_generation_update(
+            level_id=level_id,
+            step="validation",
+            status="in_progress",
+            message="Validating level.",
+            meta={"round": round_idx + 1, "max_rounds": MAX_REPAIR_ROUNDS},
+        )
         validation, val_usage, val_minutes = validate_level(level_obj=current_level, out_dir=level_dir)
         token_tracker["validation"]["tokens"] += val_usage.get("total_tokens", 0)
         token_tracker["validation"]["minutes"] += val_minutes
@@ -245,6 +270,13 @@ def generate_new_level(difficulty: int = 3, sprite_style: SpriteStyle = SpriteSt
 
         if validation["solvable"] is True:
             print("Level validated sucessfully")
+            emit_level_generation_update(
+                level_id=level_id,
+                step="validation",
+                status="completed",
+                message="Level validated successfully.",
+                meta={"round": round_idx + 1},
+            )
 
             current_level["derivation"] = validation.get("derivation")
             level = normalize_level_id_structures(current_level)
@@ -273,6 +305,20 @@ def generate_new_level(difficulty: int = 3, sprite_style: SpriteStyle = SpriteSt
             }
 
         print(f"Level validation failed (round {round_idx}): {validation['issues']}")
+        emit_level_generation_update(
+            level_id=level_id,
+            step="validation",
+            status="warning",
+            message="Validation failed, repairing level.",
+            meta={"round": round_idx + 1, "issues": validation["issues"]},
+        )
+        emit_level_generation_update(
+            level_id=level_id,
+            step="repair",
+            status="in_progress",
+            message="Repairing level.",
+            meta={"round": round_idx + 1},
+        )
         current_level, repair_usage, repair_minutes = repair_level(
             current_level_obj=current_level,
             validation=validation,
@@ -284,12 +330,26 @@ def generate_new_level(difficulty: int = 3, sprite_style: SpriteStyle = SpriteSt
         token_tracker["total_tokens"] += repair_usage.get("total_tokens", 0)
         token_tracker["total_minutes"] += repair_minutes
         token_tracker["repair_count"] += 1
+        emit_level_generation_update(
+            level_id=level_id,
+            step="repair",
+            status="completed",
+            message="Repair round completed.",
+            meta={"round": round_idx + 1},
+        )
 
     # failure path returns whatever we accumulated so far so client can still log
+    emit_level_generation_update(
+        level_id=level_id,
+        step="validation",
+        status="failed",
+        message="Level is still unsolvable after all repair rounds.",
+        meta={"max_rounds": MAX_REPAIR_ROUNDS},
+    )
     return {
         "success": False,
         "level": None,
-        "level_id": None,
+        "level_id": level_id,
         "tokens": {
             "generation_tokens": token_tracker["generation"]["tokens"],
             "generation_minutes": token_tracker["generation"]["minutes"],

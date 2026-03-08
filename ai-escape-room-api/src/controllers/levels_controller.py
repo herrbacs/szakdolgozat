@@ -26,9 +26,16 @@ from src.schemas.levels import LevelListItem, LevelListQuery, LevelCompletionReq
 from src.schemas.pagination import PaginationQuery, PagedResponse
 from src.services.pagination_service import paginate
 from src.models.service_types import LevelGenerationResult, TokenEstimate
+from src.services.socket_service import (
+    emit_generation_completed,
+    emit_generation_failed,
+    emit_generation_started,
+    emit_level_generation_update,
+)
 
 
 def generate_new_level_handler(req: GenerateLevelRequest, db: Session, user: User) -> dict[str, Any]:
+    level_id = req.level_id if req.level_id else str(uuid.uuid4())
     estimate: TokenEstimate = get_average_tokens_for_difficulty(db, req.difficulty)
     estimated_tokens = estimate["tokens"]
     estimated_minutes = estimate["minutes"]
@@ -36,59 +43,94 @@ def generate_new_level_handler(req: GenerateLevelRequest, db: Session, user: Use
     user_tokens = db.execute(
         select(UserTokens).where(UserTokens.user_id == user.id)
     ).scalar_one_or_none()
-    
+
     if user_tokens.balance < estimated_tokens:
+        emit_generation_failed(level_id, "Insufficient tokens for generation.")
         raise HTTPException(
             status_code=402,
             detail={
-                "message": "Nincs elég token a pálya generáláshoz.",
+                "message": "Nincs eleg token a palya generalashoz.",
                 "required_tokens": estimated_tokens,
                 "required_minutes": estimated_minutes,
                 "current_balance": user_tokens.balance,
+                "level_id": level_id,
             },
         )
-    
-    result: LevelGenerationResult = generate_new_level(req.difficulty, req.sprite_style, req.story)
+
+    emit_generation_started(level_id, req.difficulty, str(req.sprite_style))
+
+    try:
+        result: LevelGenerationResult = generate_new_level(
+            req.difficulty, req.sprite_style, req.story, level_id
+        )
+    except HTTPException:
+        emit_generation_failed(level_id, "Level generation failed.")
+        raise
+    except Exception:
+        emit_generation_failed(level_id, "Unexpected error during level generation.")
+        raise
+
     success = result["success"]
     level = result["level"]
     level_id = result["level_id"]
     tokens = result["tokens"]
-    
-    persisted_level_id = level_id if level_id is not None else str(uuid.uuid4())
 
     level_db_entity = create_level_with_id(
         db=db,
-        level_id=persisted_level_id,
+        level_id=level_id,
         success=success,
         story=level["story"] if success else "",
         title=level["title"] if success else "",
         difficulty=req.difficulty,
-        sprite_style=req.sprite_style
+        sprite_style=req.sprite_style,
     )
 
-    if success is False:  
+    if success is False:
+        emit_generation_failed(level_id, "Could not generate a solvable level.")
         raise HTTPException(
             status_code=500,
             detail={
-                "message": "Nem sikerült végigjátszható pályát generálni.",
+                "message": "Nem sikerult vegigjatszhato palyat generalni.",
+                "level_id": level_id,
             },
         )
 
     level_objects = find_objects_with_id_and_inspection(level)
-    if level_id is None:
-        raise HTTPException(status_code=500, detail={"message": "Generated level id is missing."})
+    emit_level_generation_update(
+        level_id=level_id,
+        step="sprite-generation",
+        status="in_progress",
+        message="Generating UI sprites.",
+    )
+    try:
+        ui_sprite_tokens, ui_sprite_minutes = generate_ui_sprites(level_id, req.sprite_style)
+        emit_level_generation_update(
+            level_id=level_id,
+            step="sprite-generation",
+            status="in_progress",
+            message="Generating level object sprites.",
+            meta={"object_count": len(level_objects)},
+        )
+        object_sprite_tokens, object_sprite_minutes = generate_level_object_sprites(
+            level_objects, level_id, req.sprite_style
+        )
+    except Exception:
+        emit_generation_failed(level_id, "Sprite generation failed.")
+        raise
 
-    ui_sprite_tokens, ui_sprite_minutes = generate_ui_sprites(level_id, req.sprite_style)
-    object_sprite_tokens, object_sprite_minutes = generate_level_object_sprites(level_objects, level_id, req.sprite_style)
-    
     tokens["sprite_tokens"] = ui_sprite_tokens + object_sprite_tokens
     tokens["sprite_minutes"] = ui_sprite_minutes + object_sprite_minutes
     tokens["total_tokens"] += tokens["sprite_tokens"]
     tokens["total_minutes"] = tokens.get("total_minutes", 0.0) + tokens["sprite_minutes"]
-    
+
     update_level_successful_sprite_generation(db, level_db_entity)
-    
-    # insert one row per usage type
+    emit_level_generation_update(
+        level_id=level_id,
+        step="sprite-generation",
+        status="completed",
+        message="Sprite generation completed.",
+    )
+
     entries = []
     entries.append(LevelTokenUsage(
         level_id=level_id,
@@ -102,14 +144,12 @@ def generate_new_level_handler(req: GenerateLevelRequest, db: Session, user: Use
         tokens=tokens.get("validation_tokens", 0),
         minutes=tokens.get("validation_minutes", 0.0),
     ))
-    # repair entry (may be zero if no repairs happened)
     entries.append(LevelTokenUsage(
         level_id=level_id,
         usage_type=UsageType.REPAIR.value,
         tokens=tokens.get("repair_tokens", 0),
         minutes=tokens.get("repair_minutes", 0.0),
     ))
-    # sprite entry
     entries.append(LevelTokenUsage(
         level_id=level_id,
         usage_type=UsageType.SPRITE.value,
@@ -117,16 +157,17 @@ def generate_new_level_handler(req: GenerateLevelRequest, db: Session, user: Use
         minutes=tokens.get("sprite_minutes", 0.0),
     ))
     db.add_all(entries)
-    
+
     user_tokens = db.execute(
         select(UserTokens).where(UserTokens.user_id == user.id)
     ).scalar_one_or_none()
-    
+
     user_tokens.balance -= tokens["total_tokens"]
     db.commit()
-    
-    # return generated level along with usage stats so client can display them
-    return {"level": level, "tokens": tokens}
+    emit_generation_completed(level_id)
+
+    return {"level_id": level_id, "level": level, "tokens": tokens}
+
 
 def get_level_object_sprite_handler(level_id: str, object_id: str) -> Path:
     level_dir = LEVELS_DIR / level_id
@@ -398,3 +439,4 @@ def list_levels_handler(
         count_stmt=count_stmt,
         map_row=map_row,
     )
+

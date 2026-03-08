@@ -32,7 +32,7 @@ class TokenBreakdown(TypedDict):
 class LevelGenerationResult(TypedDict):
     success: bool
     level: dict[str, Any] | None
-    level_id: str | None
+    level_id: str
     tokens: TokenBreakdown
 
 

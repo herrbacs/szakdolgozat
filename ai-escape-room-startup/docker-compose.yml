@@ -10,6 +10,7 @@ services:
       - /app/node_modules
     environment:
       - CHOKIDAR_USEPOLLING=true
+      - VITE_SOCKET_BASE_URL=${SOCKET_BASE_URL}
     networks:
       - app-network
     depends_on:
@@ -29,8 +30,24 @@ services:
       - ENVIRONMENT=development
       - DATABASE_URL=${DATABASE_URL}
       - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - SOCKET_SERVER_URL=http://socket:4000
     depends_on:
       - postgres
+      - socket
+    networks:
+      - app-network
+  socket:
+    container_name: ai-escape-room-socket
+    build:
+      context: ../ai-escape-room-socket
+    ports:
+      - "4000:4000"
+    volumes:
+      - ../ai-escape-room-socket:/app
+      - /app/node_modules
+    environment:
+      - SOCKET_PORT=4000
+      - CORS_ORIGIN=${CORS_ORIGIN}
     networks:
       - app-network
   postgres:

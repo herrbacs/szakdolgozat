@@ -47,12 +47,14 @@ export interface EstimateTokensResponse {
 }
 
 export interface GenerateLevelRequest {
+  level_id?: string
   difficulty: number
   sprite_style: SpriteStyleEnum
   story: string
 }
 
 export interface GenerateLevelResponse {
+  level_id: string
   level: {
     id: string
     title: string
