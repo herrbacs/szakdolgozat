@@ -1,0 +1,431 @@
+{
+  "title": "The Conservatory of Fractured Letters",
+  "story": "You awake inside a quiet conservatory filled with muted light and odd collections. Three locked secrets stand between you and the heavy exit door in the center of the north wall. Each lock hides a fragment of a single word — assemble them and the door will open. Objects and inscriptions are scattered, some plainly visible, others hidden behind grates or in locked boxes. Tools and keys are rewards for solving early tasks; later puzzles require combining earlier discoveries.",
+  "walls": [
+    {
+      "id": "b1e4f9a2-7cde-4f3b-9b8a-2d1a7c9f0a11",
+      "color": "#8A6A4F",
+      "exit": null,
+      "pickables": [],
+      "inspectables": [
+        {
+          "id": "a1112b3c-0d4e-4f5a-9a6b-22c3d4e5f601",
+          "position": "W1",
+          "size": "M",
+          "inspectionData": {
+            "appellation": "Three Mini Paintings",
+            "information": "Three small oil paintings hung left-to-right. Carved into the bottom of the left painting is the number '3'. The bottom of the center painting shows '1'. The bottom of the right painting shows '4'."
+          },
+          "spriteResolution": "1536x1024"
+        },
+        {
+          "id": "c2223d4e-1f5a-4b6c-8d7f-33e4f5a6b702",
+          "position": "WT1",
+          "size": "S",
+          "inspectionData": {
+            "appellation": "Brass Read Tag",
+            "information": "A slim brass tag nailed to the drawer reads, in stamped letters: 'Read left → right.'"
+          },
+          "spriteResolution": "1024x1024"
+        }
+      ],
+      "containers": [
+        {
+          "id": "d3334e5f-2a6b-4c7d-9e8f-44f5a6b7c803",
+          "position": "F1",
+          "size": "M",
+          "lock": {
+            "type": "CODE_ONLY_NUMBER",
+            "activator": "314"
+          },
+          "content": [
+            {
+              "type": "PICKABLE",
+              "object": {
+                "id": "e4445f6a-3b7c-4d8e-9f90-55a6b7c8d904",
+                "position": "F1",
+                "size": "S",
+                "reusable": false,
+                "inspectionData": {
+                  "appellation": "Flat-head Screwdriver",
+                  "information": "A worn flat-head screwdriver with a taped handle. The tip is blackened from use."
+                },
+                "spriteResolution": "1024x1024"
+              }
+            },
+            {
+              "type": "INSPECTABLE",
+              "object": {
+                "id": "f5556a7b-4c8d-5e9f-0a11-66b7c8d9e005",
+                "position": "F1",
+                "size": "S",
+                "inspectionData": {
+                  "appellation": "Folded Paper Tile",
+                  "information": "A small paper tile, folded twice. Unfolded, it shows two letters: 'OR'."
+                },
+                "spriteResolution": "1024x1024"
+              }
+            }
+          ],
+          "inspectionData": {
+            "appellation": "Small Wooden Desk Drawer",
+            "information": "A compact desk drawer with a brass plate. The plate is blank except for three faint drill marks around where a combination might sit."
+          },
+          "spriteResolution": "1536x1024"
+        }
+      ],
+      "movableCovers": []
+    },
+    {
+      "id": "c5f6a7b8-9d0e-4f1a-8b2c-77d8e9f0a221",
+      "color": "#5B7D6A",
+      "exit": null,
+      "pickables": [],
+      "inspectables": [
+        {
+          "id": "a6667b8c-5d9e-4f2b-8c3d-88e9f0a1b332",
+          "position": "W1",
+          "size": "M",
+          "inspectionData": {
+            "appellation": "Printed Label Panel",
+            "information": "Three labels printed in a neat column: 'Beech', 'Elder', 'Elm'. Each label has a small blank circle to its left."
+          },
+          "spriteResolution": "1024x1024"
+        },
+        {
+          "id": "b7778c9d-6e0f-4f3c-9d4e-99f0a1b2c443",
+          "position": "WT3",
+          "size": "S",
+          "inspectionData": {
+            "appellation": "Faded Slip",
+            "information": "A faded slip of paper: 'Fill the circles in the order the plaque prescribes.'"
+          },
+          "spriteResolution": "1024x1024"
+        }
+      ],
+      "containers": [
+        {
+          "id": "d8889e0f-7a1b-4f4d-0e5f-aa01b2c3d554",
+          "position": "W3",
+          "size": "M",
+          "lock": {
+            "type": "CODE_ONLY_LETTER",
+            "activator": "BEE"
+          },
+          "content": [
+            {
+              "type": "PICKABLE",
+              "object": {
+                "id": "e9990f1a-8b2c-4f5e-1f6a-bb12c3d4e665",
+                "position": "W3",
+                "size": "S",
+                "reusable": false,
+                "inspectionData": {
+                  "appellation": "Ornate Key",
+                  "information": "A small ornate iron key with a leaf motif on the bow."
+                },
+                "spriteResolution": "1024x1024"
+              }
+            },
+            {
+              "type": "INSPECTABLE",
+              "object": {
+                "id": "1578a501-d70f-45f2-9860-a9a0eddc9f8c",
+                "position": "W3",
+                "size": "S",
+                "inspectionData": {
+                  "appellation": "Brass Tile",
+                  "information": "A brass tile, stamped with two letters: 'CH'."
+                },
+                "spriteResolution": "1024x1024"
+              }
+            }
+          ],
+          "inspectionData": {
+            "appellation": "Wall Safe with Letter Dial",
+            "information": "A narrow wall safe with a three-letter dial and a small keyhole below. The dial shows faded letter marks."
+          },
+          "spriteResolution": "1024x1536"
+        }
+      ],
+      "movableCovers": [
+        {
+          "id": "7097c2a1-bf0a-460e-9914-e062d46dc4c0",
+          "position": "WT2",
+          "size": "M",
+          "inspectionData": {
+            "appellation": "Vent Grate",
+            "information": "A metal vent grate held by four slotted screws. The slotted heads are worn, as if turned many times."
+          },
+          "spriteResolution": "1536x1024",
+          "content": {
+            "type": "INSPECTABLE",
+            "object": {
+              "id": "bac4a6a1-1a18-4089-90c2-dbde4d763ded",
+              "position": "WT2",
+              "size": "S",
+              "inspectionData": {
+                "appellation": "Hidden Plaque",
+                "information": "An old brass plaque, hidden behind the vent. Stamped text reads: 'Use the first letter of each listed name, in the order the plaque indicates.'"
+              },
+              "spriteResolution": "1024x1024"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "d0a1b2c3-4d5e-6f7a-8b9c-eeff00112233",
+      "color": "#6C4F77",
+      "exit": null,
+      "pickables": [],
+      "inspectables": [
+        {
+          "id": "666d8842-1a87-4657-9adf-0c90838c9364",
+          "position": "W1",
+          "size": "M",
+          "inspectionData": {
+            "appellation": "Ledger Page",
+            "information": "A ledger lists three entries: 'Rowan   8', 'Alder   2', 'Cypress   5'. Each entry is on its own line."
+          },
+          "spriteResolution": "1536x1024"
+        },
+        {
+          "id": "c5b873b8-3823-4b26-ad25-a3513e68c377",
+          "position": "WT1",
+          "size": "S",
+          "inspectionData": {
+            "appellation": "Monthly Calendar",
+            "information": "A torn calendar page with three dates circled: '8', '2', and '5'. The circled marks are smudged but legible."
+          },
+          "spriteResolution": "1024x1536"
+        },
+        {
+          "id": "c9ddbe93-e04f-46af-a9b0-4d4d9c8907f8",
+          "position": "W2",
+          "size": "M",
+          "inspectionData": {
+            "appellation": "Vertical Painting",
+            "information": "A painting arranged vertically: top symbol – star, middle symbol – moon, bottom symbol – sun. No other marks are present."
+          },
+          "spriteResolution": "1024x1536"
+        }
+      ],
+      "containers": [
+        {
+          "id": "5b09e24e-fab8-4921-9b6e-d16ccd11246c",
+          "position": "F2",
+          "size": "M",
+          "lock": {
+            "type": "KEY",
+            "activator": "e9990f1a-8b2c-4f5e-1f6a-bb12c3d4e665"
+          },
+          "content": [
+            {
+              "type": "INSPECTABLE",
+              "object": {
+                "id": "971f7256-0501-486c-bd5a-a2c1f20cad94",
+                "position": "F2",
+                "size": "S",
+                "inspectionData": {
+                  "appellation": "Freedom Strip",
+                  "information": "A narrow strip of paper folded into thirds. Opened flat it reads: 'Order for extraction — bottom, middle, top.'"
+                },
+                "spriteResolution": "1024x1024"
+              }
+            }
+          ],
+          "inspectionData": {
+            "appellation": "Small Metal Box (key-locked)",
+            "information": "A small metal box bolted into the floor. The keyhole is ornate; rust marks circle it."
+          },
+          "spriteResolution": "1024x1024"
+        },
+        {
+          "id": "66055e0a-c1e4-43f1-a2a9-ec9fd2c1c67f",
+          "position": "F3",
+          "size": "M",
+          "lock": {
+            "type": "CODE_ONLY_NUMBER",
+            "activator": "528"
+          },
+          "content": [
+            {
+              "type": "INSPECTABLE",
+              "object": {
+                "id": "44cc7e05-f9e0-4bb5-9e3c-50994d88f48e",
+                "position": "F3",
+                "size": "S",
+                "inspectionData": {
+                  "appellation": "Brass Tile",
+                  "information": "A brass tile, stamped with two letters: 'ID'."
+                },
+                "spriteResolution": "1024x1024"
+              }
+            }
+          ],
+          "inspectionData": {
+            "appellation": "Floor Trunk",
+            "information": "A low trunk with a three-digit dial at the front. A faint scuff along the lip suggests it has been opened from above before."
+          },
+          "spriteResolution": "1536x1024"
+        }
+      ],
+      "movableCovers": []
+    },
+    {
+      "id": "e8f9a0b1-2c3d-4e5f-6a7b-66778899aabb",
+      "color": "#4A6FAE",
+      "exit": {
+        "id": "76885fa6-544f-4e8b-b72b-cdd7e4d4c9ca",
+        "lock": {
+          "type": "CODE_ONLY_LETTER",
+          "activator": "ORCHID"
+        },
+        "inspectionData": {
+          "appellation": "Heavy Exit Door",
+          "information": "A heavy wooden door with vertical iron ribs. A narrow slot for a six-letter word is carved above the handle; the wood around the slot is worn from frequent testing."
+        },
+        "spriteResolution": "1024x1536"
+      },
+      "pickables": [],
+      "inspectables": [
+        {
+          "id": "835eda05-875b-44e3-ace2-0aa75f790679",
+          "position": "W1",
+          "size": "M",
+          "inspectionData": {
+            "appellation": "Faded Mural",
+            "information": "A faded mural depicting a garden of strange blooms. Snippets of petal shapes are highlighted by pencil, but no letters or numbers are visible."
+          },
+          "spriteResolution": "1536x1024"
+        },
+        {
+          "id": "5cfc8dda-8448-48a8-9f30-bb8db98b26ef",
+          "position": "WB3",
+          "size": "S",
+          "inspectionData": {
+            "appellation": "Weathered Plaque",
+            "information": "A weathered plaque beside the door reads: 'Combine the fragments gathered from the three caches to reveal the word.'"
+          },
+          "spriteResolution": "1024x1024"
+        }
+      ],
+      "containers": [],
+      "movableCovers": []
+    }
+  ],
+  "derivation": [
+    {
+      "target": "LOCK",
+      "targetId": "d3334e5f-2a6b-4c7d-9e8f-44f5a6b7c803",
+      "lockType": "CODE_ONLY_NUMBER",
+      "expectedActivator": "314",
+      "dependsOn": "e4084aff-41a0-40f2-b76c-e1287f2d03c5",
+      "steps": [
+        "Read Three Mini Paintings: digits 3,1,4",
+        "Apply 'Read left → right' => assemble 314"
+      ],
+      "playerHints": [
+        {
+          "hint": "Read Three Mini Paintings.",
+          "reveals": "314"
+        },
+        {
+          "hint": "Apply brass tag instruction 'Read left → right'.",
+          "reveals": "314"
+        }
+      ]
+    },
+    {
+      "target": "LOCK",
+      "targetId": "d8889e0f-7a1b-4f4d-0e5f-aa01b2c3d554",
+      "lockType": "CODE_ONLY_LETTER",
+      "expectedActivator": "BEE",
+      "dependsOn": "1908fd86-2790-4161-85e3-f0c0ed304a4c",
+      "steps": [
+        "Remove Vent Grate with flat-head screwdriver => reveal Hidden Plaque",
+        "Take first letters of Beech, Elder, Elm top-to-bottom => BEE",
+        "Set wall safe dial to BEE"
+      ],
+      "playerHints": [
+        {
+          "hint": "Use first letters of the listed names, top-to-bottom.",
+          "reveals": "BEE"
+        },
+        {
+          "hint": "Open Wall Safe using BEE.",
+          "reveals": "BEE"
+        }
+      ]
+    },
+    {
+      "target": "LOCK",
+      "targetId": "5b09e24e-fab8-4921-9b6e-d16ccd11246c",
+      "lockType": "KEY",
+      "expectedActivator": "e9990f1a-8b2c-4f5e-1f6a-bb12c3d4e665",
+      "dependsOn": "a561d8d8-942d-4a41-99ed-12d815ff64c2",
+      "steps": [
+        "Obtain Ornate Key from Wall Safe",
+        "Use Ornate Key on Small Metal Box => opens"
+      ],
+      "playerHints": [
+        {
+          "hint": "Open Wall Safe to get the Ornate Key.",
+          "reveals": "Ornate Key"
+        },
+        {
+          "hint": "Use Ornate Key on the small metal box.",
+          "reveals": "Ornate Key"
+        }
+      ]
+    },
+    {
+      "target": "LOCK",
+      "targetId": "66055e0a-c1e4-43f1-a2a9-ec9fd2c1c67f",
+      "lockType": "CODE_ONLY_NUMBER",
+      "expectedActivator": "528",
+      "dependsOn": "9ff2d761-ff09-410b-8aad-6b4de77533a5",
+      "steps": [
+        "Read Freedom Strip: order bottom, middle, top",
+        "From Ledger (top-to-bottom Rowan 8, Alder 2, Cypress 5) take bottom,middle,top => 5,2,8",
+        "Set floor trunk code to 528"
+      ],
+      "playerHints": [
+        {
+          "hint": "Take bottom,middle,top numbers from Ledger.",
+          "reveals": "528"
+        },
+        {
+          "hint": "Open Floor Trunk using 528.",
+          "reveals": "528"
+        }
+      ]
+    },
+    {
+      "target": "EXIT_LOCK",
+      "targetId": "76885fa6-544f-4e8b-b72b-cdd7e4d4c9ca",
+      "lockType": "CODE_ONLY_LETTER",
+      "expectedActivator": "ORCHID",
+      "dependsOn": "5c1fd49e-10d5-41a6-be77-a59cd7a444d4",
+      "steps": [
+        "Take 'OR' from Folded Paper Tile (drawer)",
+        "Take 'CH' from Brass Tile in Wall Safe",
+        "Take 'ID' from Brass Tile in Floor Trunk",
+        "Concatenate fragments in puzzle acquisition order OR + CH + ID => ORCHID",
+        "Set exit word to ORCHID"
+      ],
+      "playerHints": [
+        {
+          "hint": "Combine fragments from the three caches in puzzle order.",
+          "reveals": "ORCHID"
+        },
+        {
+          "hint": "Open Exit using ORCHID.",
+          "reveals": "ORCHID"
+        }
+      ]
+    }
+  ],
+  "id": "bdf05dda-c2be-4a5d-9feb-656d38344d57"
+}

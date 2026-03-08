@@ -1,0 +1,143 @@
+{
+  "solvable": true,
+  "issues": [],
+  "derivation": [
+    {
+      "target": "LOCK",
+      "targetId": "d6f401c5-44a7-4e5f-b05d-6e7f80923456",
+      "lockType": "CODE_ONLY_NUMBER",
+      "expectedActivator": "73",
+      "dependsOn": [
+        "a3c1f9d2-11d4-4b2c-8f2a-9b3c4d5e6f01",
+        "b4d2e0a3-22e5-4c3d-9f3b-8c4d5e6f7012",
+        "c5e3f1b4-33f6-4d4e-af4c-7d5e6f708123"
+      ],
+      "steps": [
+        "Read 'Torn Price Tag' => 7",
+        "Read 'Ticket Stub' => 3",
+        "Apply 'Brass Plaque' instruction 'Left then Right' => code 73"
+      ],
+      "playerHints": [
+        {
+          "hint": "Read Torn Price Tag.",
+          "reveals": "7"
+        },
+        {
+          "hint": "Read Ticket Stub.",
+          "reveals": "3"
+        },
+        {
+          "hint": "Inspect Brass Plaque.",
+          "reveals": "Left then Right"
+        }
+      ]
+    },
+    {
+      "target": "LOCK",
+      "targetId": "1ad84509-88eb-4c93-ad9b-345678abcdef",
+      "lockType": "KEY",
+      "expectedActivator": "e7a512d6-55b8-4f60-c16e-5f8093456789",
+      "dependsOn": [
+        "d6f401c5-44a7-4e5f-b05d-6e7f80923456",
+        "e7a512d6-55b8-4f60-c16e-5f8093456789"
+      ],
+      "steps": [
+        "Unlock 'Locked Wooden Box' with 73 => take 'Small Brass Key'",
+        "KEY lock: activator references pickable 'Small Brass Key' => use key on 'Shallow Drawer'"
+      ],
+      "playerHints": [
+        {
+          "hint": "Open Locked Wooden Box.",
+          "reveals": "Small Brass Key"
+        },
+        {
+          "hint": "Use the Small Brass Key on the Shallow Drawer.",
+          "reveals": "Shallow Drawer opens"
+        }
+      ]
+    },
+    {
+      "target": "LOCK",
+      "targetId": "3cf0672b-a0ed-4eb5-cfbd-56789abcdef0",
+      "lockType": "CODE_ONLY_LETTER",
+      "expectedActivator": "OWL",
+      "dependsOn": [
+        "f8b623e7-66c9-4a71-8c79-123456abcdef",
+        "2be9561a-99fc-4da4-beac-456789abcdef",
+        "1ad84509-88eb-4c93-ad9b-345678abcdef"
+      ],
+      "steps": [
+        "Read 'Chalk Diagram': 1->star,2->crescent,3->leaf",
+        "Open 'Shallow Drawer' (use Small Brass Key) => read 'Folded Cipher Sheet': star->O,crescent->W,leaf->L",
+        "Map positions 1,2,3 to letters => OWL"
+      ],
+      "playerHints": [
+        {
+          "hint": "Read Chalk Diagram.",
+          "reveals": "1->star,2->crescent,3->leaf"
+        },
+        {
+          "hint": "Read Folded Cipher Sheet.",
+          "reveals": "star->O,crescent->W,leaf->L"
+        }
+      ]
+    },
+    {
+      "target": "LOCK",
+      "targetId": "ad5de9f2-1754-44e7-c6d4-cdef01234567",
+      "lockType": "CODE_ONLY_NUMBER",
+      "expectedActivator": "1942",
+      "dependsOn": [
+        "5e0894ad-c20f-4fd7-e1df-789abcdef012",
+        "6f19a5be-d310-40e8-f2e0-89abcdef0123",
+        "7a2ab6cf-e421-41f9-03f1-9abcdef01234",
+        "8b3bc7d0-f532-42c5-a4b2-abcdef012345",
+        "4df1783c-b1fe-4fc6-d0ce-6789abcdef01"
+      ],
+      "steps": [
+        "Read 'Stamped Tile' => 19",
+        "Read 'Nail Row' => 4",
+        "Remove 'Loose Floorboard' (use 'Flat-head Screwdriver') => read 'Hidden Paper Strip' instruction",
+        "Read 'Stationary Clock Face' minute => 2",
+        "Assemble 19,4,2 => 1942"
+      ],
+      "playerHints": [
+        {
+          "hint": "Read Stamped Tile.",
+          "reveals": "19"
+        },
+        {
+          "hint": "Read Nail Row.",
+          "reveals": "4"
+        },
+        {
+          "hint": "Read Stationary Clock Face.",
+          "reveals": "2"
+        }
+      ]
+    },
+    {
+      "target": "EXIT_LOCK",
+      "targetId": "cf9f1a23-7e8b-4f9a-a567-0123456789ab",
+      "lockType": "PASSWORD",
+      "expectedActivator": "73OWL1942",
+      "dependsOn": [
+        "d6f401c5-44a7-4e5f-b05d-6e7f80923456",
+        "3cf0672b-a0ed-4eb5-cfbd-56789abcdef0",
+        "ad5de9f2-1754-44e7-c6d4-cdef01234567"
+      ],
+      "steps": [
+        "Collect '73' from 'Locked Wooden Box'",
+        "Collect 'OWL' from 'Metal Wall Safe'",
+        "Collect '1942' from 'Old Floor Chest'",
+        "Concatenate number+letters+year => 73OWL1942"
+      ],
+      "playerHints": [
+        {
+          "hint": "Assemble the hall tokens in order: number, letters, year.",
+          "reveals": "73OWL1942"
+        }
+      ]
+    }
+  ]
+}

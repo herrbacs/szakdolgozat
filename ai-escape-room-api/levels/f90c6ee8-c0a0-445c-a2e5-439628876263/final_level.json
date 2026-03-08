@@ -1,0 +1,335 @@
+{
+  "title": "The Archivist's Sequence",
+  "story": "You awaken in a compact study owned by a meticulous archivist. Scattered notes, colored swatches and sealed boxes hint at a system the archivist used to lock away a final exit code. To leave you must reconstruct the archivist's sequence of numbers and letters by reading visual fragments and opening progressively secured objects.",
+  "walls": [
+    {
+      "id": "a1f3b9e2-6c2d-4c0b-9d7e-11a9f0000001",
+      "color": "#C9E7D0",
+      "exit": null,
+      "pickables": [],
+      "inspectables": [
+        {
+          "id": "a1f3b9e2-6c2d-4c0b-9d7e-11a9f0000010",
+          "position": "WT2",
+          "size": "M",
+          "inspectionData": {
+            "appellation": "Portrait of three roses",
+            "information": "A wide oil portrait shows three roses: left, center, right. Small painted digits sit beneath each: '3' under the left rose, '1' under the center rose, '4' under the right rose."
+          },
+          "spriteResolution": "1536x1024"
+        },
+        {
+          "id": "a1f3b9e2-6c2d-4c0b-9d7e-11a9f0000011",
+          "position": "W1",
+          "size": "S",
+          "inspectionData": {
+            "appellation": "Faded sticky note",
+            "information": "A short line reads: 'Left - Center - Right.' The handwriting is tidy and underlined twice."
+          },
+          "spriteResolution": "1024x1024"
+        },
+        {
+          "id": "a1f3b9e2-6c2d-4c0b-9d7e-11a9f0000012",
+          "position": "WB1",
+          "size": "S",
+          "inspectionData": {
+            "appellation": "Crinkled scrap",
+            "information": "Three digits are scrawled plainly: 3 1 4"
+          },
+          "spriteResolution": "1024x1024"
+        }
+      ],
+      "containers": [
+        {
+          "id": "b2c4d8f3-3e6a-4b7f-9b12-22bfa0000002",
+          "position": "F1",
+          "size": "M",
+          "lock": {
+            "type": "CODE_ONLY_NUMBER",
+            "activator": "314"
+          },
+          "content": [
+            {
+              "type": "PICKABLE",
+              "object": {
+                "id": "c3d5e9a4-4f7b-4c8d-8c23-33c0b0000003",
+                "position": "F1",
+                "size": "S",
+                "reusable": false,
+                "inspectionData": {
+                  "appellation": "Brass key",
+                  "information": "A small brass key with a leaf-shaped bow and a single notch on the shaft."
+                },
+                "spriteResolution": "1024x1024"
+              }
+            }
+          ],
+          "inspectionData": {
+            "appellation": "Small wall safe",
+            "information": "A compact metal safe with a three-digit mechanical dial built into its front. The dial is worn at three positions."
+          },
+          "spriteResolution": "1024x1024"
+        }
+      ],
+      "movableCovers": []
+    },
+    {
+      "id": "d4e6f1b5-8a3c-4d1f-b2a4-44d1c0000004",
+      "color": "#E8E7F2",
+      "exit": {
+        "id": "e5f7a2c6-9b4d-4e2a-b3c5-55e2d0000005",
+        "lock": {
+          "type": "PASSWORD",
+          "activator": "314OKB"
+        },
+        "inspectionData": {
+          "appellation": "Reinforced door",
+          "information": "A heavy steel door with a small alphanumeric keypad and a faded stencil above the frame showing three grouped segments: [###]-[##]-[#]. The keypad accepts letters and digits."
+        },
+        "spriteResolution": "1024x1536"
+      },
+      "pickables": [],
+      "inspectables": [
+        {
+          "id": "d4e6f1b5-8a3c-4d1f-b2a4-44d1c0000010",
+          "position": "WT1",
+          "size": "S",
+          "inspectionData": {
+            "appellation": "Service plaque",
+            "information": "A small brass plaque engraved with the archivist's initials and a faint sequence of three ticks underlined."
+          },
+          "spriteResolution": "1024x1024"
+        },
+        {
+          "id": "d4e6f1b5-8a3c-4d1f-b2a4-44d1c0000011",
+          "position": "WT3",
+          "size": "S",
+          "inspectionData": {
+            "appellation": "Faded stencil",
+            "information": "Three grouped boxes are stenciled above the door: the first large box, then a medium box, then a small box. The boxes are empty except for faint smudges."
+          },
+          "spriteResolution": "1024x1024"
+        }
+      ],
+      "containers": [],
+      "movableCovers": []
+    },
+    {
+      "id": "f6a8b2d7-1b5e-4f2c-a6d7-66f3e0000006",
+      "color": "#FFF5D9",
+      "exit": null,
+      "pickables": [],
+      "inspectables": [
+        {
+          "id": "f6a8b2d7-1b5e-4f2c-a6d7-66f3e0000010",
+          "position": "WT1",
+          "size": "S",
+          "inspectionData": {
+            "appellation": "Color legend poster",
+            "information": "Three swatches with initials: Blue = B, Green = G, Red = R. The poster is labeled 'Initials'."
+          },
+          "spriteResolution": "1024x1024"
+        },
+        {
+          "id": "f6a8b2d7-1b5e-4f2c-a6d7-66f3e0000011",
+          "position": "W1",
+          "size": "M",
+          "inspectionData": {
+            "appellation": "Mural strip",
+            "information": "A vertical mural shows three squares in order from top to bottom: Blue, Green, Red. Each square is plain, no text."
+          },
+          "spriteResolution": "1536x1024"
+        }
+      ],
+      "containers": [
+        {
+          "id": "bac0db3d-a8fd-47b6-92db-b2fd7c352c60",
+          "position": "F2",
+          "size": "M",
+          "lock": {
+            "type": "KEY",
+            "activator": "c3d5e9a4-4f7b-4c8d-8c23-33c0b0000003"
+          },
+          "content": [
+            {
+              "type": "INSPECTABLE",
+              "object": {
+                "id": "cd54b4cb-9519-4f4d-b171-3cf945507db9",
+                "position": "F2",
+                "size": "S",
+                "inspectionData": {
+                  "appellation": "Locked journal page",
+                  "information": "A single journal page reads: 'Pair: OK. Notation: the mural sequence gives initials in reading order.' The handwriting uses a circle around the letters O and K."
+                },
+                "spriteResolution": "1024x1024"
+              }
+            }
+          ],
+          "inspectionData": {
+            "appellation": "Leather-bound journal",
+            "information": "A small journal with a brass clasp. The clasp is keyed and shows tiny leaf-shaped scratches similar to the brass key's bow."
+          },
+          "spriteResolution": "1024x1536"
+        }
+      ],
+      "movableCovers": []
+    },
+    {
+      "id": "8c640247-ad28-447b-b6f4-cc0e485d4827",
+      "color": "#F2F7FF",
+      "exit": null,
+      "pickables": [],
+      "inspectables": [
+        {
+          "id": "06450b85-61b1-46db-be5d-9b393150362f",
+          "position": "WT1",
+          "size": "S",
+          "inspectionData": {
+            "appellation": "Colored tile panel",
+            "information": "Four small circular tiles are painted left-to-right with colors: (1) Red, (2) Blue, (3) Green, (4) Blue. Each tile is numbered faintly at the edge."
+          },
+          "spriteResolution": "1024x1024"
+        },
+        {
+          "id": "1863bcbe-8884-491d-a6c6-f9cbf7e25e6c",
+          "position": "W1",
+          "size": "S",
+          "inspectionData": {
+            "appellation": "Stone carving",
+            "information": "A small carved stone lists the numbers 1 through 4 with tiny color dots beside them matching the tile panel: 1=R, 2=B, 3=G, 4=B."
+          },
+          "spriteResolution": "1024x1024"
+        },
+        {
+          "id": "4ba868fa-9bb7-4e40-9b19-c5c1366cd151",
+          "position": "WT3",
+          "size": "S",
+          "inspectionData": {
+            "appellation": "Sequence note",
+            "information": "A narrow slip of paper reads: 2-4-1-3"
+          },
+          "spriteResolution": "1024x1024"
+        }
+      ],
+      "containers": [
+        {
+          "id": "d35b3815-6502-48a6-89ce-94c2a4c2ba79",
+          "position": "F3",
+          "size": "L",
+          "lock": {
+            "type": "CODE_ONLY_LETTER",
+            "activator": "BBRG"
+          },
+          "content": [
+            {
+              "type": "INSPECTABLE",
+              "object": {
+                "id": "f37ed94a-ca30-4bec-ab83-869f5ff572b7",
+                "position": "F3",
+                "size": "M",
+                "inspectionData": {
+                  "appellation": "Folded memorandum",
+                  "information": "A single folded memorandum, unfolded, contains a short line: 314|OK|B"
+                },
+                "spriteResolution": "1024x1536"
+              }
+            }
+          ],
+          "inspectionData": {
+            "appellation": "Oak chest",
+            "information": "A low oak chest with a front panel bearing four shallow lettered indentations. A four-letter code-lock mechanism sits embedded in the lid."
+          },
+          "spriteResolution": "1536x1024"
+        }
+      ],
+      "movableCovers": []
+    }
+  ],
+  "derivation": [
+    {
+      "target": "LOCK",
+      "targetId": "b2c4d8f3-3e6a-4b7f-9b12-22bfa0000002",
+      "lockType": "CODE_ONLY_NUMBER",
+      "expectedActivator": "314",
+      "dependsOn": "65ee2dc0-7890-4356-9dc2-a716ff86e113",
+      "steps": [
+        "Read portrait of three roses: left=3 center=1 right=4 => 314",
+        "Enter 314 into small wall safe => obtain Brass key"
+      ],
+      "playerHints": [
+        {
+          "hint": "Read portrait of three roses.",
+          "reveals": "314"
+        },
+        {
+          "hint": "Open small wall safe with 314.",
+          "reveals": "Brass key"
+        }
+      ]
+    },
+    {
+      "target": "LOCK",
+      "targetId": "bac0db3d-a8fd-47b6-92db-b2fd7c352c60",
+      "lockType": "KEY",
+      "expectedActivator": "Brass key",
+      "dependsOn": "adb1dd76-b01c-48f9-b1cd-b90426307394",
+      "steps": [
+        "KEY lock: activator references pickable id c3d5e9a4-4f7b-4c8d-8c23-33c0b0000003 => use Brass key on journal clasp",
+        "Read locked journal page => 'Pair: OK' and mural instruction"
+      ],
+      "playerHints": [
+        {
+          "hint": "Use Brass key on leather-bound journal clasp.",
+          "reveals": "Brass key"
+        },
+        {
+          "hint": "Read locked journal page.",
+          "reveals": "OK"
+        }
+      ]
+    },
+    {
+      "target": "LOCK",
+      "targetId": "d35b3815-6502-48a6-89ce-94c2a4c2ba79",
+      "lockType": "CODE_ONLY_LETTER",
+      "expectedActivator": "BBRG",
+      "dependsOn": "bc481816-3767-4c48-935d-a3e2774fdcfd",
+      "steps": [
+        "Read colored tile panel and stone carving => mapping 1=R 2=B 3=G 4=B",
+        "Apply sequence 2-4-1-3 => colors B B R G => initials BBRG; enter BBRG into oak chest => obtain folded memorandum"
+      ],
+      "playerHints": [
+        {
+          "hint": "Read sequence note.",
+          "reveals": "2-4-1-3"
+        },
+        {
+          "hint": "Map numbers to colors and take initials.",
+          "reveals": "BBRG"
+        }
+      ]
+    },
+    {
+      "target": "EXIT_LOCK",
+      "targetId": "e5f7a2c6-9b4d-4e2a-b3c5-55e2d0000005",
+      "lockType": "PASSWORD",
+      "expectedActivator": "314OKB",
+      "dependsOn": "ec333bf2-7117-45d7-b812-2691220e05b3",
+      "steps": [
+        "Collect folded memorandum '314|OK|B' from oak chest",
+        "Concatenate parts 314 + OK + B => 314OKB; enter 314OKB into door keypad => door opens"
+      ],
+      "playerHints": [
+        {
+          "hint": "Read folded memorandum.",
+          "reveals": "314|OK|B"
+        },
+        {
+          "hint": "Enter 314OKB into door keypad.",
+          "reveals": "314OKB"
+        }
+      ]
+    }
+  ],
+  "id": "f90c6ee8-c0a0-445c-a2e5-439628876263"
+}
