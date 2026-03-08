@@ -1,0 +1,185 @@
+{
+  "title": "The Brass & The Numbers",
+  "story": "You wake in a compact study sealed by a heavy steel door. Strange mosaics and scattered papers decorate the walls. Somewhere in the room is a small brass key and a numeric locked safe — solve the room's logic to reach the key, then use it on the door.",
+  "walls": [
+    {
+      "id": "a1f0b5a4-9c2d-4a2f-9847-2d3f7b6e8c11",
+      "color": "#D7E3F2",
+      "exit": null,
+      "pickables": [],
+      "inspectables": [
+        {
+          "id": "b2e13d9a-7f6c-4e2b-a2e5-4c9f0b2a1112",
+          "position": "WT2",
+          "size": "M",
+          "inspectionData": {
+            "appellation": "Framed Mosaic of Shapes",
+            "information": "A geometric mosaic: three small black triangles grouped left, one medium circle centered, and four tiny squares aligned on the right."
+          },
+          "spriteResolution": "1536x1024"
+        },
+        {
+          "id": "c3f24e2b-1d4a-4b6f-8e9b-5f0c3d2b2223",
+          "position": "W3",
+          "size": "S",
+          "inspectionData": {
+            "appellation": "Torn Notebook Scrap",
+            "information": "A short line scrawled in ink reads: \"Order: triangle - circle - square\" with an arrow pointing left-to-right."
+          },
+          "spriteResolution": "1024x1024"
+        }
+      ],
+      "containers": [
+        {
+          "id": "d4a35f3c-2b5e-4f1a-9aab-6d1e4f3c3334",
+          "position": "W1",
+          "size": "M",
+          "lock": {
+            "type": "CODE_ONLY_NUMBER",
+            "activator": "314"
+          },
+          "content": [
+            {
+              "type": "PICKABLE",
+              "object": {
+                "id": "72675e92-1f01-457d-a21c-4b2532b1f917",
+                "position": "F2",
+                "size": "S",
+                "reusable": false,
+                "inspectionData": {
+                  "appellation": "Small Brass Key",
+                  "information": "A solid brass key with a clover-shaped head. The metal is warm to the touch and the head is stamped faintly with the letters: BRASS."
+                },
+                "spriteResolution": "1024x1024"
+              }
+            },
+            {
+              "type": "INSPECTABLE",
+              "object": {
+                "id": "ab397130-c0aa-410a-b72c-29d153342391",
+                "position": "F2",
+                "size": "S",
+                "inspectionData": {
+                  "appellation": "Typed Slip Found With Key",
+                  "information": "This small slip reads in neat type: \"Property of Laboratory 9. Keep the small brass piece safe. It was cut to fit one particular lock and carries the name of the maker on its face.\" The bottom of the slip bears a short note: \"Do not lose what opens the way.\""
+                },
+                "spriteResolution": "1024x1024"
+              }
+            }
+          ],
+          "inspectionData": {
+            "appellation": "Steel Wall Safe",
+            "information": "A recessed steel safe with a three-digit numeric keypad. The digits are worn from repeated use and a faint scuff marks the left side of the keypad."
+          },
+          "spriteResolution": "1024x1536"
+        }
+      ],
+      "movableCovers": []
+    },
+    {
+      "id": "b2c1d6e7-2f3a-4b5c-9d8e-1f2a3b4c5556",
+      "color": "#F3E6D7",
+      "exit": null,
+      "pickables": [],
+      "inspectables": [
+        {
+          "id": "b2c90032-54ab-4808-ad5e-6681967c9d5d",
+          "position": "WT1",
+          "size": "S",
+          "inspectionData": {
+            "appellation": "Bronze Plaque",
+            "information": "A small bronze plaque affixed high on the wall reads: \"BRASS is born from ore and fire.\" The text is decorative, carved in serif letters."
+          },
+          "spriteResolution": "1024x1024"
+        }
+      ],
+      "containers": [],
+      "movableCovers": []
+    },
+    {
+      "id": "c3d2e7f8-3a4b-5c6d-0e9f-2a3b4c5d6667",
+      "color": "#E8F2E0",
+      "exit": null,
+      "pickables": [],
+      "inspectables": [
+        {
+          "id": "1008cb9b-8dda-47fe-a63e-2946329e7aa2",
+          "position": "W1",
+          "size": "S",
+          "inspectionData": {
+            "appellation": "Stamped Vent Cover",
+            "information": "A small metal vent cover shows two faintly stamped letters: \"SS\" near the corner. The stamp looks industrial and slightly oxidised."
+          },
+          "spriteResolution": "1024x1024"
+        }
+      ],
+      "containers": [],
+      "movableCovers": []
+    },
+    {
+      "id": "9e253d17-609e-4f81-af26-df3b7633e5f1",
+      "color": "#F8EDEB",
+      "exit": {
+        "id": "3e9b92e2-5656-49a0-8aa9-b98aef303661",
+        "lock": {
+          "type": "KEY",
+          "activator": "72675e92-1f01-457d-a21c-4b2532b1f917"
+        },
+        "inspectionData": {
+          "appellation": "Heavy Reinforced Door",
+          "information": "A heavy steel door fitted with a clover-shaped keyhole. Faintly etched beside the keyhole are the letters: BRASS. The keyhole itself appears to match the clover-head shape of small brass keys."
+        },
+        "spriteResolution": "1024x1536"
+      },
+      "pickables": [],
+      "inspectables": [],
+      "containers": [],
+      "movableCovers": []
+    }
+  ],
+  "derivation": [
+    {
+      "target": "LOCK",
+      "targetId": "d4a35f3c-2b5e-4f1a-9aab-6d1e4f3c3334",
+      "lockType": "CODE_ONLY_NUMBER",
+      "expectedActivator": "314",
+      "dependsOn": "0cd0672c-a2ce-4a5d-b304-ac3dc6e46b2b",
+      "steps": [
+        "Read Framed Mosaic of Shapes: triangles 3, circle 1, squares 4 => code 314",
+        "Open Steel Wall Safe using 314 => obtain Small Brass Key"
+      ],
+      "playerHints": [
+        {
+          "hint": "Read Framed Mosaic of Shapes.",
+          "reveals": "314"
+        },
+        {
+          "hint": "Read Torn Notebook Scrap.",
+          "reveals": "314"
+        }
+      ]
+    },
+    {
+      "target": "EXIT_LOCK",
+      "targetId": "3e9b92e2-5656-49a0-8aa9-b98aef303661",
+      "lockType": "KEY",
+      "expectedActivator": "72675e92-1f01-457d-a21c-4b2532b1f917",
+      "dependsOn": "aadaa591-bb06-469b-a040-e00e2b1c7dd4",
+      "steps": [
+        "Open Steel Wall Safe using 314 => take Small Brass Key",
+        "Use Small Brass Key on Heavy Reinforced Door => unlock Exit"
+      ],
+      "playerHints": [
+        {
+          "hint": "Open Steel Wall Safe.",
+          "reveals": "Small Brass Key"
+        },
+        {
+          "hint": "Examine Heavy Reinforced Door.",
+          "reveals": "Small Brass Key"
+        }
+      ]
+    }
+  ],
+  "id": "403a245b-488e-4711-8d9e-25b1e8abd963"
+}

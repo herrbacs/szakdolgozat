@@ -1,0 +1,53 @@
+{
+  "solvable": true,
+  "issues": [],
+  "derivation": [
+    {
+      "target": "LOCK",
+      "targetId": "d4a35f3c-2b5e-4f1a-9aab-6d1e4f3c3334",
+      "lockType": "CODE_ONLY_NUMBER",
+      "expectedActivator": "314",
+      "dependsOn": [
+        "b2e13d9a-7f6c-4e2b-a2e5-4c9f0b2a1112",
+        "c3f24e2b-1d4a-4b6f-8e9b-5f0c3d2b2223"
+      ],
+      "steps": [
+        "Read Framed Mosaic of Shapes: triangles 3, circle 1, squares 4 => code 314",
+        "Open Steel Wall Safe using 314 => obtain Small Brass Key"
+      ],
+      "playerHints": [
+        {
+          "hint": "Read Framed Mosaic of Shapes.",
+          "reveals": "314"
+        },
+        {
+          "hint": "Read Torn Notebook Scrap.",
+          "reveals": "314"
+        }
+      ]
+    },
+    {
+      "target": "EXIT_LOCK",
+      "targetId": "i9f8g0h1-5c6d-7e8f-2a1b-4c5d6e7f8889",
+      "lockType": "KEY",
+      "expectedActivator": "e5b46f4d-3c6f-4b2c-bbcc-7e2f5g4d4445",
+      "dependsOn": [
+        "d4a35f3c-2b5e-4f1a-9aab-6d1e4f3c3334"
+      ],
+      "steps": [
+        "Open Steel Wall Safe using 314 => take Small Brass Key",
+        "Use Small Brass Key on Heavy Reinforced Door => unlock Exit"
+      ],
+      "playerHints": [
+        {
+          "hint": "Open Steel Wall Safe.",
+          "reveals": "Small Brass Key"
+        },
+        {
+          "hint": "Examine Heavy Reinforced Door.",
+          "reveals": "Small Brass Key"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,140 @@
+{
+  "title": "The Brass & The Numbers",
+  "story": "You wake in a compact study sealed by a heavy steel door. Strange mosaics and scattered papers decorate the walls. Somewhere in the room is a small brass key and a numeric locked safe — solve the room's logic to reach the key, then use it on the door.",
+  "walls": [
+    {
+      "id": "a1f0b5a4-9c2d-4a2f-9847-2d3f7b6e8c11",
+      "color": "#D7E3F2",
+      "exit": null,
+      "pickables": [],
+      "inspectables": [
+        {
+          "id": "b2e13d9a-7f6c-4e2b-a2e5-4c9f0b2a1112",
+          "position": "WT2",
+          "size": "M",
+          "inspectionData": {
+            "appellation": "Framed Mosaic of Shapes",
+            "information": "A geometric mosaic: three small black triangles grouped left, one medium circle centered, and four tiny squares aligned on the right."
+          },
+          "spriteResolution": "1536x1024"
+        },
+        {
+          "id": "c3f24e2b-1d4a-4b6f-8e9b-5f0c3d2b2223",
+          "position": "W3",
+          "size": "S",
+          "inspectionData": {
+            "appellation": "Torn Notebook Scrap",
+            "information": "A short line scrawled in ink reads: \"Order: triangle - circle - square\" with an arrow pointing left-to-right."
+          },
+          "spriteResolution": "1024x1024"
+        }
+      ],
+      "containers": [
+        {
+          "id": "d4a35f3c-2b5e-4f1a-9aab-6d1e4f3c3334",
+          "position": "W1",
+          "size": "M",
+          "lock": {
+            "type": "CODE_ONLY_NUMBER",
+            "activator": "314"
+          },
+          "content": [
+            {
+              "type": "PICKABLE",
+              "object": {
+                "id": "e5b46f4d-3c6f-4b2c-bbcc-7e2f5g4d4445",
+                "position": "F2",
+                "size": "S",
+                "reusable": false,
+                "inspectionData": {
+                  "appellation": "Small Brass Key",
+                  "information": "A solid brass key with a clover-shaped head. The metal is warm to the touch and the head is stamped faintly with the letters: BRASS."
+                },
+                "spriteResolution": "1024x1024"
+              }
+            },
+            {
+              "type": "INSPECTABLE",
+              "object": {
+                "id": "f6c57g5e-4d70-4c3d-ccdd-8f3g6h5e5556",
+                "position": "F2",
+                "size": "S",
+                "inspectionData": {
+                  "appellation": "Typed Slip Found With Key",
+                  "information": "This small slip reads in neat type: \"Property of Laboratory 9. Keep the small brass piece safe. It was cut to fit one particular lock and carries the name of the maker on its face.\" The bottom of the slip bears a short note: \"Do not lose what opens the way.\""
+                },
+                "spriteResolution": "1024x1024"
+              }
+            }
+          ],
+          "inspectionData": {
+            "appellation": "Steel Wall Safe",
+            "information": "A recessed steel safe with a three-digit numeric keypad. The digits are worn from repeated use and a faint scuff marks the left side of the keypad."
+          },
+          "spriteResolution": "1024x1536"
+        }
+      ],
+      "movableCovers": []
+    },
+    {
+      "id": "b2c1d6e7-2f3a-4b5c-9d8e-1f2a3b4c5556",
+      "color": "#F3E6D7",
+      "exit": null,
+      "pickables": [],
+      "inspectables": [
+        {
+          "id": "g7d68h6f-5e81-4d4e-aeef-9a4b6c7d6667",
+          "position": "WT1",
+          "size": "S",
+          "inspectionData": {
+            "appellation": "Bronze Plaque",
+            "information": "A small bronze plaque affixed high on the wall reads: \"BRASS is born from ore and fire.\" The text is decorative, carved in serif letters."
+          },
+          "spriteResolution": "1024x1024"
+        }
+      ],
+      "containers": [],
+      "movableCovers": []
+    },
+    {
+      "id": "c3d2e7f8-3a4b-5c6d-0e9f-2a3b4c5d6667",
+      "color": "#E8F2E0",
+      "exit": null,
+      "pickables": [],
+      "inspectables": [
+        {
+          "id": "h8e79i7g-6f92-5e5f-bbff-0b5c7d8e7778",
+          "position": "W1",
+          "size": "S",
+          "inspectionData": {
+            "appellation": "Stamped Vent Cover",
+            "information": "A small metal vent cover shows two faintly stamped letters: \"SS\" near the corner. The stamp looks industrial and slightly oxidised."
+          },
+          "spriteResolution": "1024x1024"
+        }
+      ],
+      "containers": [],
+      "movableCovers": []
+    },
+    {
+      "id": "d4e3f9g0-4b5c-6d7e-1f0a-3b4c5d6e7778",
+      "color": "#F8EDEB",
+      "exit": {
+        "id": "i9f8g0h1-5c6d-7e8f-2a1b-4c5d6e7f8889",
+        "lock": {
+          "type": "KEY",
+          "activator": "e5b46f4d-3c6f-4b2c-bbcc-7e2f5g4d4445"
+        },
+        "inspectionData": {
+          "appellation": "Heavy Reinforced Door",
+          "information": "A heavy steel door fitted with a clover-shaped keyhole. Faintly etched beside the keyhole are the letters: BRASS. The keyhole itself appears to match the clover-head shape of small brass keys."
+        },
+        "spriteResolution": "1024x1536"
+      },
+      "pickables": [],
+      "inspectables": [],
+      "containers": [],
+      "movableCovers": []
+    }
+  ]
+}
