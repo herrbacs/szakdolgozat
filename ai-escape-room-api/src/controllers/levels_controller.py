@@ -344,7 +344,10 @@ def list_levels_handler(
     favorite_count = func.count(func.distinct(FavoriteLevel.user_id)).label("favorite_count")
 
     def apply_filters(stmt: Select) -> Select:
-        stmt = stmt.where(Level.sucessfull_level_generation == True)
+        stmt = stmt.where(
+            Level.sucessfull_level_generation == True,
+            Level.sucessfull_sprite_generation == True,
+        )
         if query.title:
             stmt = stmt.where(Level.title.ilike(f"%{query.title.strip()}%"))
         if query.story:
