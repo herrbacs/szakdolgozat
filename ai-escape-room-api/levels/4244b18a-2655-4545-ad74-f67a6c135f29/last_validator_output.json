@@ -1,0 +1,117 @@
+{
+  "solvable": true,
+  "issues": [],
+  "derivation": [
+    {
+      "target": "LOCK",
+      "targetId": "c1d2e3f4-5678-90ab-cdef-1234567890ab",
+      "lockType": "CODE_ONLY_NUMBER",
+      "expectedActivator": "314",
+      "dependsOn": [
+        "11111111-1111-1111-1111-111111111111",
+        "22222222-2222-2222-2222-222222222222"
+      ],
+      "steps": [
+        "Inspect Torn calendar page: circles 3,1,4",
+        "Read Faded sticky note: read circles left-to-right => code 314"
+      ],
+      "playerHints": [
+        {
+          "hint": "Inspect Torn calendar page.",
+          "reveals": "314"
+        },
+        {
+          "hint": "Read Faded sticky note.",
+          "reveals": "314"
+        }
+      ]
+    },
+    {
+      "target": "LOCK",
+      "targetId": "9f8e7d6c-5b4a-3210-fedc-ba9876543210",
+      "lockType": "KEY",
+      "expectedActivator": "b7f8e9d0-1122-3344-5566-77889900aabb",
+      "dependsOn": [
+        "c1d2e3f4-5678-90ab-cdef-1234567890ab",
+        "11111111-1111-1111-1111-111111111111",
+        "22222222-2222-2222-2222-222222222222"
+      ],
+      "steps": [
+        "Open Carved wooden jewelry box with code 314 => obtain Brass archive key",
+        "Use Brass archive key on Small wall safe => obtain Folded note 'V'"
+      ],
+      "playerHints": [
+        {
+          "hint": "Open the carved wooden jewelry box with the three-digit code.",
+          "reveals": "Brass archive key"
+        },
+        {
+          "hint": "Use the Brass archive key on the small wall safe.",
+          "reveals": "Brass archive key"
+        }
+      ]
+    },
+    {
+      "target": "LOCK",
+      "targetId": "8a7b6c5d-4e3f-2190-abcd-1234567890ff",
+      "lockType": "CODE_ONLY_LETTER",
+      "expectedActivator": "NOTE",
+      "dependsOn": [
+        "77777777-7777-7777-7777-777777777777",
+        "88888888-8888-8888-8888-888888888888",
+        "99999999-9999-9999-9999-999999999999",
+        "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+        "12121212-3434-5656-7878-909090909090",
+        "7e6d5c4b-3a2f-1e0d-c9b8-a7f6e5d4c3b2"
+      ],
+      "steps": [
+        "Move Faded poster => reveal Hidden scrap 'E'",
+        "Read Painted tile WT1 => 'N'",
+        "Read Stamped card WT3 => 'O'",
+        "Read Engraved plaque W1 => 'T'",
+        "Order letters WT1,WT3,W1,W3 => N O T E => code NOTE"
+      ],
+      "playerHints": [
+        {
+          "hint": "Reveal the hidden scrap under the faded poster.",
+          "reveals": "NOTE"
+        },
+        {
+          "hint": "Read the painted tile, stamped card and engraved plaque; order letters per the index card.",
+          "reveals": "NOTE"
+        }
+      ]
+    },
+    {
+      "target": "EXIT_LOCK",
+      "targetId": "0a1b2c3d-4e5f-6789-abcd-ef0123456789",
+      "lockType": "PASSWORD",
+      "expectedActivator": "SOLVER",
+      "dependsOn": [
+        "33333333-3333-3333-3333-333333333333",
+        "44444444-4444-4444-4444-444444444444",
+        "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
+        "13131313-1414-1515-1616-171717171717",
+        "cccccccc-cccc-cccc-cccc-cccccccccccc",
+        "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee"
+      ],
+      "steps": [
+        "Open Carved wooden jewelry box => obtain Torn slip 'SOL'",
+        "Open Small wall safe with Brass archive key => obtain Folded note 'V'",
+        "Open Low wooden cabinet drawer with code NOTE => obtain 'ER' and numbered fragment note",
+        "Place fragments into Brass plaque frames per numbered fragment note => frames 1–6 read SOLVER",
+        "Enter SOLVER on Reinforced archive door keypad"
+      ],
+      "playerHints": [
+        {
+          "hint": "Collect fragments 'SOL', 'V' and 'ER' and read the numbered fragment note.",
+          "reveals": "SOLVER"
+        },
+        {
+          "hint": "Place fragments into the six plaque frames and read frames 1→6.",
+          "reveals": "SOLVER"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,401 @@
+{
+  "title": "Archivist's Study",
+  "story": "You wake in a small study lined with shelves and faded plaques. The archivist's notes promise a way out if you can piece together the marked letters and numbers hidden around the room. Each object you open reveals fragments that fit together into a final access code on the heavy archive door.",
+  "walls": [
+    {
+      "id": "d9f1a1c4-1f2b-4c1a-9d2a-1b2c3d4e5f60",
+      "color": "#C19A6B",
+      "exit": null,
+      "pickables": [],
+      "inspectables": [
+        {
+          "id": "11111111-1111-1111-1111-111111111111",
+          "position": "WT1",
+          "size": "S",
+          "inspectionData": {
+            "appellation": "Torn calendar page",
+            "information": "A calendar page with the 3rd, 1st and 4th days circled in red ink."
+          },
+          "spriteResolution": "1024x1024"
+        },
+        {
+          "id": "22222222-2222-2222-2222-222222222222",
+          "position": "W1",
+          "size": "S",
+          "inspectionData": {
+            "appellation": "Faded sticky note",
+            "information": "A small yellow note that reads: 'Read the circles left to right.'"
+          },
+          "spriteResolution": "1024x1024"
+        }
+      ],
+      "containers": [
+        {
+          "id": "c1d2e3f4-5678-90ab-cdef-1234567890ab",
+          "position": "F1",
+          "size": "M",
+          "lock": {
+            "type": "CODE_ONLY_NUMBER",
+            "activator": "314"
+          },
+          "content": [
+            {
+              "type": "PICKABLE",
+              "object": {
+                "id": "b7f8e9d0-1122-3344-5566-77889900aabb",
+                "position": "F1",
+                "size": "S",
+                "reusable": true,
+                "inspectionData": {
+                  "appellation": "Brass archive key",
+                  "information": "A small brass key stamped with a faint archivist emblem."
+                },
+                "spriteResolution": "1024x1024"
+              }
+            },
+            {
+              "type": "INSPECTABLE",
+              "object": {
+                "id": "33333333-3333-3333-3333-333333333333",
+                "position": "F1",
+                "size": "S",
+                "inspectionData": {
+                  "appellation": "Torn slip",
+                  "information": "SOL"
+                },
+                "spriteResolution": "1024x1024"
+              }
+            }
+          ],
+          "inspectionData": {
+            "appellation": "Carved wooden jewelry box",
+            "information": "An old wooden box with a three-digit dial lock and shallow floral carvings."
+          },
+          "spriteResolution": "1024x1536"
+        }
+      ],
+      "movableCovers": []
+    },
+    {
+      "id": "a3b2c1d4-5e6f-7a8b-9c0d-1e2f3a4b5c6d",
+      "color": "#2E8B57",
+      "exit": {
+        "id": "0a1b2c3d-4e5f-6789-abcd-ef0123456789",
+        "lock": {
+          "type": "PASSWORD",
+          "activator": "SOLVER"
+        },
+        "inspectionData": {
+          "appellation": "Reinforced archive door",
+          "information": "A heavy metal door with a six-character keypad. Faint scuffs above the keypad mark six positions; the face of the door bears a small plaque with empty slots."
+        },
+        "spriteResolution": "1536x1024"
+      },
+      "pickables": [],
+      "inspectables": [
+        {
+          "id": "cccccccc-cccc-cccc-cccc-cccccccccccc",
+          "position": "WT2",
+          "size": "M",
+          "inspectionData": {
+            "appellation": "Brass plaque",
+            "information": "A brass plaque showing six empty square frames labeled 1 through 6."
+          },
+          "spriteResolution": "1536x1024"
+        },
+        {
+          "id": "dddddddd-dddd-dddd-dddd-dddddddddddd",
+          "position": "W1",
+          "size": "S",
+          "inspectionData": {
+            "appellation": "Worn inscription",
+            "information": "An inscription carved faintly into the door frame: 'Fragments assemble here.'"
+          },
+          "spriteResolution": "1024x1024"
+        },
+        {
+          "id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee",
+          "position": "WB1",
+          "size": "S",
+          "inspectionData": {
+            "appellation": "Assembly instruction strip",
+            "information": "A thin paper strip taped under the plaque. It reads: 'Place fragments into the numbered frames. Read frames 1→6 to enter the door.'"
+          },
+          "spriteResolution": "1024x1024"
+        }
+      ],
+      "containers": [],
+      "movableCovers": []
+    },
+    {
+      "id": "f1234567-89ab-cdef-0123-456789abcdef",
+      "color": "#8B0000",
+      "exit": null,
+      "pickables": [],
+      "inspectables": [
+        {
+          "id": "55555555-5555-5555-5555-555555555555",
+          "position": "WT1",
+          "size": "M",
+          "inspectionData": {
+            "appellation": "Blueprint fragment",
+            "information": "A faint diagram of a small wall safe with a keyed lock and a single internal shelf."
+          },
+          "spriteResolution": "1536x1024"
+        },
+        {
+          "id": "66666666-6666-6666-6666-666666666666",
+          "position": "W3",
+          "size": "S",
+          "inspectionData": {
+            "appellation": "Scribbled chart",
+            "information": "A quick chart with one column labeled 'slot' and a single circle with a dot beside it."
+          },
+          "spriteResolution": "1024x1024"
+        }
+      ],
+      "containers": [
+        {
+          "id": "9f8e7d6c-5b4a-3210-fedc-ba9876543210",
+          "position": "W1",
+          "size": "S",
+          "lock": {
+            "type": "KEY",
+            "activator": "b7f8e9d0-1122-3344-5566-77889900aabb"
+          },
+          "content": [
+            {
+              "type": "INSPECTABLE",
+              "object": {
+                "id": "44444444-4444-4444-4444-444444444444",
+                "position": "W1",
+                "size": "S",
+                "inspectionData": {
+                  "appellation": "Folded note",
+                  "information": "V"
+                },
+                "spriteResolution": "1024x1024"
+              }
+            }
+          ],
+          "inspectionData": {
+            "appellation": "Small wall safe",
+            "information": "A compact wall safe recessed into the panel; its face has a small keyhole and a single riveted plate."
+          },
+          "spriteResolution": "1024x1024"
+        }
+      ],
+      "movableCovers": []
+    },
+    {
+      "id": "123e4567-e89b-12d3-a456-426614174000",
+      "color": "#556B2F",
+      "exit": null,
+      "pickables": [],
+      "inspectables": [
+        {
+          "id": "77777777-7777-7777-7777-777777777777",
+          "position": "WT1",
+          "size": "S",
+          "inspectionData": {
+            "appellation": "Painted tile",
+            "information": "A ceramic tile painted with the letter 'N' in black ink."
+          },
+          "spriteResolution": "1024x1024"
+        },
+        {
+          "id": "88888888-8888-8888-8888-888888888888",
+          "position": "WT3",
+          "size": "S",
+          "inspectionData": {
+            "appellation": "Stamped card",
+            "information": "A small stamped card showing the letter 'O' surrounded by a faint circle."
+          },
+          "spriteResolution": "1024x1024"
+        },
+        {
+          "id": "99999999-9999-9999-9999-999999999999",
+          "position": "W1",
+          "size": "S",
+          "inspectionData": {
+            "appellation": "Engraved plaque",
+            "information": "A narrow plaque engraved with the letter 'T'."
+          },
+          "spriteResolution": "1024x1024"
+        },
+        {
+          "id": "12121212-3434-5656-7878-909090909090",
+          "position": "WB2",
+          "size": "S",
+          "inspectionData": {
+            "appellation": "Index card with ordering rule",
+            "information": "A ruled index card reads: 'Order the four letters by position: WT1, WT3, W1, then W3.'"
+          },
+          "spriteResolution": "1024x1024"
+        }
+      ],
+      "containers": [
+        {
+          "id": "8a7b6c5d-4e3f-2190-abcd-1234567890ff",
+          "position": "F2",
+          "size": "M",
+          "lock": {
+            "type": "CODE_ONLY_LETTER",
+            "activator": "NOTE"
+          },
+          "content": [
+            {
+              "type": "INSPECTABLE",
+              "object": {
+                "id": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
+                "position": "F2",
+                "size": "S",
+                "inspectionData": {
+                  "appellation": "Folded strip",
+                  "information": "ER"
+                },
+                "spriteResolution": "1024x1024"
+              }
+            },
+            {
+              "type": "INSPECTABLE",
+              "object": {
+                "id": "13131313-1414-1515-1616-171717171717",
+                "position": "F2",
+                "size": "S",
+                "inspectionData": {
+                  "appellation": "Numbered fragment note",
+                  "information": "A small note in neat handwriting: 'SOL = frames 1–3, V = frame 4, ER = frames 5–6.'"
+                },
+                "spriteResolution": "1024x1024"
+              }
+            }
+          ],
+          "inspectionData": {
+            "appellation": "Low wooden cabinet drawer",
+            "information": "A shallow drawer with a letter-style lock; the face has four narrow windows for letters."
+          },
+          "spriteResolution": "1024x1536"
+        }
+      ],
+      "movableCovers": [
+        {
+          "id": "7e6d5c4b-3a2f-1e0d-c9b8-a7f6e5d4c3b2",
+          "position": "W3",
+          "size": "M",
+          "inspectionData": {
+            "appellation": "Faded poster",
+            "information": "A faded poster that peels away from the wall at the bottom edge."
+          },
+          "spriteResolution": "1536x1024",
+          "content": {
+            "type": "INSPECTABLE",
+            "object": {
+              "id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+              "position": "W3",
+              "size": "S",
+              "inspectionData": {
+                "appellation": "Hidden scrap",
+                "information": "A hand-drawn scrap with the letter 'E' inked in the corner."
+              },
+              "spriteResolution": "1024x1024"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "derivation": [
+    {
+      "target": "LOCK",
+      "targetId": "c1d2e3f4-5678-90ab-cdef-1234567890ab",
+      "lockType": "CODE_ONLY_NUMBER",
+      "expectedActivator": "314",
+      "dependsOn": "de03d614-1e54-4321-9d01-6b642eb1b17d",
+      "steps": [
+        "Inspect Torn calendar page: circles 3,1,4",
+        "Read Faded sticky note: read circles left-to-right => code 314"
+      ],
+      "playerHints": [
+        {
+          "hint": "Inspect Torn calendar page.",
+          "reveals": "314"
+        },
+        {
+          "hint": "Read Faded sticky note.",
+          "reveals": "314"
+        }
+      ]
+    },
+    {
+      "target": "LOCK",
+      "targetId": "9f8e7d6c-5b4a-3210-fedc-ba9876543210",
+      "lockType": "KEY",
+      "expectedActivator": "b7f8e9d0-1122-3344-5566-77889900aabb",
+      "dependsOn": "d54e93ac-4a2d-461b-9790-bc4d6ad507ec",
+      "steps": [
+        "Open Carved wooden jewelry box with code 314 => obtain Brass archive key",
+        "Use Brass archive key on Small wall safe => obtain Folded note 'V'"
+      ],
+      "playerHints": [
+        {
+          "hint": "Open the carved wooden jewelry box with the three-digit code.",
+          "reveals": "Brass archive key"
+        },
+        {
+          "hint": "Use the Brass archive key on the small wall safe.",
+          "reveals": "Brass archive key"
+        }
+      ]
+    },
+    {
+      "target": "LOCK",
+      "targetId": "8a7b6c5d-4e3f-2190-abcd-1234567890ff",
+      "lockType": "CODE_ONLY_LETTER",
+      "expectedActivator": "NOTE",
+      "dependsOn": "3eecd287-f0ad-4637-b97e-d2d471ec7d99",
+      "steps": [
+        "Move Faded poster => reveal Hidden scrap 'E'",
+        "Read Painted tile WT1 => 'N'",
+        "Read Stamped card WT3 => 'O'",
+        "Read Engraved plaque W1 => 'T'",
+        "Order letters WT1,WT3,W1,W3 => N O T E => code NOTE"
+      ],
+      "playerHints": [
+        {
+          "hint": "Reveal the hidden scrap under the faded poster.",
+          "reveals": "NOTE"
+        },
+        {
+          "hint": "Read the painted tile, stamped card and engraved plaque; order letters per the index card.",
+          "reveals": "NOTE"
+        }
+      ]
+    },
+    {
+      "target": "EXIT_LOCK",
+      "targetId": "0a1b2c3d-4e5f-6789-abcd-ef0123456789",
+      "lockType": "PASSWORD",
+      "expectedActivator": "SOLVER",
+      "dependsOn": "83a4451c-3aca-4be6-9937-f517429e9ea3",
+      "steps": [
+        "Open Carved wooden jewelry box => obtain Torn slip 'SOL'",
+        "Open Small wall safe with Brass archive key => obtain Folded note 'V'",
+        "Open Low wooden cabinet drawer with code NOTE => obtain 'ER' and numbered fragment note",
+        "Place fragments into Brass plaque frames per numbered fragment note => frames 1–6 read SOLVER",
+        "Enter SOLVER on Reinforced archive door keypad"
+      ],
+      "playerHints": [
+        {
+          "hint": "Collect fragments 'SOL', 'V' and 'ER' and read the numbered fragment note.",
+          "reveals": "SOLVER"
+        },
+        {
+          "hint": "Place fragments into the six plaque frames and read frames 1→6.",
+          "reveals": "SOLVER"
+        }
+      ]
+    }
+  ],
+  "id": "4244b18a-2655-4545-ad74-f67a6c135f29"
+}
