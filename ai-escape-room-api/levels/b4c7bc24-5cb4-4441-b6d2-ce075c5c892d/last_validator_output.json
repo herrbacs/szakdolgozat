@@ -1,8 +1,0 @@
-{
-  "solvable": false,
-  "issues": [
-    "Container 'Antique Chest' (id f3a4b1d1-6f78-4cba-b4d4-4f6f6f444444) has a CODE_ONLY_NUMBER lock with activator '4' but there is no external clue that deterministically yields '4'; the only explicit '4' in the level is the Wooden Token '4' contained inside that very chest → circular dependency.",
-    "Exit lock (id 4f3e2d1c-0b9a-4a8b-9c7d-6e5f4a111111) requires code '7314' which relies on the chest's token '4' for its final digit; because the chest is unsolvable the Exit final activator is not derivable."
-  ],
-  "derivation": []
-}
