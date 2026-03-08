@@ -2,6 +2,11 @@ from sqlalchemy import ForeignKey, Integer, CheckConstraint, UniqueConstraint, I
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from .base import Base
 import uuid
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from .level import Level
+    from .user import User
 
 class LevelRating(Base):
     __tablename__ = "level_ratings"
@@ -26,5 +31,5 @@ class LevelRating(Base):
         Index("ix_level_ratings_level_id_user_id", "level_id", "user_id"),
     )
 
-    user = relationship("User", lazy="selectin")
-    level = relationship("Level", lazy="selectin")
+    user: Mapped["User"] = relationship("User", lazy="selectin")
+    level: Mapped["Level"] = relationship("Level", lazy="selectin")

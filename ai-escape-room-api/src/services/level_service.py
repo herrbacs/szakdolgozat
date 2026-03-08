@@ -15,9 +15,17 @@ from sqlalchemy.orm import Session
 from db.models.level import Level
 from db.models.level_token_usage import LevelTokenUsage
 from sqlalchemy import select, func
-from src.schemas.level import SpriteStyle
+from src.models.sprite_style import SpriteStyle
+from src.models.service_types import (
+    FoundObjectWithPath,
+    LevelGenerationResult,
+    TokenEstimate,
+    TokenUsage,
+)
 
-def get_average_tokens_for_difficulty(db: Session, difficulty: int) -> dict:
+JsonDict = dict[str, Any]
+
+def get_average_tokens_for_difficulty(db: Session, difficulty: int) -> TokenEstimate:
     """Calculate average total tokens **and minutes** for levels with given difficulty.
 
     Returns a dict with keys ``tokens`` and ``minutes``.  In case there is no data we
@@ -51,7 +59,7 @@ def get_average_tokens_for_difficulty(db: Session, difficulty: int) -> dict:
 
 client = get_openai_client()
 
-def extract_token_usage(response: Any) -> Dict[str, int]:
+def extract_token_usage(response: Any) -> TokenUsage:
     """Extract token usage from OpenAI response."""
     if hasattr(response, 'usage') and response.usage:
         return {
@@ -61,7 +69,7 @@ def extract_token_usage(response: Any) -> Dict[str, int]:
         }
     return {"input_tokens": 0, "output_tokens": 0, "total_tokens": 0}
 
-def call_openai(*, out_dir: Path, file_name: str, **openai_params: Any) -> Tuple[Dict[str, Any], Dict[str, int], float]:
+def call_openai(*, out_dir: Path, file_name: str, **openai_params: Any) -> Tuple[JsonDict, TokenUsage, float]:
     """Perform an OpenAI request, save output and return usage plus elapsed minutes.
 
     Previous callers expected a two‑tuple; we now also return the number of minutes that
@@ -88,7 +96,7 @@ def call_openai(*, out_dir: Path, file_name: str, **openai_params: Any) -> Tuple
     usage = extract_token_usage(response)
     return result, usage, minutes
 
-def parse_validator_verdict_obj(obj: Dict[str, Any]) -> Dict[str, Any]:
+def parse_validator_verdict_obj(obj: JsonDict) -> JsonDict:
     if "solvable" not in obj or "issues" not in obj:
         raise HTTPException(status_code=502, detail={"message": "Validator schema hiba", "raw": obj})
 
@@ -107,7 +115,7 @@ def parse_validator_verdict_obj(obj: Dict[str, Any]) -> Dict[str, Any]:
     return obj
 
 
-def validate_level(*, level_obj: Dict[str, Any], out_dir: Path) -> Tuple[Dict[str, Any], Dict[str, int], float]:
+def validate_level(*, level_obj: JsonDict, out_dir: Path) -> Tuple[JsonDict, TokenUsage, float]:
     validator_prompt = load_prompt(["prompt_level_validate"])
 
     verdict_obj, usage, minutes = call_openai(
@@ -131,7 +139,7 @@ Generated Level Json:
     return parse_validator_verdict_obj(verdict_obj), usage, minutes
 
 
-def repair_level(*, current_level_obj: Dict[str, Any], validation: Dict[str, Any], round_idx: int, out_dir: Path) -> Tuple[Dict[str, Any], Dict[str, int], float]:
+def repair_level(*, current_level_obj: JsonDict, validation: JsonDict, round_idx: int, out_dir: Path) -> Tuple[JsonDict, TokenUsage, float]:
     repaired_obj, usage, minutes = call_openai(
         out_dir=out_dir,
         file_name=f"repaired_level_round{round_idx}.json",
@@ -144,7 +152,7 @@ def repair_level(*, current_level_obj: Dict[str, Any], validation: Dict[str, Any
     return repaired_obj, usage, minutes
 
 
-def assemble_repair_prompt(level_obj: Dict[str, Any], issue_report: List[str] | None) -> str:
+def assemble_repair_prompt(level_obj: JsonDict, issue_report: List[str] | None) -> str:
     prompt = load_prompt(["prompt_level_repair"])
     issue_text = json.dumps(issue_report, ensure_ascii=False, indent=2)
     return f"""
@@ -162,7 +170,7 @@ Level structure principals:
 {load_prompt(["prompt_principals"])}
 """
 
-def generate_new_level(difficulty: int = 3, sprite_style: SpriteStyle = SpriteStyle.CARTOON, story: str = "") -> Dict[str, Any]:
+def generate_new_level(difficulty: int = 3, sprite_style: SpriteStyle = SpriteStyle.CARTOON, story: str = "") -> LevelGenerationResult:
     """
     Generate a new level with token tracking.
     
@@ -297,7 +305,11 @@ def generate_new_level(difficulty: int = 3, sprite_style: SpriteStyle = SpriteSt
         }
     }
 
-def find_objects_with_id_and_inspection(obj: Any, results=None, path=()):
+def find_objects_with_id_and_inspection(
+    obj: Any,
+    results: list[FoundObjectWithPath] | None = None,
+    path: tuple[str | int, ...] = (),
+) -> list[FoundObjectWithPath]:
     if results is None:
         results = []
 
@@ -321,7 +333,7 @@ def find_objects_with_id_and_inspection(obj: Any, results=None, path=()):
 
 def create_level_with_id(
     db: Session,
-    level_id: uuid.UUID,
+    level_id: str,
     success: bool,
     story: str = "",
     title: str = "",
@@ -329,7 +341,7 @@ def create_level_with_id(
     sprite_style: SpriteStyle = SpriteStyle.CARTOON
 ) -> Level:
     level = Level(
-        id=level_id,
+        id=uuid.UUID(level_id),
         title=title,
         story=story,
         sucessfull_level_generation=success,

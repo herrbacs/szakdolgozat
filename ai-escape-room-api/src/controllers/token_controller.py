@@ -4,15 +4,16 @@ from sqlalchemy.orm import Session
 from db.models.user import User
 from db.models.user_tokens import UserTokens
 from src.schemas.tokens import TokenCategory
+from src.models.service_types import ProfileData
 
 
-def profile_handler(user: User, db: Session):
+def profile_handler(user: User, db: Session) -> ProfileData:
     tokens_entry = db.execute(select(UserTokens).where(UserTokens.user_id == user.id)).scalar_one_or_none()
     balance = tokens_entry.balance if tokens_entry else 0
     return {"id": user.id, "email": user.email, "username": user.username, "tokens": balance}
 
 
-def buy_tokens_handler(category: TokenCategory, user: User, db: Session):
+def buy_tokens_handler(category: TokenCategory, user: User, db: Session) -> dict[str, int]:
     mapping = {
         TokenCategory.basic: 50000,
         TokenCategory.medium: 75000,

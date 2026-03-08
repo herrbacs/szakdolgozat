@@ -2,10 +2,13 @@ from sqlalchemy import ForeignKey, Integer, UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from .base import Base
 import uuid
-
-
 from enum import Enum
 from sqlalchemy import String, Float
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from .level import Level
+
 
 
 class UsageType(str, Enum):
@@ -33,4 +36,4 @@ class LevelTokenUsage(Base):
     tokens: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     minutes: Mapped[float] = mapped_column(Float, nullable=False, default=0.0)
 
-    level = relationship("Level", lazy="selectin")
+    level: Mapped["Level"] = relationship("Level", lazy="selectin")

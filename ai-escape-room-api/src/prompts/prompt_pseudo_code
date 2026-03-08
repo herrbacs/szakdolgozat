@@ -4,6 +4,10 @@ You are generating an escape room level by the following rules and principals.
 Output: 
   - Output must be a single JSON of Level object.
   - Do not explain anything.
+  - Type strictness:
+    - Use exactly the declared property names and enum values.
+    - Do not add extra fields.
+    - Use null only where explicitly allowed.
 
   Level:
     Properties

@@ -2,6 +2,7 @@ from datetime import datetime, timedelta, timezone
 from jose import jwt
 from config import JWT_PRIVATE_KEY, JWT_PUBLIC_KEY
 import uuid
+from typing import Any
 
 ALGORITHM = "RS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 2
@@ -26,5 +27,5 @@ def create_refresh_token(*, user_id: str) -> tuple[str, datetime]:
     token = jwt.encode(payload, JWT_PRIVATE_KEY, algorithm=ALGORITHM)
     return token, expire
 
-def decode_token(token: str) -> dict:
+def decode_token(token: str) -> dict[str, Any]:
     return jwt.decode(token, JWT_PUBLIC_KEY, algorithms=[ALGORITHM])

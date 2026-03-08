@@ -2,6 +2,10 @@ from sqlalchemy import ForeignKey, Integer
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from .base import Base
 import uuid
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from .user import User
 
 
 class UserTokens(Base):
@@ -16,4 +20,4 @@ class UserTokens(Base):
 
     balance: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
 
-    user = relationship("User", lazy="selectin")
+    user: Mapped["User"] = relationship("User", lazy="selectin", back_populates="tokens")

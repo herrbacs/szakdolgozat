@@ -14,11 +14,11 @@ router.include_router(users_router)
 router.include_router(levels_router)
 
 @router.get("/")
-def hello_world():
+def hello_world() -> dict[str, str]:
     return {"message": "Hello World"}
 
 @router.get("/sprites/{level_id}/{object_id}")
-def serve_image(level_id: str, object_id: str):
+def serve_image(level_id: str, object_id: str) -> FileResponse:
     path = get_level_object_sprite_handler(level_id, object_id)
     return FileResponse(path)
 

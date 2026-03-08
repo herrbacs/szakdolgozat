@@ -2,6 +2,12 @@ import uuid
 from sqlalchemy import Float, ForeignKey, Index, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from .base import Base
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from .level import Level
+    from .user import User
+
 
 
 class LevelCompletion(Base):
@@ -26,5 +32,5 @@ class LevelCompletion(Base):
         Index("ix_level_completions_level_user", "level_id", "user_id"),
     )
 
-    user = relationship("User", lazy="selectin")
-    level = relationship("Level", lazy="selectin")
+    user: Mapped["User"] = relationship("User", lazy="selectin")
+    level: Mapped["Level"] = relationship("Level", lazy="selectin")

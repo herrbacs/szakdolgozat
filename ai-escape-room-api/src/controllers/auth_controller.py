@@ -1,20 +1,17 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from typing import Any
+from fastapi import Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from sqlalchemy import select, or_
 from db.connection import get_db
-from db.models.user import User
 from src.schemas.auth import RegisterRequest, LoginRequest, RefreshRequest, LoginResponse
 from src.security.password import hash_password, verify_password
-from fastapi import Depends
-from sqlalchemy import update, select, or_
-from sqlalchemy.orm import Session
 from src.security.jwt import create_access_token, create_refresh_token, decode_token
 from db.models.user import User
 from db.models.refresh_token import RefreshToken
 from jose import JWTError, ExpiredSignatureError
 from db.models.user_tokens import UserTokens
 
-def register_handler(req: RegisterRequest, db: Session = Depends(get_db)):
+def register_handler(req: RegisterRequest, db: Session = Depends(get_db)) -> None:
     existing_user_query = select(User).where(or_(User.email == req.email, User.username == req.username))
     existing = db.execute(existing_user_query).scalar_one_or_none()
     if existing:
@@ -60,7 +57,7 @@ def login_handler(req: LoginRequest, db: Session = Depends(get_db)) -> LoginResp
 
     return LoginResponse(success=True, access_token=access, refresh_token=refresh)
 
-def refresh_token_handler(req: RefreshRequest, db: Session):
+def refresh_token_handler(req: RefreshRequest, db: Session) -> dict[str, Any]:
     token = req.refresh_token
 
     try:

@@ -1,9 +1,5 @@
-from enum import Enum
 from pydantic import BaseModel, Field
-
-class SpriteStyle(str, Enum):
-    CARTOON = "Cartoon"
-    REALISTIC = "Realistic"
+from src.models.sprite_style import SpriteStyle
 
 class RateLevelRequest(BaseModel):
     rate: int = Field(min=1, max=5)

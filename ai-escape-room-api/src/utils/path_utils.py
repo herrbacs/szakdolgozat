@@ -8,7 +8,7 @@ def ensure_and_get_level_dir(level_id: str) -> Path:
     path.mkdir(parents=True, exist_ok=True)
     return path
 
-def ensure_and_get_sprites_of_level_dir(level_id):
+def ensure_and_get_sprites_of_level_dir(level_id: str) -> Path:
     path = ensure_and_get_level_dir(level_id) / "sprites"
     path.mkdir(parents=True, exist_ok=True)
     return path

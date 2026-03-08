@@ -10,5 +10,5 @@ router = APIRouter(prefix="/users", tags=["users"])
 
 
 @router.get("/me", response_model=ProfileResponse)
-def my_profile(user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+def my_profile(user: User = Depends(get_current_user), db: Session = Depends(get_db)) -> ProfileResponse:
     return profile_handler(user, db)

@@ -1,4 +1,6 @@
 import json
+import uuid
+from typing import Any
 from fastapi import HTTPException, status
 from pathlib import Path
 from src.services.level_service import (
@@ -23,10 +25,11 @@ from sqlalchemy import Select, select, func, case
 from src.schemas.levels import LevelListItem, LevelListQuery, LevelCompletionRequest
 from src.schemas.pagination import PaginationQuery, PagedResponse
 from src.services.pagination_service import paginate
+from src.models.service_types import LevelGenerationResult, TokenEstimate
 
 
-def generate_new_level_handler(req: GenerateLevelRequest, db: Session, user: User):
-    estimate = get_average_tokens_for_difficulty(db, req.difficulty)
+def generate_new_level_handler(req: GenerateLevelRequest, db: Session, user: User) -> dict[str, Any]:
+    estimate: TokenEstimate = get_average_tokens_for_difficulty(db, req.difficulty)
     estimated_tokens = estimate["tokens"]
     estimated_minutes = estimate["minutes"]
 
@@ -45,15 +48,17 @@ def generate_new_level_handler(req: GenerateLevelRequest, db: Session, user: Use
             },
         )
     
-    result = generate_new_level(req.difficulty, req.sprite_style, req.story)
+    result: LevelGenerationResult = generate_new_level(req.difficulty, req.sprite_style, req.story)
     success = result["success"]
     level = result["level"]
     level_id = result["level_id"]
     tokens = result["tokens"]
     
+    persisted_level_id = level_id if level_id is not None else str(uuid.uuid4())
+
     level_db_entity = create_level_with_id(
         db=db,
-        level_id=level_id,
+        level_id=persisted_level_id,
         success=success,
         story=level["story"] if success else "",
         title=level["title"] if success else "",
@@ -70,6 +75,9 @@ def generate_new_level_handler(req: GenerateLevelRequest, db: Session, user: Use
         )
 
     level_objects = find_objects_with_id_and_inspection(level)
+    if level_id is None:
+        raise HTTPException(status_code=500, detail={"message": "Generated level id is missing."})
+
     ui_sprite_tokens, ui_sprite_minutes = generate_ui_sprites(level_id, req.sprite_style)
     object_sprite_tokens, object_sprite_minutes = generate_level_object_sprites(level_objects, level_id, req.sprite_style)
     
@@ -132,7 +140,7 @@ def get_level_object_sprite_handler(level_id: str, object_id: str) -> Path:
 
     return sprite_path
 
-def load_level_handler(level_id: str):
+def load_level_handler(level_id: str) -> dict[str, Any]:
     level_dir = LEVELS_DIR / level_id
     
     if not level_dir.exists() or not level_dir.is_dir():
@@ -151,7 +159,7 @@ def rate_level_handler(
     req: RateLevelRequest,
     db: Session,
     user: User
-):
+) -> None:
     rating = req.rate
     user_id = user.id
  
@@ -176,7 +184,7 @@ def add_to_favorite_handler(
     level_id: str,
     db: Session,
     user: User
-):
+) -> None:
     level = db.execute(
         select(Level).where(Level.id == level_id)
     ).scalar_one_or_none()
@@ -206,7 +214,7 @@ def remove_from_favorite_handler(
     level_id: str,
     db: Session,
     user: User
-):
+) -> None:
     existing = db.execute(
         select(FavoriteLevel).where(
             FavoriteLevel.user_id == user.id,
@@ -224,7 +232,7 @@ def get_user_level_rating_handler(
     level_id: str,
     db: Session,
     user: User
-):
+) -> dict[str, int | None]:
     rating = db.execute(
         select(LevelRating).where(
             LevelRating.user_id == user.id,
@@ -238,7 +246,7 @@ def get_level_favorite_status_handler(
     level_id: str,
     db: Session,
     user: User
-):
+) -> dict[str, bool]:
     favorite = db.execute(
         select(FavoriteLevel).where(
             FavoriteLevel.user_id == user.id,
@@ -254,7 +262,7 @@ def record_level_completion_handler(
     req: LevelCompletionRequest,
     db: Session,
     user: User,
-):
+) -> dict[str, bool]:
     level = db.execute(
         select(Level).where(
             Level.id == level_id,
@@ -367,7 +375,7 @@ def list_levels_handler(
     )
     data_stmt = apply_filters(data_stmt).order_by(Level.title.asc())
 
-    def map_row(row) -> LevelListItem:
+    def map_row(row: Any) -> LevelListItem:
         level, avg, favorites, total_tokens, total_minutes, repair_count, avg_completion_minutes = row
         return LevelListItem(
             id=level.id,

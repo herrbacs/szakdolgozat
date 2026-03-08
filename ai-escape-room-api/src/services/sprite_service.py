@@ -5,10 +5,10 @@ import io
 import time
 from pathlib import Path
 from typing import Tuple, Dict, Any
-from PIL import Image
 from openai_client import get_openai_client
 from src.utils.path_utils import ensure_and_get_sprites_of_level_dir
-from src.schemas.level import SpriteStyle
+from src.models.sprite_style import SpriteStyle
+from src.models.service_types import FoundObjectWithPath
 
 client = get_openai_client()
 
@@ -106,7 +106,7 @@ def edit_sprite(
     return out_path, usage, minutes
 
 
-def generate_door_pair(out_dir: Path, prompt) -> Tuple[Tuple[Path, Path], int, float]:
+def generate_door_pair(out_dir: Path, prompt: str) -> Tuple[Tuple[Path, Path], int, float]:
     closed_path, usage1, mins1 = generate_sprite(
         out_dir=out_dir,
         prompt=prompt,
@@ -198,7 +198,11 @@ def generate_ui_sprites(level_id: str, sprite_style: SpriteStyle = SpriteStyle.C
     
     return total_tokens, total_minutes
 
-def generate_level_object_sprites(found_objects: list[dict], level_id: str, sprite_style: str = "Cartoon") -> Tuple[int, float]:
+def generate_level_object_sprites(
+    found_objects: list[FoundObjectWithPath],
+    level_id: str,
+    sprite_style: str = "Cartoon",
+) -> Tuple[int, float]:
     """Generate level object sprites and return total tokens and minutes used."""
     sprite_dir = ensure_and_get_sprites_of_level_dir(level_id)
     total_tokens = 0

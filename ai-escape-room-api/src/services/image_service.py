@@ -3,7 +3,7 @@ from PIL import Image
 import cv2 as cv
 import numpy as np
 
-def convert_images_into_blob(img_name):
+def convert_images_into_blob(img_name: str) -> str:
     root_folder = './sprites/'
     with open(root_folder+img_name, 'rb') as image_file:
         image = Image.open(image_file)
@@ -13,7 +13,7 @@ def convert_images_into_blob(img_name):
         img_base64 = base64.b64encode(img_blob).decode('utf-8')
     return img_base64
 
-def generatePerspectiveTransformationsOfImage(imgName):
+def generatePerspectiveTransformationsOfImage(imgName: str) -> None:
     root = os.getcwd()
     imgPath = os.path.join(root, 'sprites/', imgName)
     img = cv.imread(imgPath, cv.IMREAD_UNCHANGED)

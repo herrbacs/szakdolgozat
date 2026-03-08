@@ -22,10 +22,10 @@ def paginate(
     count_stmt: Select,
     map_row: Callable[[Any], T],
 ) -> PagedResponse[T]:
-    total = db.execute(count_stmt).scalar_one()
+    total: int = db.execute(count_stmt).scalar_one()
     total_pages = max(1, math.ceil(total / pagination.page_size)) if total else 1
 
-    rows = db.execute(
+    rows: list[Any] = db.execute(
         data_stmt.offset(pagination.offset).limit(pagination.page_size)
     ).all()
 

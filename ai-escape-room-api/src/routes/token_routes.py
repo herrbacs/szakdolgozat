@@ -9,5 +9,9 @@ from src.security.deps import get_current_user
 router = APIRouter(prefix="/tokens", tags=["tokens"])
 
 @router.post("/buy", response_model=TokenPurchaseResponse)
-def buy_tokens(req: TokenPurchaseRequest, user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+def buy_tokens(
+    req: TokenPurchaseRequest,
+    user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+) -> TokenPurchaseResponse:
     return buy_tokens_handler(req.category, user, db)

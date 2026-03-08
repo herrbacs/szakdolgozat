@@ -1,6 +1,10 @@
 from sqlalchemy import String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from .base import Base
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from .user_tokens import UserTokens
 
 
 class User(Base):
@@ -16,4 +20,4 @@ class User(Base):
     username: Mapped[str] = mapped_column(String(100), unique=True, nullable=False)
     password_hash: Mapped[str] = mapped_column(String(255), nullable=False)
 
-    tokens = relationship("UserTokens", uselist=False, back_populates="user")
+    tokens: Mapped["UserTokens"] = relationship("UserTokens", uselist=False, back_populates="user")
