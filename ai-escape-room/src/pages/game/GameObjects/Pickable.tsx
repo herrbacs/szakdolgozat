@@ -8,6 +8,7 @@ import { SetAppSettingsActionEnum } from "../../../shared/enums"
 import { CursorActions } from "../../../shared/types/appTypes"
 import { setPositionOn } from "../../../shared/positionCalculator"
 import { getScaleByObjectSize } from "../../../shared/gameObjectScale"
+import { getAnchorByObjectPosition } from "../../../shared/gameObjectSpriteAnchor"
 
 type PickableComponentTypeProperties = {
   pickable: PickableObject,
@@ -53,7 +54,7 @@ const Pickable = ({ pickable }: PickableComponentTypeProperties) => {
 
   return (spriteLoaded && !pickable.taken)
     ? <pixiSprite
-      anchor={0.5}
+      anchor={getAnchorByObjectPosition(pickable.position)}
       texture={sprite}
       eventMode="static"
       cursor="pointer"

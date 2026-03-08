@@ -8,6 +8,7 @@ import { CursorActions } from "../../../../shared/types/appTypes"
 import { SetAppSettingsActionEnum } from "../../../../shared/enums"
 import { setPositionOn } from "../../../../shared/positionCalculator"
 import { getScaleByObjectSize } from "../../../../shared/gameObjectScale"
+import { getAnchorByObjectPosition } from "../../../../shared/gameObjectSpriteAnchor"
 
 type InspectableComponentType = {
 	inspectable: InspectableObject,
@@ -46,7 +47,7 @@ const Inspectable = ({ inspectable }: InspectableComponentType) => {
 
   return spriteLoaded && (
     <pixiSprite
-      anchor={0.5}
+      anchor={getAnchorByObjectPosition(inspectable.position)}
       texture={sprite}
       eventMode="static"
       cursor="pointer"

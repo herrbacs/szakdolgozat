@@ -11,6 +11,7 @@ import { CursorActions } from "../../../../shared/types/appTypes"
 import { GameObjectTypeEnum, SetAppSettingsActionEnum } from "../../../../shared/enums"
 import { setPositionOn } from "../../../../shared/positionCalculator"
 import { getScaleByObjectSize } from "../../../../shared/gameObjectScale"
+import { getAnchorByObjectPosition } from "../../../../shared/gameObjectSpriteAnchor"
 
 
 type MovableCoverComponentType = {
@@ -56,7 +57,7 @@ const MovableCover = ({ movableCover }: MovableCoverComponentType) => {
   if (!movableCover.used && spriteLoaded) {
     return (
       <pixiSprite
-        anchor={0.5}
+        anchor={getAnchorByObjectPosition(movableCover.position)}
         texture={sprite}
         eventMode="static"
         cursor="pointer"
