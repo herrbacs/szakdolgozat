@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom"
 import { estimateTokens, generateLevel } from "../../api/levels"
 import { SpriteStyleEnum } from "../../shared/enums"
 import { EstimateTokensRequest, EstimateTokensResponse, GenerateLevelRequest } from "../../api/types/levels"
+import SelectedLevelModal, { SelectedLevelPreview } from "../levels/components/SelectedLevelModal"
 
 const NewLevel: React.FC = () => {
   const navigate = useNavigate()
@@ -21,6 +22,7 @@ const NewLevel: React.FC = () => {
 
   const [loading, setLoading] = useState<boolean>(false)
   const [error, setError] = useState<string>("")
+  const [selectedLevel, setSelectedLevel] = useState<SelectedLevelPreview | null>(null)
 
   const fetchTokenEstimate = async () => {
     try {
@@ -42,10 +44,11 @@ const NewLevel: React.FC = () => {
 
     try {
       const response = await generateLevel(generateLevelRequest)
-      alert(
-        `Level generated! Total tokens: ${response.tokens.total_tokens}, time: ${response.tokens.total_minutes.toFixed(2)} min`
-      )
-      navigate("/menu")
+      setSelectedLevel({
+        id: response.level.id,
+        title: response.level.title,
+        story: response.level.story,
+      })
     } catch (err: any) {
       setError(err.message || "Failed to generate level")
     } finally {
@@ -148,6 +151,11 @@ const NewLevel: React.FC = () => {
           </div>
         </div>
       </div>
+      <SelectedLevelModal
+        level={selectedLevel}
+        onClose={() => setSelectedLevel(null)}
+        onPlayLevel={(levelId) => navigate(`/game?levelId=${levelId}`)}
+      />
     </div>
   )
 }

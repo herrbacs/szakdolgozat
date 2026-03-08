@@ -2,6 +2,7 @@ import React, { useMemo, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import type { DifficultyFilter, LevelListItem, RatingFilter } from "../../api/types/levels"
 import { usePaginatedLevels } from "../../useHooks/usePaginatedLevels"
+import SelectedLevelModal from "./components/SelectedLevelModal"
 
 const Levels: React.FC = () => {
   const navigate = useNavigate()
@@ -230,32 +231,11 @@ const Levels: React.FC = () => {
         </div>
       </div>
 
-      {selectedLevel && (
-        <div className="fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-50">
-          <div className="w-full max-w-2xl bg-white rounded-2xl shadow-2xl p-6">
-            <h2 className="text-2xl font-semibold text-gray-800 mb-3">
-              {selectedLevel.title}
-            </h2>
-            <p className="text-gray-700 whitespace-pre-wrap max-h-72 overflow-auto">
-              {selectedLevel.story}
-            </p>
-            <div className="flex justify-end gap-3 mt-6">
-              <button
-                onClick={() => setSelectedLevel(null)}
-                className="px-4 py-2 rounded-lg font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200"
-              >
-                Close
-              </button>
-              <button
-                onClick={() => navigate(`/game?levelId=${selectedLevel.id}`)}
-                className="px-4 py-2 rounded-lg font-semibold text-white bg-indigo-600 hover:bg-indigo-700"
-              >
-                Play Level
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <SelectedLevelModal
+        level={selectedLevel}
+        onClose={() => setSelectedLevel(null)}
+        onPlayLevel={(levelId) => navigate(`/game?levelId=${levelId}`)}
+      />
     </div>
   )
 }

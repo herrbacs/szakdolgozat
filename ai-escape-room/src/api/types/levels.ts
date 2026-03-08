@@ -53,7 +53,11 @@ export interface GenerateLevelRequest {
 }
 
 export interface GenerateLevelResponse {
-  level: any
+  level: {
+    id: string
+    title: string
+    story: string
+  }
   tokens: {
     generation_tokens: number
     generation_minutes: number
