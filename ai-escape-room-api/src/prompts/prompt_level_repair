@@ -14,6 +14,9 @@ You will receive:
 - Prefer FIXING a wrong activator over deleting clues.
 - Prefer ADDING one minimal interpretation-rule clue over removing content.
 - After any change, re-check that every lock remains solvable.
+- Keep or fix `size` on every Pickable, Inspectable, Container and MovableCover using only S|M|L.
+- Enforce placement rule during repair:
+  - If an object with size L is on F1/F2/F3, W and WB with the same index must be empty on that wall.
 
 1) If a lock solution is clearly derivable but the activator is wrong:
    - Fix ONLY the activator value either by change string value, extend with characters or by removing caracters

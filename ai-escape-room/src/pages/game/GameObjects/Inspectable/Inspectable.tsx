@@ -7,6 +7,7 @@ import { useSprite } from "../../../../useHooks/useSprites"
 import { CursorActions } from "../../../../shared/types/appTypes"
 import { SetAppSettingsActionEnum } from "../../../../shared/enums"
 import { setPositionOn } from "../../../../shared/positionCalculator"
+import { getScaleByObjectSize } from "../../../../shared/gameObjectScale"
 
 type InspectableComponentType = {
 	inspectable: InspectableObject,
@@ -50,7 +51,7 @@ const Inspectable = ({ inspectable }: InspectableComponentType) => {
       eventMode="static"
       cursor="pointer"
       onClick={openCursorActions}
-      scale={.07}
+      scale={getScaleByObjectSize(inspectable.size)}
       x={spriteCoordinate.x}
       y={spriteCoordinate.y}
     />

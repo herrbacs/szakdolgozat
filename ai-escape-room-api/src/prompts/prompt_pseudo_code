@@ -36,6 +36,7 @@ Output:
     Properties
       - id: GUID
       - position: POSITION
+      - size: SIZE
       - reusable: true | false
       - inspectionData: InspectionData
       - spriteResolution: SPRITE_RESOLUTION
@@ -48,6 +49,7 @@ Output:
     Properties
       - id: GUID
       - position: POSITION
+      - size: SIZE
       - inspectionData: InspectionData
       - spriteResolution: SPRITE_RESOLUTION
     Usage guidelines:
@@ -59,6 +61,7 @@ Output:
     Properties
       - id: GUID
       - position: POSITION
+      - size: SIZE
       - lock: null | LOCK
       - content: array<DynamicGameObject>
       - inspectionData: InspectionData
@@ -83,6 +86,7 @@ Output:
     Properties
       - id: GUID
       - position: POSITION
+      - size: SIZE
       - inspectionData: InspectionData
       - spriteResolution: SPRITE_RESOLUTION
       - content: DynamicGameObject
@@ -164,6 +168,16 @@ Output:
       - CONTAINER
       - MOVALBE_COVER
 
+    SIZE:
+      - S
+      - M
+      - L
+    Usage guidelines:
+      - S = small objects (example: key, coin, note, screwdriver, clock)
+      - M = medium objects (example: painting, calendar, poster)
+      - L = large objects (example: desk, chest, wardrobe, bookshelf)
+      - Every Pickable, Inspectable, Container and MovableCover MUST have size.
+
     POSITION:
       - WT1, WT2, WT3   // wall top
       - W1,  W2,  W3    // wall middle
@@ -173,7 +187,10 @@ Output:
         - Floor positions (F1-F3):
           - Small objects like backpack, rag, bucket, carboard box
           - Big objects like antique desk, fridge, book shelf, chest
-          - When a big object is placed on the floor, WB and W with the same index can not be placed
+          - If an object with size = L is placed on F1/F2/F3, then WB and W with the same index must be empty on that wall.
+            - F1 + size L => W1 and WB1 are forbidden
+            - F2 + size L => W2 and WB2 are forbidden
+            - F3 + size L => W3 and WB3 are forbidden
         - Wall Top Positions (WT1-WT3)
           - Small objects like clock, calendar, ventilation opening etc.
         - Wall Center Positions (W1-W3)

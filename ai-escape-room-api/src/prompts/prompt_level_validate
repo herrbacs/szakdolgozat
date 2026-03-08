@@ -51,6 +51,11 @@ CONSTRAINTS
 - If solvable=false, issues MUST contain at least 1 concrete issue string and derivation MUST be [].
 - If you are not 100% sure it is solvable, return solvable=false.
 - Focus on: lock activators derivability, KEY references, deterministic clues, Exit solvable only after others.
+- Also validate structural placement constraints:
+  - Every Pickable, Inspectable, Container and MovableCover must contain `size` with value S|M|L.
+  - If a wall has any object with `position=F1` and `size=L`, then positions `W1` and `WB1` must be empty on that wall.
+  - If a wall has any object with `position=F2` and `size=L`, then positions `W2` and `WB2` must be empty on that wall.
+  - If a wall has any object with `position=F3` and `size=L`, then positions `W3` and `WB3` must be empty on that wall.
 - Steps must be SHORT, NODE-LIKE and purely mechanical (no story), e.g.:
   - "Read wall clock: 03:17 => code 0317"
   - "Take letters 2,5,7 from 'BUDAPEST' => 'UPS'"

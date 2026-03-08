@@ -7,6 +7,7 @@ import { useSprite } from "../../../useHooks/useSprites"
 import { SetAppSettingsActionEnum } from "../../../shared/enums"
 import { CursorActions } from "../../../shared/types/appTypes"
 import { setPositionOn } from "../../../shared/positionCalculator"
+import { getScaleByObjectSize } from "../../../shared/gameObjectScale"
 
 type PickableComponentTypeProperties = {
   pickable: PickableObject,
@@ -57,7 +58,7 @@ const Pickable = ({ pickable }: PickableComponentTypeProperties) => {
       eventMode="static"
       cursor="pointer"
       onClick={openCursorActions}
-      scale={.07}
+      scale={getScaleByObjectSize(pickable.size)}
       x={spriteCoordinate.x}
       y={spriteCoordinate.y}
     />

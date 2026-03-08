@@ -1,4 +1,4 @@
-import { GameObjectTypeEnum, PositionEnum, SpriteResolutionEnum } from '../enums';
+import { GameObjectTypeEnum, PositionEnum, SizeEnum, SpriteResolutionEnum } from '../enums';
 import { UUID } from './frameworkTypes';
 import { InspectionData, Sprite, SpriteSet, Lock } from './gameBaseTypes';
 
@@ -11,6 +11,10 @@ type HasPosition = {
 }
 
 type BaseGameObject = HasId & HasPosition & {}
+
+type HasSize = {
+  size: SizeEnum,
+}
 
 type HasSprite = {
   spriteResolution: SpriteResolutionEnum,
@@ -39,19 +43,19 @@ export type ExitObject = IsInspectable & HasSprite & HasId & {
   sprite: SpriteSet,
 }
 
-export type PickableObject = BaseGameObject & HasSprite & IsInspectable & {
+export type PickableObject = BaseGameObject & HasSize & HasSprite & IsInspectable & {
   reusable: boolean,
   taken: boolean
 }
 
-export type InspectableObject = BaseGameObject & HasSprite & IsInspectable & {}
+export type InspectableObject = BaseGameObject & HasSize & HasSprite & IsInspectable & {}
 
-export type ContainerObject = BaseGameObject & HasSprite & IsInspectable & {
+export type ContainerObject = BaseGameObject & HasSize & HasSprite & IsInspectable & {
   content: DynamicGameObject[],
   lock: null | Lock
 }
 
-export type MovableCoverObject = BaseGameObject & HasSprite & IsInspectable & {
+export type MovableCoverObject = BaseGameObject & HasSize & HasSprite & IsInspectable & {
   content: DynamicGameObject
   used: boolean
 }

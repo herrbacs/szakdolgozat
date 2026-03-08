@@ -10,6 +10,7 @@ import { useSprite } from "../../../../useHooks/useSprites"
 import { CursorActions } from "../../../../shared/types/appTypes"
 import { GameObjectTypeEnum, SetAppSettingsActionEnum } from "../../../../shared/enums"
 import { setPositionOn } from "../../../../shared/positionCalculator"
+import { getScaleByObjectSize } from "../../../../shared/gameObjectScale"
 
 
 type MovableCoverComponentType = {
@@ -60,7 +61,7 @@ const MovableCover = ({ movableCover }: MovableCoverComponentType) => {
         eventMode="static"
         cursor="pointer"
         onClick={openCursorActions}
-        scale={.07}
+        scale={getScaleByObjectSize(movableCover.size)}
         x={spriteCoordinate.x}
         y={spriteCoordinate.y}
       />
