@@ -5,6 +5,7 @@ export enum MoveDirectionEnum {
 
 export enum SetAppSettingsActionEnum {
   LOAD_LEVEL,
+  SET_SCREEN_DIMENSION,
   MOVE_AROUND,
   MOVE_TO,
   PICK_UP_ITEM,

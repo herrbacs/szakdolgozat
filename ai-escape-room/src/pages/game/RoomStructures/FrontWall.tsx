@@ -12,7 +12,7 @@ const FrontWall = ({ color } : { color: string }) => {
       .rect(perspective, perspective, width - perspective * 2, height - perspective * 2)
       .fill({ color })
     },
-    [color],
+    [color, perspective, width, height],
   )
 
   return <pixiGraphics draw={(g: Graphics) => draw(g.context)} />

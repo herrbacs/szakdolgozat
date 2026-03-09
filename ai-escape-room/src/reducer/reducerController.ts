@@ -1,7 +1,18 @@
 import { GameObjectTypeEnum, MoveDirectionEnum } from '../shared/enums'
 import { CursorActions, InspectingModal, LevelInformation, LockModal } from '../shared/types/appTypes'
+import { Dimension } from '../shared/types/gameBaseTypes'
 import { AppSettings } from '../shared/types/frameworkTypes'
 import { ContainerObject, DynamicGameObject, MovableCoverObject, PickableObject, Wall } from '../shared/types/gameObjectTypes'
+
+export function setScreenDimension(state: AppSettings, payload: Dimension): AppSettings {
+  return {
+    ...state,
+    screenSettings: {
+      ...state.screenSettings,
+      dimension: payload,
+    },
+  }
+}
 
 export function loadLevel(state: AppSettings, { walls, story, derivation, id }: LevelInformation): AppSettings {
   const amountOfWalls = walls.length

@@ -77,9 +77,29 @@ const GamePage: React.FC = () => {
     setLevelLoaded(true)
   }
 
+  const syncScreenDimension = () => {
+    setAppSettings({
+      action: SetAppSettingsActionEnum.SET_SCREEN_DIMENSION,
+      payload: {
+        width: window.innerWidth,
+        height: window.innerHeight,
+      },
+    })
+  }
+
   useEffect(() => {
     loadLevel()
-  }, [searchParams])
+  }, [searchParams, setAppSettings])
+
+  useEffect(() => {
+    syncScreenDimension()
+    window.addEventListener('resize', syncScreenDimension)
+
+    return () => {
+      window.removeEventListener('resize', syncScreenDimension)
+    }
+  }, [setAppSettings])
+
   useEffect(disableRightClickDefaultBehavior, [])
 
   return levelLoaded ? (

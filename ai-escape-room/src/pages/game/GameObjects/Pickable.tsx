@@ -7,7 +7,7 @@ import { useSprite } from "../../../useHooks/useSprites"
 import { SetAppSettingsActionEnum } from "../../../shared/enums"
 import { CursorActions } from "../../../shared/types/appTypes"
 import { setPositionOn } from "../../../shared/positionCalculator"
-import { getScaleByObjectSize } from "../../../shared/gameObjectScale"
+import { getResponsiveScaleByObjectSize } from "../../../shared/gameObjectScale"
 import { getAnchorByObjectPosition } from "../../../shared/gameObjectSpriteAnchor"
 
 type PickableComponentTypeProperties = {
@@ -50,7 +50,7 @@ const Pickable = ({ pickable }: PickableComponentTypeProperties) => {
         screenSettings,
       })
     )
-  }, [])
+  }, [pickable.position, screenSettings])
 
   return (spriteLoaded && !pickable.taken)
     ? <pixiSprite
@@ -59,7 +59,7 @@ const Pickable = ({ pickable }: PickableComponentTypeProperties) => {
       eventMode="static"
       cursor="pointer"
       onClick={openCursorActions}
-      scale={getScaleByObjectSize(pickable.size)}
+      scale={getResponsiveScaleByObjectSize(pickable.size, screenSettings.dimension)}
       x={spriteCoordinate.x}
       y={spriteCoordinate.y}
     />

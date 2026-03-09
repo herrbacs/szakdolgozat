@@ -33,7 +33,7 @@ const ToggleInventory = () => {
     () => spriteLoaded 
       ? width - (padding * 2) - (sprite.width * scale) * 2
       : 1
-    , [sprite, spriteLoaded, scale])
+    , [sprite, spriteLoaded, scale, width])
 
   return spriteLoaded && (
     <pixiSprite

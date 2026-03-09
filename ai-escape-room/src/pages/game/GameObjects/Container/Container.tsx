@@ -7,7 +7,7 @@ import { useSprite } from "../../../../useHooks/useSprites"
 import { LockTypeEnum, SetAppSettingsActionEnum } from "../../../../shared/enums"
 import { CursorActions } from "../../../../shared/types/appTypes"
 import { setPositionOn } from "../../../../shared/positionCalculator"
-import { getScaleByObjectSize } from "../../../../shared/gameObjectScale"
+import { getResponsiveScaleByObjectSize } from "../../../../shared/gameObjectScale"
 import { getAnchorByObjectPosition } from "../../../../shared/gameObjectSpriteAnchor"
 
 type ContainerComponentType = {
@@ -90,7 +90,7 @@ const Container = ({ container }: ContainerComponentType) => {
         area: container.position,
         screenSettings,
       }))
-  }, [])
+  }, [container.position, screenSettings])
 
   return spriteLoaded && (
     <pixiSprite
@@ -99,7 +99,7 @@ const Container = ({ container }: ContainerComponentType) => {
       eventMode="static"
       cursor="pointer"
       onClick={openCursorActions}
-      scale={getScaleByObjectSize(container.size)}
+      scale={getResponsiveScaleByObjectSize(container.size, screenSettings.dimension)}
       x={spriteCoordinate.x}
       y={spriteCoordinate.y}
     />

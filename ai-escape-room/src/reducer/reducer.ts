@@ -1,6 +1,7 @@
 import { SetAppSettingsActionEnum } from "../shared/enums"
 import { AppSettings, ReducerAction } from "../shared/types/frameworkTypes"
 import {
+  setScreenDimension,
   moveAround,
   loadLevel,
   toggleInventory,
@@ -69,6 +70,8 @@ export const reducer = (state: AppSettings, { action, payload }: ReducerAction) 
   switch (action) {
     case SetAppSettingsActionEnum.LOAD_LEVEL:
       return loadLevel(state, payload)
+    case SetAppSettingsActionEnum.SET_SCREEN_DIMENSION:
+      return setScreenDimension(state, payload)
     case SetAppSettingsActionEnum.MOVE_AROUND:
       return moveAround(state, payload)
     case SetAppSettingsActionEnum.TOGGLE_NOTEPAD:

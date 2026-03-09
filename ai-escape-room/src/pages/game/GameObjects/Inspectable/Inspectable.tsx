@@ -7,7 +7,7 @@ import { useSprite } from "../../../../useHooks/useSprites"
 import { CursorActions } from "../../../../shared/types/appTypes"
 import { SetAppSettingsActionEnum } from "../../../../shared/enums"
 import { setPositionOn } from "../../../../shared/positionCalculator"
-import { getScaleByObjectSize } from "../../../../shared/gameObjectScale"
+import { getResponsiveScaleByObjectSize } from "../../../../shared/gameObjectScale"
 import { getAnchorByObjectPosition } from "../../../../shared/gameObjectSpriteAnchor"
 
 type InspectableComponentType = {
@@ -43,7 +43,7 @@ const Inspectable = ({ inspectable }: InspectableComponentType) => {
 			area: inspectable.position,
 			screenSettings,
 		}))
-  }, [])
+  }, [inspectable.position, screenSettings])
 
   return spriteLoaded && (
     <pixiSprite
@@ -52,7 +52,7 @@ const Inspectable = ({ inspectable }: InspectableComponentType) => {
       eventMode="static"
       cursor="pointer"
       onClick={openCursorActions}
-      scale={getScaleByObjectSize(inspectable.size)}
+      scale={getResponsiveScaleByObjectSize(inspectable.size, screenSettings.dimension)}
       x={spriteCoordinate.x}
       y={spriteCoordinate.y}
     />

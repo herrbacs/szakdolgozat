@@ -34,7 +34,7 @@ const Notepad = () => {
     () => spriteLoaded 
       ? width - (padding * 3) - (sprite.width * scale) * 3
       : 1
-    , [sprite, spriteLoaded, scale])
+    , [sprite, spriteLoaded, scale, width])
 
   return spriteLoaded && (
     <pixiSprite

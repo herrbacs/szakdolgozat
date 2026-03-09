@@ -10,7 +10,7 @@ import { useSprite } from "../../../../useHooks/useSprites"
 import { CursorActions } from "../../../../shared/types/appTypes"
 import { GameObjectTypeEnum, SetAppSettingsActionEnum } from "../../../../shared/enums"
 import { setPositionOn } from "../../../../shared/positionCalculator"
-import { getScaleByObjectSize } from "../../../../shared/gameObjectScale"
+import { getResponsiveScaleByObjectSize } from "../../../../shared/gameObjectScale"
 import { getAnchorByObjectPosition } from "../../../../shared/gameObjectSpriteAnchor"
 
 
@@ -52,7 +52,7 @@ const MovableCover = ({ movableCover }: MovableCoverComponentType) => {
 			area: movableCover.position,
 			screenSettings,
 		}))
-  }, [])
+  }, [movableCover.position, screenSettings])
 
   if (!movableCover.used && spriteLoaded) {
     return (
@@ -62,7 +62,7 @@ const MovableCover = ({ movableCover }: MovableCoverComponentType) => {
         eventMode="static"
         cursor="pointer"
         onClick={openCursorActions}
-        scale={getScaleByObjectSize(movableCover.size)}
+        scale={getResponsiveScaleByObjectSize(movableCover.size, screenSettings.dimension)}
         x={spriteCoordinate.x}
         y={spriteCoordinate.y}
       />
