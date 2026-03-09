@@ -11,7 +11,6 @@ const Menu: React.FC = () => {
         <h1 className="text-3xl font-semibold text-center text-gray-800 mb-6">
           Main Menu
         </h1>
-
         <ul className="space-y-2">
           <li>
             <button
