@@ -12,7 +12,7 @@ const Menu: React.FC = () => {
           Main Menu
         </h1>
 
-        <ul className="space-y-4">
+        <ul className="space-y-2">
           <li>
             <button
               onClick={() => navigate("/profile")}
@@ -24,7 +24,7 @@ const Menu: React.FC = () => {
           <li>
             <button
               onClick={() => navigate("/levels")}
-              className="w-full py-2.5 rounded-lg font-semibold text-white transition bg-indigo-600 hover:bg-indigo-700 active:scale-[0.98]"
+              className="w-full mt-6 py-2.5 rounded-lg font-semibold text-white transition bg-indigo-600 hover:bg-indigo-700 active:scale-[0.98]"
             >
               Levels
             </button>
@@ -32,7 +32,7 @@ const Menu: React.FC = () => {
           <li>
             <button
               onClick={() => navigate("/new-level")}
-              className="w-full py-2.5 rounded-lg font-semibold text-white transition bg-indigo-600 hover:bg-indigo-700 active:scale-[0.98]"
+              className="w-full mb-6 py-2.5 rounded-lg font-semibold text-white transition bg-indigo-600 hover:bg-indigo-700 active:scale-[0.98]"
             >
               New Level
             </button>
