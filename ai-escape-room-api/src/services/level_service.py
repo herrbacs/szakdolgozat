@@ -2,15 +2,14 @@ from __future__ import annotations
 import json
 import uuid
 import time
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, List, Tuple
 from fastapi import HTTPException
 from config import GPT_MINI, GPT_5_2, MAX_REPAIR_ROUNDS
 from openai_client import get_openai_client
 from src.prompts.prompts import load_prompt
 from src.utils.json_utils import ensure_valid_json_and_save
-from src.utils.path_utils import ensure_and_get_level_dir
+from src.services.storage_service import upload_json
 from src.postprocess.normalize_ids import normalize_level_id_structures
-from pathlib import Path
 from sqlalchemy.orm import Session
 from db.models.level import Level
 from db.models.level_token_usage import LevelTokenUsage
@@ -70,7 +69,7 @@ def extract_token_usage(response: Any) -> TokenUsage:
         }
     return {"input_tokens": 0, "output_tokens": 0, "total_tokens": 0}
 
-def call_openai(*, out_dir: Path, file_name: str, **openai_params: Any) -> Tuple[JsonDict, TokenUsage, float]:
+def call_openai(*, level_id: str, file_name: str, **openai_params: Any) -> Tuple[JsonDict, TokenUsage, float]:
     """Perform an OpenAI request, save output and return usage plus elapsed minutes.
 
     Previous callers expected a two‑tuple; we now also return the number of minutes that
@@ -92,7 +91,7 @@ def call_openai(*, out_dir: Path, file_name: str, **openai_params: Any) -> Tuple
             },
         )
 
-    valid_json_str = ensure_valid_json_and_save(text, out_dir, file_name)
+    valid_json_str = ensure_valid_json_and_save(text, level_id, file_name)
     result = json.loads(valid_json_str)
     usage = extract_token_usage(response)
     return result, usage, minutes
@@ -116,11 +115,11 @@ def parse_validator_verdict_obj(obj: JsonDict) -> JsonDict:
     return obj
 
 
-def validate_level(*, level_obj: JsonDict, out_dir: Path) -> Tuple[JsonDict, TokenUsage, float]:
+def validate_level(*, level_obj: JsonDict, level_id: str) -> Tuple[JsonDict, TokenUsage, float]:
     validator_prompt = load_prompt(["prompt_level_validate"])
 
     verdict_obj, usage, minutes = call_openai(
-        out_dir=out_dir,
+        level_id=level_id,
         file_name="last_validator_output.json",
         model=GPT_MINI,
         input=f"""
@@ -140,9 +139,9 @@ Generated Level Json:
     return parse_validator_verdict_obj(verdict_obj), usage, minutes
 
 
-def repair_level(*, current_level_obj: JsonDict, validation: JsonDict, round_idx: int, out_dir: Path) -> Tuple[JsonDict, TokenUsage, float]:
+def repair_level(*, current_level_obj: JsonDict, validation: JsonDict, round_idx: int, level_id: str) -> Tuple[JsonDict, TokenUsage, float]:
     repaired_obj, usage, minutes = call_openai(
-        out_dir=out_dir,
+        level_id=level_id,
         file_name=f"repaired_level_round{round_idx}.json",
         model=GPT_5_2,
         input=assemble_repair_prompt(current_level_obj, issue_report=validation["issues"]),
@@ -207,8 +206,6 @@ def generate_new_level(
         }
     """
     level_id = level_id or str(uuid.uuid4())
-    level_dir = ensure_and_get_level_dir(level_id)
-    
     token_tracker = {
         "generation": {"tokens": 0, "minutes": 0.0},
         "validation": {"tokens": 0, "minutes": 0.0},
@@ -232,7 +229,7 @@ def generate_new_level(
         message="Generating first draft level layout.",
     )
     current_level, gen_usage, gen_minutes = call_openai(
-        out_dir=level_dir,
+        level_id=level_id,
         file_name="generated_level.json",
         model=GPT_MINI,
         input=load_prompt([
@@ -262,7 +259,7 @@ def generate_new_level(
             message="Validating level.",
             meta={"round": round_idx + 1, "max_rounds": MAX_REPAIR_ROUNDS},
         )
-        validation, val_usage, val_minutes = validate_level(level_obj=current_level, out_dir=level_dir)
+        validation, val_usage, val_minutes = validate_level(level_obj=current_level, level_id=level_id)
         token_tracker["validation"]["tokens"] += val_usage.get("total_tokens", 0)
         token_tracker["validation"]["minutes"] += val_minutes
         token_tracker["total_tokens"] += val_usage.get("total_tokens", 0)
@@ -282,8 +279,7 @@ def generate_new_level(
             level = normalize_level_id_structures(current_level)
             level["id"] = level_id
 
-            with open((level_dir / "final_level.json"), "w", encoding="utf-8") as f:
-                json.dump(level, f, ensure_ascii=False, indent=2)
+            upload_json(level_id, "final_level.json", level)
 
             return {
                 "success": True,
@@ -323,7 +319,7 @@ def generate_new_level(
             current_level_obj=current_level,
             validation=validation,
             round_idx=round_idx,
-            out_dir=level_dir,
+            level_id=level_id,
         )
         token_tracker["repair"]["tokens"] += repair_usage.get("total_tokens", 0)
         token_tracker["repair"]["minutes"] += repair_minutes

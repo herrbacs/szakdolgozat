@@ -1,8 +1,6 @@
-import json
 import uuid
 from typing import Any
 from fastapi import HTTPException, status
-from pathlib import Path
 from src.services.level_service import (
     generate_new_level,
     find_objects_with_id_and_inspection,
@@ -11,7 +9,7 @@ from src.services.level_service import (
     get_average_tokens_for_difficulty,
 )
 from src.services.sprite_service import generate_ui_sprites, generate_level_object_sprites
-from config import LEVELS_DIR
+from src.services.storage_service import read_bytes, read_json
 from sqlalchemy.orm import Session, aliased
 from db.models.level_rating import LevelRating
 from db.models.user import User
@@ -169,31 +167,11 @@ def generate_new_level_handler(req: GenerateLevelRequest, db: Session, user: Use
     return {"level_id": level_id, "level": level, "tokens": tokens}
 
 
-def get_level_object_sprite_handler(level_id: str, object_id: str) -> Path:
-    level_dir = LEVELS_DIR / level_id
-
-    if not level_dir.exists() or not level_dir.is_dir():
-        raise HTTPException(status_code=404, detail="Level not found")
-
-    sprite_path = level_dir / "sprites" / f"{object_id}.png"
-    if not sprite_path.exists() or not sprite_path.is_file():
-        raise HTTPException(status_code=404, detail="Sprite not found")
-
-    return sprite_path
+def get_level_object_sprite_handler(level_id: str, object_id: str) -> bytes:
+    return read_bytes(level_id, f"sprites/{object_id}.png")
 
 def load_level_handler(level_id: str) -> dict[str, Any]:
-    level_dir = LEVELS_DIR / level_id
-    
-    if not level_dir.exists() or not level_dir.is_dir():
-        raise HTTPException(status_code=404, detail="Level not found")
-
-    file_path = level_dir / "final_level.json"
-    
-    if not file_path.exists():
-        raise HTTPException(status_code=404, detail="Level file not found")
-
-    with open(file_path, "r", encoding="utf-8") as f:
-        return json.load(f)
+    return read_json(level_id, "final_level.json")
 
 def rate_level_handler(
     level_id: str,

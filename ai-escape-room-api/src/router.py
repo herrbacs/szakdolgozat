@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from fastapi.responses import FileResponse
+from fastapi.responses import Response
 from src.controllers.levels_controller import get_level_object_sprite_handler
 from src.routes.auth_routes import router as auth_router
 from src.routes.levels_routes import router as levels_router
@@ -18,7 +18,7 @@ def hello_world() -> dict[str, str]:
     return {"message": "Hello World"}
 
 @router.get("/sprites/{level_id}/{object_id}")
-def serve_image(level_id: str, object_id: str) -> FileResponse:
-    path = get_level_object_sprite_handler(level_id, object_id)
-    return FileResponse(path)
+def serve_sprite(level_id: str, object_id: str) -> Response:
+    sprite = get_level_object_sprite_handler(level_id, object_id)
+    return Response(content=sprite, media_type="image/png")
 
