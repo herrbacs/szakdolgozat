@@ -7,5 +7,10 @@ router = APIRouter(prefix="/sprites", tags=["sprites"])
 
 @router.get("/{level_id}/{object_id}")
 def serve_sprite(level_id: str, object_id: str) -> Response:
+    """Returns the PNG sprite image for a specific level object.
+
+    Request: `level_id` and `object_id` path parameters.
+    Response: binary `image/png` content.
+    """
     sprite = get_level_object_sprite_handler(level_id, object_id)
     return Response(content=sprite, media_type="image/png")

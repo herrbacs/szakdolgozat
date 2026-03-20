@@ -12,6 +12,11 @@ from jose import JWTError, ExpiredSignatureError
 from db.models.user_tokens import UserTokens
 
 def register_handler(req: RegisterRequest, db: Session = Depends(get_db)) -> None:
+    """Creates a new user and initializes the starting token balance.
+
+    Input: `RegisterRequest` (`email`, `username`, `password`) and a database session.
+    Output: no return value; on success a user and initial token record are created.
+    """
     existing_user_query = select(User).where(or_(User.email == req.email, User.username == req.username))
     existing = db.execute(existing_user_query).scalar_one_or_none()
     if existing:
@@ -33,6 +38,11 @@ def register_handler(req: RegisterRequest, db: Session = Depends(get_db)) -> Non
     db.commit()
 
 def login_handler(req: LoginRequest, db: Session = Depends(get_db)) -> LoginResponse:
+    """Authenticates the user and generates access and refresh tokens.
+
+    Input: `LoginRequest` (`identifier`, `password`) and a database session.
+    Output: `LoginResponse` with the success flag and issued tokens.
+    """
     user_query = select(User).where(or_(User.email == req.identifier, User.username == req.identifier))
     user = db.execute(user_query).scalar_one_or_none()
 
@@ -58,6 +68,11 @@ def login_handler(req: LoginRequest, db: Session = Depends(get_db)) -> LoginResp
     return LoginResponse(success=True, access_token=access, refresh_token=refresh)
 
 def refresh_token_handler(req: RefreshRequest, db: Session) -> dict[str, Any]:
+    """Issues a new token pair from a valid refresh token and revokes the old one.
+
+    Input: `RefreshRequest` with `refresh_token` and a database session.
+    Output: dictionary with `access_token`, `refresh_token`, and `token_type`.
+    """
     token = req.refresh_token
 
     try:

@@ -11,4 +11,9 @@ router = APIRouter(prefix="/users", tags=["users"])
 
 @router.get("/me", response_model=ProfileResponse)
 def my_profile(user: User = Depends(get_current_user), db: Session = Depends(get_db)) -> ProfileResponse:
+    """Returns the authenticated user's profile and token balance.
+
+    Request: no body; authentication required.
+    Response: `id`, `email`, `username`, `tokens`.
+    """
     return profile_handler(user, db)

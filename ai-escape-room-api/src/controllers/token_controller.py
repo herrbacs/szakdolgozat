@@ -8,12 +8,22 @@ from src.models.service_types import ProfileData
 
 
 def profile_handler(user: User, db: Session) -> ProfileData:
+    """Builds the authenticated user's profile data with the current token balance.
+
+    Input: authenticated `User` and database session.
+    Output: profile dictionary containing `id`, `email`, `username`, and `tokens`.
+    """
     tokens_entry = db.execute(select(UserTokens).where(UserTokens.user_id == user.id)).scalar_one_or_none()
     balance = tokens_entry.balance if tokens_entry else 0
     return {"id": user.id, "email": user.email, "username": user.username, "tokens": balance}
 
 
 def buy_tokens_handler(category: TokenCategory, user: User, db: Session) -> dict[str, int]:
+    """Increases a user's token balance by the selected purchase category.
+
+    Input: `category` (`basic`, `medium`, `high`), authenticated `User`, database session.
+    Output: dictionary with `new_balance`.
+    """
     mapping = {
         TokenCategory.basic: 50000,
         TokenCategory.medium: 75000,

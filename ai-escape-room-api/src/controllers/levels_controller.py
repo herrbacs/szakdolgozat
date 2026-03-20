@@ -33,6 +33,11 @@ from src.services.socket_service import (
 
 
 def generate_new_level_handler(req: GenerateLevelRequest, db: Session, user: User) -> dict[str, Any]:
+    """Generates a new level, creates sprites for it, and deducts the token cost.
+
+    Input: `GenerateLevelRequest`, database session, authenticated user.
+    Output: dictionary with `level_id`, `level`, and `tokens`.
+    """
     level_id = req.level_id if req.level_id else str(uuid.uuid4())
     estimate: TokenEstimate = get_average_tokens_for_difficulty(db, req.difficulty)
     estimated_tokens = estimate["tokens"]
@@ -168,9 +173,19 @@ def generate_new_level_handler(req: GenerateLevelRequest, db: Session, user: Use
 
 
 def get_level_object_sprite_handler(level_id: str, object_id: str) -> bytes:
+    """Loads the PNG sprite file of a level object from storage.
+
+    Input: `level_id`, `object_id`.
+    Output: raw image bytes returned by the route as `image/png`.
+    """
     return read_bytes(level_id, f"sprites/{object_id}.png")
 
 def load_level_handler(level_id: str) -> dict[str, Any]:
+    """Loads the final JSON representation of a level from storage.
+
+    Input: `level_id`.
+    Output: contents of `final_level.json` as a dictionary.
+    """
     return read_json(level_id, "final_level.json")
 
 def rate_level_handler(
@@ -179,6 +194,11 @@ def rate_level_handler(
     db: Session,
     user: User
 ) -> None:
+    """Creates or updates a user's 1-5 rating for a level.
+
+    Input: `level_id`, `RateLevelRequest` (`rate`), database session, user.
+    Output: no return value; the rating record is inserted or updated.
+    """
     rating = req.rate
     user_id = user.id
  
@@ -204,6 +224,11 @@ def add_to_favorite_handler(
     db: Session,
     user: User
 ) -> None:
+    """Adds an existing level to the user's favorites.
+
+    Input: `level_id`, database session, user.
+    Output: no return value; raises 404 if the level does not exist.
+    """
     level = db.execute(
         select(Level).where(Level.id == level_id)
     ).scalar_one_or_none()
@@ -234,6 +259,11 @@ def remove_from_favorite_handler(
     db: Session,
     user: User
 ) -> None:
+    """Removes a level from the user's favorites if it exists there.
+
+    Input: `level_id`, database session, user.
+    Output: no return value.
+    """
     existing = db.execute(
         select(FavoriteLevel).where(
             FavoriteLevel.user_id == user.id,
@@ -252,6 +282,11 @@ def get_user_level_rating_handler(
     db: Session,
     user: User
 ) -> dict[str, int | None]:
+    """Returns the user's rating for a specific level.
+
+    Input: `level_id`, database session, user.
+    Output: dictionary with `rating`; value is `None` if no rating exists.
+    """
     rating = db.execute(
         select(LevelRating).where(
             LevelRating.user_id == user.id,
@@ -266,6 +301,11 @@ def get_level_favorite_status_handler(
     db: Session,
     user: User
 ) -> dict[str, bool]:
+    """Determines whether a level is marked as favorite by the user.
+
+    Input: `level_id`, database session, user.
+    Output: dictionary with boolean `is_favorite`.
+    """
     favorite = db.execute(
         select(FavoriteLevel).where(
             FavoriteLevel.user_id == user.id,
@@ -282,6 +322,11 @@ def record_level_completion_handler(
     db: Session,
     user: User,
 ) -> dict[str, bool]:
+    """Stores a level completion time if the user has not recorded it yet.
+
+    Input: `level_id`, `LevelCompletionRequest` (`completion_minutes`), session, user.
+    Output: `saved`, indicating whether a new record was stored.
+    """
     level = db.execute(
         select(Level).where(
             Level.id == level_id,
@@ -318,6 +363,11 @@ def list_levels_handler(
     query: LevelListQuery,
     user: User,
 ) -> PagedResponse[LevelListItem]:
+    """Lists successfully generated levels with optional filters and aggregate statistics.
+
+    Input: pagination parameters, `LevelListQuery` filters, database session, user.
+    Output: paged `LevelListItem` list with rating, favorites, token, and completion data.
+    """
     avg_rating = func.avg(LevelRating.rating).label("avg_rating")
     favorite_count = func.count(func.distinct(FavoriteLevel.user_id)).label("favorite_count")
 

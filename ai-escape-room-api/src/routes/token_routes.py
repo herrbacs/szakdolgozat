@@ -14,4 +14,9 @@ def buy_tokens(
     user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ) -> TokenPurchaseResponse:
+    """Purchases a token package for the authenticated user.
+
+    Request body: `category` (`basic`, `medium`, `high`); authentication required.
+    Response: `new_balance`, the updated token balance.
+    """
     return buy_tokens_handler(req.category, user, db)
