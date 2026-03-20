@@ -4,6 +4,11 @@ import cv2 as cv
 import numpy as np
 
 def convert_images_into_blob(img_name: str) -> str:
+    """Loads an image from the local sprites folder and returns it as base64 PNG text.
+
+    Input: image file name inside `./sprites/`.
+    Output: base64-encoded PNG string.
+    """
     root_folder = './sprites/'
     with open(root_folder+img_name, 'rb') as image_file:
         image = Image.open(image_file)
@@ -14,6 +19,11 @@ def convert_images_into_blob(img_name: str) -> str:
     return img_base64
 
 def generatePerspectiveTransformationsOfImage(imgName: str) -> None:
+    """Creates left and right perspective variants of a sprite image on disk.
+
+    Input: image file name inside the local `sprites` directory.
+    Output: no return value; writes transformed PNG files next to the source image.
+    """
     root = os.getcwd()
     imgPath = os.path.join(root, 'sprites/', imgName)
     img = cv.imread(imgPath, cv.IMREAD_UNCHANGED)

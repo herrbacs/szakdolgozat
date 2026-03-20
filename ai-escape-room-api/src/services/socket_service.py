@@ -18,6 +18,11 @@ def emit_level_generation_update(
     message: str,
     meta: dict[str, Any] | None = None,
 ) -> None:
+    """Sends a best-effort level generation status event to the socket server.
+
+    Input: level identifier, workflow step, status, user-facing message, and optional metadata.
+    Output: no return value; network errors are swallowed so generation can continue.
+    """
     payload = {
         "roomId": level_id,
         "step": step,
@@ -35,6 +40,11 @@ def emit_level_generation_update(
 
 
 def emit_generation_started(level_id: str, difficulty: int, sprite_style: str) -> None:
+    """Emits the standard event that level generation has started.
+
+    Input: `level_id`, selected difficulty, and sprite style.
+    Output: no return value.
+    """
     emit_level_generation_update(
         level_id=level_id,
         step="generation-started",
@@ -45,6 +55,11 @@ def emit_generation_started(level_id: str, difficulty: int, sprite_style: str) -
 
 
 def emit_generation_failed(level_id: str, message: str) -> None:
+    """Emits the standard failure event for a level generation flow.
+
+    Input: `level_id` and failure message.
+    Output: no return value.
+    """
     emit_level_generation_update(
         level_id=level_id,
         step="generation-failed",
@@ -54,6 +69,11 @@ def emit_generation_failed(level_id: str, message: str) -> None:
 
 
 def emit_generation_completed(level_id: str) -> None:
+    """Emits the standard completion event for a level generation flow.
+
+    Input: `level_id`.
+    Output: no return value.
+    """
     emit_level_generation_update(
         level_id=level_id,
         step="generation-completed",

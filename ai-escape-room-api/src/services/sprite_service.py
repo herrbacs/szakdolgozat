@@ -21,7 +21,11 @@ SPRITE_MODEL = "gpt-image-1-mini"
 
 
 def extract_sprite_token_usage(response: Any) -> Dict[str, int]:
-    """Extract token usage from OpenAI image generation response."""
+    """Extracts token usage metadata from an OpenAI image response.
+
+    Input: raw image generation or image edit response object.
+    Output: dictionary with `total_tokens`.
+    """
     if hasattr(response, "usage") and response.usage:
         return {
             "total_tokens": getattr(response.usage, "total_tokens", 1),
@@ -30,6 +34,11 @@ def extract_sprite_token_usage(response: Any) -> Dict[str, int]:
 
 
 def trim_transparent_bytes(image_bytes: bytes) -> bytes:
+    """Trims transparent borders from a PNG image while preserving transparency.
+
+    Input: raw PNG bytes.
+    Output: cropped PNG bytes, or the original bytes if no visible pixels are found.
+    """
     img = Image.open(io.BytesIO(image_bytes)).convert("RGBA")
     data = np.array(img)
 
@@ -51,6 +60,11 @@ def trim_transparent_bytes(image_bytes: bytes) -> bytes:
 
 
 def _to_named_file(image_bytes: bytes, file_name: str) -> io.BytesIO:
+    """Wraps image bytes in a named in-memory file object for OpenAI image edit calls.
+
+    Input: image bytes and the file name to expose to the API.
+    Output: seeked `BytesIO` object with a `.name` attribute.
+    """
     file_like = io.BytesIO(image_bytes)
     file_like.name = file_name
     file_like.seek(0)
@@ -64,6 +78,11 @@ def generate_sprite(
     file_name: str,
     resolution: str,
 ) -> Tuple[bytes, Dict[str, int], float]:
+    """Generates a sprite image, trims it, uploads it, and returns usage metrics.
+
+    Input: `level_id`, prompt text, target file name, and requested resolution.
+    Output: tuple of PNG bytes, token usage dictionary, and elapsed minutes.
+    """
     start = time.time()
     result = client.images.generate(
         prompt=prompt,
@@ -94,6 +113,11 @@ def edit_sprite(
     file_name: str,
     resolution: str = "1024x1024",
 ) -> Tuple[bytes, Dict[str, int], float]:
+    """Edits an existing sprite image with a prompt and uploads the edited result.
+
+    Input: level id, source image bytes/name, edit prompt, output file name, and resolution.
+    Output: tuple of edited PNG bytes, token usage dictionary, and elapsed minutes.
+    """
     start = time.time()
     source_file = _to_named_file(source_image_bytes, source_image_name)
     result = client.images.edit(
@@ -116,6 +140,11 @@ def edit_sprite(
 
 
 def generate_door_pair(level_id: str, prompt: str) -> Tuple[int, float]:
+    """Generates matching closed and open door sprites and aggregates their usage.
+
+    Input: `level_id` and base generation prompt.
+    Output: tuple of total tokens used and elapsed minutes for both images.
+    """
     closed_bytes, usage1, mins1 = generate_sprite(
         level_id=level_id,
         prompt=prompt,
@@ -145,7 +174,11 @@ Show a slight dark interior gap behind the door. Do not change background.
 
 
 def generate_ui_sprites(level_id: str, sprite_style: SpriteStyle = SpriteStyle.CARTOON) -> Tuple[int, float]:
-    """Generate UI sprites and return total tokens and minutes used."""
+    """Generates the built-in UI sprite set for a level.
+
+    Input: `level_id` and optional sprite style.
+    Output: tuple of total tokens used and elapsed minutes across all UI sprites.
+    """
     total_tokens = 0
     total_minutes = 0.0
 
@@ -213,7 +246,11 @@ def generate_level_object_sprites(
     level_id: str,
     sprite_style: str = "Cartoon",
 ) -> Tuple[int, float]:
-    """Generate level object sprites and return total tokens and minutes used."""
+    """Generates sprites for all detected level objects, including exit door variants.
+
+    Input: collected level objects, `level_id`, and sprite style string.
+    Output: tuple of total tokens used and elapsed minutes across all object sprites.
+    """
     total_tokens = 0
     total_minutes = 0.0
 

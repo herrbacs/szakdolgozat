@@ -27,6 +27,11 @@ _bucket_ready = False
 
 
 def _ensure_bucket() -> None:
+    """Ensures that the configured MinIO bucket exists before object operations.
+
+    Input: none.
+    Output: no return value; may create the bucket on first use.
+    """
     global _bucket_ready
     if _bucket_ready:
         return
@@ -36,10 +41,20 @@ def _ensure_bucket() -> None:
 
 
 def level_object_key(level_id: str, relative_path: str) -> str:
+    """Builds the storage object key for a level-scoped file path.
+
+    Input: `level_id` and relative object path.
+    Output: storage key string in the form `<level_id>/<relative_path>`.
+    """
     return f"{level_id}/{relative_path.lstrip('/')}"
 
 
 def upload_bytes(level_id: str, relative_path: str, content: bytes, content_type: str) -> str:
+    """Uploads raw bytes to object storage under a level-specific path.
+
+    Input: `level_id`, relative path, raw content bytes, and content type.
+    Output: uploaded object key.
+    """
     _ensure_bucket()
     object_key = level_object_key(level_id, relative_path)
     _client.put_object(
@@ -53,15 +68,30 @@ def upload_bytes(level_id: str, relative_path: str, content: bytes, content_type
 
 
 def upload_text(level_id: str, relative_path: str, text: str, content_type: str = "text/plain; charset=utf-8") -> str:
+    """Uploads UTF-8 text content to object storage.
+
+    Input: `level_id`, relative path, text payload, and optional content type.
+    Output: uploaded object key.
+    """
     return upload_bytes(level_id, relative_path, text.encode("utf-8"), content_type)
 
 
 def upload_json(level_id: str, relative_path: str, data: dict) -> str:
+    """Serializes a dictionary as formatted JSON and uploads it to object storage.
+
+    Input: `level_id`, relative path, and JSON-serializable dictionary.
+    Output: uploaded object key.
+    """
     payload = json.dumps(data, ensure_ascii=False, indent=2).encode("utf-8")
     return upload_bytes(level_id, relative_path, payload, "application/json; charset=utf-8")
 
 
 def read_bytes(level_id: str, relative_path: str) -> bytes:
+    """Reads raw bytes from object storage for a level-scoped file.
+
+    Input: `level_id` and relative path.
+    Output: raw stored bytes; raises HTTP 404 if the object is missing.
+    """
     _ensure_bucket()
     object_key = level_object_key(level_id, relative_path)
     try:
@@ -76,6 +106,11 @@ def read_bytes(level_id: str, relative_path: str) -> bytes:
 
 
 def read_json(level_id: str, relative_path: str) -> dict:
+    """Reads and parses a JSON object from object storage.
+
+    Input: `level_id` and relative path.
+    Output: parsed dictionary; raises HTTP 500 if stored JSON is invalid.
+    """
     content = read_bytes(level_id, relative_path)
     try:
         return json.loads(content.decode("utf-8"))
@@ -84,6 +119,11 @@ def read_json(level_id: str, relative_path: str) -> dict:
 
 
 def delete_level_prefix(level_id: str) -> None:
+    """Deletes all stored objects that belong to a given level prefix.
+
+    Input: `level_id`.
+    Output: no return value.
+    """
     _ensure_bucket()
     objects = _client.list_objects(STORAGE_BUCKET, prefix=f"{level_id}/", recursive=True)
     for _ in _client.remove_objects(STORAGE_BUCKET, (obj.object_name for obj in objects)):
@@ -91,6 +131,11 @@ def delete_level_prefix(level_id: str) -> None:
 
 
 def public_object_url(level_id: str, relative_path: str) -> str:
+    """Builds the public URL for a stored level object.
+
+    Input: `level_id` and relative path.
+    Output: public HTTP URL string for the object.
+    """
     base = STORAGE_PUBLIC_BASE_URL.rstrip("/")
     bucket = quote(STORAGE_BUCKET, safe="")
     key = quote(level_object_key(level_id, relative_path), safe="/")

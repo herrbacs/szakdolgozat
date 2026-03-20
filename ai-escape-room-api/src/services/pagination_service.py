@@ -12,6 +12,11 @@ def get_pagination(
     page: int = Query(1, ge=1),
     page_size: int = Query(20, ge=1, le=100),
 ) -> PaginationQuery:
+    """Builds a validated pagination object from FastAPI query parameters.
+
+    Input: `page` and `page_size` query values.
+    Output: `PaginationQuery` instance.
+    """
     return PaginationQuery(page=page, page_size=page_size)
 
 def paginate(
@@ -22,6 +27,11 @@ def paginate(
     count_stmt: Select,
     map_row: Callable[[Any], T],
 ) -> PagedResponse[T]:
+    """Executes paginated queries and maps database rows into response items.
+
+    Input: database session, pagination settings, data/count statements, and a row-mapper callback.
+    Output: `PagedResponse` containing mapped items and pagination metadata.
+    """
     total: int = db.execute(count_stmt).scalar_one()
     total_pages = max(1, math.ceil(total / pagination.page_size)) if total else 1
 

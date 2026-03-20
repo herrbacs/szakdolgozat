@@ -97,6 +97,11 @@ def call_openai(*, level_id: str, file_name: str, **openai_params: Any) -> Tuple
     return result, usage, minutes
 
 def parse_validator_verdict_obj(obj: JsonDict) -> JsonDict:
+    """Validates the structure of the validator response payload.
+
+    Input: parsed validator response dictionary.
+    Output: the same dictionary when it matches the expected schema; otherwise raises HTTP 502.
+    """
     if "solvable" not in obj or "issues" not in obj:
         raise HTTPException(status_code=502, detail={"message": "Validator schema hiba", "raw": obj})
 
@@ -116,6 +121,11 @@ def parse_validator_verdict_obj(obj: JsonDict) -> JsonDict:
 
 
 def validate_level(*, level_obj: JsonDict, level_id: str) -> Tuple[JsonDict, TokenUsage, float]:
+    """Runs the validator prompt against a generated level draft.
+
+    Input: current level JSON object and `level_id`.
+    Output: tuple of validated verdict object, token usage, and elapsed minutes.
+    """
     validator_prompt = load_prompt(["prompt_level_validate"])
 
     verdict_obj, usage, minutes = call_openai(
@@ -140,6 +150,11 @@ Generated Level Json:
 
 
 def repair_level(*, current_level_obj: JsonDict, validation: JsonDict, round_idx: int, level_id: str) -> Tuple[JsonDict, TokenUsage, float]:
+    """Requests a repaired level JSON based on the validator issues of a failed round.
+
+    Input: current level object, validator result, repair round index, and `level_id`.
+    Output: tuple of repaired level object, token usage, and elapsed minutes.
+    """
     repaired_obj, usage, minutes = call_openai(
         level_id=level_id,
         file_name=f"repaired_level_round{round_idx}.json",
@@ -153,6 +168,11 @@ def repair_level(*, current_level_obj: JsonDict, validation: JsonDict, round_idx
 
 
 def assemble_repair_prompt(level_obj: JsonDict, issue_report: List[str] | None) -> str:
+    """Builds the repair prompt text from the current level JSON and validation issues.
+
+    Input: level object and optional list of issue strings.
+    Output: full prompt string sent to the repair model.
+    """
     prompt = load_prompt(["prompt_level_repair"])
     issue_text = json.dumps(issue_report, ensure_ascii=False, indent=2)
     return f"""
@@ -366,6 +386,11 @@ def find_objects_with_id_and_inspection(
     results: list[FoundObjectWithPath] | None = None,
     path: tuple[str | int, ...] = (),
 ) -> list[FoundObjectWithPath]:
+    """Recursively collects level objects that have both `id` and `inspectionData`.
+
+    Input: any JSON-like node plus optional accumulator state used during recursion.
+    Output: list of found objects with their traversal path and exit-marker flag.
+    """
     if results is None:
         results = []
 
@@ -396,6 +421,11 @@ def create_level_with_id(
     difficulty: int = 3,
     sprite_style: SpriteStyle = SpriteStyle.CARTOON
 ) -> Level:
+    """Creates and persists a `Level` row for a generated level identifier.
+
+    Input: database session, `level_id`, generation status, and optional metadata fields.
+    Output: persisted `Level` ORM entity refreshed from the database.
+    """
     level = Level(
         id=uuid.UUID(level_id),
         title=title,
@@ -416,6 +446,11 @@ def update_level_successful_sprite_generation(
     db: Session,
     level: Level
 ) -> Level:
+    """Marks a level as having completed sprite generation successfully.
+
+    Input: database session and `Level` entity to update.
+    Output: refreshed `Level` entity with `sucessfull_sprite_generation=True`.
+    """
     level.sucessfull_sprite_generation = True
     db.commit()
     db.refresh(level)
