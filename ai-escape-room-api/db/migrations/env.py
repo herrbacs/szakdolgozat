@@ -11,7 +11,7 @@ from db.models import refresh_token
 from db.models import level
 from db.models import level_rating
 from db.models import favorite_level
-from db.models import user_tokens
+from db.models import user_token
 from db.models import level_token_usage
 from db.models import level_completion
 

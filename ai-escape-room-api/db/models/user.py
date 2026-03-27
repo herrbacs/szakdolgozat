@@ -4,7 +4,7 @@ from .base import Base
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from .user_tokens import UserTokens
+    from .user_token import UserToken
 
 
 class User(Base):
@@ -20,4 +20,4 @@ class User(Base):
     username: Mapped[str] = mapped_column(String(100), unique=True, nullable=False)
     password_hash: Mapped[str] = mapped_column(String(255), nullable=False)
 
-    tokens: Mapped["UserTokens"] = relationship("UserTokens", uselist=False, back_populates="user")
+    tokens: Mapped["UserToken"] = relationship("UserToken", uselist=False, back_populates="user")

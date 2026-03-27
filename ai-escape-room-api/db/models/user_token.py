@@ -8,7 +8,7 @@ if TYPE_CHECKING:
     from .user import User
 
 
-class UserTokens(Base):
+class UserToken(Base):
     __tablename__ = "user_tokens"
 
     user_id: Mapped[uuid.UUID] = mapped_column(

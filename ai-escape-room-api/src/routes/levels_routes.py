@@ -18,7 +18,7 @@ from src.controllers.levels_controller import list_levels_handler, generate_new_
 from src.schemas.pagination import PaginationQuery, PagedResponse
 from src.services.pagination_service import get_pagination
 from src.services.level_service import get_average_tokens_for_difficulty
-from db.models.user_tokens import UserTokens
+from db.models.user_token import UserToken
 from src.models.service_types import TokenEstimate, TokenEstimateResponse
 
 router = APIRouter(prefix="/levels", tags=["levels"])
@@ -67,7 +67,7 @@ def estimate_tokens(
     estimated_tokens = estimate["tokens"]
     estimated_minutes = estimate["minutes"]
     user_tokens = db.execute(
-        select(UserTokens).where(UserTokens.user_id == user.id)
+        select(UserToken).where(UserToken.user_id == user.id)
     ).scalar_one_or_none()
     
     response: TokenEstimateResponse = {

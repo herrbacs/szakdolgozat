@@ -17,7 +17,7 @@ from db.models.level import Level
 from db.models.favorite_level import FavoriteLevel
 from db.models.level_token_usage import LevelTokenUsage, UsageType
 from db.models.level_completion import LevelCompletion
-from db.models.user_tokens import UserTokens
+from db.models.user_token import UserToken
 from src.schemas.level import RateLevelRequest, GenerateLevelRequest
 from sqlalchemy import Select, select, func, case
 from src.schemas.levels import LevelListItem, LevelListQuery, LevelCompletionRequest
@@ -44,7 +44,7 @@ def generate_new_level_handler(req: GenerateLevelRequest, db: Session, user: Use
     estimated_minutes = estimate["minutes"]
 
     user_tokens = db.execute(
-        select(UserTokens).where(UserTokens.user_id == user.id)
+        select(UserToken).where(UserToken.user_id == user.id)
     ).scalar_one_or_none()
 
     if user_tokens.balance < estimated_tokens:
@@ -162,7 +162,7 @@ def generate_new_level_handler(req: GenerateLevelRequest, db: Session, user: Use
     db.add_all(entries)
 
     user_tokens = db.execute(
-        select(UserTokens).where(UserTokens.user_id == user.id)
+        select(UserToken).where(UserToken.user_id == user.id)
     ).scalar_one_or_none()
 
     user_tokens.balance -= tokens["total_tokens"]
