@@ -43,7 +43,7 @@ const Levels: React.FC = () => {
     })
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-indigo-500 via-purple-500 to-pink-500 px-4 py-10">
+    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-indigo-500 via-purple-500 to-pink-500 px-4">
       <div className="w-full max-w-4/6 mx-auto bg-white rounded-2xl shadow-2xl p-6 md:p-8">
         <div className="flex items-center justify-between gap-3 mb-6">
           <h1 className="text-3xl font-semibold text-gray-800">Levels</h1>
