@@ -104,16 +104,17 @@ const LevelCompleteModal = () => {
 
   return showLevelCompleteModal && (
     <BaseModal title="Congratulations!" onClose={closeModal}>
-      <div className="w-full px-5 pb-6 text-white space-y-4">
-        <p className="text-center">
-          You escaped the room. Rate this level and save it to your favorites.
-        </p>
+      <div className="w-full space-y-6 px-6 pb-8 pt-6 text-slate-700">
+        <div className="rounded-2xl bg-gradient-to-br from-emerald-50 via-white to-amber-50 px-6 py-5 text-center ring-1 ring-slate-200">
+          <p className="text-base leading-7 text-slate-600">
+            You escaped the room. Rate this level and save it to your favorites.
+          </p>
+        </div>
 
-        {/* Rating Section */}
-        <div className="space-y-2">
+        <div className="space-y-3 rounded-2xl bg-slate-50 px-5 py-5 ring-1 ring-slate-200">
           {userRating && (
-            <p className="text-sm text-gray-300 text-center">
-              Your rating: <span className="font-bold text-yellow-400">{userRating}</span>
+            <p className="text-center text-sm text-slate-500">
+              Your rating: <span className="font-bold text-amber-500">{userRating}</span>
             </p>
           )}
           <div className="flex justify-center gap-2">
@@ -122,12 +123,12 @@ const LevelCompleteModal = () => {
                 key={value}
                 disabled={busy}
                 onClick={() => !userRating && setSelectedRating(value)}
-                className={`w-9 h-9 rounded-full font-bold text-sm transition-colors ${
+                className={`h-10 w-10 rounded-full text-sm font-bold transition-colors ${
                   selectedRating === value
-                    ? "bg-yellow-400 text-gray-900 shadow-lg"
+                    ? "bg-amber-400 text-slate-900 shadow-lg shadow-amber-200"
                     : userRating
-                    ? "bg-gray-600 text-white cursor-not-allowed"
-                    : "bg-white text-gray-900 hover:bg-gray-200 cursor-pointer"
+                    ? "cursor-not-allowed bg-slate-300 text-white"
+                    : "cursor-pointer bg-white text-slate-900 ring-1 ring-slate-200 hover:bg-slate-100"
                 } disabled:opacity-50`}
               >
                 {value}
@@ -136,13 +137,12 @@ const LevelCompleteModal = () => {
           </div>
         </div>
 
-        {/* Action Buttons */}
         <div className="flex flex-col gap-3 pt-2">
           {!userRating && (
             <button
               disabled={busy}
               onClick={submitRating}
-              className="w-full px-4 py-2 rounded-md font-bold text-white bg-amber-500 hover:bg-amber-600 disabled:opacity-50 transition-colors"
+              className="w-full rounded-xl bg-amber-500 px-4 py-3 font-semibold text-white shadow-lg shadow-amber-200 transition-colors hover:bg-amber-600 disabled:opacity-50"
             >
               Submit Rating
             </button>
@@ -152,7 +152,7 @@ const LevelCompleteModal = () => {
             <button
               disabled={busy}
               onClick={submitFavorite}
-              className="w-full px-4 py-2 rounded-md font-bold text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-50 transition-colors"
+              className="w-full rounded-xl bg-blue-600 px-4 py-3 font-semibold text-white shadow-lg shadow-blue-200 transition-colors hover:bg-blue-700 disabled:opacity-50"
             >
               Add to Favorites
             </button>
@@ -160,7 +160,7 @@ const LevelCompleteModal = () => {
             <button
               disabled={busy}
               onClick={removeFavorite}
-              className="w-full px-4 py-2 rounded-md font-bold text-white bg-red-600 hover:bg-red-700 disabled:opacity-50 transition-colors"
+              className="w-full rounded-xl bg-rose-600 px-4 py-3 font-semibold text-white shadow-lg shadow-rose-200 transition-colors hover:bg-rose-700 disabled:opacity-50"
             >
               Remove from Favorites
             </button>
@@ -168,15 +168,14 @@ const LevelCompleteModal = () => {
 
           <button
             onClick={() => navigate("/menu")}
-            className="w-full px-4 py-2 rounded-md font-bold text-white bg-green-600 hover:bg-green-700 transition-colors"
+            className="w-full rounded-xl bg-emerald-600 px-4 py-3 font-semibold text-white shadow-lg shadow-emerald-200 transition-colors hover:bg-emerald-700"
           >
             Back to Menu
           </button>
         </div>
 
-        {/* Message Display */}
         {message && (
-          <div className="text-center text-sm text-blue-300 pt-2">
+          <div className="rounded-2xl bg-sky-50 px-4 py-3 text-center text-sm text-sky-700 ring-1 ring-sky-100">
             {message}
           </div>
         )}

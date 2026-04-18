@@ -5,7 +5,6 @@ import { AppSettingsContext } from '../../../context/AppSettingsContext'
 import { SetAppSettingsActionEnum } from '../../../shared/enums'
 import { spriteUrl } from '../../../shared/urls'
 
-
 const ItemsFoundModal = () => {
   const { appSettings: {
     gameInformation: { itemsFoundModal, levelId }
@@ -33,49 +32,38 @@ const ItemsFoundModal = () => {
         onClose={closeModal}
       >
         <>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', width: '100%' }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <h1 style={{ width: '90%' }}>
-                <img src={spriteUrl(levelId, itemsFoundModal[currentItemIndex].object.id)} style={{ width: '15rem', height: 'auto' }}/>
-              </h1>
+          <div className="flex w-full flex-col items-center justify-center gap-5 px-6 pb-6 pt-5">
+            <div className="flex w-full justify-center rounded-3xl bg-gradient-to-br from-slate-50 to-indigo-50 px-6 py-6 ring-1 ring-slate-200">
+              <img
+                src={spriteUrl(levelId, itemsFoundModal[currentItemIndex].object.id)}
+                style={{ width: '15rem', height: 'auto' }}
+              />
             </div>
-            <div style={{ width: '90%', display: 'flex', fontSize: '1.2rem', color: '#ffec99', justifyContent: 'center' }}>
+            <div className="flex w-full max-w-2xl justify-center rounded-2xl bg-white px-5 py-5 text-lg text-slate-600 ring-1 ring-slate-200">
               <p style={{ wordBreak: 'break-word', textAlign: 'center' }}>
                 {itemsFoundModal[currentItemIndex].object.inspectionData.information}
               </p>
             </div>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'row', width: '100%', justifyContent: 'space-around' }}>
-            {!isFirstElement && <button
-              onClick={() => setCurrentItemIndex(currentItemIndex - 1)}
-              style={{
-                padding: '.5rem 2rem',
-                fontSize: '1.1rem',
-                color: '#333333',
-                backgroundColor: '#ffec99',
-                border: 'none',
-                borderRadius: '.4rem',
-                cursor: 'pointer',
-                margin: '1rem auto .5rem .5rem'
-              }}
-            >
-              {'<<<'}
-            </button>}
-            {!isLastElement && <button
-              onClick={() => setCurrentItemIndex(currentItemIndex + 1)}
-              style={{
-                padding: '.5rem 2rem',
-                fontSize: '1.1rem',
-                color: '#333333',
-                backgroundColor: '#ffec99',
-                border: 'none',
-                borderRadius: '.4rem',
-                cursor: 'pointer',
-                margin: '1rem .5rem .5rem auto',
-              }}
-            >
-              {'>>>'}
-            </button>}
+          <div className="flex w-full items-center justify-between px-6 pb-6">
+            {!isFirstElement ? (
+              <button
+                onClick={() => setCurrentItemIndex(currentItemIndex - 1)}
+                className="rounded-xl bg-slate-100 px-5 py-3 text-sm font-semibold text-slate-700 ring-1 ring-slate-200 transition hover:bg-slate-200"
+              >
+                Previous
+              </button>
+            ) : (
+              <div />
+            )}
+            {!isLastElement && (
+              <button
+                onClick={() => setCurrentItemIndex(currentItemIndex + 1)}
+                className="rounded-xl bg-indigo-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-200 transition hover:bg-indigo-700"
+              >
+                Next
+              </button>
+            )}
           </div>
         </>
       </BaseModal>
@@ -85,9 +73,12 @@ const ItemsFoundModal = () => {
   return (
     <BaseModal
       title=''
-      onClose={() => setAppSettings({ action: SetAppSettingsActionEnum.EMPTY_FOUD_ITEMS_MODAL, payload: null })}>
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', width: '100%' }}>
-        <h1 style={{ fontSize: '2rem', padding: '1rem' }}>It Is Empty</h1>
+      onClose={() => setAppSettings({ action: SetAppSettingsActionEnum.EMPTY_FOUD_ITEMS_MODAL, payload: null })}
+    >
+      <div className="flex w-full flex-col items-center justify-center px-6 py-10">
+        <div className="rounded-2xl bg-slate-50 px-8 py-8 text-center ring-1 ring-slate-200">
+          <h1 className="text-3xl font-semibold text-slate-700">It Is Empty</h1>
+        </div>
       </div>
     </BaseModal>
   )

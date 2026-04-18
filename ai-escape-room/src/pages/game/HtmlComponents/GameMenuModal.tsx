@@ -23,22 +23,20 @@ const GameMenuModal = () => {
 
   return showGameMenu && (
     <BaseModal title="Game Menu" onClose={closeModal}>
-      <div style={{ width: "100%", display: "flex", justifyContent: "center", padding: "1rem 1rem 1.5rem 1rem" }}>
-        <button
-          onClick={handleBackToMenu}
-          style={{
-            padding: ".6rem 1.6rem",
-            fontSize: "1rem",
-            borderRadius: ".4rem",
-            border: "none",
-            cursor: "pointer",
-            backgroundColor: "#2563eb",
-            color: "#ffffff",
-            fontWeight: 700,
-          }}
-        >
-          Back to Menu
-        </button>
+      <div className="w-full px-6 pb-8 pt-6">
+        <div className="mx-auto max-w-md rounded-2xl bg-slate-50 px-6 py-6 text-center ring-1 ring-slate-200">
+          <p className="text-sm leading-6 text-slate-600">
+            Leave the current room and return to the main menu whenever you are ready.
+          </p>
+        </div>
+        <div className="mt-6 flex justify-center">
+          <button
+            onClick={handleBackToMenu}
+            className="rounded-xl bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-200 transition hover:bg-indigo-700"
+          >
+            Back to Menu
+          </button>
+        </div>
       </div>
     </BaseModal>
   )

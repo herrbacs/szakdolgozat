@@ -46,7 +46,11 @@ const LockModal = () => {
         setActiveIndex(0)
       }
     }
-  }, [lockModal])
+  }, [lockModal, isLong])
+
+  const isComplete = isLong
+    ? singleValue.length === lockModal!.lock.activator.length
+    : values.every(v => v !== '')
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -93,94 +97,89 @@ const LockModal = () => {
 
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [activeIndex, lockModal, values.length, singleValue, handleUnlock])
-
-  const isComplete = isLong ? singleValue.length === lockModal!.lock.activator.length : values.every(v => v !== '')
+  }, [activeIndex, handleUnlock, isComplete, isLong, lockModal, singleValue, values.length])
 
   return lockModal && (
     <BaseModal
       title={lockModal.title}
       onClose={() => setAppSettings({ action: SetAppSettingsActionEnum.SET_LOCK_MODAL, payload: null })}
     >
-      <div className={`lock-inputRow ${wrong ? 'lock-wrong' : ''}`} style={{ position: 'relative' }}>
-        {isLong ? (
-          <input
-            type="text"
-            value={singleValue}
-            readOnly
-            className="lock-longInput"
-            style={{
-              width: `calc(${lockModal.lock.activator.length}ch + ${lockModal.lock.activator.length}*0.4rem)`,
-              fontSize: '1.5rem',
-              textAlign: 'center',
-              letterSpacing: '0.3rem',
-              padding: '0.5rem',
-              borderRadius: '.3rem',
-              border: '2px solid #555',
-              backgroundColor: '#fff',
-              color: '#000000',
-              boxShadow: '0 0 0 3px rgba(0, 0, 0, 0.25)'
-            }}
-            placeholder={'X'.repeat(lockModal.lock.activator.length)}
-          />
-        ) : (
-          values.map((val, i) => (
-            <div
-              key={i}
-              onClick={() => setActiveIndex(i)}
+      <div className="w-full px-6 pb-8 pt-6">
+        <div className={`lock-inputRow ${wrong ? 'lock-wrong' : ''}`} style={{ position: 'relative' }}>
+          {isLong ? (
+            <input
+              type="text"
+              value={singleValue}
+              readOnly
+              className="lock-longInput"
               style={{
-                width: '2.5rem',
-                height: '2.5rem',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
+                width: `calc(${lockModal.lock.activator.length}ch + ${lockModal.lock.activator.length}*0.4rem)`,
                 fontSize: '1.5rem',
-                fontWeight: 'bold',
-                backgroundColor: '#fff',
-                borderRadius: '.3rem',
-                border: i === activeIndex ? '3px solid #ffec99' : '3px solid #555',
-                cursor: 'pointer',
-                userSelect: 'none',
-                color: '#000000',
-                boxShadow: '0px 0px 8px 1px rgba(0,0,0,1) inset'
+                textAlign: 'center',
+                letterSpacing: '0.3rem',
+                padding: '0.85rem',
+                borderRadius: '1rem',
+                border: '1px solid #cbd5e1',
+                backgroundColor: '#f8fafc',
+                color: '#0f172a',
+                boxShadow: 'inset 0 1px 3px rgba(15, 23, 42, 0.08)'
               }}
-            >
-              {val}
-            </div>
-          ))
-        )}
-      </div>
-      <div style={{ position: 'relative', display: 'flex', width: '100%', padding: '0 0 1rem 0' }}>
-        <button
-          onClick={handleUnlock}
-          disabled={!isComplete}
-          style={{
-            padding: '.5rem 2rem',
-            fontSize: '1.1rem',
-            backgroundColor: isComplete ? '#ffec99' : '#777',
-            border: 'none',
-            borderRadius: '.4rem',
-            cursor: isComplete ? 'pointer' : 'default',
-            marginBottom: '1rem',
-            boxShadow: isComplete ? '0px 5px 15px rgba(0, 0, 0, 0.35)' : 'none',
-            margin: '0 auto 0 auto'
-          }}
-        >
-          Unlock
-        </button>
-        <span 
-          style={{position: 'absolute', right: '1.2rem', bottom: '1rem', fontSize: '2rem', textAlign: 'center', cursor: 'pointer', color: '#FFF' }}
-          onClick={() => setDisplayHints(!displayHints)}
-        >?</span>
-      </div>
-      {
-        displayHints && (
-          <div style={{ display: 'flex', width: '100%', alignItems: 'center' }}>
+              placeholder={'X'.repeat(lockModal.lock.activator.length)}
+            />
+          ) : (
+            values.map((val, i) => (
+              <div
+                key={i}
+                onClick={() => setActiveIndex(i)}
+                style={{
+                  width: '3rem',
+                  height: '3rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '1.5rem',
+                  fontWeight: 'bold',
+                  backgroundColor: '#f8fafc',
+                  borderRadius: '1rem',
+                  border: i === activeIndex ? '2px solid #6366f1' : '1px solid #cbd5e1',
+                  cursor: 'pointer',
+                  userSelect: 'none',
+                  color: '#0f172a',
+                  boxShadow: 'inset 0 1px 2px rgba(15, 23, 42, 0.08)'
+                }}
+              >
+                {val}
+              </div>
+            ))
+          )}
+        </div>
+        <div style={{ position: 'relative', display: 'flex', width: '100%', padding: '0 0 1rem 0' }}>
+          <button
+            onClick={handleUnlock}
+            disabled={!isComplete}
+            className={`mx-auto mb-4 rounded-xl px-6 py-3 text-sm font-semibold text-white transition ${
+              isComplete
+                ? 'bg-indigo-600 shadow-lg shadow-indigo-200 hover:bg-indigo-700'
+                : 'cursor-default bg-slate-300'
+            }`}
+          >
+            Unlock
+          </button>
+          <button
+            type="button"
+            className="absolute bottom-4 right-0 flex h-11 w-11 items-center justify-center rounded-full bg-slate-100 text-xl font-semibold text-slate-500 ring-1 ring-slate-200 transition hover:bg-slate-200 hover:text-slate-700"
+            onClick={() => setDisplayHints(!displayHints)}
+          >
+            ?
+          </button>
+        </div>
+        {displayHints && (
+          <div className="flex w-full items-center rounded-2xl bg-slate-50 px-3 py-4 ring-1 ring-slate-200">
             <span
-              onClick={() => {setCurrentHintIndex(currentHintIndex - 1); setShowHintReveals(false)}}
+              onClick={() => { setCurrentHintIndex(currentHintIndex - 1); setShowHintReveals(false) }}
               style={{
                 fontSize: '3rem',
-                color: '#ffec99',
+                color: '#6366f1',
                 cursor: 'pointer',
                 margin: '0 auto 0 1rem',
                 visibility: isFirstHint ? 'hidden' : 'visible'
@@ -188,24 +187,26 @@ const LockModal = () => {
             >
               {'<'}
             </span>
-            <span style={{ display: 'flex', flexDirection: 'column',  margin: '0 auto', fontStyle: 'italic' }}>
-              <span style={{ color: '#fff', }}>{ lockModal.hints[currentHintIndex].hint }</span>
+            <span style={{ display: 'flex', flexDirection: 'column', margin: '0 auto', fontStyle: 'italic' }}>
+              <span style={{ color: '#334155', textAlign: 'center' }}>{lockModal.hints[currentHintIndex].hint}</span>
               <span
-                style={{ 
-                  color: '#ffec99',
+                style={{
+                  color: '#4f46e5',
                   textAlign: 'center',
                   cursor: 'pointer',
                   fontSize: '1.5rem',
                   filter: showHintReveals ? '' : 'blur(6px)'
                 }}
-                onClick={() => setShowHintReveals(true)}  
-              >{ lockModal.hints[currentHintIndex].reveals }</span>
+                onClick={() => setShowHintReveals(true)}
+              >
+                {lockModal.hints[currentHintIndex].reveals}
+              </span>
             </span>
             <span
-              onClick={() => {setCurrentHintIndex(currentHintIndex + 1); setShowHintReveals(false)}}
+              onClick={() => { setCurrentHintIndex(currentHintIndex + 1); setShowHintReveals(false) }}
               style={{
                 fontSize: '3rem',
-                color: '#ffec99',
+                color: '#6366f1',
                 cursor: 'pointer',
                 margin: '0 1rem 0 auto',
                 visibility: isLastHint ? 'hidden' : 'visible'
@@ -214,8 +215,8 @@ const LockModal = () => {
               {'>'}
             </span>
           </div>
-        )
-      }
+        )}
+      </div>
     </BaseModal>
   )
 }

@@ -8,7 +8,7 @@ import { spriteUrl } from '../../../../shared/urls'
 const InspectModal = () => {
   const {
     appSettings: {
-      gameInformation: { InspectingModal, levelId}
+      gameInformation: { InspectingModal, levelId }
     },
     setAppSettings
   }: AppSettingsContextType = useContext(AppSettingsContext)
@@ -16,17 +16,17 @@ const InspectModal = () => {
   if (!InspectingModal) {
     return
   }
-  
+
   return InspectingModal && (
     <BaseModal
       title={InspectingModal.appellation}
       onClose={() => setAppSettings({ action: SetAppSettingsActionEnum.TOGGLE_OBJECT_INSPECTING, payload: null })}
     >
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', width: '100%' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <img src={spriteUrl(levelId, InspectingModal.id)} style={{ width: '15rem', height: 'auto' }}/>
+      <div className="flex w-full flex-col items-center justify-center gap-5 px-6 pb-8 pt-6">
+        <div className="flex w-full justify-center rounded-3xl bg-gradient-to-br from-slate-50 to-indigo-50 px-6 py-6 ring-1 ring-slate-200">
+          <img src={spriteUrl(levelId, InspectingModal.id)} style={{ width: '15rem', height: 'auto' }} />
         </div>
-        <div style={{ width: '90%', maxHeight: '90%', overflow: 'auto', display: 'flex', fontSize: '1.3rem', color: '#ffec99', justifyContent: 'center' }}>
+        <div className="flex max-h-[40vh] w-full justify-center overflow-auto rounded-2xl bg-slate-50 px-5 py-5 text-lg leading-8 text-slate-600 ring-1 ring-slate-200">
           <p style={{ wordBreak: 'break-word', textAlign: 'center' }}>{InspectingModal.information}</p>
         </div>
       </div>
