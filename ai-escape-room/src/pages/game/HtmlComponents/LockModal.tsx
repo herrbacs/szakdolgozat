@@ -166,7 +166,7 @@ const LockModal = () => {
             margin: '0 auto 0 auto'
           }}
         >
-          Kinyitás
+          Unlock
         </button>
         <span 
           style={{position: 'absolute', right: '1.2rem', bottom: '1rem', fontSize: '2rem', textAlign: 'center', cursor: 'pointer', color: '#FFF' }}

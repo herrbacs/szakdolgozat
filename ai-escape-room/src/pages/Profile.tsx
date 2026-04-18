@@ -118,9 +118,9 @@ const Profile: React.FC = () => {
             }
             className="w-full border rounded px-2 py-1 mb-2"
           >
-            <option value={TokenCategory.Basic}>Kicsi (50 000 token)</option>
-            <option value={TokenCategory.Medium}>Közepes (75 000 token)</option>
-            <option value={TokenCategory.High}>Nagy (100 000 token)</option>
+            <option value={TokenCategory.Basic}>Small (50,000 tokens)</option>
+            <option value={TokenCategory.Medium}>Medium (75,000 tokens)</option>
+            <option value={TokenCategory.High}>Large (100,000 tokens)</option>
           </select>
 
           <button
