@@ -1,5 +1,0 @@
-A szakdolgozat célja egy mesterséges intelligenciával támogatott, webes szabadulószoba-rendszer megtervezése és megvalósítása. A szakdolgozó feladata egy olyan többkomponensű alkalmazás kialakítása, amely képes felhasználói adatok kezelésére, pályák generálására és tárolására, valamint a létrehozott pályák interaktív, grafikus megjelenítésére.
-
-A munka során a hallgató megvizsgálja az AI-alapú tartalomgenerálás alkalmazási lehetőségeit a játékfejlesztés területén, különös tekintettel a logikailag végigjátszható szabadulószoba-pályák előállítására, validálására és javítására. Ennek keretében kitér a kliens-szerver architektúra megvalósítására, a valós idejű kommunikációra, a tokenalapú erőforrás-kezelésre, az adatbázis- és objektumtárolási megoldásokra, valamint a játékobjektumok és felhasználói interakciók modellezésére.
-
-A téma további indoklása, hogy a létrejövő rendszer egyaránt ötvözi a modern webfejlesztési, adatkezelési és mesterségesintelligencia-alapú technológiákat, miközben gyakorlati példán keresztül mutatja be az automatikus pályagenerálás, a képgenerálás és az interaktív játéklogika összehangolt működését.
